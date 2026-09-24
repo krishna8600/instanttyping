@@ -1,0 +1,82 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TypingEngine from '../components/TypingEngine.astro';
+import FAQ from '../components/FAQ.astro';
+import Icon from '../components/Icon.astro';
+
+const faqs = [
+ {
+ question: "Why is typing numbers and punctuation so much harder than plain words?",
+ answer: "Most typists practice only lowercase alphabetic words. The number row (1-0) requires stretching fingers upward beyond the top row, while symbols require coordinating the Shift key with the opposite hand. Without dedicated practice, typists look down at their hands for numbers, immediately slowing to a halt."
+ },
+ {
+ question: "Should I use the top number row or the 10-key numeric keypad?",
+ answer: "For typing text interspersed with numbers (such as coding, legal documents, or alphanumeric addresses), mastering the top number row via touch typing is essential because moving your right hand back and forth to the numeric keypad wastes seconds. For dedicated financial data entry involving columns of pure numbers, the 10-key keypad is faster."
+ },
+ {
+ question: "What is the proper finger rule for the Shift key?",
+ answer: "Always use the opposite hand's pinky to hold Shift. If you need to type a capital 'T' or the symbol '%', your right pinky holds the right Shift key while your left index finger strikes the key. Never press Shift and a letter using the same hand."
+ }
+];
+---
+
+<Layout
+ title="Numbers & Punctuation Typing Test | Speed & Symbol Practice"
+ description="Master the number row, symbols, and punctuation with this targeted typing test. Perfect for programmers, data entry, and technical writers."
+ canonicalPath="/numbers-punctuation-typing-test"
+>
+ <div class="space-y-12">
+ <TypingEngine
+ initialDuration={60}
+ initialMode="time"
+ initialWordbank="numbers"
+ pageHeading="Numbers & Punctuation Typing Test"
+ pageSubheading="Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
+ />
+
+ <section class="border-t shadow-ds-border pt-10 space-y-6" aria-labelledby="numbers-heading">
+ <div class="space-y-2">
+ <h2 id="numbers-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">
+ How to Master the Top Number Row & Technical Symbols
+ </h2>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl">
+ Programmers, accountants, and technical writers spend up to 30% of their keystrokes on brackets, operators, and digits. Eliminating the impulse to look down at the number row provides an immediate speed boost.
+ </p>
+ </div>
+
+ <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+ <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-2 flex flex-col">
+ <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-sky-50 text-sky-600 " aria-hidden="true">
+ <Icon name="keyboard" class="w-5 h-5" />
+ </span>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">Anchor Your Thumbs</h3>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
+ When reaching upward to strike 4, 5, 6, or 7, keep your thumbs resting lightly on the spacebar. This prevents your entire hand from floating away from the home row.
+ </p>
+ </div>
+
+ <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-2 flex flex-col">
+ <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-violet-50 text-violet-600 " aria-hidden="true">
+ <Icon name="swap-horiz" class="w-5 h-5" />
+ </span>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">Opposite-Hand Shift Rule</h3>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
+ Strictly use your left pinky for right-hand symbols (like &, *, (, ), :, ?) and your right pinky for left-hand symbols (!, @, #, $, %).
+ </p>
+ </div>
+
+ <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-2 flex flex-col">
+ <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 " aria-hidden="true">
+ <Icon name="link" class="w-5 h-5" />
+ </span>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">Symbol Muscle Mapping</h3>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
+ Pair numbers with their underlying letters in your mind: 1 sits above Q, 2 sits above W, 3 sits above E, and 4 sits above R.
+ </p>
+ </div>
+ </div>
+ </section>
+
+ <FAQ items={faqs} title="Frequently Asked Questions About Number & Symbol Typing" />
+ </div>
+</Layout>

@@ -1,0 +1,69 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Layout
+ title="About Us & Methodology | Practice Test Typing"
+ description="Discover the engineering philosophy, testing standards, and mathematical calculation algorithms behind Practice Test Typing."
+ canonicalPath="/about"
+>
+ <article class="max-w-3xl mx-auto space-y-8 text-ds-text-primary ">
+ <header class="border-b shadow-ds-border pb-6">
+ <h1 class="text-ds-text-primary text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance">
+ About Practice Test Typing
+ </h1>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary mt-2">
+ A modern, distraction-free typing platform built for speed, accuracy, and genuine skill growth.
+ </p>
+ </header>
+
+ <section class="space-y-3">
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2"><Icon name="flag" class="w-5 h-5 text-sky-600 " />Our Mission</h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
+ Typing is the primary bridge between human thought and digital execution. Yet most typing test platforms on the web today are bloated with aggressive advertisements, laggy interfaces, confusing paywalls, and noisy gamification that distracts from deliberate practice.
+ </p>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
+ <strong class="text-ds-text-primary ">Practice Test Typing</strong> was engineered to provide an ultra-clean, lightning-fast testing environment that respects your attention. Every millisecond of keystroke latency has been eliminated, allowing typists to focus purely on finger rhythm and muscle memory.
+ </p>
+ </section>
+
+ <section class="space-y-4">
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">The Scientific Standard: How We Calculate WPM</h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
+ To provide objective, standardized results comparable with official employment tests, our platform strictly implements the international 5-keystroke standard:
+ </p>
+
+ <div class="p-4 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-3 font-mono text-xs">
+ <div class="flex items-center gap-2">
+ <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-sky-50 text-sky-600 shrink-0" aria-hidden="true">
+ <Icon name="bolt" class="w-4 h-4" />
+ </span>
+ <span class="text-ds-text-secondary uppercase tracking-wider text-[11px] block">Gross Words Per Minute (Raw WPM)</span>
+ </div>
+ <code class="text-sky-600 font-semibold text-sm block">Raw WPM = (Total Keystrokes / 5) / (Time in Minutes)</code>
+ <div class="pt-2 border-t border-neutral-100 flex items-center gap-2">
+ <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-emerald-50 text-emerald-600 shrink-0" aria-hidden="true">
+ <Icon name="verified-user" class="w-4 h-4" />
+ </span>
+ <span class="text-ds-text-secondary uppercase tracking-wider text-[11px] block">Net Words Per Minute (Standard WPM)</span>
+ </div>
+ <code class="text-green-600 font-semibold text-sm block">Net WPM = (Correct Keystrokes / 5) / (Time in Minutes)</code>
+ <div class="pt-2 border-t border-neutral-100 flex items-center gap-2">
+ <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-amber-50 text-amber-600 shrink-0" aria-hidden="true">
+ <Icon name="target" class="w-4 h-4" />
+ </span>
+ <span class="text-ds-text-secondary uppercase tracking-wider text-[11px] block">Accuracy Percentage</span>
+ </div>
+ <code class="text-ds-text-primary font-semibold text-sm block">Accuracy = (Correct Keystrokes / Total Keystrokes) * 100</code>
+ </div>
+ </section>
+
+ <section class="space-y-3">
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2"><Icon name="analytics" class="w-5 h-5 text-sky-600 " />Built-In Diagnostics & Remediation</h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
+ Unlike other platforms that simply show you a final number and ask you to try again, our engine logs your exact keystroke latencies and typo clusters. After every test, you receive an automated breakdown of your weakest keys and a 1-click option to train exclusively on the words you missed.
+ </p>
+ </section>
+ </article>
+</Layout>

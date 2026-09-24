@@ -1,0 +1,78 @@
+---
+import Icon from './Icon.astro';
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="w-full border-t border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-black transition-colors duration-150 mt-16">
+  <div class="max-w-[1100px] mx-auto px-4 sm:px-6 py-12">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8 pb-10 border-b border-[#E5E5E5] dark:border-white/10">
+ 
+ <!-- Brand & Mission -->
+ <div class="space-y-3 md:col-span-1">
+  <div class="flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]">
+  <div class="w-7 h-7 rounded-lg bg-[#1D1D1F] dark:bg-white flex items-center justify-center text-white dark:text-black font-mono text-xs font-bold">
+  PT
+  </div>
+  <span class="font-bold text-sm tracking-tight" style="letter-spacing:-0.02em">Practice Test Typing</span>
+  </div>
+  <p class="font-normal text-pretty text-[0.9375rem] leading-[1.6] text-[#6E6E73] dark:text-[#A1A1A6]">
+ A clean, distraction-free typing speed and accuracy assessment platform. Built for typists, students, and professionals to measure real-time words per minute.
+ </p>
+ </div>
+
+ <!-- Test Modes -->
+ <div class="space-y-3">
+  <div class="text-xs font-bold uppercase tracking-widest text-[#1D1D1F] dark:text-[#F5F5F7]">
+  Test Modes
+  </div>
+  <ul class="space-y-2 text-xs text-[#6E6E73] dark:text-[#A1A1A6]">
+  <li><a href="/" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Standard 60-Second Test</a></li>
+  <li><a href="/1-minute-typing-test" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">1-Minute Speed Sprint</a></li>
+  <li><a href="/3-minute-typing-test" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">3-Minute Employment Test</a></li>
+  <li><a href="/typing-test-for-beginners" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Beginner Practice Test</a></li>
+  <li><a href="/numbers-punctuation-typing-test" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Numbers & Symbols Test</a></li>
+ </ul>
+ </div>
+
+ <!-- Learning & Standards -->
+ <div class="space-y-3">
+  <div class="text-xs font-bold uppercase tracking-widest text-[#1D1D1F] dark:text-[#F5F5F7]">
+  Standards & Guides
+  </div>
+  <ul class="space-y-2 text-xs text-[#6E6E73] dark:text-[#A1A1A6]">
+  <li><a href="/about" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">How WPM is Calculated</a></li>
+  <li><a href="/typing-test-for-beginners#tips" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Home Row Technique</a></li>
+  <li><a href="/3-minute-typing-test#benchmarks" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Civil Service WPM Benchmarks</a></li>
+  <li><a href="/contact" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Contact & Support</a></li>
+ </ul>
+ </div>
+
+ <!-- Compliance & Privacy -->
+ <div class="space-y-3">
+  <div class="text-xs font-bold uppercase tracking-widest text-[#1D1D1F] dark:text-[#F5F5F7]">
+  Compliance & Legal
+  </div>
+  <ul class="space-y-2 text-xs text-[#6E6E73] dark:text-[#A1A1A6]">
+  <li><a href="/privacy" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Privacy Policy</a></li>
+  <li><a href="/terms" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Terms of Service</a></li>
+  <li><a href="/privacy#cookies" class="hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] transition-colors">Cookie Disclosures</a></li>
+ </ul>
+ </div>
+ </div>
+
+  <!-- Bottom Bar -->
+  <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#6E6E73] dark:text-[#A1A1A6]">
+  <div>
+  &copy; {currentYear} Practice Test Typing (practicetesttyping.com). All rights reserved.
+  </div>
+  <div class="flex items-center gap-4 text-[#6E6E73] dark:text-[#A1A1A6]">
+ <a href="/privacy" class="hover:underline flex items-center gap-1"><Icon name="verified-user" class="w-3.5 h-3.5" />Privacy</a>
+ <span>&bull;</span>
+ <a href="/terms" class="hover:underline flex items-center gap-1"><Icon name="description" class="w-3.5 h-3.5" />Terms</a>
+ <span>&bull;</span>
+ <a href="/contact" class="hover:underline flex items-center gap-1"><Icon name="mail" class="w-3.5 h-3.5" />Contact</a>
+ </div>
+ </div>
+ </div>
+</footer>

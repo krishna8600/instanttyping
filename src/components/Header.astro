@@ -1,0 +1,129 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+ currentPath?: string;
+}
+
+const { currentPath = '/' } = Astro.props;
+
+const navItems = [
+ { href: '/', label: 'Standard Test' },
+ { href: '/1-minute-typing-test', label: '1-Min Test' },
+ { href: '/3-minute-typing-test', label: '3-Min Test' },
+ { href: '/typing-test-for-beginners', label: 'Beginners' },
+ { href: '/numbers-punctuation-typing-test', label: 'Numbers & Symbols' },
+];
+---
+
+<header class="sticky top-4 z-40 max-w-[1100px] mx-auto w-[calc(100%-2rem)] apple-card !p-0 !rounded-full px-2">
+  <div class="max-w-[1100px] mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+  <!-- Brand Logo -->
+  <a href="/" class="flex items-center gap-2.5 text-[#1D1D1F] dark:text-[#F5F5F7] group">
+  <div class="w-8 h-8 rounded-lg bg-[#1D1D1F] dark:bg-white flex items-center justify-center text-white dark:text-black font-mono text-xs font-bold tracking-tight">
+  PT
+  </div>
+  <div class="flex flex-col justify-center">
+  <span class="font-bold text-sm leading-none tracking-tight text-[#1D1D1F] dark:text-[#F5F5F7] mb-[2px]" style="letter-spacing:-0.02em">
+  Practice Test Typing
+  </span>
+  <span class="text-[10px] font-medium text-[#6E6E73] dark:text-[#A1A1A6] leading-none">
+  practicetesttyping.com
+  </span>
+  </div>
+  </a>
+
+  <!-- Nav Links (Desktop) -->
+  <nav class="hidden md:flex items-center gap-1 text-xs font-medium text-[#6E6E73] dark:text-[#A1A1A6]" aria-label="Main Navigation">
+  {navItems.map(item => {
+  const isActive = currentPath === item.href;
+  return (
+  <a
+  href={item.href}
+  class={`px-3 py-1.5 rounded-full transition-colors text-xs font-medium ${
+  isActive
+  ? 'bg-[#1D1D1F] text-white dark:bg-white dark:text-black font-semibold'
+  : 'hover:text-[#1D1D1F] dark:hover:text-[#F5F5F7] hover:bg-black/5 dark:hover:bg-white/10'
+  }`}
+  >
+  {item.label}
+  </a>
+  );
+  })}
+  </nav>
+
+  <!-- Controls: Sound & Theme Toggle -->
+  <div class="flex items-center gap-2">
+  <!-- Sound Toggle Button -->
+  <button
+  id="btn-sound-toggle"
+  type="button"
+  class="h-8 px-3 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-[#F5F5F7] dark:hover:bg-white/10 text-xs font-medium flex items-center gap-1.5 transition-colors"
+  title="Toggle Key Sounds"
+  aria-label="Toggle mechanical keyboard sound"
+  >
+  <span id="sound-icon-on" class="hidden"><Icon name="volume-up" class="w-3.5 h-3.5" /></span>
+  <span id="sound-icon-off" class="hidden"><Icon name="volume-off" class="w-3.5 h-3.5" /></span>
+  <span id="sound-label" class="hidden sm:inline text-xs">Audio On</span>
+  </button>
+
+  <!-- Dark / Light Mode Toggle -->
+  <button
+  id="btn-theme-toggle"
+  type="button"
+  class="h-8 w-8 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] hover:bg-[#F5F5F7] dark:hover:bg-white/10 flex items-center justify-center transition-colors"
+  title="Toggle Light / Dark Mode"
+  aria-label="Toggle color theme"
+  >
+  <span id="theme-icon-sun" class="hidden dark:block"><Icon name="light-mode" class="w-3.5 h-3.5" /></span>
+  <span id="theme-icon-moon" class="block dark:hidden"><Icon name="dark-mode" class="w-3.5 h-3.5" /></span>
+  </button>
+  </div>
+  </div>
+</header>
+
+<script>
+ import { toggleAudio, initAudioFromStorage, ensureAudioContext } from '../utils/audio';
+
+ // Audio setup
+ const soundBtn = document.getElementById('btn-sound-toggle');
+ const soundIconOn = document.getElementById('sound-icon-on');
+ const soundIconOff = document.getElementById('sound-icon-off');
+ const soundLabel = document.getElementById('sound-label');
+
+ function updateAudioUI(enabled: boolean) {
+ if (soundIconOn && soundIconOff && soundLabel) {
+ if (enabled) {
+ soundIconOn.classList.remove('hidden');
+ soundIconOff.classList.add('hidden');
+ soundLabel.textContent = 'Audio On';
+ } else {
+ soundIconOn.classList.add('hidden');
+ soundIconOff.classList.remove('hidden');
+ soundLabel.textContent = 'Audio Off';
+ }
+ }
+ }
+
+ const initialSound = initAudioFromStorage();
+ updateAudioUI(initialSound);
+
+ if (soundBtn) {
+ soundBtn.addEventListener('click', () => {
+ ensureAudioContext();
+ const next = toggleAudio();
+ updateAudioUI(next);
+ });
+ }
+
+ // Theme setup
+ const themeBtn = document.getElementById('btn-theme-toggle');
+ if (themeBtn) {
+ themeBtn.addEventListener('click', () => {
+ const isDark = document.documentElement.classList.toggle('dark');
+ try {
+ localStorage.setItem('ptt_theme', isDark ? 'dark' : 'light');
+ } catch {}
+ });
+ }
+</script>

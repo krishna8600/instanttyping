@@ -1,0 +1,101 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CookieConsent from '../components/CookieConsent.astro';
+
+interface Props {
+ title: string;
+ description: string;
+ canonicalPath?: string;
+ ogType?: string;
+}
+
+const {
+ title,
+ description,
+ canonicalPath = '',
+ ogType = 'website'
+} = Astro.props;
+
+const siteUrl = 'https://practicetesttyping.com';
+const canonicalUrl = `${siteUrl}${canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`}`;
+const ogImage = `${siteUrl}/og-image.png`;
+---
+
+<!doctype html>
+<html lang="en">
+ <head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+ 
+ <!-- Primary Meta Tags -->
+ <title>{title}</title>
+ <meta name="title" content={title} />
+ <meta name="description" content={description} />
+ <meta name="robots" content="index, follow" />
+ <link rel="canonical" href={canonicalUrl} />
+
+ <!-- Google Search Console Verification Slot (pre-configured) -->
+ <!-- <meta name="google-site-verification" content="YOUR_GSC_VERIFICATION_TOKEN" /> -->
+
+ <!-- Favicons -->
+ <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+ <link rel="icon" href="/favicon.ico" />
+ <link rel="apple-touch-icon" href="/favicon.svg" />
+
+ <!-- Open Graph / Facebook -->
+ <meta property="og:type" content={ogType} />
+ <meta property="og:url" content={canonicalUrl} />
+ <meta property="og:title" content={title} />
+ <meta property="og:description" content={description} />
+ <meta property="og:image" content={ogImage} />
+ <meta property="og:site_name" content="Practice Test Typing" />
+
+ <!-- Twitter Card -->
+ <meta name="twitter:card" content="summary_large_image" />
+ <meta name="twitter:url" content={canonicalUrl} />
+ <meta name="twitter:title" content={title} />
+ <meta name="twitter:description" content={description} />
+ <meta name="twitter:image" content={ogImage} />
+
+ <!-- JSON-LD WebSite Schema -->
+ <script type="application/ld+json" set:html={JSON.stringify({
+ "@context": "https://schema.org",
+ "@type": "WebSite",
+ "name": "Practice Test Typing",
+ "url": siteUrl,
+ "description": "Fast, responsive typing test tool to measure WPM speed and accuracy with real-time analytics.",
+ "potentialAction": {
+ "@type": "SearchAction",
+ "target": `${siteUrl}/?q={search_term_string}`,
+ "query-input": "required name=search_term_string"
+ }
+ })} />
+
+ <!-- Theme Initializer Script (prevents theme flicker) -->
+ <script is:inline>
+ (function() {
+ try {
+ const stored = localStorage.getItem('ptt_theme');
+ const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+ if (stored === 'dark' || (!stored && prefersDark)) {
+ document.documentElement.classList.add('dark');
+ } else {
+ document.documentElement.classList.remove('dark');
+ }
+ } catch (_) {}
+ })();
+ </script>
+ </head>
+  <body class="bg-[#FAFAFA] dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] min-h-screen flex flex-col font-sans transition-colors duration-150 selection:bg-[#0071E3] selection:text-white">
+  <Header currentPath={canonicalPath} />
+
+  <main class="flex-1 w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8">
+  <slot />
+  </main>
+
+ <Footer />
+ <CookieConsent />
+ </body>
+</html>

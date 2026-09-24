@@ -1,0 +1,174 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+---
+
+<Layout
+ title="Contact Us & Feedback | Practice Test Typing"
+ description="Have feedback, feature requests, or technical inquiries? Contact the Practice Test Typing engineering team."
+ canonicalPath="/contact"
+>
+ <div class="max-w-xl mx-auto space-y-8 text-ds-text-primary ">
+ <header class="border-b shadow-ds-border pb-6">
+ <h1 class="text-ds-text-primary text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance">
+ Contact & Support
+ </h1>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary mt-2">
+ Have suggestions, found a bug, or want to propose a custom word list? We read all feedback.
+ </p>
+ </header>
+
+ <!-- Contact Form with Client Validation & Honeypot Spam Protection -->
+ <form id="contact-form" class="space-y-4 p-6 rounded-lg shadow-ds-border bg-ds-bg-100 " novalidate>
+ 
+ <!-- Anti-Spam Honeypot Field (hidden from real users) -->
+ <div class="hidden" aria-hidden="true">
+ <label for="company_website">Do not fill this out if human</label>
+ <input type="text" name="company_website" id="company_website" tabindex="-1" autocomplete="off" />
+ </div>
+
+ <!-- Name Field -->
+ <div class="space-y-1">
+ <label for="contact-name" class="flex items-center gap-1.5 text-xs font-mono font-medium text-ds-text-secondary ">
+ <Icon name="person" class="w-4 h-4 text-ds-text-muted" />
+ Your Name <span class="text-red-500">*</span>
+ </label>
+ <input
+ type="text"
+ id="contact-name"
+ name="name"
+ required
+ class="w-full h-9 px-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500"
+ placeholder="e.g. Alex Morgan"
+ />
+ <div id="error-name" class="text-[11px] text-red-500 hidden">Please enter your name.</div>
+ </div>
+
+ <!-- Email Field -->
+ <div class="space-y-1">
+ <label for="contact-email" class="flex items-center gap-1.5 text-xs font-mono font-medium text-ds-text-secondary ">
+ <Icon name="mail" class="w-4 h-4 text-ds-text-muted" />
+ Email Address <span class="text-red-500">*</span>
+ </label>
+ <input
+ type="email"
+ id="contact-email"
+ name="email"
+ required
+ class="w-full h-9 px-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500"
+ placeholder="e.g. alex@example.com"
+ />
+ <div id="error-email" class="text-[11px] text-red-500 hidden">Please provide a valid email address.</div>
+ </div>
+
+ <!-- Subject Field -->
+ <div class="space-y-1">
+ <label for="contact-subject" class="flex items-center gap-1.5 text-xs font-mono font-medium text-ds-text-secondary ">
+ <Icon name="subject" class="w-4 h-4 text-ds-text-muted" />
+ Subject <span class="text-red-500">*</span>
+ </label>
+ <select
+ id="contact-subject"
+ name="subject"
+ class="w-full h-9 px-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500 cursor-pointer"
+ >
+ <option value="feature">Feature Request or Idea</option>
+ <option value="bug">Report a Bug / Engine Issue</option>
+ <option value="corpus">Wordbank / Vocabulary Suggestion</option>
+ <option value="other">General Inquiry</option>
+ </select>
+ </div>
+
+ <!-- Message Field -->
+ <div class="space-y-1">
+ <label for="contact-message" class="flex items-center gap-1.5 text-xs font-mono font-medium text-ds-text-secondary ">
+ <Icon name="message" class="w-4 h-4 text-ds-text-muted" />
+ Message <span class="text-red-500">*</span>
+ </label>
+ <textarea
+ id="contact-message"
+ name="message"
+ rows="4"
+ required
+ class="w-full p-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500 resize-y"
+ placeholder="Type your message here..."
+ ></textarea>
+ <div id="error-message" class="text-[11px] text-red-500 hidden">Please provide your message (min. 10 characters).</div>
+ </div>
+
+ <!-- Submit Button -->
+ <div class="pt-2">
+ <button
+ type="submit"
+ id="btn-contact-submit"
+ class="h-9 px-5 rounded-md bg-neutral-900 text-white font-medium text-xs hover:bg-neutral-800 transition-colors flex items-center justify-center gap-2"
+ >
+ <Icon name="send" class="w-4 h-4" />
+ <span>Send Message</span>
+ </button>
+ </div>
+
+ <!-- Success Feedback Alert -->
+ <div id="contact-success" class="hidden p-3 rounded-md bg-green-50 border border-green-200 text-green-700 text-xs">
+ Thank you! Your inquiry has been received. Our team will review your feedback shortly.
+ </div>
+ </form>
+ </div>
+</Layout>
+
+<script>
+ const form = document.getElementById('contact-form') as HTMLFormElement;
+ const nameInput = document.getElementById('contact-name') as HTMLInputElement;
+ const emailInput = document.getElementById('contact-email') as HTMLInputElement;
+ const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement;
+ const honeypotInput = document.getElementById('company_website') as HTMLInputElement;
+
+ const errorName = document.getElementById('error-name')!;
+ const errorEmail = document.getElementById('error-email')!;
+ const errorMessage = document.getElementById('error-message')!;
+ const successAlert = document.getElementById('contact-success')!;
+
+ if (form) {
+ form.addEventListener('submit', (e) => {
+ e.preventDefault();
+
+ // Honeypot check
+ if (honeypotInput && honeypotInput.value !== '') {
+ // Silently drop bot submissions
+ return;
+ }
+
+ let valid = true;
+
+ // Validate name
+ if (!nameInput.value.trim()) {
+ errorName.classList.remove('hidden');
+ valid = false;
+ } else {
+ errorName.classList.add('hidden');
+ }
+
+ // Validate email
+ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+ if (!emailRegex.test(emailInput.value.trim())) {
+ errorEmail.classList.remove('hidden');
+ valid = false;
+ } else {
+ errorEmail.classList.add('hidden');
+ }
+
+ // Validate message
+ if (messageInput.value.trim().length < 10) {
+ errorMessage.classList.remove('hidden');
+ valid = false;
+ } else {
+ errorMessage.classList.add('hidden');
+ }
+
+ if (valid) {
+ successAlert.classList.remove('hidden');
+ form.reset();
+ }
+ });
+ }
+</script>

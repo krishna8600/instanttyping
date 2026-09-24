@@ -1,0 +1,53 @@
+---
+// Lightweight, accessible cookie consent component
+---
+
+<div
+ id="cookie-consent-banner"
+ class="hidden fixed bottom-4 right-4 max-w-sm p-4 glass-panel z-50 transition-transform duration-200"
+ role="region"
+ aria-label="Cookie Preferences"
+>
+ <div class="text-xs font-semibold mb-1">Cookie Preferences</div>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary mb-3 leading-relaxed">
+ We use local storage strictly for tracking test history and saving your sound preferences. No tracking data is sold to third parties.
+ </p>
+ <div class="flex items-center gap-2">
+ <button
+ id="btn-cookie-accept"
+ type="button"
+ class="px-3 py-1.5 rounded-md glass-button text-ds-text-primary text-xs font-semibold"
+ >
+ Accept
+ </button>
+ <a
+ href="/privacy"
+ class="text-xs text-ds-text-secondary hover:text-ds-text-primary underline px-1 py-1.5"
+ >
+ Learn More
+ </a>
+ </div>
+</div>
+
+<script>
+ const banner = document.getElementById('cookie-consent-banner');
+ const acceptBtn = document.getElementById('btn-cookie-accept');
+
+ if (typeof window !== 'undefined' && banner && acceptBtn) {
+ try {
+ const consented = localStorage.getItem('ptt_cookie_consent');
+ if (!consented) {
+ banner.classList.remove('hidden');
+ }
+ } catch {
+ // ignore
+ }
+
+ acceptBtn.addEventListener('click', () => {
+ try {
+ localStorage.setItem('ptt_cookie_consent', 'accepted');
+ } catch {}
+ banner.classList.add('hidden');
+ });
+ }
+</script>

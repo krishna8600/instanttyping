@@ -1,0 +1,72 @@
+---
+import Layout from '../layouts/Layout.astro';
+import TypingEngine from '../components/TypingEngine.astro';
+import FAQ from '../components/FAQ.astro';
+import Icon from '../components/Icon.astro';
+
+const faqs = [
+ {
+ question: "Why is the 1-minute typing test the standard benchmark?",
+ answer: "A 60-second test provides the optimal balance between measuring peak burst speed and sustaining consistent finger rhythm without causing hand strain. Most recruitment portals and standardized assessments utilize 1-minute intervals to evaluate core keyboard proficiency."
+ },
+ {
+ question: "How can I quickly increase my 1-minute WPM score?",
+ answer: "Focus on zero-error bursts. Slow down slightly on long words to avoid backspacing. Sit with elbows bent at 90 degrees, keep wrists elevated off the desk, and anchor your index fingers on the F and J keys before beginning."
+ },
+ {
+ question: "How often should I practice the 60-second typing test?",
+ answer: "Three to five 1-minute sessions daily produce far better retention than a single exhausting marathon session. Consistent daily repetition allows your motor cortex to consolidate finger muscle memory."
+ }
+];
+---
+
+<Layout
+ title="1 Minute Typing Test | Free 60-Second WPM Speed Check"
+ description="Take the official 1-minute typing test to check your Words Per Minute and accuracy in 60 seconds. Instant results and official skill certificate."
+ canonicalPath="/1-minute-typing-test"
+>
+ <div class="space-y-12">
+ <TypingEngine
+ initialDuration={60}
+ initialMode="time"
+ initialWordbank="top200"
+ pageHeading="1-Minute Typing Test: 60-Second Speed Check"
+ pageSubheading="The global standard for measuring typing velocity. Test your 60-second burst speed and finger accuracy."
+ />
+
+ <section class="border-t shadow-ds-border pt-10 space-y-6" aria-labelledby="one-min-heading">
+ <div class="space-y-2">
+ <h2 id="one-min-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">
+ How to Master the 60-Second Typing Sprint
+ </h2>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl">
+ The 1-minute test is a sprint. Unlike longer stamina assessments, success in a 60-second window requires instantaneous word recognition and immediate transition to the subsequent word before finishing the current keystroke.
+ </p>
+ </div>
+
+ <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+ <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-2 flex flex-col">
+ <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-sky-50 text-sky-600 " aria-hidden="true">
+ <Icon name="visibility" class="w-5 h-5" />
+ </span>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">Look Ahead Two Words</h3>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
+ Novice typists fixate their vision on the character currently being typed. Elite typists look 1 to 2 words ahead, allowing the subconscious motor system to execute keystrokes without micro-pauses between words.
+ </p>
+ </div>
+
+ <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-2 flex flex-col">
+ <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-red-50 text-red-600 " aria-hidden="true">
+ <Icon name="keyboard-backspace" class="w-5 h-5" />
+ </span>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">Eliminate Backspace Panic</h3>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
+ Hitting backspace three times on a single word destroys your WPM momentum. If you make a typo near the end of a word in sprint mode, tap spacebar and refocus immediately on executing the next word cleanly.
+ </p>
+ </div>
+ </div>
+ </section>
+
+ <FAQ items={faqs} title="Frequently Asked Questions About the 1-Minute Test" />
+ </div>
+</Layout>

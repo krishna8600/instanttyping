@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+ title="Page Not Found (404) | Practice Test Typing"
+ description="The requested typing test page could not be located. Return to the homepage to test your typing speed."
+ canonicalPath="/404"
+>
+ <div class="min-h-[50vh] flex flex-col items-center justify-center text-center space-y-4 max-w-md mx-auto">
+ <div class="w-12 h-12 rounded-lg bg-neutral-100 shadow-ds-border flex items-center justify-center text-ds-text-primary font-mono font-bold text-lg">
+ 404
+ </div>
+ 
+ <h1 class="text-2xl text-ds-text-primary text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance">
+ Page Not Found
+ </h1>
+ 
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
+ The requested route does not exist. Your keystrokes might have taken a wrong turn, but you can jump right back into a typing test below.
+ </p>
+
+ <div class="pt-2 flex items-center gap-3">
+ <a
+ href="/"
+ class="h-9 px-4 rounded-md bg-neutral-900 text-white text-xs font-medium hover:bg-neutral-800 transition-colors flex items-center justify-center"
+ >
+ Return to Typing Test
+ </a>
+ <a
+ href="/1-minute-typing-test"
+ class="h-9 px-4 rounded-md shadow-ds-border text-ds-text-secondary text-xs font-medium hover:bg-neutral-50 transition-colors flex items-center justify-center"
+ >
+ Try 1-Minute Sprint
+ </a>
+ </div>
+ </div>
+</Layout>

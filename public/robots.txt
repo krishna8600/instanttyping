@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://practicetesttyping.com/sitemap-index.xml

@@ -1,0 +1,350 @@
+---
+import Icon from './Icon.astro';
+---
+
+<section class="relative w-[100vw] ml-[50%] -translate-x-1/2 overflow-hidden bg-[#050505] py-24 sm:py-32 flex flex-col items-center justify-center min-h-[700px] border-b border-white/5 mt-[-2rem] mb-12">
+ 
+ <!-- Three.js Canvas Container -->
+ <div id="particle-keyboard-canvas-container" class="absolute inset-0 pointer-events-none z-0">
+ <canvas id="particle-keyboard-canvas" class="w-full h-full block"></canvas>
+ </div>
+
+ <div class="relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto px-4 pointer-events-auto">
+ <!-- Headline -->
+ <h1 class="text-5xl sm:text-7xl tracking-[-0.04em] text-transparent bg-clip-text bg-gradient-to-br from-white via-neutral-300 to-neutral-600 mb-6 text-center shadow-black drop-shadow-lg text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance">
+ Type further.
+ </h1>
+ <p class="font-normal text-pretty text-lg sm:text-xl text-ds-text-muted max-w-2xl text-center mb-12 drop-shadow-md">
+ Experience precision mechanics and zero-latency performance in the ultimate typing environment.
+ </p>
+
+ <!-- Invisible spacer for 3D Keyboard Element -->
+ <div class="relative w-full max-w-3xl h-[280px] sm:h-[360px] mx-auto mb-12 pointer-events-none">
+ </div>
+
+ <!-- CTA Pill Buttons -->
+ <div class="flex flex-col sm:flex-row items-center gap-4 z-20">
+ <a href="#typing-test-container" class="px-8 py-3.5 rounded-full bg-ds-bg-100 text-black font-medium text-sm sm:text-base hover:scale-105 transition-transform duration-300 shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center gap-2">
+ <Icon name="bolt" class="w-4 h-4" />
+ Start Speed Test
+ </a>
+ <a href="/numbers-punctuation-typing-test" class="px-8 py-3.5 rounded-full bg-neutral-800/80 backdrop-blur-md text-white font-medium text-sm sm:text-base hover:bg-neutral-700 transition-colors border border-white/10 flex items-center gap-2 group">
+ Numbers & Symbols
+ <Icon name="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+ </a>
+ </div>
+ </div>
+</section>
+
+<script>
+ // @ts-nocheck
+ import * as THREE from 'three';
+
+ // State
+ let scene, camera, renderer;
+ let keyboardGroup;
+ let animationFrameId;
+ let isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ 
+ // Real Typing Hook State
+ const activeKeys = new Set();
+ const keyMeshes = new Map(); // key -> { mesh, baseY, targetY }
+ let targetKeyboardRotation = { x: 0.6, y: -0.15 };
+ let currentKeyboardRotation = { x: 0.6, y: -0.15 };
+ 
+ // Particle noise arrays (for breathing effect)
+ const particleAnims = [];
+
+ // DOM Elements
+ const canvas = document.getElementById('particle-keyboard-canvas');
+
+ const keyboardLayout = [
+ // Row 1
+ [{k:'`', w:1}, {k:'1', w:1}, {k:'2', w:1}, {k:'3', w:1}, {k:'4', w:1}, {k:'5', w:1}, {k:'6', w:1}, {k:'7', w:1}, {k:'8', w:1}, {k:'9', w:1}, {k:'0', w:1}, {k:'-', w:1}, {k:'=', w:1}, {k:'Backspace', w:2}],
+ // Row 2
+ [{k:'Tab', w:1.5}, {k:'q', w:1}, {k:'w', w:1}, {k:'e', w:1}, {k:'r', w:1}, {k:'t', w:1}, {k:'y', w:1}, {k:'u', w:1}, {k:'i', w:1}, {k:'o', w:1}, {k:'p', w:1}, {k:'[', w:1}, {k:']', w:1}, {k:'\\', w:1.5}],
+ // Row 3
+ [{k:'CapsLock', w:1.75}, {k:'a', w:1}, {k:'s', w:1}, {k:'d', w:1}, {k:'f', w:1, highlight:true}, {k:'g', w:1}, {k:'h', w:1}, {k:'j', w:1, highlight:true}, {k:'k', w:1}, {k:'l', w:1}, {k:';', w:1}, {k:"'", w:1}, {k:'Enter', w:2.25}],
+ // Row 4
+ [{k:'Shift', w:2.25}, {k:'z', w:1}, {k:'x', w:1}, {k:'c', w:1}, {k:'v', w:1}, {k:'b', w:1}, {k:'n', w:1}, {k:'m', w:1}, {k:',', w:1}, {k:'.', w:1}, {k:'/', w:1}, {k:'ShiftRight', w:2.75}],
+ // Row 5
+ [{k:'Control', w:1.25}, {k:'Meta', w:1.25}, {k:'Alt', w:1.25}, {k:' ', w:6.25}, {k:'AltRight', w:1.25}, {k:'Fn', w:1.25}, {k:'ControlRight', w:1.25}]
+ ];
+
+ function init() {
+ if (!canvas) return;
+ 
+ // Scene setup
+ scene = new THREE.Scene();
+ 
+ // Camera setup
+ const aspect = window.innerWidth / window.innerHeight;
+ camera = new THREE.PerspectiveCamera(40, aspect, 1, 100);
+ camera.position.set(0, 15, 20);
+ camera.lookAt(0, 0, 0);
+
+ // Renderer setup
+ renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+ renderer.setSize(window.innerWidth, window.innerHeight);
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+ 
+ // No lighting needed for particle additive blending
+ 
+ // Materials
+ const isMobile = window.innerWidth < 768;
+ const pSize = isMobile ? 0.05 : 0.08;
+ 
+ const matWhite = new THREE.PointsMaterial({ 
+ color: 0xcccccc,
+ size: pSize,
+ transparent: true,
+ opacity: 0.8,
+ blending: THREE.AdditiveBlending,
+ depthWrite: false
+ });
+ 
+ const matAmber = new THREE.PointsMaterial({ 
+ color: 0xf59e0b,
+ size: pSize * 1.2,
+ transparent: true,
+ opacity: 1.0,
+ blending: THREE.AdditiveBlending,
+ depthWrite: false
+ });
+ 
+ const matChassis = new THREE.PointsMaterial({ 
+ color: 0x333333,
+ size: pSize * 0.8,
+ transparent: true,
+ opacity: 0.5,
+ blending: THREE.AdditiveBlending,
+ depthWrite: false
+ });
+
+ keyboardGroup = new THREE.Group();
+
+ // Dimensions
+ const u = 1; // 1 unit = 1 key width
+ const gap = 0.1;
+ const keyHeight = 0.4;
+ const chassisPadding = 0.4;
+ 
+ const maxRowWidth = 15 * u + 14 * gap;
+ const totalDepth = 5 * u + 4 * gap;
+ 
+ const density = isMobile ? 4 : 8; // points per unit dimension
+ 
+ // Helper to create jittered particle geometry
+ function createParticleGeom(w, h, d, isChassis) {
+ const wSeg = Math.max(2, Math.floor(w * density * (isChassis ? 0.5 : 1)));
+ const hSeg = Math.max(2, Math.floor(h * density * (isChassis ? 0.5 : 1)));
+ const dSeg = Math.max(2, Math.floor(d * density * (isChassis ? 0.5 : 1)));
+ 
+ const geom = new THREE.BoxGeometry(w, h, d, wSeg, hSeg, dSeg);
+ const posAttr = geom.attributes.position;
+ 
+ // Save initial positions for animation
+ const initialY = new Float32Array(posAttr.count);
+ const randomPhase = new Float32Array(posAttr.count);
+ 
+ for (let i = 0; i < posAttr.count; i++) {
+ // Jitter to make it look holographic
+ const jitter = isChassis ? 0.08 : 0.03;
+ posAttr.setXYZ(
+ i, 
+ posAttr.getX(i) + (Math.random()-0.5)*jitter,
+ posAttr.getY(i) + (Math.random()-0.5)*jitter,
+ posAttr.getZ(i) + (Math.random()-0.5)*jitter
+ );
+ initialY[i] = posAttr.getY(i);
+ randomPhase[i] = Math.random() * Math.PI * 2;
+ }
+ 
+ geom.setAttribute('initialY', new THREE.BufferAttribute(initialY, 1));
+ geom.setAttribute('randomPhase', new THREE.BufferAttribute(randomPhase, 1));
+ 
+ return geom;
+ }
+ 
+ // Add Chassis (Base)
+ const chassisW = maxRowWidth + chassisPadding*2;
+ const chassisD = totalDepth + chassisPadding*2;
+ const chassisGeom = createParticleGeom(chassisW, 0.5, chassisD, true);
+ const chassis = new THREE.Points(chassisGeom, matChassis);
+ chassis.position.set(0, -0.25 - 0.1, 0);
+ keyboardGroup.add(chassis);
+ 
+ // Add Keys
+ const startXOffset = -maxRowWidth / 2;
+ const startZOffset = -totalDepth / 2;
+
+ keyboardLayout.forEach((row, rowIndex) => {
+ let currentX = startXOffset;
+ const currentZ = startZOffset + rowIndex * (u + gap) + (u/2);
+ 
+ row.forEach(keyDef => {
+ const keyW = (keyDef.w * u) + ((keyDef.w - 1) * gap);
+ 
+ // Shrink slightly to show gaps
+ const geom = createParticleGeom(keyW - 0.1, keyHeight, u - 0.1, false);
+ const mesh = new THREE.Points(geom, keyDef.highlight ? matAmber : matWhite);
+ 
+ const posX = currentX + (keyW / 2);
+ const posY = keyHeight / 2; 
+ const posZ = currentZ;
+ 
+ mesh.position.set(posX, posY, posZ);
+ keyboardGroup.add(mesh);
+ 
+ particleAnims.push(mesh);
+ 
+ keyMeshes.set(keyDef.k.toLowerCase(), {
+ mesh: mesh,
+ baseY: posY,
+ targetY: posY,
+ isPressed: false
+ });
+ 
+ currentX += keyW + gap;
+ });
+ });
+ 
+ scene.add(keyboardGroup);
+
+ // Initial Rotation
+ keyboardGroup.rotation.x = currentKeyboardRotation.x;
+ keyboardGroup.rotation.y = currentKeyboardRotation.y;
+
+ // Events
+ window.addEventListener('resize', onWindowResize);
+ window.addEventListener('keydown', onKeyDown);
+ window.addEventListener('keyup', onKeyUp);
+ window.addEventListener('mousemove', onMouseMove);
+ 
+ // Animation loop
+ animate();
+ }
+
+ function onWindowResize() {
+ if (!camera || !renderer) return;
+ camera.aspect = window.innerWidth / window.innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(window.innerWidth, window.innerHeight);
+ }
+ 
+ function onMouseMove(e) {
+ if (isReducedMotion) return;
+ const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+ const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+ 
+ // Add subtle parallax based on mouse
+ targetKeyboardRotation.y = -0.15 + (mouseX * 0.1);
+ targetKeyboardRotation.x = 0.6 + (mouseY * -0.05);
+ }
+
+ function onKeyDown(e) {
+ let key = e.key.toLowerCase();
+ if (e.code === 'Space') key = ' ';
+ if (keyMeshes.has(key)) {
+ activeKeys.add(key);
+ const kData = keyMeshes.get(key);
+ kData.isPressed = true;
+ kData.targetY = kData.baseY - 0.25; // Press down
+ }
+ }
+ 
+ function onKeyUp(e) {
+ let key = e.key.toLowerCase();
+ if (e.code === 'Space') key = ' ';
+ if (keyMeshes.has(key)) {
+ activeKeys.delete(key);
+ const kData = keyMeshes.get(key);
+ kData.isPressed = false;
+ kData.targetY = kData.baseY; // Return up
+ }
+ }
+
+ function animate() {
+ animationFrameId = requestAnimationFrame(animate);
+ const time = Date.now() * 0.002;
+ 
+ if (keyboardGroup) {
+ // 1. Animate Key Presses (Lerp Y position)
+ keyMeshes.forEach(kData => {
+ const diff = kData.targetY - kData.mesh.position.y;
+ kData.mesh.position.y += diff * (kData.isPressed ? 0.6 : 0.2);
+ 
+ // Flash brightness on press
+ if (kData.isPressed) {
+ kData.mesh.material.opacity = 1.0;
+ } else {
+ kData.mesh.material.opacity = kData.mesh.material.color.getHex() === 0xf59e0b ? 1.0 : 0.8;
+ }
+ });
+ 
+ // 2. Parallax / Scroll Rotation
+ const scrollY = window.scrollY;
+ 
+ if (!isReducedMotion) {
+ // Adjust target rotation based on scroll to give depth
+ targetKeyboardRotation.x = 0.6 + (scrollY * 0.0005) + (targetKeyboardRotation.x - 0.6); // keep mouse influence
+ 
+ // Subtle idle floating
+ const floatY = Math.sin(time * 0.5) * 0.2;
+ keyboardGroup.position.y += (floatY - keyboardGroup.position.y) * 0.05;
+ 
+ // Subtle vertex breathing
+ particleAnims.forEach(mesh => {
+ if (mesh.geometry.attributes.initialY) {
+ const posAttr = mesh.geometry.attributes.position;
+ const initialY = mesh.geometry.attributes.initialY.array;
+ const phases = mesh.geometry.attributes.randomPhase.array;
+ 
+ for (let i = 0; i < posAttr.count; i++) {
+ // tiny sine wave on Y axis
+ const dy = Math.sin(time + phases[i]) * 0.02;
+ posAttr.setY(i, initialY[i] + dy);
+ }
+ posAttr.needsUpdate = true;
+ }
+ });
+ }
+ 
+ // Lerp whole keyboard rotation for smoothness
+ currentKeyboardRotation.x += (targetKeyboardRotation.x - currentKeyboardRotation.x) * 0.1;
+ currentKeyboardRotation.y += (targetKeyboardRotation.y - currentKeyboardRotation.y) * 0.1;
+ 
+ keyboardGroup.rotation.x = currentKeyboardRotation.x;
+ keyboardGroup.rotation.y = currentKeyboardRotation.y;
+ }
+
+ renderer.render(scene, camera);
+ }
+ 
+ // Cleanup
+ function cleanup() {
+ if (animationFrameId) cancelAnimationFrame(animationFrameId);
+ window.removeEventListener('resize', onWindowResize);
+ window.removeEventListener('keydown', onKeyDown);
+ window.removeEventListener('keyup', onKeyUp);
+ window.removeEventListener('mousemove', onMouseMove);
+ 
+ if (renderer) renderer.dispose();
+ }
+
+ // Astro page transitions support
+ document.addEventListener('astro:page-load', () => {
+ init();
+ });
+ 
+ document.addEventListener('astro:before-swap', () => {
+ cleanup();
+ });
+ 
+ // Initial load
+ if (document.readyState === 'complete' || document.readyState === 'interactive') {
+ init();
+ } else {
+ document.addEventListener('DOMContentLoaded', init);
+ }
+</script>
