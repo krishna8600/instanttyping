@@ -1,0 +1,322 @@
+---
+import { LANGUAGES } from "../i18n";
+---
+
+<div class="lang-switcher-container relative inline-block text-left" id="lang-switcher-container">
+  <button
+    id="btn-lang-switcher"
+    class="lang-switcher-btn"
+    type="button"
+    aria-expanded="false"
+    aria-haspopup="listbox"
+    aria-label="Select language" data-i18n-aria-label="switcher.aria_select"
+  >
+    <!-- Wireframe Globe Icon -->
+    <svg
+      class="globe-icon"
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="2" y1="12" x2="22" y2="12"></line>
+      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+    </svg>
+    <span class="lang-switcher-current-label">English</span>
+    <!-- Chevron Down Icon -->
+    <svg
+      class="chevron-icon"
+      width="12"
+      height="12"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2.2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="m6 9 6 6 6-6"></path>
+    </svg>
+  </button>
+
+  <!-- Dropdown Menu -->
+  <div
+    id="lang-dropdown-menu"
+    class="lang-dropdown-menu hidden"
+    role="listbox"
+    aria-label="Languages" data-i18n-aria-label="switcher.aria_languages"
+  >
+    <div class="lang-dropdown-inner">
+      {
+        LANGUAGES.map((lang) => (
+          <button
+            type="button"
+            class="lang-option-btn"
+            role="option"
+            data-lang-code={lang.code}
+            aria-selected={lang.code === "en" ? "true" : "false"}
+          >
+            <span class="lang-option-name">{lang.name}</span>
+            <svg
+              class="lang-check opacity-0"
+              data-lang-check={lang.code}
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </button>
+        ))
+      }
+    </div>
+  </div>
+</div>
+
+<style>
+  .lang-switcher-container {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .lang-switcher-btn {
+    height: 36px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(12, 12, 14, 0.65);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: #f5f5f7;
+    padding: 0 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    outline: none;
+  }
+
+  .lang-switcher-btn:hover {
+    background: rgba(40, 40, 44, 0.65);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+  }
+
+  .lang-switcher-btn:focus-visible {
+    outline: 2px solid #0072F5;
+    outline-offset: 2px;
+  }
+
+  .globe-icon {
+    color: #a1a1a6;
+    flex-shrink: 0;
+    transition: color 0.2s;
+  }
+
+  .lang-switcher-btn:hover .globe-icon {
+    color: #ffffff;
+  }
+
+  .lang-switcher-current-label {
+    white-space: nowrap;
+    letter-spacing: -0.01em;
+  }
+
+  .chevron-icon {
+    color: #a1a1a6;
+    flex-shrink: 0;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), color 0.2s;
+  }
+
+  .lang-switcher-btn[aria-expanded="true"] .chevron-icon {
+    transform: rotate(180deg);
+    color: #ffffff;
+  }
+
+  /* Dropdown Menu matching screenshot */
+  .lang-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    min-width: 165px;
+    background: #0d0d10;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 6px;
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.6),
+      0 0 0 1px rgba(255, 255, 255, 0.05);
+    z-index: 150;
+    animation: dropdownFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes dropdownFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-4px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .lang-dropdown-inner {
+    display: flex;
+    flex-col;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .lang-option-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: transparent;
+    border: none;
+    color: #d1d1d6;
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s;
+    outline: none;
+  }
+
+  .lang-option-btn:hover,
+  .lang-option-btn:focus-visible {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
+  .lang-option-name {
+    letter-spacing: -0.01em;
+  }
+
+  .lang-check {
+    color: #ffffff;
+    flex-shrink: 0;
+    transition: opacity 0.15s;
+  }
+</style>
+
+<script>
+  import { setLanguage, getLanguage, LANGUAGES, initI18n, type SupportedLanguage } from "../i18n";
+
+  function setupLanguageSwitcher() {
+    const container = document.getElementById("lang-switcher-container");
+    const btn = document.getElementById("btn-lang-switcher");
+    const menu = document.getElementById("lang-dropdown-menu");
+    if (!container || !btn || !menu) return;
+
+    const contEl = container;
+    const btnEl = btn;
+    const menuEl = menu;
+
+    function openMenu() {
+      menuEl.classList.remove("hidden");
+      btnEl.setAttribute("aria-expanded", "true");
+    }
+
+    function closeMenu() {
+      menuEl.classList.add("hidden");
+      btnEl.setAttribute("aria-expanded", "false");
+    }
+
+    function toggleMenu() {
+      if (menuEl.classList.contains("hidden")) {
+        openMenu();
+      } else {
+        closeMenu();
+      }
+    }
+
+    btnEl.onclick = (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    };
+
+    const options = menuEl.querySelectorAll<HTMLButtonElement>(".lang-option-btn");
+    options.forEach((opt) => {
+      opt.onclick = (e) => {
+        e.stopPropagation();
+        const code = opt.getAttribute("data-lang-code") as SupportedLanguage;
+        if (code) {
+          setLanguage(code);
+        }
+        closeMenu();
+        btnEl.focus();
+      };
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!contEl.contains(e.target as Node)) {
+        closeMenu();
+      }
+    });
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !menuEl.classList.contains("hidden")) {
+        closeMenu();
+        btnEl.focus();
+      }
+    });
+
+    // Update active label and checks
+    function syncSwitcherUI() {
+      const current = getLanguage();
+      const match = LANGUAGES.find((l) => l.code === current) || LANGUAGES[0];
+      const label = contEl.querySelector(".lang-switcher-current-label");
+      if (label) label.textContent = match.name;
+
+      const checks = contEl.querySelectorAll<HTMLElement>("[data-lang-check]");
+      checks.forEach((ch) => {
+        if (ch.getAttribute("data-lang-check") === current) {
+          ch.classList.remove("opacity-0");
+          ch.classList.add("opacity-100");
+        } else {
+          ch.classList.remove("opacity-100");
+          ch.classList.add("opacity-0");
+        }
+      });
+    }
+
+    syncSwitcherUI();
+    window.addEventListener("instanttyping:languagechange", syncSwitcherUI);
+  }
+
+  initI18n();
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", setupLanguageSwitcher);
+  } else {
+    setupLanguageSwitcher();
+  }
+
+  document.addEventListener("astro:page-load", () => {
+    initI18n();
+    setupLanguageSwitcher();
+  });
+</script>

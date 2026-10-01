@@ -7,30 +7,40 @@ import Icon from '../components/Icon.astro';
 
 const faqs = [
  {
- question: "How is Words Per Minute (WPM) calculated on Practice Test Typing?",
- answer: "Following standard international typing measurement guidelines, one word is defined as exactly five keystrokes (including letters, spaces, and punctuation). Net WPM is calculated as: (Correct Keystrokes / 5) divided by the time elapsed in minutes. This ensures an objective and standardized measurement regardless of vocabulary complexity."
+ question: "How is Words Per Minute (WPM) calculated on Instant Typing?",
+ answer: "Following standard international typing measurement guidelines, one word is defined as exactly five keystrokes (including letters, spaces, and punctuation). Net WPM is calculated as: (Correct Keystrokes / 5) divided by the time elapsed in minutes. This ensures an objective and standardized measurement regardless of vocabulary complexity.",
+ questionKey: "faq.idx.q1",
+ answerKey: "faq.idx.a1"
  },
  {
  question: "What is considered an average typing speed?",
- answer: "The average global typing speed is approximately 40 words per minute (WPM). Professional typists, transcriptionists, and legal secretaries typically type between 65 and 85 WPM, while high-speed competitive typists achieve speeds upwards of 100 to 120+ WPM with 98% accuracy."
+ answer: "The average global typing speed is approximately 40 words per minute (WPM). Professional typists, transcriptionists, and legal secretaries typically type between 65 and 85 WPM, while high-speed competitive typists achieve speeds upwards of 100 to 120+ WPM with 98% accuracy.",
+ questionKey: "faq.idx.q2",
+ answerKey: "faq.idx.a2"
  },
  {
  question: "What is the difference between Raw WPM and Net WPM?",
- answer: "Raw WPM (Gross WPM) represents the total number of keystrokes typed divided by 5 per minute, regardless of whether characters were correct or incorrect. Net WPM only counts correctly typed characters. Net WPM is the true metric used in professional assessments because typos decrease productivity."
+ answer: "Raw WPM (Gross WPM) represents the total number of keystrokes typed divided by 5 per minute, regardless of whether characters were correct or incorrect. Net WPM only counts correctly typed characters. Net WPM is the true metric used in professional assessments because typos decrease productivity.",
+ questionKey: "faq.idx.q3",
+ answerKey: "faq.idx.a3"
  },
  {
  question: "How does the 'Train My Mistakes' feature work?",
- answer: "Whenever you complete a test with errors, our engine analyzes your exact keystroke log and isolates the words and keys that triggered typos. Clicking 'Train My Mistakes' automatically generates a targeted practice drill focusing strictly on your problem areas so you improve where it counts."
+ answer: "Whenever you complete a test with errors, our engine analyzes your exact keystroke log and isolates the words and keys that triggered typos. Clicking 'Train My Mistakes' automatically generates a targeted practice drill focusing strictly on your problem areas so you improve where it counts.",
+ questionKey: "faq.idx.q4",
+ answerKey: "faq.idx.a4"
  },
  {
  question: "Can I download or share a typing certificate?",
- answer: "Yes. After completing any test, click 'View Skill Certificate'. The engine renders a high-resolution performance certificate complete with your Net WPM, Accuracy, and Consistency. You can download this PNG certificate directly for resumes, portfolios, or job applications."
+ answer: "Yes. After completing any test, click 'View Skill Certificate'. The engine renders a high-resolution performance certificate complete with your Net WPM, Accuracy, and Consistency. You can download this PNG certificate directly for resumes, portfolios, or job applications.",
+ questionKey: "faq.idx.q5",
+ answerKey: "faq.idx.a5"
  }
 ];
 ---
 
 <Layout
- title="Practice Test Typing | Free WPM Speed & Accuracy Test"
+ title="Instant Typing | Free WPM Speed & Accuracy Test"
  description="Test and improve your typing speed and accuracy with real-time Words Per Minute (WPM) calculations, error diagnostics, and skill certificates."
  canonicalPath="/"
 >
@@ -42,23 +52,19 @@ const faqs = [
  initialDuration={60}
  initialMode="time"
  initialWordbank="top200"
- pageHeading="Practice Test Typing: Speed & Accuracy Test"
- pageSubheading="Test your keyboard speed with real-time WPM, precision error tracking, and custom drill remediation."
+ pageHeading="Instant Typing: Speed & Accuracy Test" pageHeadingKey="engine.idx.heading"
+ pageSubheading="Test your keyboard speed with real-time WPM, precision error tracking, and custom drill remediation." pageSubheadingKey="engine.idx.subheading"
  />
 
  <!-- Educational & Authority Section (SEO & AdSense Compliant) -->
  <section class="border-t shadow-ds-border pt-10 space-y-8" aria-labelledby="guide-heading">
  <div class="space-y-2">
- <div class="text-sm font-mono uppercase tracking-widest text-sky-600 font-semibold mb-1">
- Learn
- </div>
+ <div class="text-sm font-mono uppercase tracking-widest text-sky-600 font-semibold mb-1"><span data-i18n="index.learn_label">Learn</span></div>
  <h2 id="guide-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2">
  <Icon name="school" class="w-6 h-6 text-sky-600 " />
- How to Measure and Improve Your Typing Proficiency
+ <span data-i18n="index.learn_heading">How to Measure and Improve Your Typing Proficiency</span>
  </h2>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary max-w-3xl">
- Touch typing is a foundational digital skill that compounds daily productivity. Whether preparing for civil service examinations, coding efficiently, or completing academic writing, establishing high accuracy before chasing raw velocity is the scientifically proven path to peak typing performance.
- </p>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary max-w-3xl"><span data-i18n="index.learn_intro">Touch typing is a foundational digital skill that compounds daily productivity. Whether preparing for civil service examinations, coding efficiently, or completing academic writing, establishing high accuracy before chasing raw velocity is the scientifically proven path to peak typing performance.</span></p>
  </div>
 
  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -67,12 +73,8 @@ const faqs = [
  <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-sky-50 text-sky-600 " aria-hidden="true">
  <Icon name="timer" class="w-5 h-5" />
  </span>
- <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">
- The 5-Stroke Rule
- </h3>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
- Standard tests measure speed using the international five-keystroke standard. Typing "unbelievable " counts as 2.4 words, eliminating bias between simple and sophisticated texts.
- </p>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary "><span data-i18n="index.card1_title">The 5-Stroke Rule</span></h3>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary "><span data-i18n="index.card1_body">Standard tests measure speed using the international five-keystroke standard. Typing "unbelievable " counts as 2.4 words, eliminating bias between simple and sophisticated texts.</span></p>
  </div>
 
  <div class="p-6 rounded-xl shadow-ds-border bg-ds-bg-100 space-y-3 flex flex-col relative transition-colors hover:border-emerald-300 ">
@@ -80,12 +82,8 @@ const faqs = [
  <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-50 text-emerald-600 " aria-hidden="true">
  <Icon name="target" class="w-5 h-5" />
  </span>
- <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">
- Accuracy Over Speed
- </h3>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
- A single mistake costs 3 to 5 keystrokes to backspace and correct. Aiming for 98%+ accuracy produces faster net typing speeds than racing ahead with typos.
- </p>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary "><span data-i18n="index.card2_title">Accuracy Over Speed</span></h3>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary "><span data-i18n="index.card2_body">A single mistake costs 3 to 5 keystrokes to backspace and correct. Aiming for 98%+ accuracy produces faster net typing speeds than racing ahead with typos.</span></p>
  </div>
 
  <div class="p-6 rounded-xl shadow-ds-border bg-ds-bg-100 space-y-3 flex flex-col relative transition-colors hover:border-violet-300 ">
@@ -93,70 +91,66 @@ const faqs = [
  <span class="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-violet-50 text-violet-600 " aria-hidden="true">
  <Icon name="keyboard" class="w-5 h-5" />
  </span>
- <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">
- Weak-Key Remediation
- </h3>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
- Typists usually stumble on specific finger transitions, such as pinky reaches (Q, Z, P) or top-row numbers. Targeted practice builds automatic muscle memory.
- </p>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary "><span data-i18n="index.card3_title">Weak-Key Remediation</span></h3>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary "><span data-i18n="index.card3_body">Typists usually stumble on specific finger transitions, such as pinky reaches (Q, Z, P) or top-row numbers. Targeted practice builds automatic muscle memory.</span></p>
  </div>
  </div>
 
  <!-- Typing Speed Milestones Table -->
  <div class="rounded-lg shadow-ds-border overflow-hidden bg-ds-bg-100 ">
  <div class="p-5 border-b shadow-ds-border ">
- <div class="text-xs font-mono uppercase tracking-widest text-ds-text-secondary mb-1">Performance Tiers</div>
- <div class="font-semibold text-sm flex items-center gap-2">
- <Icon name="analytics" class="w-4 h-4 text-sky-600 " />
- Global Typing Speed Benchmarks & Skill Brackets
+ <div class="text-xs font-mono uppercase tracking-widest text-ds-text-secondary mb-1"><span data-i18n="index.table_tiers">Performance Tiers</span></div>
+  <div class="font-semibold text-sm flex items-center gap-2">
+  <Icon name="analytics" class="w-4 h-4 text-sky-600 " aria-hidden="true" />
+  <span data-i18n="index.table_heading">Global Typing Speed Benchmarks &amp; Skill Brackets</span>
+  </div>
  </div>
- </div>
- <div class="overflow-x-auto">
- <table class="w-full text-left text-xs font-mono">
- <thead class="bg-neutral-50 text-ds-text-secondary border-b shadow-ds-border ">
+ <div class="table-scroll">
+ <table class="benchmark-table font-mono">
+ <thead>
  <tr>
- <th class="p-3">WPM Range</th>
- <th class="p-3">Skill Level</th>
- <th class="p-3">Skill Band</th>
- <th class="p-3">Typical Roles</th>
+ <th data-i18n="index.th_wpm">WPM Range</th>
+ <th data-i18n="index.th_skill">Skill Level</th>
+ <th data-i18n="index.th_band">Skill Band</th>
+ <th data-i18n="index.th_roles">Typical Roles</th>
  </tr>
  </thead>
- <tbody class="divide-y divide-neutral-200 text-ds-text-primary ">
- <tr class="hover:bg-neutral-50 transition-colors">
- <td class="p-3 font-semibold text-sky-600 ">110+ WPM</td>
- <td class="p-3">Master / Apex</td>
- <td class="p-3 font-mono text-xs">Elite</td>
- <td class="p-3">Court reporters, speed typists, high-volume data processors</td>
+ <tbody>
+ <tr>
+ <td class="font-semibold text-sky-600 ">110+ WPM</td>
+ <td data-i18n="index.row1_skill">Master / Apex</td>
+ <td class="font-mono text-xs" data-i18n="index.row1_band">Elite</td>
+ <td data-i18n="index.row1_roles">Court reporters, speed typists, high-volume data processors</td>
  </tr>
- <tr class="hover:bg-neutral-50 transition-colors">
- <td class="p-3 font-semibold text-sky-600 ">80 - 109 WPM</td>
- <td class="p-3">Professional</td>
- <td class="p-3 font-mono text-xs">Advanced</td>
- <td class="p-3">Executive assistants, journalists, software developers</td>
+ <tr>
+ <td class="font-semibold text-sky-600 ">80 - 109 WPM</td>
+ <td data-i18n="index.row2_skill">Professional</td>
+ <td class="font-mono text-xs" data-i18n="index.row2_band">Advanced</td>
+ <td data-i18n="index.row2_roles">Executive assistants, journalists, software developers</td>
  </tr>
- <tr class="hover:bg-neutral-50 transition-colors">
- <td class="p-3 font-semibold">65 - 79 WPM</td>
- <td class="p-3">Proficient</td>
- <td class="p-3 font-mono text-xs">Upper-intermediate</td>
- <td class="p-3">Customer support, administrative, office professionals</td>
+ <tr>
+ <td class="font-semibold">65 - 79 WPM</td>
+ <td data-i18n="index.row3_skill">Proficient</td>
+ <td class="font-mono text-xs" data-i18n="index.row3_band">Upper-intermediate</td>
+ <td data-i18n="index.row3_roles">Customer support, administrative, office professionals</td>
  </tr>
- <tr class="hover:bg-neutral-50 transition-colors">
- <td class="p-3 font-semibold">50 - 64 WPM</td>
- <td class="p-3">Fluent / Above Average</td>
- <td class="p-3 font-mono text-xs">Intermediate</td>
- <td class="p-3">General computer users, students</td>
+ <tr>
+ <td class="font-semibold">50 - 64 WPM</td>
+ <td data-i18n="index.row4_skill">Fluent / Above Average</td>
+ <td class="font-mono text-xs" data-i18n="index.row4_band">Intermediate</td>
+ <td data-i18n="index.row4_roles">General computer users, students</td>
  </tr>
- <tr class="hover:bg-neutral-50 transition-colors">
- <td class="p-3 font-semibold">38 - 49 WPM</td>
- <td class="p-3">Developing</td>
- <td class="p-3 font-mono text-xs">Developing</td>
- <td class="p-3">Casual typing, basic data entry</td>
+ <tr>
+ <td class="font-semibold">38 - 49 WPM</td>
+ <td data-i18n="index.row5_skill">Developing</td>
+ <td class="font-mono text-xs" data-i18n="index.row5_band">Developing</td>
+ <td data-i18n="index.row5_roles">Casual typing, basic data entry</td>
  </tr>
- <tr class="hover:bg-neutral-50 transition-colors">
- <td class="p-3 font-semibold">&lt; 38 WPM</td>
- <td class="p-3">Beginner / Novice</td>
- <td class="p-3 font-mono text-xs">Starting</td>
- <td class="p-3">Learning touch typing techniques</td>
+ <tr>
+ <td class="font-semibold">&lt; 38 WPM</td>
+ <td data-i18n="index.row6_skill">Beginner / Novice</td>
+ <td class="font-mono text-xs" data-i18n="index.row6_band">Starting</td>
+ <td data-i18n="index.row6_roles">Learning touch typing techniques</td>
  </tr>
  </tbody>
  </table>
@@ -165,6 +159,7 @@ const faqs = [
  </section>
 
  <!-- Schema FAQ Accordion -->
- <FAQ items={faqs} title="Frequently Asked Questions About Typing Tests" />
+ <FAQ items={faqs} title="Frequently Asked Questions About Typing Tests" titleKey="faq.idx.title" />
  </div>
 </Layout>
+

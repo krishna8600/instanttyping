@@ -3,7 +3,7 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
- title="Page Not Found (404) | Practice Test Typing"
+ title="Page Not Found (404) | Instant Typing"
  description="The requested typing test page could not be located. Return to the homepage to test your typing speed."
  canonicalPath="/404"
 >
@@ -12,11 +12,11 @@ import Layout from '../layouts/Layout.astro';
  404
  </div>
  
- <h1 class="text-2xl text-ds-text-primary text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance">
+ <h1 class="text-2xl text-ds-text-primary text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance" data-i18n="404.title">
  Page Not Found
  </h1>
  
- <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed" data-i18n="404.body">
  The requested route does not exist. Your keystrokes might have taken a wrong turn, but you can jump right back into a typing test below.
  </p>
 
@@ -25,14 +25,15 @@ import Layout from '../layouts/Layout.astro';
  href="/"
  class="h-9 px-4 rounded-md bg-neutral-900 text-white text-xs font-medium hover:bg-neutral-800 transition-colors flex items-center justify-center"
  >
- Return to Typing Test
+ <span data-i18n="404.cta_home">Return to Typing Test</span>
  </a>
  <a
  href="/1-minute-typing-test"
  class="h-9 px-4 rounded-md shadow-ds-border text-ds-text-secondary text-xs font-medium hover:bg-neutral-50 transition-colors flex items-center justify-center"
  >
- Try 1-Minute Sprint
+ <span data-i18n="404.cta_1min">Try 1-Minute Sprint</span>
  </a>
  </div>
  </div>
 </Layout>
+

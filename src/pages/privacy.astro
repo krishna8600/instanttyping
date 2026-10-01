@@ -3,31 +3,31 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout
- title="Privacy Policy | Practice Test Typing"
+ title="Privacy Policy | Instant Typing"
  description="Learn about our privacy commitments, local data storage practices, cookie disclosures, and your rights under GDPR and CCPA."
  canonicalPath="/privacy"
 >
  <article class="max-w-3xl mx-auto space-y-8 text-ds-text-primary ">
  <header class="border-b shadow-ds-border pb-6">
- <h1 class="text-ds-text-primary text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance">
+ <h1 class="text-ds-text-primary text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance" data-i18n="privacy.title">
  Privacy Policy
  </h1>
- <p class="text-xs text-ds-text-secondary mt-2 font-mono">
+ <p class="text-xs text-ds-text-secondary mt-2 font-mono" data-i18n="privacy.last_updated">
  Last Updated: September 2026
  </p>
  </header>
 
  <section class="space-y-3">
- <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">1. Overview & Core Philosophy</h2>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
- Practice Test Typing (practicetesttyping.com) is built on a privacy-first architecture. We believe that your typing speed and keystroke patterns are personal data. Unlike traditional typing platforms that log keystrokes to external servers or require mandatory account creation, our core test engine runs completely inside your local browser runtime.
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary " data-i18n="privacy.s1_heading">1. Overview &amp; Core Philosophy</h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="privacy.s1_body">
+ Instant Typing (instanttyping.com) is built on a privacy-first architecture. We believe that your typing speed and keystroke patterns are personal data. Unlike traditional typing platforms that log keystrokes to external servers or require mandatory account creation, our core test engine runs completely inside your local browser runtime.
  </p>
  </section>
 
  <section class="space-y-3" id="cookies">
- <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">2. Local Storage & Cookie Disclosures</h2>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
- We do not use invasive third-party tracking cookies. We utilize your browser’s modern Web Storage API (localStorage) strictly for functional application state:
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary " data-i18n="privacy.s2_heading">2. Local Storage &amp; Cookie Disclosures</h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="privacy.s2_intro">
+ We do not use invasive third-party tracking cookies. We utilize your browser's modern Web Storage API (localStorage) strictly for functional application state:
  </p>
  <ul class="list-disc list-inside text-xs sm:text-sm space-y-1.5 text-ds-text-secondary font-mono">
  <li><strong class="font-semibold text-ds-text-primary ">ptt_test_history_v1</strong>: Stores your last 50 completed typing test results (Net WPM, accuracy, date) locally on your device.</li>
@@ -35,36 +35,36 @@ import Layout from '../layouts/Layout.astro';
  <li><strong class="font-semibold text-ds-text-primary ">ptt_audio_enabled</strong>: Saves your mechanical keyboard click sound preference.</li>
  <li><strong class="font-semibold text-ds-text-primary ">ptt_cookie_consent</strong>: Records your acceptance of local browser storage preferences.</li>
  </ul>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="privacy.s2_clear">
  You can clear this data at any time by wiping your browser site data or clearing cache in your browser settings.
  </p>
  </section>
 
  <section class="space-y-3">
- <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">3. Keystroke Privacy</h2>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary " data-i18n="privacy.s3_heading">3. Keystroke Privacy</h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="privacy.s3_body">
  We do not transmit your keystrokes to any remote server. Keystroke inputs are processed purely in client-side JavaScript to compute live WPM, accuracy, and error states. Keystroke data is never sold, shared, or analyzed for behavioral profiling.
  </p>
  </section>
 
  <section class="space-y-3">
- <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">4. Analytics & Web Measurement</h2>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary " data-i18n="privacy.s4_heading">4. Analytics &amp; Web Measurement</h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="privacy.s4_body">
  To understand aggregate site traffic and ensure optimal server performance, we may collect anonymized telemetry such as browser user-agent, operating system, and page views. No personally identifiable information (PII) is attached to these telemetry events.
  </p>
  </section>
 
  <section class="space-y-3">
- <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">5. GDPR & CCPA Compliance</h2>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary " data-i18n="privacy.s5_heading">5. GDPR &amp; CCPA Compliance</h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="privacy.s5_body">
  Under European GDPR and California CCPA regulations, you have the right to access, rectify, or request deletion of any data associated with your interaction. Since we do not maintain accounts or store identifiable records on remote databases, deleting your local browser storage completely removes all traces of your activity.
  </p>
  </section>
 
  <section class="space-y-3">
- <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">6. Contact Information</h2>
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary " data-i18n="privacy.s6_heading">6. Contact Information</h2>
  <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary ">
- For privacy-related inquiries or questions regarding our operational security practices, please submit an inquiry via our <a href="/contact" class="text-sky-600 underline">Contact Page</a>.
+ <span data-i18n="privacy.s6_body">For privacy-related inquiries or questions regarding our operational security practices, please submit an inquiry via our</span> <a href="/contact" class="text-sky-600 underline" data-i18n="privacy.s6_link">Contact Page</a>.
  </p>
  </section>
  </article>

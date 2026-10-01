@@ -4,16 +4,20 @@ import Icon from './Icon.astro';
 export interface FAQItem {
  question: string;
  answer: string;
+ questionKey?: string;
+ answerKey?: string;
 }
 
 interface Props {
  items: FAQItem[];
  title?: string;
+ titleKey?: string;
 }
 
 const {
  items,
- title = "Frequently Asked Questions"
+ title = "Frequently Asked Questions",
+ titleKey
 } = Astro.props;
 
 const jsonLd = {
@@ -31,21 +35,21 @@ const jsonLd = {
 ---
 
 <section class="my-12" aria-labelledby="faq-heading">
- <div class="border-b shadow-ds-border pb-3 mb-6">
- <h2 id="faq-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2">
+ <div class="border-b shadow-sm pb-3 mb-6">
+ <h2 id="faq-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-[var(--text)] flex items-center gap-2">
  <Icon name="message" class="w-5 h-5 text-sky-600 " />
- {title}
+ <span data-i18n={titleKey}>{title}</span>
  </h2>
  </div>
 
  <div class="space-y-3">
  {items.map((item) => (
- <details class="group shadow-ds-border rounded-lg bg-ds-bg-100 overflow-hidden transition-colors">
- <summary class="flex items-center justify-between gap-4 p-4 text-sm font-semibold text-ds-text-primary cursor-pointer select-none hover:bg-neutral-50 ">
- <span>{item.question}</span>
- <Icon name="expand-more" class="w-4 h-4 text-ds-text-secondary group-open:rotate-180 transition-transform duration-200 shrink-0" />
+ <details class="group shadow-sm rounded-lg bg-[var(--card)] backdrop-blur-xl border border-[var(--border)] overflow-hidden transition-colors">
+ <summary class="flex items-center justify-between gap-4 p-4 text-sm font-semibold text-[var(--text)] cursor-pointer select-none hover:bg-black/5 dark:hover:bg-white/10 ">
+ <span data-i18n={item.questionKey}>{item.question}</span>
+ <Icon name="expand-more" class="w-4 h-4 text-[var(--muted)] group-open:rotate-180 transition-transform duration-200 shrink-0" />
  </summary>
- <div class="px-4 pb-4 pt-1 text-xs text-ds-text-secondary leading-relaxed border-t border-neutral-100 ">
+ <div class="px-4 pb-4 pt-1 text-xs text-[var(--muted)] leading-relaxed border-t border-[var(--border)] " data-i18n={item.answerKey}>
  {item.answer}
  </div>
  </details>

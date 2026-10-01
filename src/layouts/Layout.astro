@@ -3,6 +3,7 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import CookieConsent from '../components/CookieConsent.astro';
+import MoonlitBackground from '../components/MoonlitBackground.astro';
 
 interface Props {
  title: string;
@@ -18,7 +19,7 @@ const {
  ogType = 'website'
 } = Astro.props;
 
-const siteUrl = 'https://practicetesttyping.com';
+const siteUrl = 'https://instanttyping.com';
 const canonicalUrl = `${siteUrl}${canonicalPath.startsWith('/') ? canonicalPath : `/${canonicalPath}`}`;
 const ogImage = `${siteUrl}/og-image.png`;
 ---
@@ -40,9 +41,12 @@ const ogImage = `${siteUrl}/og-image.png`;
  <!-- <meta name="google-site-verification" content="YOUR_GSC_VERIFICATION_TOKEN" /> -->
 
  <!-- Favicons -->
- <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
- <link rel="icon" href="/favicon.ico" />
- <link rel="apple-touch-icon" href="/favicon.svg" />
+ <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+	<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+	<meta name="apple-mobile-web-app-title" content="Instant typing" />
+	<link rel="manifest" href="/site.webmanifest" />
 
  <!-- Open Graph / Facebook -->
  <meta property="og:type" content={ogType} />
@@ -50,7 +54,7 @@ const ogImage = `${siteUrl}/og-image.png`;
  <meta property="og:title" content={title} />
  <meta property="og:description" content={description} />
  <meta property="og:image" content={ogImage} />
- <meta property="og:site_name" content="Practice Test Typing" />
+ <meta property="og:site_name" content="Instant Typing" />
 
  <!-- Twitter Card -->
  <meta name="twitter:card" content="summary_large_image" />
@@ -63,7 +67,7 @@ const ogImage = `${siteUrl}/og-image.png`;
  <script type="application/ld+json" set:html={JSON.stringify({
  "@context": "https://schema.org",
  "@type": "WebSite",
- "name": "Practice Test Typing",
+ "name": "Instant Typing",
  "url": siteUrl,
  "description": "Fast, responsive typing test tool to measure WPM speed and accuracy with real-time analytics.",
  "potentialAction": {
@@ -87,11 +91,55 @@ const ogImage = `${siteUrl}/og-image.png`;
  } catch (_) {}
  })();
  </script>
- </head>
-  <body class="bg-[#FAFAFA] dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] min-h-screen flex flex-col font-sans transition-colors duration-150 selection:bg-[#0071E3] selection:text-white">
+
+
+
+  <!-- Native cross-document View Transitions: opt every same-origin navigation
+       into the browser's built-in transition. No router, no JS, so every page
+       is still a real document load and page scripts run normally. -->
+  <style is:global>
+    @view-transition {
+      navigation: auto;
+    }
+
+    ::view-transition-old(root) {
+      animation: ptt-vt-fade-out 0.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+      mix-blend-mode: plus-lighter;
+    }
+
+    ::view-transition-new(root) {
+      animation: ptt-vt-fade-in 0.2s cubic-bezier(0.4, 0, 0.2, 1) both;
+      mix-blend-mode: plus-lighter;
+    }
+
+    @keyframes ptt-vt-fade-out {
+      to {
+        opacity: 0;
+      }
+    }
+
+    @keyframes ptt-vt-fade-in {
+      from {
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      ::view-transition-group(*),
+      ::view-transition-image-pair(*),
+      ::view-transition-old(*),
+      ::view-transition-new(*) {
+        animation: none !important;
+      }
+    }
+  </style>
+ <script src="../scripts/smooth-scroll.ts"></script>
+</head>
+  <body class="bg-[#FAFAFA] dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] min-h-screen flex flex-col font-sans transition-colors duration-150 selection:bg-[#0072F5] selection:text-white">
+  <MoonlitBackground />
   <Header currentPath={canonicalPath} />
 
-  <main class="flex-1 w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8">
+  <main class="flex-1 w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8 pt-[88px]">
   <slot />
   </main>
 
@@ -99,3 +147,4 @@ const ogImage = `${siteUrl}/og-image.png`;
  <CookieConsent />
  </body>
 </html>
+

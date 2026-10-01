@@ -8,15 +8,15 @@ const faqs = [
  {
  question: "Why do employers use 3-minute and 5-minute typing tests?",
  answer: "While 1-minute tests measure maximum burst speed, employment tests require stamina and consistent rhythm over extended periods. Civil service examinations, legal secretarial positions, and data entry assessments use 3-to-5 minute tests to verify that typists maintain high accuracy without succumbing to fatigue."
- },
+ , questionKey: "faq.3.q1", answerKey: "faq.3.a1"},
  {
  question: "What is an acceptable WPM score for a 3-minute employment test?",
  answer: "Most government and clerical jobs require a sustained Net WPM of 45 to 60 with a minimum accuracy rate of 95% to 98%. Specialized positions like medical transcriptionists or stenographers often require 70 to 90+ sustained WPM."
- },
+ , questionKey: "faq.3.q2", answerKey: "faq.3.a2"},
  {
  question: "How do I prevent wrist fatigue during longer typing assessments?",
  answer: "Ensure your wrists remain neutral and hovered above the desk surface rather than resting on the hard table edge. Adjust your chair height so that your forearms are parallel to the floor, and take brief micro-pauses between sentences to relax your finger tension."
- }
+ , questionKey: "faq.3.q3", answerKey: "faq.3.a3"}
 ];
 ---
 
@@ -30,18 +30,16 @@ const faqs = [
  initialDuration={120}
  initialMode="time"
  initialWordbank="top1000"
- pageHeading="3-Minute Typing Test: Employment & Stamina Evaluation"
- pageSubheading="Test your sustained keyboard speed and endurance. Designed for civil service, administrative, and professional benchmarks."
+ pageHeading="3-Minute Typing Test: Employment & Stamina Evaluation" pageHeadingKey="engine.3.heading"
+ pageSubheading="Test your sustained keyboard speed and endurance. Designed for civil service, administrative, and professional benchmarks." pageSubheadingKey="engine.3.subheading"
  />
 
  <section class="border-t shadow-ds-border pt-10 space-y-6" id="benchmarks" aria-labelledby="three-min-heading">
  <div class="space-y-2">
- <h2 id="three-min-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">
- Sustained Typing Velocity & Exam Pacing
+ <h2 id="three-min-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary " data-i18n="page_3min.guide_heading">
+ Sustained Typing Velocity &amp; Exam Pacing
  </h2>
- <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl">
- Maintaining high speed across multiple minutes requires rhythm regulation. Rushing the first 30 seconds almost always leads to a surge in errors and muscle fatigue in the final minute.
- </p>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl"><span data-i18n="page_3min.guide_intro">Maintaining high speed across multiple minutes requires rhythm regulation. Rushing the first 30 seconds almost always leads to a surge in errors and muscle fatigue in the final minute.</span></p>
  </div>
 
  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -49,34 +47,29 @@ const faqs = [
  <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-sky-50 text-sky-600 " aria-hidden="true">
  <Icon name="timer" class="w-5 h-5" />
  </span>
- <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">Establish a Metronome Pace</h3>
- <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
- Treat each keystroke like the steady tick of a clock. Even pacing reduces muscle spasm and prevents the cognitive stop-and-start cycle caused by frequent backspaces.
- </p>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary "><span data-i18n="page_3min.tip1_title">Establish a Metronome Pace</span></h3>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed"><span data-i18n="page_3min.tip1_body">Treat each keystroke like the steady tick of a clock. Even pacing reduces muscle spasm and prevents the cognitive stop-and-start cycle caused by frequent backspaces.</span></p>
  </div>
 
  <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-2 flex flex-col">
  <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-emerald-50 text-emerald-600 " aria-hidden="true">
  <Icon name="favorite" class="w-5 h-5" />
  </span>
- <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">Breathe and Relax Shoulders</h3>
- <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
- When typing tests begin, test takers unconsciously hold their breath and tense their trapezius muscles. Consciously lowering your shoulders unlocks finger agility.
- </p>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary "><span data-i18n="page_3min.tip2_title">Breathe and Relax Shoulders</span></h3>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed"><span data-i18n="page_3min.tip2_body">When typing tests begin, test takers unconsciously hold their breath and tense their trapezius muscles. Consciously lowering your shoulders unlocks finger agility.</span></p>
  </div>
 
  <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-2 flex flex-col">
  <span class="inline-flex items-center justify-center w-9 h-9 rounded-lg bg-amber-50 text-amber-600 " aria-hidden="true">
  <Icon name="target" class="w-5 h-5" />
  </span>
- <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary ">The 98% Rule</h3>
- <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed">
- If your accuracy dips below 98%, consciously downshift your speed by 5%. Accuracy will immediately rebound, and your final Net WPM will be significantly higher.
- </p>
+ <h3 class="text-sm font-semibold tracking-[-0.01em] text-ds-text-primary "><span data-i18n="page_3min.tip3_title">The 98% Rule</span></h3>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed"><span data-i18n="page_3min.tip3_body">If your accuracy dips below 98%, consciously downshift your speed by 5%. Accuracy will immediately rebound, and your final Net WPM will be significantly higher.</span></p>
  </div>
  </div>
  </section>
 
- <FAQ items={faqs} title="Frequently Asked Questions About Extended Typing Tests" />
+ <FAQ items={faqs} title="Frequently Asked Questions About Extended Typing Tests" titleKey="faq.3.title" />
  </div>
 </Layout>
+

@@ -323,6 +323,159 @@ export const FAMOUS_QUOTES: QuoteItem[] = [
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper: pick `count` random words from the given wordbank
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SPANISH (ES) — Top 250 common Spanish words (Unicode-safe)
+// ─────────────────────────────────────────────────────────────────────────────
+export const SPANISH_WORDS: string[] = [
+  "de", "la", "que", "el", "en", "y", "a", "los", "se", "del",
+  "las", "un", "por", "con", "no", "una", "su", "para", "es", "al",
+  "lo", "como", "más", "pero", "sus", "le", "ya", "o", "este", "sí",
+  "porque", "esta", "son", "entre", "está", "cuando", "muy", "sin", "sobre", "ser",
+  "tiene", "también", "me", "hasta", "hay", "donde", "quien", "desde", "todo", "nos",
+  "durante", "todos", "uno", "les", "ni", "contra", "otros", "ese", "eso", "ante",
+  "ellos", "esto", "mí", "antes", "algunos", "qué", "unos", "yo", "otro", "otras",
+  "otra", "él", "tanto", "esa", "estos", "mucho", "quienes", "nada", "muchos", "cual",
+  "poco", "ella", "estar", "estas", "algunas", "algo", "nosotros", "mi", "mis", "tú",
+  "te", "ti", "tu", "tus", "ellas", "tiempo", "persona", "año", "día", "cosa",
+  "hombre", "mundo", "vida", "mano", "parte", "ojo", "lugar", "trabajo", "semana", "caso",
+  "punto", "gobierno", "empresa", "número", "noche", "agua", "forma", "padre", "madre", "país",
+  "momento", "casa", "ciudad", "puerta", "camino", "calle", "aire", "amigo", "verdad", "cuerpo",
+  "hijo", "mujer", "tarde", "palabra", "amor", "pueblo", "fuerza", "luz", "idea", "tierra",
+  "fondo", "gente", "historia", "ejemplo", "hora", "lado", "libro", "orden", "grupo", "cuenta",
+  "campo", "modo", "razón", "mesa", "vista", "línea", "espacio", "cabeza", "muerte", "cambio",
+  "nombre", "letra", "carta", "realidad", "sistema", "sentido", "centro", "efecto", "papel", "clase",
+  "paso", "tema", "hecho", "obra", "medio", "base", "problema", "tipo", "ley", "final",
+  "viaje", "zona", "fuego", "sol", "color", "mar", "siglo", "dolor", "salud", "juego",
+  "arte", "alma", "paz", "valor", "suelo", "nivel", "cargo", "precio", "pie", "segundo",
+  "estudio", "duda", "futuro", "espíritu", "sociedad", "destino", "calidad", "interés", "diferencia", "causa",
+  "origen", "posible", "nuevo", "bueno", "gran", "mismo", "primero", "propio", "mayor", "cierto",
+  "claro", "único", "general", "libre", "fácil", "difícil", "importante", "seguro", "social", "nacional",
+  "humano", "corto", "largo", "alto", "bajo", "viejo", "joven", "rico", "pobre", "fuerte",
+  "débil", "simple", "feliz", "triste", "rápido", "lento", "dulce", "amargo", "frío", "caliente",
+  "lleno", "vacío", "limpio", "oscuro", "brillante", "lejos", "cerca", "temprano", "siempre", "nunca",
+  "jamás", "hoy", "ayer", "mañana", "aquí", "allí", "ahí", "arriba", "abajo", "dentro",
+  "fuera", "delante", "detrás", "encima", "debajo", "junto", "alrededor", "pronto", "despacio", "apenas",
+  "quizás",
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// FRENCH (FR) — Top 250 common French words (Unicode-safe)
+// ─────────────────────────────────────────────────────────────────────────────
+export const FRENCH_WORDS: string[] = [
+  "de", "la", "le", "et", "les", "des", "en", "un", "du", "une",
+  "que", "est", "pour", "qui", "dans", "par", "plus", "pas", "au", "sur",
+  "ne", "ce", "il", "sont", "se", "avec", "tout", "faire", "son", "mettre",
+  "autre", "on", "mais", "nous", "comme", "ou", "si", "leur", "dire", "elle",
+  "doit", "sans", "bon", "ici", "pouvoir", "vous", "deux", "temps", "très", "même",
+  "notre", "voir", "mon", "bien", "aller", "aussi", "monde", "vie", "donner", "falloir",
+  "jour", "prendre", "trouver", "encore", "croire", "aimer", "penser", "homme", "pays", "après",
+  "jamais", "femme", "heure", "quelque", "venir", "votre", "enfant", "savoir", "grand", "dernier",
+  "sous", "porte", "tenir", "parler", "fort", "petit", "regarder", "nouveau", "maintenant", "sentir",
+  "rendre", "question", "premier", "passer", "point", "ville", "nuit", "vers", "chose", "eau",
+  "reste", "maison", "travail", "yeux", "effet", "place", "entendre", "trois", "nom", "cas",
+  "raison", "attendre", "perdre", "côté", "fond", "force", "famille", "idée", "air", "peuple",
+  "corps", "mort", "droit", "histoire", "mot", "matin", "moment", "cours", "sortir", "besoin",
+  "chemin", "fils", "lumière", "terre", "groupe", "souvent", "forme", "projet", "partir", "livre",
+  "lettre", "servir", "action", "face", "mois", "fin", "voix", "prix", "ordre", "beaucoup",
+  "cause", "service", "guerre", "pied", "écrire", "table", "changer", "rue", "coeur", "espace",
+  "société", "sens", "niveau", "loi", "soleil", "ligne", "ami", "jeune", "minute", "tableau",
+  "mesure", "peine", "jeu", "champ", "vue", "choix", "rôle", "situation", "amour", "terme",
+  "manière", "sécurité", "vrai", "nature", "mouvement", "route", "papier", "compte", "système", "esprit",
+  "centre", "arbre", "condition", "général", "semaine", "simple", "difficile", "facile", "long", "court",
+  "haut", "bas", "clair", "sombre", "chaud", "froid", "rapide", "lent", "riche", "pauvre",
+  "seul", "propre", "libre", "plein", "vide", "beau", "joli", "calme", "doux", "lourd",
+  "léger", "dur", "pur", "sûr", "vif", "large", "étroit", "cher", "exact", "parfait",
+  "total", "frais", "profond", "jeune", "vieux", "entier", "grave", "chaque", "aucun", "certain",
+  "plusieurs", "quel", "tous", "autour", "devant", "derrière", "dedans", "dehors", "dessus", "dessous",
+  "loin", "près", "tôt", "tard", "toujours",
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GERMAN (DE) — Top 250 common German words (Unicode-safe)
+// ─────────────────────────────────────────────────────────────────────────────
+export const GERMAN_WORDS: string[] = [
+  "der", "die", "und", "in", "den", "von", "zu", "das", "mit", "sich",
+  "des", "auf", "für", "ist", "im", "dem", "nicht", "ein", "eine", "als",
+  "auch", "es", "an", "werden", "aus", "er", "hat", "dass", "sie", "nach",
+  "wird", "bei", "einer", "um", "am", "sind", "noch", "wie", "einem", "über",
+  "einen", "so", "zum", "war", "haben", "nur", "oder", "aber", "vor", "zur",
+  "bis", "mehr", "durch", "man", "sein", "wurde", "sei", "prozent", "hatte", "kann",
+  "gegen", "vom", "können", "schon", "wenn", "habe", "seine", "ihre", "dann", "unter",
+  "wir", "soll", "ich", "eines", "jahr", "zwei", "diese", "dieser", "wieder", "keine",
+  "uhr", "seiner", "worden", "will", "zwischen", "immer", "millionen", "was", "sagte", "gibt",
+  "alle", "diesem", "seit", "musste", "neue", "damit", "jetzt", "zeit", "seinen", "gute",
+  "leben", "mensch", "tag", "arbeit", "hand", "stadt", "welt", "herr", "frau", "kind",
+  "haus", "land", "weg", "seite", "auge", "ende", "wasser", "platz", "fall", "frage",
+  "kopf", "raum", "kraft", "bild", "wort", "nacht", "art", "geld", "freund", "gruppe",
+  "grund", "spiel", "licht", "sonne", "abend", "stück", "teil", "blick", "schule", "punkt",
+  "form", "buch", "brief", "ziel", "reise", "körper", "plan", "geist", "luft", "ordnung",
+  "natur", "system", "rolle", "sache", "gefühl", "wärme", "ruhe", "angst", "freiheit", "glück",
+  "wahrheit", "stimme", "strahl", "straße", "garten", "fenster", "tür", "zimmer", "tisch", "stuhl",
+  "baum", "wald", "berg", "fluss", "meer", "wolke", "wind", "feuer", "stein", "farbe",
+  "traum", "hoffnung", "woche", "monat", "stunde", "sekunde", "anfang", "mitte", "schritt", "gedanke",
+  "muster", "lösung", "erfolg", "einfach", "schwer", "leicht", "schnell", "langsam", "groß", "klein",
+  "hoch", "tief", "alt", "jung", "neu", "früh", "spät", "gut", "schlecht", "stark",
+  "schwach", "hell", "dunkel", "warm", "kalt", "klar", "rein", "voll", "leer", "sicher",
+  "offen", "nah", "weit", "ruhig", "laut", "schön", "hart", "weich", "richtig",
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PORTUGUESE (PT) — Top 250 common Portuguese words (Unicode-safe)
+// ─────────────────────────────────────────────────────────────────────────────
+export const PORTUGUESE_WORDS: string[] = [
+  "de", "a", "o", "que", "e", "do", "da", "em", "um", "para",
+  "é", "com", "não", "uma", "os", "no", "se", "na", "por", "mais",
+  "as", "dos", "como", "mas", "foi", "ao", "ele", "das", "tem", "à",
+  "seu", "sua", "ou", "ser", "quando", "muito", "nos", "já", "está", "eu",
+  "também", "só", "pelo", "pela", "até", "isso", "ela", "entre", "era", "depois",
+  "sem", "mesmo", "aos", "ter", "seus", "quem", "nas", "me", "esse", "eles",
+  "estão", "você", "tinha", "foram", "essa", "num", "nem", "suas", "meu", "às",
+  "minha", "numa", "tudo", "tempo", "ano", "dia", "homem", "vida", "coisa", "casa",
+  "mundo", "parte", "lugar", "forma", "olho", "hora", "caminho", "mão", "noite", "mulher",
+  "cidade", "caso", "trabalho", "ponto", "país", "lado", "água", "governo", "filho", "pai",
+  "mãe", "amigo", "história", "palavra", "gente", "momento", "terra", "vez", "fim", "porta",
+  "ideia", "grupo", "olhar", "corpo", "sala", "livro", "rua", "fato", "amor", "morte",
+  "tipo", "razão", "passo", "modo", "voz", "ar", "luz", "cabeça", "centro", "linha",
+  "conta", "valor", "força", "mesa", "vista", "fogo", "mar", "sistema", "ordem", "papel",
+  "problema", "direito", "efeito", "medida", "serviço", "campo", "projeto", "espaço", "minuto", "segundo",
+  "semana", "mês", "número", "arte", "nome", "letra", "carta", "sol", "lua", "vento",
+  "chuva", "rio", "árvore", "flor", "animal", "saúde", "paz", "alegria", "sonho", "medo",
+  "verdade", "esperança", "destino", "qualidade", "novo", "velho", "bom", "mau", "grande", "pequeno",
+  "alto", "baixo", "forte", "fraco", "fácil", "difícil", "rápido", "lento", "claro", "escuro",
+  "quente", "frio", "cheio", "vazio", "limpo", "sujo", "livre", "certo", "seguro", "simples",
+  "perfeito", "feliz", "triste", "calmo", "doce", "amargo", "perto", "longe", "cedo", "tarde",
+  "sempre", "nunca", "hoje", "ontem", "amanhã", "aqui", "ali", "lá", "onde", "agora",
+  "ainda", "assim", "bem", "mal", "melhor", "pior", "menos",
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ITALIAN (IT) — Top 250 common Italian words (Unicode-safe)
+// ─────────────────────────────────────────────────────────────────────────────
+export const ITALIAN_WORDS: string[] = [
+  "di", "a", "il", "la", "e", "in", "un", "per", "che", "una",
+  "non", "del", "si", "da", "con", "le", "al", "è", "dei", "della",
+  "più", "anche", "ha", "questo", "gli", "sono", "se", "lo", "ma", "come",
+  "alla", "ci", "dal", "nel", "questa", "delle", "o", "ai", "tra", "fra",
+  "dopo", "su", "quale", "molto", "uno", "loro", "suo", "bene", "dove", "tempo",
+  "anno", "giorno", "cosa", "uomo", "modo", "mondo", "vita", "mano", "parte", "occhio",
+  "ora", "casa", "caso", "notte", "donna", "lavoro", "luogo", "punto", "paese", "momento",
+  "fine", "città", "stato", "strada", "figlio", "padre", "madre", "amico", "storia", "parola",
+  "gente", "aria", "acqua", "terra", "idea", "forma", "fatto", "gruppo", "corpo", "libro",
+  "lettera", "nome", "voce", "mente", "cuore", "ragione", "passo", "lato", "porta", "linea",
+  "senso", "numero", "centro", "luce", "sole", "ordine", "tipo", "vista", "valore", "piano",
+  "forza", "mare", "fuoco", "spazio", "camera", "tavolo", "campo", "servizio", "sistema", "diritto",
+  "effetto", "problema", "figura", "scuola", "arte", "musica", "minuto", "secondo", "settimana", "mese",
+  "sera", "mattina", "vento", "albero", "fiore", "animale", "salute", "pace", "gioia", "sogno",
+  "paura", "verità", "speranza", "destino", "qualità", "nuovo", "vecchio", "buono", "cattivo", "grande",
+  "piccolo", "alto", "basso", "forte", "debole", "facile", "difficile", "rapido", "lento", "chiaro",
+  "scuro", "caldo", "freddo", "pieno", "vuoto", "pulito", "libero", "sicuro", "semplice", "perfetto",
+  "felice", "triste", "calmo", "dolce", "amaro", "vicino", "lontano", "presto", "tardi", "sempre",
+  "mai", "oggi", "ieri", "domani", "qui", "lì", "allora", "adesso", "subito", "ancora",
+  "quasi", "insieme", "spesso", "forse", "prima", "sopra", "sotto", "davanti", "dietro", "dentro",
+  "fuori", "intorno", "oltre", "verso",
+];
+
 export function getRandomWords(count: number, wordbank: string[] = TOP_200_WORDS): string[] {
   const words: string[] = [];
   for (let i = 0; i < count; i++) {

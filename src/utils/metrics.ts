@@ -78,19 +78,19 @@ export function calculateMetrics(
 }
 
 export function getPercentileRank(wpm: number): { rankTitle: string; percentileText: string } {
-  // Honest skill bands — no fake percentiles
+  // Honest skill bands — no fabricated percentiles.
   if (wpm >= 100) {
-    return { rankTitle: "Elite", percentileText: "Elite" };
+    return { rankTitle: "Elite", percentileText: "Elite skill band · 100+ WPM" };
   } else if (wpm >= 80) {
-    return { rankTitle: "Advanced", percentileText: "Advanced" };
+    return { rankTitle: "Advanced", percentileText: "Advanced skill band · 80+ WPM" };
   } else if (wpm >= 60) {
-    return { rankTitle: "Upper-intermediate", percentileText: "Upper-intermediate" };
+    return { rankTitle: "Upper-Intermediate", percentileText: "Upper-intermediate band · 60+ WPM" };
   } else if (wpm >= 40) {
-    return { rankTitle: "Intermediate", percentileText: "Intermediate" };
+    return { rankTitle: "Intermediate", percentileText: "Intermediate band · 40+ WPM" };
   } else if (wpm >= 25) {
-    return { rankTitle: "Developing", percentileText: "Developing" };
+    return { rankTitle: "Developing", percentileText: "Developing band · 25+ WPM" };
   } else {
-    return { rankTitle: "Starting", percentileText: "Starting" };
+    return { rankTitle: "Starting", percentileText: "Starting band · below 25 WPM" };
   }
 }
 

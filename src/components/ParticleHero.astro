@@ -1,400 +1,265 @@
 ---
-import Icon from './Icon.astro';
+// Canvas 2D Hero Component
+import FloatingKeyboard from './FloatingKeyboard.astro';
 ---
 
-<section class="relative w-[100vw] ml-[50%] -translate-x-1/2 overflow-hidden bg-[#050505] py-24 sm:py-32 flex flex-col items-center justify-center min-h-[800px] border-b border-white/5 mt-[-2rem] mb-12">
- 
- <!-- Fallback for reduced motion / low-end -->
- <div id="particle-hero-fallback" class="absolute inset-0 bg-gradient-to-br from-teal-900/40 via-[#050505] to-violet-900/40 opacity-0 transition-opacity duration-500 z-0 pointer-events-none"></div>
-
- <!-- Three.js Canvas Container -->
- <div id="particle-hero-canvas-container" class="absolute inset-0 pointer-events-none z-0">
- <canvas id="particle-hero-canvas" class="w-full h-full block"></canvas>
- </div>
-
- <div class="relative z-10 flex flex-col items-center w-full max-w-5xl mx-auto px-4 pointer-events-auto">
- <!-- Headline -->
- <h1 class="text-5xl sm:text-7xl md:text-8xl er text-transparent bg-clip-text bg-gradient-to-br from-white via-neutral-200 to-neutral-500 mb-6 text-center drop-shadow-xl z-20 text-4xl sm:text-5xl font-semibold tracking-[-0.03em] leading-[1.1] text-balance">
- Master Your Flow.
- </h1>
- <p class="font-normal text-pretty text-lg sm:text-xl text-ds-text-muted max-w-2xl text-center mb-12 drop-shadow-md z-20">
- Discover the rhythm of perfect typing. Our intelligent engine adapts to your speed, identifying and eliminating bottlenecks in real-time.
- </p>
-
- <!-- Invisible spacer to allow galaxy to be visible -->
- <div class="relative w-full max-w-3xl h-[200px] sm:h-[300px] mx-auto mb-12 pointer-events-none">
- </div>
-
- <!-- CTA Pill Buttons -->
- <div class="flex flex-col sm:flex-row items-center gap-4 z-20">
- <a href="#typing-test-container" class="px-8 py-3.5 rounded-full bg-ds-bg-100 text-black font-medium text-sm sm:text-base hover:scale-105 transition-transform duration-300 shadow-[0_0_30px_rgba(45,212,191,0.2)] flex items-center gap-2">
- <Icon name="bolt" class="w-4 h-4" />
- Start Speed Test
- </a>
- <a href="/numbers-punctuation-typing-test" class="px-8 py-3.5 rounded-full bg-neutral-800/80 backdrop-blur-md text-white font-medium text-sm sm:text-base hover:bg-neutral-700 transition-colors border border-white/10 flex items-center gap-2 group">
- Numbers & Symbols
- <Icon name="chevron-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform" />
- </a>
- </div>
- 
- <!-- Live Stats -->
- <div class="absolute bottom-4 left-4 z-20 flex flex-col gap-1 font-mono text-[10px] sm:text-xs text-ds-text-secondary bg-black/50 backdrop-blur-sm p-3 rounded border border-white/5 pointer-events-none">
- <div class="flex items-center gap-2">
- <span class="w-2 h-2 rounded-full bg-teal-500 animate-pulse"></span>
- <span id="ph-stat-particles">Particles: --</span>
- </div>
- <div>FPS: <span id="ph-stat-fps">--</span></div>
- <div>Load Time: <span id="ph-stat-load">--</span></div>
- </div>
- </div>
+<section class="hero-section" aria-labelledby="hero-heading">
+  <div class="canvas-container">
+    <canvas id="starfield" aria-hidden="true"></canvas>
+  </div>
+  
+  <div class="hero-content">
+    <div class="keyboard-animation-wrapper">
+      <FloatingKeyboard />
+    </div>
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.8)] dark:bg-[rgba(255,255,255,0.05)] text-xs font-medium text-ds-text-secondary mb-6 shadow-sm">
+      <span class="w-2 h-2 rounded-full bg-accent"></span>
+      Instant Typing Engine v2
+    </div>
+    <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-[-0.03em] text-ds-text-primary max-w-3xl mx-auto mb-6" data-i18n="hero.title">
+      Test your typing speed
+    </h1>
+    <p class="text-lg text-ds-text-secondary max-w-2xl mx-auto mb-8 leading-relaxed" data-i18n="hero.subtitle">
+      Free typing test. No account needed.
+    </p>
+    <a href="#typing-test-container" class="btn-primary px-8 h-12 text-base rounded-full shadow-lg hover:shadow-xl transition-all" data-i18n="hero.cta">
+      Start typing
+    </a>
+  </div>
 </section>
 
+<style>
+  .hero-section {
+    position: relative;
+    width: 100%;
+    /* Reserve exact height for CLS 0 */
+    min-height: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 80px 24px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .canvas-container {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+  
+  #starfield {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    /* anime.js will stagger this in for children */
+  }
+</style>
+
 <script>
- // @ts-nocheck
- import * as THREE from 'three';
+  import { animate, stagger } from 'animejs';
 
- // State
- let scene, camera, renderer, particles, geometry;
- let particleCount = 0;
- let animationFrameId;
- let isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- 
- let targetPositions, initialPositions, colors, scales;
- let clock = new THREE.Clock();
- 
- // Mouse / Raycaster
- let mouse = new THREE.Vector2(-9999, -9999);
- let mouseWorldPos = new THREE.Vector3();
- let raycaster = new THREE.Raycaster();
- const plane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); // For intersecting mouse to world
- 
- // Dwell mechanics
- let mouseMoveTimer = null;
- let isDwelling = false;
- let dwellBloomAmount = 0.0;
- 
- // Scroll mechanics
- let targetScrollScale = 1.0;
- let targetScrollRot = 0.0;
- let currentScrollScale = 1.0;
- let currentScrollRot = 0.0;
+  // Hero stagger animation using Anime.js
+  document.addEventListener('DOMContentLoaded', () => {
+    animate('.hero-content > *', {
+      translateY: [20, 0],
+      opacity: [0, 1],
+      easing: 'easeOutCubic',
+      duration: 600,
+      delay: stagger(100, {start: 100})
+    });
+  });
 
- // DOM Elements
- const canvas = document.getElementById('particle-hero-canvas');
- const fallback = document.getElementById('particle-hero-fallback');
- const statParticles = document.getElementById('ph-stat-particles');
- const statFps = document.getElementById('ph-stat-fps');
- const statLoad = document.getElementById('ph-stat-load');
+  const canvas = document.getElementById('starfield') as HTMLCanvasElement;
+  
+  if (canvas) {
+    // alpha:true so the MoonlitBackground shader can show through in dark mode.
+    // Light mode still paints an opaque #FAFAFA fill every frame, so it looks identical.
+    const ctx = canvas.getContext('2d', { alpha: true });
+    let width = 0;
+    let height = 0;
+    let dpr = 1;
 
- // Performance tracking
- let frames = 0;
- let prevTime = performance.now();
- const startTime = performance.now();
+    let isVisible = true;
+    let isOffscreen = false;
+    let isTyping = false;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    // Parallax target
+    let mouseX = 0;
+    let mouseY = 0;
+    let currentX = 0;
+    let currentY = 0;
 
- function init() {
- if (statLoad) {
- // Just a simulated or real load time for aesthetic stats
- const loadMs = Math.round(performance.now() - startTime);
- statLoad.innerText = `${loadMs}ms`;
- }
- 
- if (!canvas) return;
- 
- if (isReducedMotion) {
- if (fallback) fallback.style.opacity = '1';
- return;
- }
+    // Stars
+    const numStars = 200;
+    const stars: {x: number, y: number, z: number, r: number, alpha: number, speed: number}[] = [];
+    
+    // Comets
+    const comets: {x: number, y: number, length: number, angle: number, speed: number, alpha: number, active: boolean, timer: number}[] = [];
+    for (let i = 0; i < 3; i++) {
+      comets.push({x: 0, y: 0, length: 0, angle: 0, speed: 0, alpha: 0, active: false, timer: Math.random() * 5000});
+    }
 
- // Determine counts based on device
- const isMobile = window.innerWidth < 768;
- const dpr = Math.min(window.devicePixelRatio, 2);
- 
- // Scale count: e.g. 90k max on big screens, 20k on mobile
- particleCount = isMobile ? 20000 : 75000;
- 
- if (statParticles) statParticles.innerText = `Particles: ${(particleCount/1000).toFixed(1)}k`;
+    // Initialize stars
+    function initStars() {
+      stars.length = 0;
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: (Math.random() - 0.5) * 2000,
+          y: (Math.random() - 0.5) * 2000,
+          z: Math.random() * 2 + 0.1,
+          r: Math.random() * 1.5 + 0.5,
+          alpha: Math.random(),
+          speed: (Math.random() * 0.02 + 0.005)
+        });
+      }
+    }
 
- // Scene setup
- scene = new THREE.Scene();
- 
- // Camera setup
- const aspect = window.innerWidth / window.innerHeight;
- camera = new THREE.PerspectiveCamera(50, aspect, 1, 100);
- camera.position.set(0, 0, 12);
- 
- // Renderer setup
- renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false }); // Disable AA for perf on high particle counts
- renderer.setSize(window.innerWidth, window.innerHeight);
- renderer.setPixelRatio(dpr);
+    function resize() {
+      const rect = canvas.parentElement!.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap DPR at 2
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx?.scale(dpr, dpr);
+      if (prefersReducedMotion) {
+        draw(0); // Draw once if reduced motion
+      }
+    }
 
- // Build Galaxy Geometry
- geometry = new THREE.BufferGeometry();
- initialPositions = new Float32Array(particleCount * 3);
- targetPositions = new Float32Array(particleCount * 3); // Used as base positions before repel/bloom
- colors = new Float32Array(particleCount * 3);
- scales = new Float32Array(particleCount);
- 
- const colorCenter = new THREE.Color('#2dd4bf'); // Teal-400
- const colorOuter = new THREE.Color('#8b5cf6'); // Violet-500
- 
- const numArms = 3;
- const galaxyRadius = 15;
- const spin = 3.0; // How tight the spiral is
- 
- for (let i = 0; i < particleCount; i++) {
- const i3 = i * 3;
- 
- // Random distribution focused near center
- // Math.pow gives denser core, sparser edges
- let radius = Math.pow(Math.random(), 2) * galaxyRadius;
- 
- // Arm assignment
- let armAngle = (Math.floor(Math.random() * numArms) * (Math.PI * 2)) / numArms;
- 
- // Distance-based spiral offset
- let spinAngle = radius * spin;
- 
- // Random scatter/thickness based on distance
- // Closer to center = thicker, farther = thinner (or vice versa depending on aesthetic)
- const scatter = (Math.random() - 0.5) * (radius * 0.3 + 0.2);
- const yScatter = (Math.random() - 0.5) * (Math.exp(-radius*0.1) * 3 + 0.5);
- 
- const finalAngle = armAngle + spinAngle + (Math.random() * 0.5 - 0.25);
- 
- const px = Math.cos(finalAngle) * radius + scatter;
- const py = yScatter;
- const pz = Math.sin(finalAngle) * radius + scatter;
- 
- initialPositions[i3] = px;
- initialPositions[i3+1] = py;
- initialPositions[i3+2] = pz;
- 
- targetPositions[i3] = px;
- targetPositions[i3+1] = py;
- targetPositions[i3+2] = pz;
- 
- // Color based on distance
- const tColor = new THREE.Color().copy(colorCenter).lerp(colorOuter, radius / galaxyRadius);
- colors[i3] = tColor.r;
- colors[i3+1] = tColor.g;
- colors[i3+2] = tColor.b;
- 
- scales[i] = Math.random() * 0.5 + 0.1;
- }
- 
- geometry.setAttribute('position', new THREE.BufferAttribute(initialPositions, 3));
- geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
- 
- // We can pass scales via a custom shader, but to stick to requirements (THREE.Points standard),
- // standard PointsMaterial has uniform size. We will just use standard PointsMaterial.
- // If we wanted individual scales, we'd use ShaderMaterial. Let's use ShaderMaterial for perfection.
- 
- const shaderMaterial = new THREE.ShaderMaterial({
- uniforms: {
- time: { value: 0 },
- pixelRatio: { value: dpr },
- bloomFactor: { value: 0.0 }
- },
- vertexShader: `
- attribute float scale;
- varying vec3 vColor;
- uniform float time;
- uniform float pixelRatio;
- uniform float bloomFactor;
- 
- void main() {
- vColor = color;
- 
- // Add tiny organic movement
- vec3 pos = position;
- pos.y += sin(time * 2.0 + position.x) * 0.1;
- 
- // Dwell bloom push outward
- float dist = length(pos);
- vec3 dir = normalize(pos);
- pos += dir * bloomFactor * (sin(dist * 0.5 - time * 5.0) * 0.5 + 0.5);
- 
- vec4 mvPosition = modelViewMatrix * vec4(pos, 1.0);
- 
- // Size attenuation
- gl_PointSize = (scale * 30.0 * pixelRatio) * (1.0 / - mvPosition.z);
- gl_Position = projectionMatrix * mvPosition;
- }
- `,
- fragmentShader: `
- varying vec3 vColor;
- 
- void main() {
- // Circular particle with soft edge
- float dist = length(gl_PointCoord - vec2(0.5));
- if (dist > 0.5) discard;
- 
- float alpha = (0.5 - dist) * 2.0;
- gl_FragColor = vec4(vColor, alpha * 0.8);
- }
- `,
- blending: THREE.AdditiveBlending,
- depthWrite: false,
- transparent: true,
- vertexColors: true
- });
- 
- geometry.setAttribute('scale', new THREE.BufferAttribute(scales, 1));
- 
- particles = new THREE.Points(geometry, shaderMaterial);
- 
- // Initial tilt to see galaxy well
- particles.rotation.x = 1.0; 
- 
- scene.add(particles);
+    window.addEventListener('resize', resize);
+    document.addEventListener('mousemove', (e) => {
+      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      mouseY = (e.clientY / window.innerHeight) * 2 - 1;
+    }, { passive: true });
 
- // Events
- window.addEventListener('resize', onWindowResize);
- window.addEventListener('mousemove', onMouseMove);
- window.addEventListener('scroll', onScroll);
- 
- // Animation loop
- animate();
- }
+    document.addEventListener('visibilitychange', () => {
+      isVisible = document.visibilityState === 'visible';
+    });
 
- function onWindowResize() {
- if (!camera || !renderer) return;
- camera.aspect = window.innerWidth / window.innerHeight;
- camera.updateProjectionMatrix();
- renderer.setSize(window.innerWidth, window.innerHeight);
- }
+    const observer = new IntersectionObserver((entries) => {
+      isOffscreen = !entries[0].isIntersecting;
+    });
+    observer.observe(canvas.parentElement!);
 
- function onMouseMove(event) {
- if (isReducedMotion) return;
- 
- // Mouse coords for raycasting
- mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
- mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
- 
- // Dwell logic
- isDwelling = false;
- clearTimeout(mouseMoveTimer);
- mouseMoveTimer = setTimeout(() => {
- isDwelling = true;
- }, 1500); // 1.5s dwell
- }
- 
- function onScroll() {
- if (isReducedMotion) return;
- const scrollY = window.scrollY;
- 
- // As user scrolls down, scale up and rotate slightly
- targetScrollScale = 1.0 + (scrollY * 0.001);
- targetScrollRot = scrollY * 0.002;
- }
+    // Listen for typing state to pause animation
+    window.addEventListener('typing-start', () => { isTyping = true; });
+    window.addEventListener('typing-stop', () => { isTyping = false; });
+    window.addEventListener('typing-reset', () => { isTyping = false; });
 
- function animate() {
- animationFrameId = requestAnimationFrame(animate);
- const time = clock.getElapsedTime();
- 
- // FPS tracking
- frames++;
- const t = performance.now();
- if (t >= prevTime + 1000) {
- if (statFps) statFps.innerText = Math.round((frames * 1000) / (t - prevTime)).toString();
- frames = 0;
- prevTime = t;
- }
+    let lastTime = 0;
 
- if (particles && geometry) {
- 
- // Update Dwell bloom uniform
- const bloomTarget = isDwelling ? 2.0 : 0.0;
- dwellBloomAmount += (bloomTarget - dwellBloomAmount) * 0.05;
- particles.material.uniforms.bloomFactor.value = dwellBloomAmount;
- particles.material.uniforms.time.value = time;
- 
- // Raycast to find mouse position in 3D world plane
- raycaster.setFromCamera(mouse, camera);
- raycaster.ray.intersectPlane(plane, mouseWorldPos);
- 
- const positions = geometry.attributes.position.array;
- 
- // Repel logic in JS
- // Convert mouse world pos to particle local space
- const localMousePos = mouseWorldPos.clone();
- particles.worldToLocal(localMousePos);
- 
- const repelRadius = 3.0;
- const repelForce = 0.5;
- 
- for (let i = 0; i < particleCount; i++) {
- const i3 = i * 3;
- const tx = targetPositions[i3];
- const ty = targetPositions[i3+1];
- const tz = targetPositions[i3+2];
- 
- // Distance to mouse
- const dx = localMousePos.x - tx;
- const dy = localMousePos.y - ty;
- const dz = localMousePos.z - tz;
- const dist = Math.sqrt(dx*dx + dy*dy + dz*dz);
- 
- if (dist < repelRadius) {
- // Push away
- const force = (repelRadius - dist) * repelForce;
- const pushX = (dx/dist) * force;
- const pushY = (dy/dist) * force;
- const pushZ = (dz/dist) * force;
- 
- positions[i3] -= pushX;
- positions[i3+1] -= pushY;
- positions[i3+2] -= pushZ;
- } else {
- // Spring back
- positions[i3] += (tx - positions[i3]) * 0.1;
- positions[i3+1] += (ty - positions[i3+1]) * 0.1;
- positions[i3+2] += (tz - positions[i3+2]) * 0.1;
- }
- }
- 
- geometry.attributes.position.needsUpdate = true;
- 
- // Idle Galaxy Rotation
- particles.rotation.z -= 0.001; 
- 
- // Apply Scroll Parallax
- currentScrollScale += (targetScrollScale - currentScrollScale) * 0.1;
- currentScrollRot += (targetScrollRot - currentScrollRot) * 0.1;
- 
- particles.scale.set(currentScrollScale, currentScrollScale, currentScrollScale);
- particles.rotation.y = currentScrollRot;
- }
+    function draw(time: number) {
+      if (!ctx) return;
+      const dt = lastTime ? time - lastTime : 16;
+      lastTime = time;
 
- renderer.render(scene, camera);
- }
- 
- // Cleanup
- function cleanup() {
- if (animationFrameId) cancelAnimationFrame(animationFrameId);
- window.removeEventListener('resize', onWindowResize);
- window.removeEventListener('mousemove', onMouseMove);
- window.removeEventListener('scroll', onScroll);
- clearTimeout(mouseMoveTimer);
- 
- if (renderer) renderer.dispose();
- if (geometry) geometry.dispose();
- if (particles && particles.material) particles.material.dispose();
- }
+      const isDark = document.documentElement.classList.contains('dark');
+      if (isDark) {
+        // Clear (not fill) so the fixed MoonlitBackground canvas shows through the hero.
+        ctx.clearRect(0, 0, width, height);
+      } else {
+        ctx.fillStyle = '#FAFAFA';
+        ctx.fillRect(0, 0, width, height);
+      }
 
- // Astro page transitions support
- document.addEventListener('astro:page-load', () => {
- init();
- });
- 
- document.addEventListener('astro:before-swap', () => {
- cleanup();
- });
- 
- // Initial load
- if (document.readyState === 'complete' || document.readyState === 'interactive') {
- init();
- } else {
- document.addEventListener('DOMContentLoaded', init);
- }
+      const isPaused = !isVisible || isOffscreen || isTyping;
+
+      if (!isPaused && !prefersReducedMotion) {
+        // Smooth parallax
+        currentX += (mouseX - currentX) * 0.05;
+        currentY += (mouseY - currentY) * 0.05;
+
+        // Update comets
+        for (let i = 0; i < comets.length; i++) {
+          const c = comets[i];
+          if (c.active) {
+            c.x += Math.cos(c.angle) * c.speed * dt;
+            c.y += Math.sin(c.angle) * c.speed * dt;
+            c.alpha -= dt * 0.001; // fade out
+            if (c.alpha <= 0 || c.x < -100 || c.y > height + 100) {
+              c.active = false;
+              c.timer = Math.random() * 4000 + 1000;
+            }
+          } else {
+            c.timer -= dt;
+            if (c.timer <= 0) {
+              c.active = true;
+              c.x = width + Math.random() * 200;
+              c.y = (Math.random() - 0.5) * height;
+              c.angle = Math.PI + (Math.random() - 0.5) * 0.2; // moving leftish
+              c.speed = 0.5 + Math.random() * 1;
+              c.length = 100 + Math.random() * 200;
+              c.alpha = 1;
+            }
+          }
+        }
+      }
+
+      ctx.save();
+      ctx.translate(width / 2, height / 2);
+
+      // Draw stars
+      const starColor = isDark ? '255, 255, 255' : '0, 114, 245';
+      const starBaseColor = isDark ? '255, 255, 255' : '0, 0, 0';
+      
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+        if (!isPaused && !prefersReducedMotion) {
+          s.alpha += s.speed;
+        }
+        const tw = (Math.sin(s.alpha) * 0.5 + 0.5) * 0.8 + 0.2; // 0.2 - 1.0 twinkle
+
+        const px = s.x - currentX * 50 * s.z;
+        const py = s.y - currentY * 50 * s.z;
+
+        // Only draw if on screen
+        if (px > -width/2 - 10 && px < width/2 + 10 && py > -height/2 - 10 && py < height/2 + 10) {
+          ctx.beginPath();
+          ctx.arc(px, py, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${starBaseColor}, ${tw * (isDark ? 0.6 : 0.2)})`;
+          ctx.fill();
+        }
+      }
+      ctx.restore();
+
+      // Draw comets
+      for (let i = 0; i < comets.length; i++) {
+        const c = comets[i];
+        if (c.active) {
+          const tailX = c.x - Math.cos(c.angle) * c.length;
+          const tailY = c.y - Math.sin(c.angle) * c.length;
+          const grad = ctx.createLinearGradient(c.x, c.y, tailX, tailY);
+          grad.addColorStop(0, `rgba(${starColor}, ${c.alpha})`);
+          grad.addColorStop(1, `rgba(${starColor}, 0)`);
+          
+          ctx.beginPath();
+          ctx.moveTo(c.x, c.y);
+          ctx.lineTo(tailX, tailY);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+        }
+      }
+
+      if (!prefersReducedMotion) {
+        requestAnimationFrame(draw);
+      }
+    }
+
+    initStars();
+    resize();
+    if (!prefersReducedMotion) {
+      requestAnimationFrame(draw);
+    }
+  }
 </script>

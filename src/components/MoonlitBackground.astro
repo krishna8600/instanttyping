@@ -1,0 +1,277 @@
+<canvas id="moonlit-bg" aria-hidden="true"></canvas>
+<style>
+  #moonlit-bg {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    display: none;
+    filter: hue-rotate(175deg);
+  }
+  html.dark #moonlit-bg { display: block; }
+</style>
+<script>
+(function () {
+  var canvas = document.getElementById('moonlit-bg') as HTMLCanvasElement | null;
+  if (!canvas) return;
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var gl = canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false });
+  if (!gl) return;
+
+  var vertSrc = [
+    'attribute vec2 a_pos;',
+    'void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }'
+  ].join('\n');
+
+  var fragSrc = [
+    'precision highp float;',
+    'uniform float u_time;',
+    'uniform vec2 u_res;',
+    'uniform float u_rippleSpeed;',
+    'uniform float u_moonGlow;',
+    'uniform vec2 u_mouse;',
+    'uniform float u_tilt;',
+    'uniform float u_waves;',
+    '',
+    '#define PI 3.14159265359',
+    '#define WAVE_LAYERS 7',
+    '',
+    'vec4 sea(vec2 p, float t) {',
+    '  float h = 0.0;',
+    '  vec2 dh = vec2(0.0);',
+    '  float freq = 1.0;',
+    '  float baseAmp = 0.2 * u_waves;',
+    '  float decay = mix(0.55, 0.38, clamp(u_waves / 3.0, 0.0, 1.0));',
+    '  float amp = baseAmp;',
+    '  float angle = 0.0;',
+    '  for (int i = 0; i < WAVE_LAYERS; i++) {',
+    '    float c = cos(angle);',
+    '    float s = sin(angle);',
+    '    vec2 pp = vec2(c * p.x + s * p.y, -s * p.x + c * p.y);',
+    '    float fi = float(i);',
+    '    float spd = sqrt(freq) * 0.8;',
+    '    float phase = (pp.y + fi) * freq - t * spd;',
+    '    float sn = sin(phase);',
+    '    float cn = cos(phase);',
+    '    h += sn * amp;',
+    '    float dy = freq * amp * cn;',
+    '    dh += vec2(-s * dy, c * dy);',
+    '    angle += fi + 1.2;',
+    '    freq *= 1.3;',
+    '    amp *= decay;',
+    '  }',
+    '  vec3 N = normalize(vec3(-dh.x, 1.0, -dh.y));',
+    '  return vec4(h, N);',
+    '}',
+    '',
+    'vec3 moonDir() {',
+    '  return normalize(vec3(0.15, 0.35, 1.0));',
+    '}',
+    '',
+    'float hash(vec2 p) {',
+    '  return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);',
+    '}',
+    '',
+    'vec3 skyColor(vec3 rd) {',
+    '  vec3 md = moonDir();',
+    '  vec3 skyDark = vec3(0.06, 0.03, 0.02);',
+    '  vec3 skyHoriz = vec3(0.09, 0.05, 0.04);',
+    '  vec3 sky = mix(skyHoriz, skyDark, max(rd.y, 0.0));',
+    '  vec3 moonCol = vec3(0.98, 0.92, 0.85);',
+    '  float moonDot = max(dot(rd, md), 0.0);',
+    '  float moonAngle = acos(clamp(moonDot, 0.0, 1.0));',
+    '  float moonRadius = 0.04;',
+    '  float disc = smoothstep(moonRadius, moonRadius * 0.7, moonAngle);',
+    '  if (disc > 0.0) {',
+    '    vec3 up = vec3(0.0, 1.0, 0.0);',
+    '    vec3 right = normalize(cross(up, md));',
+    '    vec3 mup = cross(md, right);',
+    '    vec2 muv = vec2(dot(rd - md, right), dot(rd - md, mup)) * 25.0;',
+    '    float crater = hash(floor(muv * 2.0)) * 0.25;',
+    '    crater += hash(floor(muv * 4.0)) * 0.15;',
+    '    float darkening = 1.0 - crater * smoothstep(moonRadius * 0.9, moonRadius * 0.4, moonAngle);',
+    '    float limb = smoothstep(0.0, moonRadius, moonAngle);',
+    '    darkening *= mix(1.0, 0.7, limb * limb);',
+    '    sky += moonCol * disc * 0.85 * darkening;',
+    '  }',
+    '  sky += moonCol * 0.25 * pow(moonDot, 40.0) * u_moonGlow;',
+    '  sky += moonCol * 1.2 * pow(moonDot, 400.0) * u_moonGlow;',
+    '  return sky;',
+    '}',
+    '',
+    'void main() {',
+    '  float aspect = u_res.x / u_res.y;',
+    '  vec2 uv = -1.0 + 2.0 * gl_FragCoord.xy / u_res;',
+    '  uv.x *= aspect;',
+    '  float t = u_time * u_rippleSpeed;',
+    '  float tiltRad = u_tilt * 0.7;',
+    '  vec3 ro = vec3(0.0, 8.0, 0.0);',
+    '  vec3 ww = normalize(vec3(0.0, -sin(tiltRad), cos(tiltRad)));',
+    '  vec3 uu = normalize(cross(vec3(0.0, 1.0, 0.0), ww));',
+    '  vec3 vv = normalize(cross(ww, uu));',
+    '  vec3 rd = normalize(uv.x * uu + uv.y * vv + 2.5 * ww);',
+    '  vec3 md = moonDir();',
+    '  vec3 moonCol = vec3(0.98, 0.92, 0.85);',
+    '  vec3 sky = skyColor(rd);',
+    '  vec3 col = sky;',
+    '  float dsea = -ro.y / rd.y;',
+    '  if (dsea > 0.0) {',
+    '    vec3 wp = ro + dsea * rd;',
+    '    vec4 s = sea(wp.xz, t);',
+    '    float h = s.x;',
+    '    vec3 nor = s.yzw;',
+    '    if (u_mouse.x > 0.0) {',
+    '      vec2 mUV = -1.0 + 2.0 * u_mouse / u_res;',
+    '      mUV.x *= aspect;',
+    '      vec3 mrd = normalize(mUV.x * uu + mUV.y * vv + 2.5 * ww);',
+    '      float mdsea = -ro.y / mrd.y;',
+    '      if (mdsea > 0.0) {',
+    '        vec3 mwp = ro + mdsea * mrd;',
+    '        vec2 mdelta = wp.xz - mwp.xz;',
+    '        float md2 = length(mdelta);',
+    '        float mfreq = 4.0;',
+    '        float mphase = md2 * mfreq - t * 5.0;',
+    '        float mamp = exp(-md2 * 0.15) * 0.4 * u_waves;',
+    '        h += sin(mphase) * mamp;',
+    '        float mcos = cos(mphase) * mamp * mfreq;',
+    '        vec2 mgrad = md2 > 0.01 ? (mdelta / md2) * mcos : vec2(0.0);',
+    '        nor = normalize(nor + vec3(-mgrad.x, 0.0, -mgrad.y) * 2.0);',
+    '      }',
+    '    }',
+    '    nor = mix(nor, vec3(0.0, 1.0, 0.0), smoothstep(0.0, 300.0, dsea));',
+    '    float fre = clamp(1.0 - dot(-nor, rd), 0.0, 1.0);',
+    '    fre = pow(fre, 3.0);',
+    '    float dif = mix(0.25, 1.0, max(dot(nor, md), 0.0));',
+    '    vec3 refl = skyColor(reflect(rd, nor));',
+    '    vec3 seaCol1 = vec3(0.05, 0.02, 0.01);',
+    '    vec3 seaCol2 = vec3(0.10, 0.06, 0.04);',
+    '    vec3 refr = seaCol1 + dif * moonCol * seaCol2 * 0.15 * u_moonGlow;',
+    '    col = mix(refr, 0.9 * refl, fre);',
+    '    float atten = max(1.0 - dsea * dsea * 0.0005, 0.0);',
+    '    col += seaCol2 * (wp.y - h) * 1.5 * atten;',
+    '    col = mix(col, sky, 1.0 - exp(-0.008 * dsea));',
+    '  }',
+    '  col = pow(max(col, vec3(0.0)), vec3(0.85));',
+    '  gl_FragColor = vec4(col, 1.0);',
+    '}',
+  ].join('\n');
+
+  function compile(type: number, src: string) {
+    if (!gl) return null;
+    var s = gl.createShader(type);
+    if (!s) return null;
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) { canvas!.style.display = 'none'; return null; }
+    return s;
+  }
+  var vs = compile(gl.VERTEX_SHADER, vertSrc);
+  var fs = compile(gl.FRAGMENT_SHADER, fragSrc);
+  if (!vs || !fs) return;
+  var prog = gl.createProgram();
+  if (!prog) return;
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) { canvas.style.display = 'none'; return; }
+  gl.useProgram(prog);
+
+  var buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
+  var aPos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  var uTime = gl.getUniformLocation(prog, 'u_time');
+  var uRes = gl.getUniformLocation(prog, 'u_res');
+  var uRippleSpeed = gl.getUniformLocation(prog, 'u_rippleSpeed');
+  var uMoonGlow = gl.getUniformLocation(prog, 'u_moonGlow');
+  var uMouse = gl.getUniformLocation(prog, 'u_mouse');
+  var uTilt = gl.getUniformLocation(prog, 'u_tilt');
+  var uWaves = gl.getUniformLocation(prog, 'u_waves');
+
+  var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  var needsResize = true;
+  var running = true;
+  var mouseX = -1.0, mouseY = -1.0;
+
+  function resize() {
+    if (!canvas || !gl) return;
+    needsResize = false;
+    var w = Math.round(canvas.clientWidth * dpr);
+    var h = Math.round(canvas.clientHeight * dpr);
+    if (w === 0 || h === 0) { needsResize = true; return; }
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+      gl.uniform2f(uRes, w, h);
+    }
+  }
+
+  function setStaticUniforms() {
+    if (!gl) return;
+    gl.uniform1f(uRippleSpeed, 0.5);
+    gl.uniform1f(uMoonGlow, 1.0);
+    gl.uniform1f(uTilt, 0.15);
+    gl.uniform1f(uWaves, 1.0);
+    gl.uniform2f(uMouse, mouseX, mouseY);
+  }
+
+  function render(now: number) {
+    if (!running) { requestAnimationFrame(render); return; }
+    if (!gl) return;
+    if (needsResize) resize();
+    setStaticUniforms();
+    gl.uniform1f(uTime, prefersReduced ? 0.0 : now * 0.001);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+    requestAnimationFrame(render);
+  }
+
+  window.addEventListener('resize', function () { needsResize = true; });
+  document.addEventListener('visibilitychange', function () { running = !document.hidden; });
+  // Re-size when the theme toggle flips html.dark (canvas was display:none in light mode)
+  new MutationObserver(function () { needsResize = true; })
+    .observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+  // Mouse ripple listens on window (canvas has pointer-events:none as a background)
+  window.addEventListener('mousemove', function (e) {
+    if (!canvas) return;
+    mouseX = e.clientX * dpr;
+    mouseY = (canvas.clientHeight - e.clientY) * dpr;
+  }, { passive: true });
+  document.documentElement.addEventListener('mouseleave', function () { mouseX = -1.0; mouseY = -1.0; });
+  window.addEventListener('touchstart', function (e) {
+    if (!canvas) return;
+    var t = e.touches[0];
+    mouseX = t.clientX * dpr;
+    mouseY = (canvas.clientHeight - t.clientY) * dpr;
+  }, { passive: true });
+  window.addEventListener('touchmove', function (e) {
+    if (!canvas) return;
+    var t = e.touches[0];
+    mouseX = t.clientX * dpr;
+    mouseY = (canvas.clientHeight - t.clientY) * dpr;
+  }, { passive: true });
+  window.addEventListener('touchend', function () { mouseX = -1.0; mouseY = -1.0; }, { passive: true });
+
+  // Optional runtime tuning (Radiant param protocol)
+  window.addEventListener('message', function (e) {
+    if (!e.data || e.data.type !== 'param') return;
+    // RIPPLE_SPEED | MOON_GLOW | CAMERA_TILT | WAVE_INTENSITY
+    // (wired for future use; defaults are set in setStaticUniforms)
+  });
+
+  resize();
+  if (prefersReduced) {
+    // Reduced motion: paint ONE static frame, no animation loop
+    setStaticUniforms();
+    gl.uniform1f(uTime, 0.0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  } else {
+    requestAnimationFrame(render);
+  }
+})();
+</script>

@@ -8,15 +8,15 @@ const faqs = [
  {
  question: "What is touch typing and why is it essential?",
  answer: "Touch typing is typing solely through tactile muscle memory without looking down at the physical keyboard. By anchoring your fingers on the home row (ASDF JKL;), your brain maps the location of every key relative to your home position, allowing your typing speed to triple or quadruple compared to hunt-and-peck typing."
- },
+ , questionKey: "faq.typing.q1", answerKey: "faq.typing.a1"},
  {
  question: "What are the tactile bumps on the F and J keys for?",
  answer: "The small raised ridges on the 'F' and 'J' keys are tactile indicators designed to help you locate the home row without glancing down. Your left index finger rests on 'F' and your right index finger rests on 'J'."
- },
+ , questionKey: "faq.typing.q2", answerKey: "faq.typing.a2"},
  {
  question: "Is 20 WPM good for a complete beginner?",
  answer: "Yes! When transitioning to true touch typing, speeds initially drop as your fingers learn new geometric pathways. Reaching 20 to 25 WPM with correct finger placement is an excellent initial milestone. Within two weeks of daily 10-minute practice, speeds typically jump to 40+ WPM."
- }
+ , questionKey: "faq.typing.q3", answerKey: "faq.typing.a3"}
 ];
 ---
 
@@ -30,18 +30,16 @@ const faqs = [
  initialDuration={60}
  initialMode="time"
  initialWordbank="beginner"
- pageHeading="Typing Test for Beginners: Learn Touch Typing"
- pageSubheading="A gentle, distraction-free typing test featuring common words and simple sentences. Ideal for learning finger placement."
+ pageHeading="Typing Test for Beginners: Learn Touch Typing" pageHeadingKey="engine.typing.heading"
+ pageSubheading="A gentle, distraction-free typing test featuring common words and simple sentences. Ideal for learning finger placement." pageSubheadingKey="engine.typing.subheading"
  />
 
  <section class="border-t shadow-ds-border pt-10 space-y-6" id="tips" aria-labelledby="beginner-heading">
  <div class="space-y-2">
  <h2 id="beginner-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary ">
- The Fundamentals of Touch Typing: Home Row Mastery
+ <span data-i18n="page_beginner.guide_heading">The Fundamentals of Touch Typing: Home Row Mastery</span>
  </h2>
- <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl">
- The secret to fast typing is not moving your hands quickly; it is keeping your hands still and letting your fingers make short, efficient reaches from the home row.
- </p>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl"><span data-i18n="page_beginner.guide_intro">The secret to fast typing is not moving your hands quickly; it is keeping your hands still and letting your fingers make short, efficient reaches from the home row.</span></p>
  </div>
 
  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -49,23 +47,23 @@ const faqs = [
  <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-3 font-mono">
  <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary flex items-center gap-1.5">
  <Icon name="keyboard" class="w-4 h-4 text-sky-600 " />
- Left Hand Finger Alignment
+ <span data-i18n="page_beginner.left_hand">Left Hand Finger Alignment</span>
  </div>
  <div class="grid grid-cols-4 gap-2 text-center text-xs">
  <div class="p-2 rounded bg-neutral-100 shadow-ds-border ">
- <div class="text-ds-text-secondary text-[10px]">Pinky</div>
+ <div class="text-ds-text-secondary text-[10px]"><span data-i18n="page_beginner.pinky">Pinky</span></div>
  <div class="font-bold text-base mt-1 text-ds-text-primary ">A</div>
  </div>
  <div class="p-2 rounded bg-neutral-100 shadow-ds-border ">
- <div class="text-ds-text-secondary text-[10px]">Ring</div>
+ <div class="text-ds-text-secondary text-[10px]"><span data-i18n="page_beginner.ring">Ring</span></div>
  <div class="font-bold text-base mt-1 text-ds-text-primary ">S</div>
  </div>
  <div class="p-2 rounded bg-neutral-100 shadow-ds-border ">
- <div class="text-ds-text-secondary text-[10px]">Middle</div>
+ <div class="text-ds-text-secondary text-[10px]"><span data-i18n="page_beginner.middle">Middle</span></div>
  <div class="font-bold text-base mt-1 text-ds-text-primary ">D</div>
  </div>
  <div class="p-2 rounded bg-neutral-100 shadow-ds-border ">
- <div class="text-ds-text-secondary text-[10px]">Index</div>
+ <div class="text-ds-text-secondary text-[10px]"><span data-i18n="page_beginner.index">Index</span></div>
  <div class="font-bold text-base mt-1 text-sky-600 ">F*</div>
  </div>
  </div>
@@ -75,23 +73,23 @@ const faqs = [
  <div class="p-5 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-3 font-mono">
  <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary flex items-center gap-1.5">
  <Icon name="keyboard" class="w-4 h-4 text-sky-600 " />
- Right Hand Finger Alignment
+ <span data-i18n="page_beginner.right_hand">Right Hand Finger Alignment</span>
  </div>
  <div class="grid grid-cols-4 gap-2 text-center text-xs">
  <div class="p-2 rounded bg-neutral-100 shadow-ds-border ">
- <div class="text-ds-text-secondary text-[10px]">Index</div>
+ <div class="text-ds-text-secondary text-[10px]"><span data-i18n="page_beginner.index">Index</span></div>
  <div class="font-bold text-base mt-1 text-sky-600 ">J*</div>
  </div>
  <div class="p-2 rounded bg-neutral-100 shadow-ds-border ">
- <div class="text-ds-text-secondary text-[10px]">Middle</div>
+ <div class="text-ds-text-secondary text-[10px]"><span data-i18n="page_beginner.middle">Middle</span></div>
  <div class="font-bold text-base mt-1 text-ds-text-primary ">K</div>
  </div>
  <div class="p-2 rounded bg-neutral-100 shadow-ds-border ">
- <div class="text-ds-text-secondary text-[10px]">Ring</div>
+ <div class="text-ds-text-secondary text-[10px]"><span data-i18n="page_beginner.ring">Ring</span></div>
  <div class="font-bold text-base mt-1 text-ds-text-primary ">L</div>
  </div>
  <div class="p-2 rounded bg-neutral-100 shadow-ds-border ">
- <div class="text-ds-text-secondary text-[10px]">Pinky</div>
+ <div class="text-ds-text-secondary text-[10px]"><span data-i18n="page_beginner.pinky">Pinky</span></div>
  <div class="font-bold text-base mt-1 text-ds-text-primary ">;</div>
  </div>
  </div>
@@ -99,6 +97,7 @@ const faqs = [
  </div>
  </section>
 
- <FAQ items={faqs} title="Frequently Asked Questions for Beginners" />
+ <FAQ items={faqs} title="Frequently Asked Questions for Beginners" titleKey="faq.typing.title" />
  </div>
 </Layout>
+

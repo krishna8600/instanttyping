@@ -1,0 +1,244 @@
+---
+---
+<div id="hero-canvas-container" class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+  <canvas id="hero-canvas" class="w-full h-full block"></canvas>
+</div>
+
+<script>
+  import * as THREE from 'three';
+
+  // Check WebGL availability
+  function isWebGLAvailable() {
+    try {
+      const canvas = document.createElement('canvas');
+      return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function initHeroCanvas() {
+    const container = document.getElementById('hero-canvas-container');
+    const canvas = document.getElementById('hero-canvas') as HTMLCanvasElement;
+    if (!container || !canvas) return;
+
+    if (!isWebGLAvailable()) {
+      container.style.display = 'none';
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    
+    // Scene setup
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 2000);
+    camera.position.z = 800;
+
+    // Particles setup
+    const particleCount = 600;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+
+    // Create a circular gradient texture for soft particles programmatically
+    const textureSize = 32;
+    const texCanvas = document.createElement('canvas');
+    texCanvas.width = textureSize;
+    texCanvas.height = textureSize;
+    const ctx = texCanvas.getContext('2d')!;
+    const gradient = ctx.createRadialGradient(textureSize/2, textureSize/2, 0, textureSize/2, textureSize/2, textureSize/2);
+    gradient.addColorStop(0, 'rgba(255,255,255,1)');
+    gradient.addColorStop(0.2, 'rgba(255,255,255,0.8)');
+    gradient.addColorStop(0.5, 'rgba(255,255,255,0.2)');
+    gradient.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = gradient;
+    ctx.fillRect(0, 0, textureSize, textureSize);
+    const sprite = new THREE.CanvasTexture(texCanvas);
+
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 2000;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 2000;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 2000;
+      sizes[i] = Math.random() * 6 + 2;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+    const material = new THREE.PointsMaterial({
+      size: 4,
+      map: sprite,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      transparent: true,
+      opacity: 0.6,
+      color: 0x888888, // Monochrome gray/white tone
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // Comet setup
+    const cometGeo = new THREE.BufferGeometry();
+    const cometPos = new Float32Array(3);
+    cometGeo.setAttribute('position', new THREE.BufferAttribute(cometPos, 3));
+    const cometMat = new THREE.PointsMaterial({
+      size: 24,
+      map: sprite,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+      transparent: true,
+      opacity: 0,
+      color: 0xffffff,
+    });
+    const comet = new THREE.Points(cometGeo, cometMat);
+    scene.add(comet);
+
+    let mouseX = 0;
+    let mouseY = 0;
+    let targetX = 0;
+    let targetY = 0;
+    const windowHalfX = window.innerWidth / 2;
+    const windowHalfY = window.innerHeight / 2;
+
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX - windowHalfX;
+      mouseY = e.clientY - windowHalfY;
+    }, { passive: true });
+
+    // Handle resize
+    function onWindowResize() {
+      if (!container) return;
+      const width = container.clientWidth;
+      const height = container.clientHeight;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+      if (prefersReducedMotion) {
+        renderer.render(scene, camera);
+      }
+    }
+    window.addEventListener('resize', onWindowResize);
+    // Initial size setup
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+    renderer.setSize(width, height);
+
+    // Performance guards
+    let isVisible = true;
+    let isOffscreen = false;
+
+    document.addEventListener('visibilitychange', () => {
+      isVisible = document.visibilityState === 'visible';
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      isOffscreen = !entries[0].isIntersecting;
+    });
+    observer.observe(container);
+
+    let cometActive = false;
+    let cometTime = 0;
+    let cometDuration = 0;
+    let cometStartX = 0;
+    let cometStartY = 0;
+    let lastTime = performance.now();
+
+    function triggerComet() {
+      if (cometActive || !isVisible || isOffscreen) return;
+      cometActive = true;
+      cometTime = 0;
+      cometDuration = 1000 + Math.random() * 1000;
+      cometStartX = (Math.random() - 0.5) * 1500;
+      cometStartY = 500 + Math.random() * 500;
+      
+      const pos = comet.geometry.attributes.position.array as Float32Array;
+      pos[0] = cometStartX;
+      pos[1] = cometStartY;
+      pos[2] = 200;
+      comet.geometry.attributes.position.needsUpdate = true;
+      
+      setTimeout(triggerComet, 3000 + Math.random() * 3000);
+    }
+    setTimeout(triggerComet, 3000);
+
+    let frameCount = 0;
+    let lastFpsTime = performance.now();
+
+    function animate(time: number) {
+      if (!prefersReducedMotion) {
+        requestAnimationFrame(animate);
+      }
+
+      // FPS tracking
+      frameCount++;
+      if (time - lastFpsTime >= 1000) {
+        // console.debug(`HeroCanvas FPS: ${frameCount}`);
+        frameCount = 0;
+        lastFpsTime = time;
+      }
+
+      if (!isVisible || isOffscreen) return;
+      
+      const delta = (time - lastTime) / 1000;
+      lastTime = time;
+
+      targetX = mouseX * 0.5;
+      targetY = mouseY * 0.5;
+
+      camera.position.x += (targetX - camera.position.x) * 0.05;
+      camera.position.y += (-targetY - camera.position.y) * 0.05;
+      camera.lookAt(scene.position);
+
+      const t = time * 0.0001;
+      particles.rotation.y = t * 0.5;
+      particles.rotation.z = t * 0.3;
+
+      if (cometActive) {
+        cometTime += delta * 1000;
+        const progress = cometTime / cometDuration;
+        
+        if (progress >= 1) {
+          cometActive = false;
+          cometMat.opacity = 0;
+        } else {
+          const pos = comet.geometry.attributes.position.array as Float32Array;
+          pos[0] = cometStartX - progress * 1500; // moves left
+          pos[1] = cometStartY - progress * 1000; // moves down
+          comet.geometry.attributes.position.needsUpdate = true;
+          
+          // Fade in and out
+          cometMat.opacity = progress < 0.2 ? progress * 5 : (1 - progress) * 1.25;
+        }
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    if (prefersReducedMotion) {
+      renderer.render(scene, camera);
+    } else {
+      requestAnimationFrame(animate);
+    }
+  }
+
+  // Astro page loaded.
+  initHeroCanvas();
+</script>
+
+<style>
+  #hero-canvas-container {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+</style>
