@@ -8,6 +8,20 @@ astro dev --background
 
 Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
 
+### Astro Client-Side i18n Pattern
+This project relies on client-side DOM replacement (`updateDOM()`) for translations, because static Astro builds cannot access `localStorage` for the active language. 
+- **Rule:** Never pass static translated strings as props to components (e.g., `<FAQ title={t('key')} />`). 
+- **Solution:** Always pass the translation *key* as a prop (e.g., `<FAQ titleKey="faq.idx.title" />`) and bind that key to a `data-i18n` attribute inside the component's HTML (`<span data-i18n={titleKey}>`).
+
+### Vite Dynamic Import Caching
+When working with large lazy-loaded modules (like `Tone.js`), Vite's dev server cache (`.vite/deps`) can fall out of sync during long development sessions, causing `Failed to fetch dynamically imported module` errors in the browser. 
+- **Rule:** If dynamic imports fail with a 404/Network error, do not rewrite the code. Force a Vite dev server restart by touching `astro.config.mjs` to clear the cache.
+
+### Web Audio User Gesture Enforcement
+Modern browsers strictly enforce user gestures for AudioContext. 
+- **Rule:** When dynamically importing audio synthesizers (like `Tone.js` or `sonic-flow`), the asynchronous `await import()` yields the event loop, which causes the browser to expire the user gesture token. 
+- **Solution:** Always invoke `AudioContext.resume()` *synchronously* inside the click handler before the `await import()`. Wrap subsequent synthesizer initializations (like `Tone.start()`) in protective `try/catch` blocks so they don't crash if the browser rejects them.
+
 ## Documentation
 
 Full documentation: https://docs.astro.build
