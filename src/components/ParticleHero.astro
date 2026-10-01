@@ -1,265 +1,44 @@
 ---
-// Canvas 2D Hero Component
 import FloatingKeyboard from './FloatingKeyboard.astro';
 ---
 
-<section class="hero-section" aria-labelledby="hero-heading">
-  <div class="canvas-container">
-    <canvas id="starfield" aria-hidden="true"></canvas>
-  </div>
-  
-  <div class="hero-content">
-    <div class="keyboard-animation-wrapper">
+<section class="keyboard-hero-section bg-[#0f0f0f] border-b border-[#222]" aria-labelledby="hero-heading">
+  <div class="hero-content flex flex-col items-center justify-center h-full w-full px-6 py-16 md:py-24 z-10 relative">
+    
+    <div class="mb-10 text-center max-w-3xl flex flex-col items-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-neutral-800 bg-neutral-900 text-xs font-medium text-neutral-400 mb-6">
+        <span class="w-2 h-2 rounded-full bg-[#0072F5]"></span>
+        Interactive Keyboard Engine
+      </div>
+      
+      <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-tight text-white mb-6" data-i18n="hero.title">
+        Test your typing speed
+      </h1>
+      <p class="text-lg text-neutral-400 max-w-2xl mb-8" data-i18n="hero.subtitle">
+        Free typing test. No account needed.
+      </p>
+      
+      <a href="#typing-test-container" class="inline-flex items-center justify-center px-8 h-12 text-base rounded-full bg-white text-black font-semibold hover:bg-neutral-200 transition-colors" data-i18n="hero.cta">
+        Start typing
+      </a>
+    </div>
+
+    <div class="w-full max-w-[1000px] mt-8 mb-4">
       <FloatingKeyboard />
     </div>
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[rgba(0,0,0,0.08)] dark:border-[rgba(255,255,255,0.1)] bg-[rgba(255,255,255,0.8)] dark:bg-[rgba(255,255,255,0.05)] text-xs font-medium text-ds-text-secondary mb-6 shadow-sm">
-      <span class="w-2 h-2 rounded-full bg-accent"></span>
-      Instant Typing Engine v2
-    </div>
-    <h1 id="hero-heading" class="text-4xl sm:text-5xl md:text-6xl font-semibold tracking-[-0.03em] text-ds-text-primary max-w-3xl mx-auto mb-6" data-i18n="hero.title">
-      Test your typing speed
-    </h1>
-    <p class="text-lg text-ds-text-secondary max-w-2xl mx-auto mb-8 leading-relaxed" data-i18n="hero.subtitle">
-      Free typing test. No account needed.
-    </p>
-    <a href="#typing-test-container" class="btn-primary px-8 h-12 text-base rounded-full shadow-lg hover:shadow-xl transition-all" data-i18n="hero.cta">
-      Start typing
-    </a>
+    
   </div>
 </section>
 
 <style>
-  .hero-section {
+  .keyboard-hero-section {
     position: relative;
     width: 100%;
-    /* Reserve exact height for CLS 0 */
-    min-height: 800px;
+    min-height: 90vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 80px 24px;
     overflow: hidden;
-    border-bottom: 1px solid var(--border);
-  }
-  
-  .canvas-container {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-  }
-  
-  #starfield {
-    width: 100%;
-    height: 100%;
-    display: block;
-  }
-  
-  .hero-content {
-    position: relative;
-    z-index: 10;
-    text-align: center;
-    /* anime.js will stagger this in for children */
   }
 </style>
-
-<script>
-  import { animate, stagger } from 'animejs';
-
-  // Hero stagger animation using Anime.js
-  document.addEventListener('DOMContentLoaded', () => {
-    animate('.hero-content > *', {
-      translateY: [20, 0],
-      opacity: [0, 1],
-      easing: 'easeOutCubic',
-      duration: 600,
-      delay: stagger(100, {start: 100})
-    });
-  });
-
-  const canvas = document.getElementById('starfield') as HTMLCanvasElement;
-  
-  if (canvas) {
-    // alpha:true so the MoonlitBackground shader can show through in dark mode.
-    // Light mode still paints an opaque #FAFAFA fill every frame, so it looks identical.
-    const ctx = canvas.getContext('2d', { alpha: true });
-    let width = 0;
-    let height = 0;
-    let dpr = 1;
-
-    let isVisible = true;
-    let isOffscreen = false;
-    let isTyping = false;
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    
-    // Parallax target
-    let mouseX = 0;
-    let mouseY = 0;
-    let currentX = 0;
-    let currentY = 0;
-
-    // Stars
-    const numStars = 200;
-    const stars: {x: number, y: number, z: number, r: number, alpha: number, speed: number}[] = [];
-    
-    // Comets
-    const comets: {x: number, y: number, length: number, angle: number, speed: number, alpha: number, active: boolean, timer: number}[] = [];
-    for (let i = 0; i < 3; i++) {
-      comets.push({x: 0, y: 0, length: 0, angle: 0, speed: 0, alpha: 0, active: false, timer: Math.random() * 5000});
-    }
-
-    // Initialize stars
-    function initStars() {
-      stars.length = 0;
-      for (let i = 0; i < numStars; i++) {
-        stars.push({
-          x: (Math.random() - 0.5) * 2000,
-          y: (Math.random() - 0.5) * 2000,
-          z: Math.random() * 2 + 0.1,
-          r: Math.random() * 1.5 + 0.5,
-          alpha: Math.random(),
-          speed: (Math.random() * 0.02 + 0.005)
-        });
-      }
-    }
-
-    function resize() {
-      const rect = canvas.parentElement!.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
-      dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap DPR at 2
-      canvas.width = width * dpr;
-      canvas.height = height * dpr;
-      ctx?.scale(dpr, dpr);
-      if (prefersReducedMotion) {
-        draw(0); // Draw once if reduced motion
-      }
-    }
-
-    window.addEventListener('resize', resize);
-    document.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseY = (e.clientY / window.innerHeight) * 2 - 1;
-    }, { passive: true });
-
-    document.addEventListener('visibilitychange', () => {
-      isVisible = document.visibilityState === 'visible';
-    });
-
-    const observer = new IntersectionObserver((entries) => {
-      isOffscreen = !entries[0].isIntersecting;
-    });
-    observer.observe(canvas.parentElement!);
-
-    // Listen for typing state to pause animation
-    window.addEventListener('typing-start', () => { isTyping = true; });
-    window.addEventListener('typing-stop', () => { isTyping = false; });
-    window.addEventListener('typing-reset', () => { isTyping = false; });
-
-    let lastTime = 0;
-
-    function draw(time: number) {
-      if (!ctx) return;
-      const dt = lastTime ? time - lastTime : 16;
-      lastTime = time;
-
-      const isDark = document.documentElement.classList.contains('dark');
-      if (isDark) {
-        // Clear (not fill) so the fixed MoonlitBackground canvas shows through the hero.
-        ctx.clearRect(0, 0, width, height);
-      } else {
-        ctx.fillStyle = '#FAFAFA';
-        ctx.fillRect(0, 0, width, height);
-      }
-
-      const isPaused = !isVisible || isOffscreen || isTyping;
-
-      if (!isPaused && !prefersReducedMotion) {
-        // Smooth parallax
-        currentX += (mouseX - currentX) * 0.05;
-        currentY += (mouseY - currentY) * 0.05;
-
-        // Update comets
-        for (let i = 0; i < comets.length; i++) {
-          const c = comets[i];
-          if (c.active) {
-            c.x += Math.cos(c.angle) * c.speed * dt;
-            c.y += Math.sin(c.angle) * c.speed * dt;
-            c.alpha -= dt * 0.001; // fade out
-            if (c.alpha <= 0 || c.x < -100 || c.y > height + 100) {
-              c.active = false;
-              c.timer = Math.random() * 4000 + 1000;
-            }
-          } else {
-            c.timer -= dt;
-            if (c.timer <= 0) {
-              c.active = true;
-              c.x = width + Math.random() * 200;
-              c.y = (Math.random() - 0.5) * height;
-              c.angle = Math.PI + (Math.random() - 0.5) * 0.2; // moving leftish
-              c.speed = 0.5 + Math.random() * 1;
-              c.length = 100 + Math.random() * 200;
-              c.alpha = 1;
-            }
-          }
-        }
-      }
-
-      ctx.save();
-      ctx.translate(width / 2, height / 2);
-
-      // Draw stars
-      const starColor = isDark ? '255, 255, 255' : '0, 114, 245';
-      const starBaseColor = isDark ? '255, 255, 255' : '0, 0, 0';
-      
-      for (let i = 0; i < stars.length; i++) {
-        const s = stars[i];
-        if (!isPaused && !prefersReducedMotion) {
-          s.alpha += s.speed;
-        }
-        const tw = (Math.sin(s.alpha) * 0.5 + 0.5) * 0.8 + 0.2; // 0.2 - 1.0 twinkle
-
-        const px = s.x - currentX * 50 * s.z;
-        const py = s.y - currentY * 50 * s.z;
-
-        // Only draw if on screen
-        if (px > -width/2 - 10 && px < width/2 + 10 && py > -height/2 - 10 && py < height/2 + 10) {
-          ctx.beginPath();
-          ctx.arc(px, py, s.r, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(${starBaseColor}, ${tw * (isDark ? 0.6 : 0.2)})`;
-          ctx.fill();
-        }
-      }
-      ctx.restore();
-
-      // Draw comets
-      for (let i = 0; i < comets.length; i++) {
-        const c = comets[i];
-        if (c.active) {
-          const tailX = c.x - Math.cos(c.angle) * c.length;
-          const tailY = c.y - Math.sin(c.angle) * c.length;
-          const grad = ctx.createLinearGradient(c.x, c.y, tailX, tailY);
-          grad.addColorStop(0, `rgba(${starColor}, ${c.alpha})`);
-          grad.addColorStop(1, `rgba(${starColor}, 0)`);
-          
-          ctx.beginPath();
-          ctx.moveTo(c.x, c.y);
-          ctx.lineTo(tailX, tailY);
-          ctx.strokeStyle = grad;
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
-        }
-      }
-
-      if (!prefersReducedMotion) {
-        requestAnimationFrame(draw);
-      }
-    }
-
-    initStars();
-    resize();
-    if (!prefersReducedMotion) {
-      requestAnimationFrame(draw);
-    }
-  }
-</script>
