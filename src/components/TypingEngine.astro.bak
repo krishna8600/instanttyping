@@ -408,7 +408,7 @@ const {
       autocapitalize="off"
       spellcheck="false"
       class="absolute opacity-0 pointer-events-none -top-10 left-0 h-1 w-1"
-      tabindex="-1"
+      aria-hidden="true"
     />
   </div>
 
@@ -753,15 +753,6 @@ const {
 </div>
 
 <script>
-  if ((window as any).__typingEngineCleanup) {
-    (window as any).__typingEngineCleanup();
-  }
-  const __activeTimeouts: number[] = [];
-  const safeSetTimeout = (cb: TimerHandler, ms?: number) => {
-    const id = setTimeout(cb, ms) as any;
-    __activeTimeouts.push(id);
-    return id;
-  };
   import { animate } from "animejs";
   import { getLanguage, updateDOM, t } from "../i18n";
   import {
@@ -1459,7 +1450,7 @@ const {
 
       resultsPanel.classList.remove("hidden");
       // Natural scroll to results
-      safeSetTimeout(() => {
+      setTimeout(() => {
         resultsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
     }
@@ -1773,7 +1764,7 @@ const {
       dispatchNextChar();
     }
 
-    function handleKeydown(e: KeyboardEvent) {
+    window.addEventListener("keydown", (e) => {
       // Tab or Tab+Enter to restart
       if (e.key === "Tab") {
         e.preventDefault();
@@ -1831,12 +1822,8 @@ const {
           e.preventDefault();
           handleCharacterInput(" ");
         }
-        if (testActive && (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight")) {
-          e.preventDefault();
-        }
       }
-    }
-    window.addEventListener("keydown", handleKeydown);
+    });
 
     // Item 1: Window resize & ResizeObserver for zoom / container changes
     function onLayoutChange() {
@@ -1847,15 +1834,14 @@ const {
 
     window.addEventListener("resize", onLayoutChange);
 
-    let resizeObserver: ResizeObserver | null = null;
     if (typeof ResizeObserver !== "undefined" && typingDisplay) {
-      resizeObserver = new ResizeObserver(onLayoutChange);
+      const resizeObserver = new ResizeObserver(onLayoutChange);
       resizeObserver.observe(typingDisplay);
     }
 
     // Item 2: Gate measurement on document.fonts.ready with 350ms fallback timeout
     if (document.fonts && document.fonts.ready) {
-      const timeoutPromise = new Promise<void>((resolve) => safeSetTimeout(resolve as TimerHandler, 350));
+      const timeoutPromise = new Promise<void>((resolve) => setTimeout(resolve, 350));
       Promise.race([document.fonts.ready, timeoutPromise]).then(() => {
         onLayoutChange();
       });
@@ -1864,7 +1850,7 @@ const {
       });
     }
 
-    function handleInput(e: Event) {
+    hiddenInput.addEventListener("input", (e: Event) => {
       const inputEv = e as InputEvent;
 
       if (
@@ -1890,8 +1876,7 @@ const {
       }
 
       hiddenInput.value = currentInput;
-    }
-    hiddenInput.addEventListener("input", handleInput);
+    });
 
 
     modeBtns.forEach((btn) => {
@@ -2025,7 +2010,7 @@ const {
       resetTest();
     });
 
-    function handleLanguageChange(e: any) {
+    window.addEventListener("instanttyping:languagechange", (e: any) => {
       const lang = e.detail?.language;
       if (!testActive) {
         if (["top200", "es", "fr", "de", "pt", "it"].includes(currentWordbankName)) {
@@ -2078,8 +2063,7 @@ const {
           }
         }
       }
-    }
-    window.addEventListener("instanttyping:languagechange", handleLanguageChange);
+    });
 
     restartBtn.addEventListener("click", resetTest);
     btnModalRestart.addEventListener("click", resetTest);
@@ -2285,23 +2269,6 @@ const {
 
     resetTest();
     // Auto-focus on load so user can start typing immediately
-    safeSetTimeout(() => focusTyping(), 50);
-
-    const cleanup = () => {
-      window.removeEventListener("keydown", handleKeydown);
-      window.removeEventListener("resize", onLayoutChange);
-      window.removeEventListener("instanttyping:languagechange", handleLanguageChange);
-      if (hiddenInput) {
-        hiddenInput.removeEventListener("focus", focusTyping);
-        hiddenInput.removeEventListener("blur", blurTyping);
-        hiddenInput.removeEventListener("input", handleInput);
-      }
-      if (resizeObserver) {
-        resizeObserver.disconnect();
-      }
-      __activeTimeouts.forEach(clearTimeout);
-    };
-    (window as any).__typingEngineCleanup = cleanup;
-    document.addEventListener("astro:before-swap", cleanup, { once: true });
+    setTimeout(() => focusTyping(), 50);
   }
 </script>

@@ -5,17 +5,36 @@
     inset: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 0;
+    /* Constant across both themes, never a value the html.dark toggle changes.
+       Re-layering a WebGL canvas mid-flight can composite one black frame,
+       because the context is created with preserveDrawingBuffer: false and the
+       not-yet-drawn buffer reads as opaque black. Sitting behind in-flow content
+       in *both* themes keeps a theme flip to shader uniforms only. */
+    z-index: -1;
     pointer-events: none;
-    display: none;
+    display: block;
+    /* Kept unconditionally (not scoped to html.dark) so that a theme flip never
+       snaps the filter on/off mid cross-fade. hue-rotate() is an identity matrix
+       for neutral greys, and the daylight palette below is strictly monochrome,
+       so it only ever affects the moonlit palette. */
     filter: hue-rotate(175deg);
   }
-  html.dark #moonlit-bg { display: block; }
+  /* A z-index: -1 canvas paints before the body background, so the body must not
+     be opaque or the water is invisible in light mode. global.css already gives
+     <html> `background: var(--bg)` (#FAFAFA / #000), which stays as the base
+     layer and doubles as the no-WebGL fallback. Both selectors are needed to beat
+     global.css `body { background }` (0,0,1) and Tailwind's `.bg-[#FAFAFA]`
+     utility (0,1,0) on Layout.astro's <body>; (0,1,2) wins over both.
+     global.css's html.dark header/main/footer { z-index: 1 } is left in place and
+     stays correct — it simply paints above a -1 canvas as well. */
+  html.dark body,
+  html:not(.dark) body { background: transparent; }
 </style>
 <script>
 (function () {
   var canvas = document.getElementById('moonlit-bg') as HTMLCanvasElement | null;
   if (!canvas) return;
+  var win = window as Window & { __moonlitBgThemeObserver?: MutationObserver };
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var gl = canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false });
   if (!gl) return;
@@ -34,6 +53,7 @@
     'uniform vec2 u_mouse;',
     'uniform float u_tilt;',
     'uniform float u_waves;',
+    'uniform float u_daylight;',
     '',
     '#define PI 3.14159265359',
     '#define WAVE_LAYERS 7',
@@ -76,10 +96,15 @@
     '',
     'vec3 skyColor(vec3 rd) {',
     '  vec3 md = moonDir();',
-    '  vec3 skyDark = vec3(0.06, 0.03, 0.02);',
-    '  vec3 skyHoriz = vec3(0.09, 0.05, 0.04);',
+    // u_daylight = 0 keeps the moonlit palette bit-identical; 1 is the daylight
+    // sibling: neutral monochrome greys, so the CSS hue-rotate() is a no-op.
+    // Daylight needs the same sky-to-water separation dark mode gets for free
+    // from luminance alone: a near-white horizon (0.96) over a mid-grey zenith
+    // (0.72) above a much darker sea base (0.58), so the horizon still reads.
+    '  vec3 skyDark = mix(vec3(0.06, 0.03, 0.02), vec3(0.72), u_daylight);',
+    '  vec3 skyHoriz = mix(vec3(0.09, 0.05, 0.04), vec3(0.96), u_daylight);',
     '  vec3 sky = mix(skyHoriz, skyDark, max(rd.y, 0.0));',
-    '  vec3 moonCol = vec3(0.98, 0.92, 0.85);',
+    '  vec3 moonCol = mix(vec3(0.98, 0.92, 0.85), vec3(1.0), u_daylight);',
     '  float moonDot = max(dot(rd, md), 0.0);',
     '  float moonAngle = acos(clamp(moonDot, 0.0, 1.0));',
     '  float moonRadius = 0.04;',
@@ -94,10 +119,14 @@
     '    float darkening = 1.0 - crater * smoothstep(moonRadius * 0.9, moonRadius * 0.4, moonAngle);',
     '    float limb = smoothstep(0.0, moonRadius, moonAngle);',
     '    darkening *= mix(1.0, 0.7, limb * limb);',
-    '    sky += moonCol * disc * 0.85 * darkening;',
+    '    sky += moonCol * disc * 0.85 * darkening * (1.0 - u_daylight);',
     '  }',
-    '  sky += moonCol * 0.25 * pow(moonDot, 40.0) * u_moonGlow;',
-    '  sky += moonCol * 1.2 * pow(moonDot, 400.0) * u_moonGlow;',
+    // At noon the sun is a broad diffuse shimmer, not a hard disc: both glows
+    // are dimmed and widened so the water gets a soft white sparkle.
+    '  float glowWide = mix(0.25, 0.09, u_daylight);',
+    '  float glowTight = mix(1.2, 0.28, u_daylight);',
+    '  sky += moonCol * glowWide * pow(moonDot, 40.0) * u_moonGlow;',
+    '  sky += moonCol * glowTight * pow(moonDot, 400.0) * u_moonGlow;',
     '  return sky;',
     '}',
     '',
@@ -113,7 +142,7 @@
     '  vec3 vv = normalize(cross(ww, uu));',
     '  vec3 rd = normalize(uv.x * uu + uv.y * vv + 2.5 * ww);',
     '  vec3 md = moonDir();',
-    '  vec3 moonCol = vec3(0.98, 0.92, 0.85);',
+    '  vec3 moonCol = mix(vec3(0.98, 0.92, 0.85), vec3(1.0), u_daylight);',
     '  vec3 sky = skyColor(rd);',
     '  vec3 col = sky;',
     '  float dsea = -ro.y / rd.y;',
@@ -145,12 +174,18 @@
     '    fre = pow(fre, 3.0);',
     '    float dif = mix(0.25, 1.0, max(dot(nor, md), 0.0));',
     '    vec3 refl = skyColor(reflect(rd, nor));',
-    '    vec3 seaCol1 = vec3(0.05, 0.02, 0.01);',
-    '    vec3 seaCol2 = vec3(0.10, 0.06, 0.04);',
-    '    vec3 refr = seaCol1 + dif * moonCol * seaCol2 * 0.15 * u_moonGlow;',
+    '    vec3 seaCol1 = mix(vec3(0.05, 0.02, 0.01), vec3(0.58), u_daylight);',
+    '    vec3 seaCol2 = mix(vec3(0.10, 0.06, 0.04), vec3(0.95), u_daylight);',
+    // The pow(col, 0.85) tail lifts everything toward white, so the daylight sea
+    // needs a lower diffuse gain to sit below the sky, but a near-moonlit crest
+    // gain for the ripple to read as glitter instead of flat haze. Both gains
+    // are 1:1 at u_daylight = 0, leaving the moonlit water untouched.
+    '    float difGain = mix(0.15, 0.12, u_daylight);',
+    '    float crestGain = mix(1.5, 1.1, u_daylight);',
+    '    vec3 refr = seaCol1 + dif * moonCol * seaCol2 * difGain * u_moonGlow;',
     '    col = mix(refr, 0.9 * refl, fre);',
     '    float atten = max(1.0 - dsea * dsea * 0.0005, 0.0);',
-    '    col += seaCol2 * (wp.y - h) * 1.5 * atten;',
+    '    col += seaCol2 * (wp.y - h) * crestGain * atten;',
     '    col = mix(col, sky, 1.0 - exp(-0.008 * dsea));',
     '  }',
     '  col = pow(max(col, vec3(0.0)), vec3(0.85));',
@@ -192,11 +227,42 @@
   var uMouse = gl.getUniformLocation(prog, 'u_mouse');
   var uTilt = gl.getUniformLocation(prog, 'u_tilt');
   var uWaves = gl.getUniformLocation(prog, 'u_waves');
+  var uDaylight = gl.getUniformLocation(prog, 'u_daylight');
 
   var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   var needsResize = true;
   var running = true;
   var mouseX = -1.0, mouseY = -1.0;
+  var lastTime = 0;
+
+  // --- Theme -> palette blend -------------------------------------------
+  // 0.0 = moonlit water (html.dark), 1.0 = daylight water (light mode).
+  var DAYLIGHT_FADE_MS = 420;
+  function readTheme(): number {
+    return document.documentElement.classList.contains('dark') ? 0.0 : 1.0;
+  }
+  var daylightTarget: number = readTheme();
+  var daylight: number = daylightTarget;
+  var daylightFrom: number = daylight;
+  var fadeStart = 0;
+
+  // Eased (smoothstep) so the palette never eases linearly into place.
+  // Reads the clock itself instead of taking the rAF timestamp: fadeStart comes
+  // from performance.now() in the MutationObserver, and a rAF timestamp is the
+  // *start* of the current frame, so on a slow frame it can predate fadeStart.
+  // A negative p would stall the fade and, unclamped, overshoot past the target
+  // palette, so p is clamped to [0, 1].
+  function applyDaylight() {
+    if (!gl) return;
+    if (prefersReduced) {
+      daylight = daylightTarget;
+    } else if (daylight !== daylightTarget) {
+      var p = fadeStart === 0 ? 1 : (performance.now() - fadeStart) / DAYLIGHT_FADE_MS;
+      if (p >= 1) daylight = daylightTarget;
+      else if (p > 0) daylight = daylightFrom + (daylightTarget - daylightFrom) * (p * p * (3 - 2 * p));
+    }
+    gl.uniform1f(uDaylight, daylight);
+  }
 
   function resize() {
     if (!canvas || !gl) return;
@@ -225,16 +291,53 @@
     if (!gl) return;
     if (needsResize) resize();
     setStaticUniforms();
-    gl.uniform1f(uTime, prefersReduced ? 0.0 : now * 0.001);
+    
+    // Pause animation when typing
+    var timeToUse = isTyping ? lastTime : now;
+    if (!isTyping) lastTime = now;
+    
+    applyDaylight();
+    gl.uniform1f(uTime, prefersReduced ? 0.0 : timeToUse * 0.001);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
     requestAnimationFrame(render);
   }
 
   window.addEventListener('resize', function () { needsResize = true; });
   document.addEventListener('visibilitychange', function () { running = !document.hidden; });
-  // Re-size when the theme toggle flips html.dark (canvas was display:none in light mode)
-  new MutationObserver(function () { needsResize = true; })
-    .observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  
+  // Pause starfield/water when typing
+  var isTyping = false;
+  window.addEventListener('typing-start', function () { isTyping = true; });
+  window.addEventListener('typing-stop', function () { isTyping = false; });
+  window.addEventListener('typing-reset', function () { isTyping = false; });
+
+  // Watch the theme toggle flipping html.dark and cross-fade the palette in the
+  // existing rAF loop — the canvas, context and program are never re-created,
+  // so there is no frame of unstyled/black canvas in between.
+  function onThemeChange() {
+    var next = readTheme();
+    if (next === daylightTarget) return;
+    daylightFrom = daylight;
+    daylightTarget = next;
+    fadeStart = prefersReduced ? 0 : performance.now();
+    if (prefersReduced) {
+      // No animation loop in reduced-motion mode: repaint exactly one still frame.
+      // Scheduled inside a frame so the drawing buffer actually gets composited
+      // (the context is created with preserveDrawingBuffer: false).
+      requestAnimationFrame(function () {
+        if (!gl) return;
+        setStaticUniforms();
+        applyDaylight();
+        gl.uniform1f(uTime, 0.0);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      });
+    }
+  }
+  var prevObserver = win.__moonlitBgThemeObserver;
+  if (prevObserver) prevObserver.disconnect();
+  var themeObserver = new MutationObserver(onThemeChange);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+  win.__moonlitBgThemeObserver = themeObserver;
 
   // Mouse ripple listens on window (canvas has pointer-events:none as a background)
   window.addEventListener('mousemove', function (e) {
@@ -268,6 +371,7 @@
   if (prefersReduced) {
     // Reduced motion: paint ONE static frame, no animation loop
     setStaticUniforms();
+    applyDaylight();
     gl.uniform1f(uTime, 0.0);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
   } else {

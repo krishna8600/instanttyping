@@ -42,3 +42,12 @@ import FloatingKeyboard from './FloatingKeyboard.astro';
     overflow: hidden;
   }
 </style>
+
+<script>
+  // Re-add window listeners for typing-start/typing-stop/typing-reset that set isTyping to pause the starfield
+  // (The actual starfield rendering logic has moved to MoonlitBackground.astro, which now shares this state)
+  let isTyping = false;
+  window.addEventListener('typing-start', () => { isTyping = true; });
+  window.addEventListener('typing-stop', () => { isTyping = false; });
+  window.addEventListener('typing-reset', () => { isTyping = false; });
+</script>
