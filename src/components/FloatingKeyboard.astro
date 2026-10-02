@@ -1,312 +1,536 @@
 ---
 // FloatingKeyboard.astro
-// Rebuilt as a strict, high-performance dark monochrome interactive keyboard.
 ---
 
-<div class="keyboard-container" id="interactive-hero-keyboard" aria-hidden="true">
-  <div class="keyboard-board">
+<div class="keyboard-wrapper" aria-hidden="true" id="3d-keyboard">
+  <div class="keyboard-underglow"></div>
+  <div class="keyboard-shadow"></div>
+  <div class="keyboard-board" id="kb-board">
     
-    <!-- Row 1 -->
     <div class="kb-row">
-      <div class="kb-key" data-code="Backquote">`</div>
-      <div class="kb-key" data-code="Digit1">1</div>
-      <div class="kb-key" data-code="Digit2">2</div>
-      <div class="kb-key" data-code="Digit3">3</div>
-      <div class="kb-key" data-code="Digit4">4</div>
-      <div class="kb-key" data-code="Digit5">5</div>
-      <div class="kb-key" data-code="Digit6">6</div>
-      <div class="kb-key" data-code="Digit7">7</div>
-      <div class="kb-key" data-code="Digit8">8</div>
-      <div class="kb-key" data-code="Digit9">9</div>
-      <div class="kb-key" data-code="Digit0">0</div>
-      <div class="kb-key" data-code="Minus">-</div>
-      <div class="kb-key" data-code="Equal">=</div>
-      <div class="kb-key key-w-backspace" data-code="Backspace">Backspace</div>
+      {['1','2','3','4','5','6','7','8','9','0'].map(k => (
+        <div class="kb-key-container" data-key={k.toLowerCase()} style="--kw: 1">
+          <div class="kb-well"></div>
+          <div class="kb-body"></div>
+          <div class="kb-cap">{k}</div>
+        </div>
+      ))}
     </div>
     
-    <!-- Row 2 -->
     <div class="kb-row">
-      <div class="kb-key key-w-tab" data-code="Tab">Tab</div>
-      <div class="kb-key" data-code="KeyQ">Q</div>
-      <div class="kb-key" data-code="KeyW">W</div>
-      <div class="kb-key" data-code="KeyE">E</div>
-      <div class="kb-key" data-code="KeyR">R</div>
-      <div class="kb-key" data-code="KeyT">T</div>
-      <div class="kb-key" data-code="KeyY">Y</div>
-      <div class="kb-key" data-code="KeyU">U</div>
-      <div class="kb-key" data-code="KeyI">I</div>
-      <div class="kb-key" data-code="KeyO">O</div>
-      <div class="kb-key" data-code="KeyP">P</div>
-      <div class="kb-key" data-code="BracketLeft">[</div>
-      <div class="kb-key" data-code="BracketRight">]</div>
-      <div class="kb-key key-w-backslash" data-code="Backslash">\</div>
+      {['Q','W','E','R','T','Y','U','I','O','P'].map(k => (
+        <div class="kb-key-container" data-key={k.toLowerCase()} style="--kw: 1">
+          <div class="kb-well"></div>
+          <div class="kb-body"></div>
+          <div class="kb-cap">{k}</div>
+        </div>
+      ))}
     </div>
     
-    <!-- Row 3 -->
     <div class="kb-row">
-      <div class="kb-key key-w-caps" data-code="CapsLock">Caps</div>
-      <div class="kb-key" data-code="KeyA">A</div>
-      <div class="kb-key" data-code="KeyS">S</div>
-      <div class="kb-key" data-code="KeyD">D</div>
-      <div class="kb-key" data-code="KeyF">F</div>
-      <div class="kb-key" data-code="KeyG">G</div>
-      <div class="kb-key" data-code="KeyH">H</div>
-      <div class="kb-key" data-code="KeyJ">J</div>
-      <div class="kb-key" data-code="KeyK">K</div>
-      <div class="kb-key" data-code="KeyL">L</div>
-      <div class="kb-key" data-code="Semicolon">;</div>
-      <div class="kb-key" data-code="Quote">'</div>
-      <div class="kb-key key-w-enter" data-code="Enter">Enter</div>
+      {['A','S','D','F','G','H','J','K','L'].map(k => (
+        <div class="kb-key-container" data-key={k.toLowerCase()} style="--kw: 1">
+          <div class="kb-well"></div>
+          <div class="kb-body"></div>
+          <div class="kb-cap">{k}</div>
+        </div>
+      ))}
+      <div class="kb-key-container key-enter" data-key="enter" style="--kw: 1.75">
+        <div class="kb-well"></div>
+        <div class="kb-body"></div>
+        <div class="kb-cap">Enter</div>
+      </div>
     </div>
     
-    <!-- Row 4 -->
     <div class="kb-row">
-      <div class="kb-key key-w-lshift" data-code="ShiftLeft">Shift</div>
-      <div class="kb-key" data-code="KeyZ">Z</div>
-      <div class="kb-key" data-code="KeyX">X</div>
-      <div class="kb-key" data-code="KeyC">C</div>
-      <div class="kb-key" data-code="KeyV">V</div>
-      <div class="kb-key" data-code="KeyB">B</div>
-      <div class="kb-key" data-code="KeyN">N</div>
-      <div class="kb-key" data-code="KeyM">M</div>
-      <div class="kb-key" data-code="Comma">,</div>
-      <div class="kb-key" data-code="Period">.</div>
-      <div class="kb-key" data-code="Slash">/</div>
-      <div class="kb-key key-w-rshift" data-code="ShiftRight">Shift</div>
+      {['Z','X','C','V','B','N','M'].map(k => (
+        <div class="kb-key-container" data-key={k.toLowerCase()} style="--kw: 1">
+          <div class="kb-well"></div>
+          <div class="kb-body"></div>
+          <div class="kb-cap">{k}</div>
+        </div>
+      ))}
     </div>
     
-    <!-- Row 5 -->
     <div class="kb-row">
-      <div class="kb-key key-w-ctrl" data-code="ControlLeft">Ctrl</div>
-      <div class="kb-key key-w-meta" data-code="MetaLeft">Win</div>
-      <div class="kb-key key-w-alt" data-code="AltLeft">Alt</div>
-      <div class="kb-key key-w-space" data-code="Space"></div>
-      <div class="kb-key key-w-alt" data-code="AltRight">Alt</div>
-      <div class="kb-key key-w-meta" data-code="MetaRight">Win</div>
-      <div class="kb-key key-w-menu" data-code="ContextMenu">Fn</div>
-      <div class="kb-key key-w-ctrl" data-code="ControlRight">Ctrl</div>
+      <div class="kb-key-container" data-key="controlleft" style="--kw: 1.25">
+        <div class="kb-well"></div>
+        <div class="kb-body"></div>
+        <div class="kb-cap text-xs">ctrl</div>
+      </div>
+      <div class="kb-key-container" data-key="altleft" style="--kw: 1.25">
+        <div class="kb-well"></div>
+        <div class="kb-body"></div>
+        <div class="kb-cap text-xs">alt</div>
+      </div>
+      <div class="kb-key-container" data-key="space" style="--kw: 5.5">
+        <div class="kb-well"></div>
+        <div class="kb-body"></div>
+        <div class="kb-cap"></div>
+      </div>
+      <div class="kb-key-container" data-key="altright" style="--kw: 1.25">
+        <div class="kb-well"></div>
+        <div class="kb-body"></div>
+        <div class="kb-cap text-xs">alt</div>
+      </div>
+      <div class="kb-key-container" data-key="controlright" style="--kw: 1.25">
+        <div class="kb-well"></div>
+        <div class="kb-body"></div>
+        <div class="kb-cap text-xs">ctrl</div>
+      </div>
     </div>
-    
+
   </div>
 </div>
 
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap');
-
-  .keyboard-container {
+  :root {
+    --kb-unit: 58px;
+    --kb-gap: 8px;
+  }
+  
+  .keyboard-wrapper {
+    perspective: 1400px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    perspective: 1000px;
-    padding: 1rem;
-    --kb-gap: 0.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    z-index: 10;
+    pointer-events: auto; /* Allow touch */
+    /* Container scaling for responsiveness */
+    transform-origin: center;
+  }
+  
+  /* Underglow */
+  .keyboard-underglow {
+    position: absolute;
+    width: 600px;
+    height: 200px;
+    background: #0072F5;
+    opacity: 0.15;
+    filter: blur(80px);
+    border-radius: 50%;
+    transform: rotateX(54deg) rotateZ(-7deg) translateZ(-50px);
+    pointer-events: none;
+  }
+  
+  /* Shadow */
+  .keyboard-shadow {
+    position: absolute;
+    width: 650px;
+    height: 280px;
+    background: rgba(0, 0, 0, 0.8);
+    filter: blur(30px);
+    border-radius: 50%;
+    transform: rotateX(54deg) rotateZ(-7deg) translateZ(-30px);
+    pointer-events: none;
   }
 
   .keyboard-board {
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(54deg) rotateZ(-7deg);
+    background: linear-gradient(#101010, #0a0a0a);
+    border: 1px solid #232323;
+    border-radius: 20px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     gap: var(--kb-gap);
-    background-color: #111;
-    padding: 1rem;
-    border-radius: 12px;
-    border: 1px solid #222;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-    width: 100%;
-    max-width: 900px;
-    /* Maintain a realistic aspect ratio */
+    box-shadow: inset 0 2px 5px rgba(255,255,255,0.05), 0 20px 40px rgba(0,0,0,0.8);
+    will-change: transform; /* optimized for animation */
   }
 
   .kb-row {
     display: flex;
+    justify-content: center;
     gap: var(--kb-gap);
-    width: 100%;
+    transform-style: preserve-3d;
   }
 
-  .kb-key {
+  .kb-key-container {
     position: relative;
-    flex: 1; /* Default width for standard 1u keys */
-    aspect-ratio: 1 / 1;
+    width: calc(var(--kb-unit) * var(--kw) + var(--kb-gap) * (var(--kw) - 1));
+    height: var(--kb-unit);
+    transform-style: preserve-3d;
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Well (bottom) */
+  .kb-well {
+    position: absolute;
+    inset: 0;
+    background: #050505;
+    border-radius: 10px;
+    transform: translateZ(0);
+  }
+
+  /* Body (middle) */
+  .kb-body {
+    position: absolute;
+    inset: 0;
+    background: #111;
+    border-radius: 10px;
+    transform: translateZ(8px);
+    border: 1px solid #1a1a1a;
+  }
+
+  /* Cap (top) */
+  .kb-cap {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(#2e2e2e, #181818);
+    border: 1px solid #383838;
+    border-radius: 10px;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.1);
+    transform: translateZ(16px);
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #1a1a1a;
-    border: 1px solid #333;
-    border-bottom-width: 3px;
-    border-bottom-color: #0f0f0f;
-    color: #a3a3a3;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(0.7rem, 1.5vw, 1rem);
-    border-radius: 6px;
+    color: #9a9a9a;
+    font-size: 15px;
+    font-weight: 500;
+    transition: transform 0.07s cubic-bezier(0.2, 0, 0, 1), box-shadow 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     overflow: hidden;
-    user-select: none;
-    cursor: pointer;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-    /* Strict GPU performance: transform and colors */
-    transition: background-color 0.1s, border-color 0.1s, transform 0.05s, color 0.1s;
-    transform: translateY(0);
-    will-change: transform, background-color;
+    isolation: isolate;
   }
-
-  /* Specific key widths based on standard ISO/ANSI standard */
-  .key-w-backspace { flex: 2; aspect-ratio: auto; justify-content: flex-end; padding-right: 0.75rem; }
-  .key-w-tab { flex: 1.5; aspect-ratio: auto; justify-content: flex-start; padding-left: 0.75rem; }
-  .key-w-backslash { flex: 1.5; aspect-ratio: auto; }
-  .key-w-caps { flex: 1.75; aspect-ratio: auto; justify-content: flex-start; padding-left: 0.75rem; }
-  .key-w-enter { flex: 2.25; aspect-ratio: auto; justify-content: flex-end; padding-right: 0.75rem; }
-  .key-w-lshift { flex: 2.25; aspect-ratio: auto; justify-content: flex-start; padding-left: 0.75rem; }
-  .key-w-rshift { flex: 2.75; aspect-ratio: auto; justify-content: flex-end; padding-right: 0.75rem; }
   
-  .key-w-ctrl, .key-w-meta, .key-w-alt, .key-w-menu { 
-    flex: 1.25; 
-    aspect-ratio: auto; 
-    font-size: clamp(0.6rem, 1vw, 0.8rem);
-  }
-  .key-w-space { flex: 6.25; aspect-ratio: auto; }
-
-  /* Active State (strictly #0072F5) */
-  .kb-key.active {
-    background-color: #0072F5;
-    border-color: #0072F5;
-    border-bottom-width: 1px; /* Press down effect */
-    transform: translateY(2px);
-    color: #ffffff;
-    box-shadow: 0 0 15px rgba(0, 114, 245, 0.4), inset 0 1px 0 rgba(255,255,255,0.2);
-  }
-
-  /* Ripple DOM Element */
-  .kb-ripple {
+  /* Blue glow overlay for pressed state - transitions opacity smoothly */
+  .kb-cap::after {
+    content: '';
     position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 20px;
-    height: 20px;
-    margin-top: -10px;
-    margin-left: -10px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    transform: scale(0);
-    opacity: 1;
+    inset: 0;
+    background: linear-gradient(#0072F5, #0056b3);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.2s ease;
     pointer-events: none;
+    z-index: -1;
   }
 
-  .kb-ripple-anim {
-    animation: ripple-effect 0.4s cubic-bezier(0.1, 0.9, 0.2, 1) forwards;
+  .text-xs {
+    font-size: 12px;
   }
 
-  @keyframes ripple-effect {
-    100% {
-      transform: scale(15);
-      opacity: 0;
+  /* Key pressed state: glow and depth */
+  .kb-key-container.pressed .kb-cap {
+    transform: translateZ(6px);
+    border-color: #3399ff;
+    color: #ffffff;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.3), 0 0 20px rgba(0, 114, 245, 0.7);
+  }
+
+  .kb-key-container.pressed .kb-cap::after {
+    opacity: 1;
+  }
+
+  /* Enter Key Exception */
+  .key-enter .kb-cap {
+    background: linear-gradient(#0072F5, #0056b3);
+    border-color: #3399ff;
+    color: white;
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.3), 0 0 15px rgba(0, 114, 245, 0.4);
+  }
+  
+  .key-enter.pressed .kb-cap {
+    box-shadow: inset 0 1px 2px rgba(255,255,255,0.3), 0 0 25px rgba(0, 114, 245, 0.8);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .kb-cap {
+      transition: box-shadow 0.01s ease, border-color 0.01s ease, color 0.01s ease !important;
+    }
+    .kb-cap::after {
+      transition: opacity 0.01s ease !important;
+    }
+    .kb-key-container.pressed .kb-cap {
+      transform: translateZ(6px) !important;
     }
   }
 
-  /* Accessibility: Prefers Reduced Motion */
-  @media (prefers-reduced-motion: reduce) {
-    .kb-ripple {
-      display: none !important;
+  @media (max-width: 768px) {
+    .keyboard-wrapper {
+      transform: scale(0.6);
+      margin-top: -3rem;
+      margin-bottom: -1rem;
     }
   }
   
-  @media (max-width: 640px) {
-    .keyboard-container {
-      --kb-gap: 0.25rem;
-      padding: 0.5rem;
-    }
-    .kb-key {
-      border-radius: 4px;
-      font-size: 0.6rem;
-    }
-    .key-w-backspace, .key-w-tab, .key-w-backslash, .key-w-caps, 
-    .key-w-enter, .key-w-lshift, .key-w-rshift {
-      font-size: 0.5rem;
-    }
-    .key-w-ctrl, .key-w-meta, .key-w-alt, .key-w-menu { 
-      font-size: 0.4rem;
+  @media (max-width: 480px) {
+    .keyboard-wrapper {
+      transform: scale(0.45);
+      margin-top: -4rem;
+      margin-bottom: -2rem;
     }
   }
 </style>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('interactive-hero-keyboard');
-    if (!container) return;
+  function initKeyboard() {
+    try {
+      console.log('[3D Keyboard]: Initializing...');
 
-    const keys = container.querySelectorAll('.kb-key');
-    const keyMap = new Map();
-    
-    // Map data-code to DOM element for O(1) lookup
-    keys.forEach(el => {
-      const code = el.getAttribute('data-code');
-      if (code) {
-        keyMap.set(code, el);
+      const wrapper = document.getElementById('3d-keyboard');
+      const board = document.getElementById('kb-board');
+      const keys = document.querySelectorAll('.kb-key-container');
+
+      if (!wrapper || !board) {
+        console.warn('[3D Keyboard Warning]: DOM elements #3d-keyboard or #kb-board not found!');
+        return;
       }
-    });
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      let isVisible = document.visibilityState === 'visible';
+      let isOffscreen = false;
+      let isTouch = false;
 
-    // Trigger ripple and active state
-    function pressKey(el: Element) {
-      el.classList.add('active');
-      
-      if (!prefersReducedMotion) {
-        const ripple = document.createElement('div');
-        ripple.className = 'kb-ripple kb-ripple-anim';
-        el.appendChild(ripple);
-        
-        // Clean up ripple element after animation
-        setTimeout(() => {
-          if (ripple.parentNode === el) {
-            el.removeChild(ripple);
-          }
-        }, 500);
-      }
-    }
+      // Base transforms
+      const baseRotX = 54;
+      const baseRotZ = -7;
 
-    function releaseKey(el: Element) {
-      el.classList.remove('active');
-    }
+      // Parallax & Bob State
+      let mouseX = 0;
+      let mouseY = 0;
+      let currentX = 0;
+      let currentY = 0;
+      let rAF: number;
+      let hasLoggedLoopStart = false;
 
-    // Keyboard Event Handlers
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.repeat) return; // Prevent continuous ripple on hold
-      const el = keyMap.get(e.code);
-      if (el) pressKey(el);
-    };
+      // Ghost Type State
+      let lastInteractionTime = Date.now();
+      let isGhostTyping = false;
+      const ghostPhrase = "instant typing";
+      let ghostIndex = 0;
+      let ghostTimeout: ReturnType<typeof setTimeout> | undefined;
 
-    const onKeyUp = (e: KeyboardEvent) => {
-      const el = keyMap.get(e.code);
-      if (el) releaseKey(el);
-    };
+      // Map keys for easy access
+      const keyMap = new Map<string, Element>();
+      keys.forEach(k => {
+        const dataKey = k.getAttribute('data-key');
+        if (dataKey) keyMap.set(dataKey, k);
+      });
 
-    // Touch/Mouse Event Handlers
-    keys.forEach(el => {
-      el.addEventListener('mousedown', () => pressKey(el));
-      el.addEventListener('mouseup', () => releaseKey(el));
-      el.addEventListener('mouseleave', () => releaseKey(el));
-      el.addEventListener('touchstart', (e) => {
-        e.preventDefault(); // Prevent double firing with mouse events
-        pressKey(el);
-      }, { passive: false });
-      el.addEventListener('touchend', () => releaseKey(el));
-      el.addEventListener('touchcancel', () => releaseKey(el));
-    });
+      // Code mapping
+      const codeToKey: Record<string, string> = {
+        'Space': 'space',
+        'Enter': 'enter',
+        'ControlLeft': 'controlleft',
+        'ControlRight': 'controlright',
+        'AltLeft': 'altleft',
+        'AltRight': 'altright'
+      };
 
-    // IntersectionObserver to pause keyboard listeners when hero is offscreen
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          window.addEventListener('keydown', onKeyDown);
-          window.addEventListener('keyup', onKeyUp);
+      // Per-key release timer and timestamp map to guarantee minimum 90ms visible glow
+      const MIN_GLOW_MS = 90;
+      const keyTimers = new Map<string, ReturnType<typeof setTimeout>>();
+      const keyPressTimes = new Map<string, number>();
+
+      const pressKey = (keyName: string) => {
+        const el = keyMap.get(keyName);
+        if (!el) return;
+
+        // Clear any pending release timer
+        const existingTimer = keyTimers.get(keyName);
+        if (existingTimer) {
+          clearTimeout(existingTimer);
+          keyTimers.delete(keyName);
+        }
+
+        keyPressTimes.set(keyName, performance.now());
+        el.classList.add('pressed');
+      };
+
+      const releaseKey = (keyName: string) => {
+        const el = keyMap.get(keyName);
+        if (!el) return;
+
+        const pressedAt = keyPressTimes.get(keyName) || 0;
+        const elapsed = performance.now() - pressedAt;
+        const remaining = Math.max(0, MIN_GLOW_MS - elapsed);
+
+        if (remaining > 0) {
+          const timer = setTimeout(() => {
+            el.classList.remove('pressed');
+            keyTimers.delete(keyName);
+            keyPressTimes.delete(keyName);
+          }, remaining);
+          keyTimers.set(keyName, timer);
         } else {
-          window.removeEventListener('keydown', onKeyDown);
-          window.removeEventListener('keyup', onKeyUp);
-          // Release any stuck keys
-          keys.forEach(releaseKey);
+          el.classList.remove('pressed');
+          keyTimers.delete(keyName);
+          keyPressTimes.delete(keyName);
+        }
+      };
+
+      const releaseAllKeys = () => {
+        keyTimers.forEach(timer => clearTimeout(timer));
+        keyTimers.clear();
+        keyPressTimes.clear();
+        keyMap.forEach(el => el.classList.remove('pressed'));
+      };
+
+      // 1. Key Mirroring Subsystem
+      window.addEventListener('keydown', (e) => {
+        if (e.repeat) return;
+
+        // Ignore if focus is inside another input/textarea/contenteditable (unless it's #hidden-typing-input)
+        const target = e.target as HTMLElement | null;
+        if (target && target.id !== 'hidden-typing-input') {
+          const tagName = target.tagName;
+          if (tagName === 'INPUT' || tagName === 'TEXTAREA' || target.isContentEditable) {
+            return;
+          }
+        }
+
+        // Ignore when Ctrl or Meta is held, or Alt (except AltGr where both Ctrl and Alt are pressed)
+        if (e.metaKey || (e.ctrlKey && !e.altKey) || (e.altKey && !e.ctrlKey)) {
+          return;
+        }
+
+        markInterrupted();
+        const keyName = codeToKey[e.code] || e.key.toLowerCase();
+        pressKey(keyName);
+      });
+
+      window.addEventListener('keyup', (e) => {
+        markInterrupted();
+        const keyName = codeToKey[e.code] || e.key.toLowerCase();
+        releaseKey(keyName);
+      });
+
+      // Window blur & document visibility safeguards against stuck keys
+      window.addEventListener('blur', releaseAllKeys);
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          releaseAllKeys();
         }
       });
-    }, { rootMargin: "0px", threshold: 0 });
 
-    observer.observe(container);
-  });
+      keys.forEach(k => {
+        k.addEventListener('pointerdown', (e: Event) => {
+          const pointerEvent = e as PointerEvent;
+          isTouch = pointerEvent.pointerType === 'touch';
+          markInterrupted();
+          k.classList.add('pressed');
+        });
+        k.addEventListener('pointerup', () => k.classList.remove('pressed'));
+        k.addEventListener('pointerleave', () => k.classList.remove('pressed'));
+      });
+
+      // 2. Parallax Subsystem
+      window.addEventListener('mousemove', (e) => {
+        if (isTouch || prefersReducedMotion) return;
+        mouseX = (e.clientX / window.innerWidth) * 2 - 1; // -1 to 1
+        mouseY = (e.clientY / window.innerHeight) * 2 - 1; // -1 to 1
+        markInterrupted();
+      });
+      // Visibility Guards
+      document.addEventListener('visibilitychange', () => {
+        isVisible = document.visibilityState === 'visible';
+      });
+
+      const observer = new IntersectionObserver((entries) => {
+        isOffscreen = !entries[0].isIntersecting;
+      });
+      observer.observe(wrapper);
+
+      // 3. Ghost Typing Subsystem
+      const typeGhostChar = () => {
+        if (!isGhostTyping) return;
+
+        if (ghostIndex >= ghostPhrase.length) {
+          ghostIndex = 0;
+          ghostTimeout = setTimeout(typeGhostChar, 3000);
+          return;
+        }
+
+        let char = ghostPhrase[ghostIndex];
+        if (char === ' ') char = 'space';
+
+        pressKey(char);
+        setTimeout(() => releaseKey(char), 100);
+
+        ghostIndex++;
+        ghostTimeout = setTimeout(typeGhostChar, 200 + Math.random() * 100);
+      };
+
+      const startGhostTyping = () => {
+        if (isGhostTyping || prefersReducedMotion) return;
+        isGhostTyping = true;
+        ghostIndex = 0;
+        typeGhostChar();
+      };
+
+      const stopGhostTyping = () => {
+        isGhostTyping = false;
+        clearTimeout(ghostTimeout);
+        releaseAllKeys();
+      };
+
+      let hasBeenInterrupted = false;
+
+      const checkGhost = () => {
+        const now = Date.now();
+        const idleTime = now - lastInteractionTime;
+        const threshold = hasBeenInterrupted ? 25000 : 3000;
+
+        if (!isGhostTyping && idleTime > threshold) {
+          startGhostTyping();
+        }
+      };
+
+      setInterval(checkGhost, 1000);
+
+      const markInterrupted = () => {
+        lastInteractionTime = Date.now();
+        hasBeenInterrupted = true;
+        stopGhostTyping();
+      };
+
+      wrapper.addEventListener('pointerdown', markInterrupted);
+      const animate = () => {
+        if (!isVisible || isOffscreen || prefersReducedMotion) {
+          rAF = requestAnimationFrame(animate);
+          return;
+        }
+
+        const now = Date.now();
+
+        // Lerp parallax
+        currentX += (mouseX - currentX) * 0.05;
+        currentY += (mouseY - currentY) * 0.05;
+
+        // Max tilt ±6deg
+        const rotY = currentX * 6;
+        const extraRotX = -(currentY * 6);
+
+        // Bob (sine loop ~6s)
+        const time = now * 0.001; // seconds
+        const bobY = Math.sin(time * (Math.PI * 2 / 6)) * 10;
+
+        board.style.transform = `translateY(${bobY}px) rotateX(${baseRotX + extraRotX}deg) rotateZ(${baseRotZ}deg) rotateY(${rotY}deg)`;
+
+        rAF = requestAnimationFrame(animate);
+      };
+
+      if (!prefersReducedMotion) {
+        rAF = requestAnimationFrame(animate);
+      } else {
+        board.style.transform = `rotateX(${baseRotX}deg) rotateZ(${baseRotZ}deg)`;
+      }
+    } catch (err) {
+      console.error('[3D Keyboard Init Error]:', err);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initKeyboard);
+  } else {
+    initKeyboard();
+  }
+  document.addEventListener('astro:page-load', initKeyboard);
 </script>

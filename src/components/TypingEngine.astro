@@ -281,7 +281,7 @@ const {
     <textarea
       id="custom-text-input"
       class="w-full h-32 p-4 text-[1.125rem] leading-[1.6] rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-[#FAFAFA] dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] focus:outline-none focus:border-[#0072F5] resize-none"
-      placeholder="Paste or type your custom text here..." data-i18n-placeholder="engine.placeholder_custom"
+      placeholder="Paste or type your custom text here..." 
       data-i18n-placeholder="test.custom_placeholder"></textarea>
     <div class="flex justify-end">
       <button type="button" id="btn-start-custom" class="btn-primary"
@@ -768,6 +768,7 @@ const {
     ITALIAN_WORDS,
     getRandomWords,
   } from "../data/wordbanks";
+  import type { TypingEventMap } from "../scripts/typing-events";
   import {
     calculateMetrics,
     saveTestResult,
@@ -897,6 +898,13 @@ const {
     const personalBestLabel = document.getElementById("personal-best-label")!
 
     let lastCompletedSummary: MetricSummary | null = null;
+
+    function emitTyping<K extends keyof TypingEventMap>(
+      name: K,
+      detail?: TypingEventMap[K] extends CustomEvent<infer D> ? D : never
+    ) {
+      window.dispatchEvent(new CustomEvent(name, { detail }));
+    }
 
     function getSelectedCorpus(): string[] {
       if (customMistakeWords && customMistakeWords.length > 0) {
@@ -1139,7 +1147,29 @@ const {
       updateCaretPosition();
     }
 
+    function dispatchNextChar() {
+      if (testCompleted || wordsList.length === 0 || currentWordIndex >= wordsList.length) {
+        emitTyping('typing-next-char', { char: null });
+        return;
+      }
+      const targetWord = wordsList[currentWordIndex] || "";
+      const targetWordChars = Array.from(targetWord);
+      const charIdx = Array.from(currentInput).length;
+      let nextChar = "";
+      if (charIdx < targetWordChars.length) {
+        nextChar = targetWordChars[charIdx];
+      } else {
+        nextChar = " ";
+      }
+      emitTyping('typing-next-char', { char: nextChar });
+    }
+
     function resetTest() {
+      if (testActive) {
+        emitTyping('typing-stop');
+      }
+      emitTyping('typing-reset');
+
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
@@ -1199,10 +1229,13 @@ const {
       } else {
         blurTyping();
       }
+
+      dispatchNextChar();
     }
 
     function startTest() {
       ensureAudioContext();
+      emitTyping('typing-start');
       testActive = true;
       testCompleted = false;
       startTime = performance.now();
@@ -1261,6 +1294,9 @@ const {
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
+      }
+      if (testActive) {
+        emitTyping('typing-stop');
       }
       testActive = false;
       testCompleted = true;
@@ -1323,6 +1359,7 @@ const {
       });
 
       showResults(summary);
+      dispatchNextChar(); // Emits char: null since testCompleted is true
     }
 
     function showResults(summary: MetricSummary) {
@@ -1480,7 +1517,10 @@ const {
       const targetWord = wordsList[currentWordIndex] || "";
 
       if (char === " ") {
-        if (currentInput.length === 0) return;
+        if (currentInput.length === 0) {
+          dispatchNextChar();
+          return;
+        }
 
         const isWordCorrect = currentInput === targetWord;
         wordInputs[currentWordIndex] = currentInput;
@@ -1488,9 +1528,11 @@ const {
         if (!isWordCorrect) {
           missedWords.push(targetWord);
           playKeyStrokeSound(" ", true, true);
+          emitTyping('typing-key-result', { char: " ", correct: false });
         } else {
           playKeyStrokeSound(" ", true, false);
           correctKeystrokes += 1;
+          emitTyping('typing-key-result', { char: " ", correct: true });
         }
 
         // Complete previous word on cached node
@@ -1529,6 +1571,7 @@ const {
 
         updateWordOffsets(currentWordIndex);
         updateCaretPosition();
+        dispatchNextChar();
         return;
       }
 
@@ -1544,10 +1587,12 @@ const {
       if (isCorrectChar) {
         correctKeystrokes++;
         playKeyStrokeSound(char, false, false);
+        emitTyping('typing-key-result', { char, correct: true });
       } else {
         incorrectKeystrokes++;
         keyMistakes[char].errors++;
         playKeyStrokeSound(char, false, true);
+        emitTyping('typing-key-result', { char, correct: false });
       }
 
       currentInput += char;
@@ -1572,6 +1617,7 @@ const {
       }
 
       updateCaretPosition();
+      dispatchNextChar();
     }
 
     function handleBackspace() {
@@ -1579,6 +1625,7 @@ const {
 
       const inputChars = Array.from(currentInput);
       if (inputChars.length > 0) {
+        emitTyping('typing-backspace');
         const lastIdx = inputChars.length - 1;
         const targetWord = wordsList[currentWordIndex] || "";
         const targetWordChars = Array.from(targetWord);
@@ -1607,6 +1654,7 @@ const {
         if (activeBackspaceMode === "current") {
           return;
         }
+        emitTyping('typing-backspace');
         // Backspacing across word boundary into previous word
         const currentWordEl = cachedWordNodes[currentWordIndex];
         if (currentWordEl) {
@@ -1637,12 +1685,15 @@ const {
         updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
       }
+      
+      dispatchNextChar();
     }
 
     function handleCtrlBackspace() {
       if (testCompleted) return;
 
       if (currentInput.length > 0) {
+        emitTyping('typing-backspace');
         // Clear current word mid-word
         const extras = extraCharNodes[currentWordIndex];
         let hadExtras = false;
@@ -1667,6 +1718,7 @@ const {
         if (activeBackspaceMode === "current") {
           return;
         }
+        emitTyping('typing-backspace');
         // Clear previous word when at start of word
         const currentWordEl = cachedWordNodes[currentWordIndex];
         if (currentWordEl) {
@@ -1708,6 +1760,8 @@ const {
         updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
       }
+      
+      dispatchNextChar();
     }
 
     window.addEventListener("keydown", (e) => {
