@@ -397,6 +397,43 @@ const {
           <span data-i18n="test.focus">Click here and start typing</span>
         </div>
       </div>
+
+      <!-- Caps Lock warning pill -->
+      <div
+        id="caps-lock-warning"
+        class="hidden absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none"
+      >
+        <div
+          class="caps-pill px-3.5 py-1.5 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-xs font-semibold flex items-center gap-2 shadow-xl border border-black/10 dark:border-white/10"
+        >
+          <Icon name="warning" class="w-3.5 h-3.5 text-[#FF9F0A]" />
+          <span>Caps Lock is on</span>
+        </div>
+      </div>
+
+      <!-- Idle pause indicator -->
+      <div
+        id="idle-pause-prompt"
+        class="hidden absolute inset-0 z-10 flex items-center justify-center rounded-[20px] pointer-events-none bg-white/40 dark:bg-black/30 backdrop-blur-[2px]"
+      >
+        <div
+          class="caps-pill px-5 py-2.5 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-sm font-semibold flex items-center gap-2.5 shadow-xl border border-black/10 dark:border-white/10"
+        >
+          <Icon name="timer" class="w-4 h-4 text-[#0072F5]" />
+          <span>Paused — type to resume</span>
+        </div>
+      </div>
+      <style>
+        .caps-pill { animation: capsFadeIn 200ms ease-out; }
+        #idle-pause-prompt .caps-pill { animation-duration: 250ms; }
+        @keyframes capsFadeIn {
+          from { opacity: 0; transform: translateY(-4px) scale(0.97); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .caps-pill { animation: none; }
+        }
+      </style>
     </div>
 
     <!-- Hidden Mobile-Friendly Text Input -->
@@ -814,6 +851,12 @@ const {
     let animationFrameId: number | null = null;
     let elapsedSeconds = 0;
 
+    // Idle pause: pause the test after 10s of no typing
+    let lastKeystrokeTime = 0;
+    let isIdlePaused = false;
+    let idlePausedAt = 0;
+    const IDLE_PAUSE_MS = 10000;
+
     // Typing Data
     let wordsList: string[] = [];
     let currentWordIndex = 0;
@@ -858,6 +901,8 @@ const {
       "hidden-typing-input",
     ) as HTMLInputElement;
     const focusPrompt = document.getElementById("focus-prompt")!;
+    const capsLockWarning = document.getElementById("caps-lock-warning")!;
+    const idlePausePrompt = document.getElementById("idle-pause-prompt")!;
     const timerMetric = document.getElementById("metric-timer")!;
     const wpmMetric = document.getElementById("metric-wpm")!;
     const accMetric = document.getElementById("metric-accuracy")!;
@@ -1187,6 +1232,12 @@ const {
       testCompleted = false;
       startTime = 0;
       elapsedSeconds = 0;
+      isIdlePaused = false;
+      idlePausedAt = 0;
+      lastKeystrokeTime = 0;
+      idlePausePrompt.classList.add("hidden");
+      capsLockWarning.classList.add("hidden");
+      typingDisplay.classList.remove("!border-[#FF9F0A]/60", "!shadow-[0_0_0_3px_rgba(255,159,10,0.15)]");
       correctKeystrokes = 0;
       incorrectKeystrokes = 0;
       secondBySecondWpm = [];
@@ -1248,15 +1299,45 @@ const {
       testActive = true;
       testCompleted = false;
       startTime = performance.now();
+      lastKeystrokeTime = performance.now();
+      isIdlePaused = false;
+      idlePausePrompt.classList.add("hidden");
       lastSecondRecorded = 0;
       runTimerLoop();
     }
 
+    function pauseForIdle() {
+      if (!testActive || testCompleted || isIdlePaused) return;
+      isIdlePaused = true;
+      idlePausedAt = performance.now();
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+      idlePausePrompt.classList.remove("hidden");
+    }
+
+    function resumeFromIdlePause() {
+      if (!isIdlePaused) return;
+      isIdlePaused = false;
+      // Shift startTime forward by the paused duration so elapsed time is preserved
+      startTime += performance.now() - idlePausedAt;
+      lastKeystrokeTime = performance.now();
+      idlePausePrompt.classList.add("hidden");
+      runTimerLoop();
+    }
+
     function runTimerLoop() {
-      if (!testActive) return;
+      if (!testActive || isIdlePaused) return;
 
       const now = performance.now();
       elapsedSeconds = (now - startTime) / 1000;
+
+      // Idle detection: pause after 10s of no typing
+      if (now - lastKeystrokeTime > IDLE_PAUSE_MS) {
+        pauseForIdle();
+        return;
+      }
 
       const currentSecInt = Math.floor(elapsedSeconds);
       if (currentSecInt > lastSecondRecorded) {
@@ -1309,6 +1390,10 @@ const {
       }
       testActive = false;
       testCompleted = true;
+      isIdlePaused = false;
+      idlePausePrompt.classList.add("hidden");
+      capsLockWarning.classList.add("hidden");
+      typingDisplay.classList.remove("!border-[#FF9F0A]/60", "!shadow-[0_0_0_3px_rgba(255,159,10,0.15)]");
 
       // Item 10: Hide persistent caret on results screen
       caretEl.style.display = "none";
@@ -1522,6 +1607,8 @@ const {
     function handleCharacterInput(char: string) {
       if (testCompleted) return;
       if (!testActive) startTest();
+      lastKeystrokeTime = performance.now();
+      if (isIdlePaused) resumeFromIdlePause();
 
       const targetWord = wordsList[currentWordIndex] || "";
 
@@ -1631,6 +1718,8 @@ const {
 
     function handleBackspace() {
       if (testCompleted) return;
+      if (testActive) lastKeystrokeTime = performance.now();
+      if (isIdlePaused) resumeFromIdlePause();
 
       const inputChars = Array.from(currentInput);
       if (inputChars.length > 0) {
@@ -1774,6 +1863,23 @@ const {
     }
 
     function handleKeydown(e: KeyboardEvent) {
+      // Caps Lock warning: show pill + amber ring on typing area when on
+      try {
+        const capsOn = e.getModifierState && e.getModifierState("CapsLock");
+        capsLockWarning.classList.toggle("hidden", !capsOn);
+        typingDisplay.classList.toggle("!border-[#FF9F0A]/60", !!capsOn);
+        typingDisplay.classList.toggle("!shadow-[0_0_0_3px_rgba(255,159,10,0.15)]", !!capsOn);
+      } catch {}
+
+      // Idle resume: if paused due to inactivity, resume on any keystroke
+      if (isIdlePaused && testActive && !testCompleted && e.key.length === 1) {
+        resumeFromIdlePause();
+      }
+      // Track last keystroke time for idle detection
+      if (testActive && !testCompleted && e.key.length === 1) {
+        lastKeystrokeTime = performance.now();
+      }
+
       // Tab or Tab+Enter to restart
       if (e.key === "Tab") {
         e.preventDefault();
