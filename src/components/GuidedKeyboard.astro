@@ -7,12 +7,12 @@
 
 <div
   id="gk-root"
-  class="hidden md:block w-full max-w-4xl mx-auto mt-10 select-none"
+  class="hidden md:block w-full max-w-4xl mx-auto mt-2 select-none"
   aria-label="Finger guide keyboard"
   role="region"
 >
   <!-- ① INSTRUCTION LINE — label style, compact -->
-  <div class="flex items-center justify-between mb-4 px-1">
+  <div class="flex items-center justify-between mb-0 px-1">
     <div
       id="gk-instruction"
       class="flex items-center gap-2.5 min-h-[2rem] opacity-0 transition-opacity duration-150"
@@ -30,7 +30,7 @@
 
     <!-- Off-switch -->
     <label class="flex items-center gap-2 cursor-pointer" id="gk-toggle-label">
-      <span class="text-[11px] font-mono text-ds-text-secondary uppercase tracking-wider" data-i18n="guided_keyboard.toggle">Finger guide</span>
+      <span class="text-[11px] font-mono text-ds-text-secondary uppercase tracking-wider">Guide</span>
       <button
         id="gk-toggle"
         role="switch"
@@ -46,7 +46,7 @@
   </div>
 
   <!-- ② KEYBOARD CARD -->
-  <div id="gk-keyboard" class="premium-card !p-4 sm:!p-5 overflow-x-auto">
+  <div id="gk-keyboard" class="premium-card !p-1 sm:!p-2 overflow-x-auto">
     <!-- Keyboard rows -->
     <div class="flex flex-col gap-1 min-w-[600px]">
 
