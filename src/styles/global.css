@@ -416,6 +416,11 @@ a.link-animated:hover::after {
   .aurora-border::before { animation: none; }
 }
 
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+
 
 /* Fix: dropdown text always high-contrast, themes cannot wash it out */
 select {
