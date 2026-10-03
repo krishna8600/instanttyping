@@ -259,7 +259,7 @@ const {
         <option class="dark:bg-[#1D1D1F]" value="nature" data-i18n="options.sound_nature">Nature</option>
         <option class="dark:bg-[#1D1D1F]" value="creative" data-i18n="options.sound_creative">Creative</option>
       </select>
-      <input type="range" id="volume-slider" min="0" max="100" title="Volume" class="w-16 h-1 ml-1 bg-[#E5E5E5] dark:bg-white/10 rounded-full appearance-none cursor-pointer focus:outline-none focus:bg-[#0072F5]/50 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[#E5E5E5] [&::-webkit-slider-thumb]:shadow-sm" />
+      <input type="range" id="engine-volume-slider" min="0" max="100" title="Volume" class="w-16 h-1 ml-1 bg-[#E5E5E5] dark:bg-white/10 rounded-full appearance-none cursor-pointer focus:outline-none focus:bg-[#0072F5]/50 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[#E5E5E5] [&::-webkit-slider-thumb]:shadow-sm" />
     </div>
 
     <!-- Visual Theme Selector -->
@@ -489,7 +489,7 @@ const {
         >
           <Icon name="warning" class="w-4 h-4 shrink-0" />
           <span>Caps Lock is on</span>
-          <span class="font-normal opacity-70 hidden sm:inline">â€” press Caps Lock to turn it off</span>
+          <span class="font-normal opacity-70 hidden sm:inline">— press Caps Lock to turn it off</span>
         </div>
       </div>
 
@@ -626,28 +626,6 @@ const {
       <div class="flex-1 space-y-2 text-center sm:text-left">
         <h3 class="text-sm font-semibold uppercase tracking-wider text-[#FF453A]">Roast Mode</h3>
         <p id="roast-text" class="text-lg sm:text-xl font-medium italic text-ds-text-primary leading-snug">"Are you typing with your elbows?"</p>
-      </div>
-    </div>
-    
-    <!-- 1b. Progress Strip -->
-    <div id="res-progress-strip" class="premium-card hidden">
-      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
-        <div class="flex items-center gap-2">
-          <span class="text-base" aria-hidden="true">🔥</span>
-          <span class="font-semibold" id="res-streak">0</span>
-          <span class="text-xs uppercase tracking-wide font-medium">day streak</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="font-semibold" id="res-level-title">Novice</span>
-          <div class="w-20 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/10 overflow-hidden">
-            <div id="res-xp-bar" class="h-full rounded-full bg-[#0072F5]" style="width:0%"></div>
-          </div>
-          <span class="text-xs font-mono" id="res-xp-text">+0 XP</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-xs uppercase tracking-wide font-medium">Today</span>
-          <span class="font-semibold font-mono" id="res-daily">0/3</span>
-        </div>
       </div>
     </div>
     <!-- 2. Main Score Grid — each stat is its own card, 24px padding, no overlap -->
@@ -1158,7 +1136,7 @@ const {
       "roast-mode-select",
     ) as HTMLSelectElement | null;
     const volumeSlider = document.getElementById(
-      "volume-slider",
+      "engine-volume-slider",
     ) as HTMLInputElement | null;
     const customTextContainer = document.getElementById(
       "custom-text-container",
@@ -1268,7 +1246,7 @@ const {
         const passageObj =
           CLASSIC_PASSAGES[Math.floor(Math.random() * CLASSIC_PASSAGES.length)];
         wordsList = passageObj.text.split(" ");
-        quoteCitation.textContent = "â€” " + passageObj.source + " Â· Public domain";
+        quoteCitation.textContent = "— " + passageObj.source + " · Public domain";
         quoteCitation.classList.remove("hidden");
       } else if (currentMode === "quote" || currentWordbankName === "quote") {
         const quoteObj =
@@ -1281,12 +1259,6 @@ const {
           CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
         wordsList = snippetObj.text.split(" ");
         quoteCitation.textContent = `</> ${snippetObj.source}`;
-        quoteCitation.classList.remove("hidden");
-      } else if (currentWordbankName === "classics") {
-        const passageObj =
-          CLASSIC_PASSAGES[Math.floor(Math.random() * CLASSIC_PASSAGES.length)];
-        wordsList = passageObj.text.split(" ");
-        quoteCitation.textContent = "— " + passageObj.source + " · Public domain";
         quoteCitation.classList.remove("hidden");
       } else if (currentMode === "words") {
         wordsList = getRandomWords(targetWordCount, getSelectedCorpus());
@@ -2776,7 +2748,6 @@ const {
       // Update the sound theme and play a preview note on change
       soundSelect.addEventListener("change", () => {
         setSoundTheme(soundSelect.value as any);
-        console.info("[audio] theme:", soundSelect.value);
         // Play a preview sound (isSpace=false, isError=false)
         playKeyStrokeSound("a", false, false);
       });
@@ -2863,14 +2834,16 @@ const {
           // Import dynamically
           var mod = await import('../scripts/share-card.ts');
           // Get current results (from DOM)
-          var wpmEl = document.querySelector('[data-result="wpm"]');
-          var accEl = document.querySelector('[data-result="accuracy"]');
-          var wpm = wpmEl ? parseInt(wpmEl.textContent || '0') : 0;
-          var acc = accEl ? parseInt(accEl.textContent || '0') : 0;
+          var wpmEl = document.getElementById('res-net-wpm');
+          var accEl = document.getElementById('res-accuracy');
+          var rankEl = document.getElementById('res-rank-title');
+          var wpm = wpmEl ? parseInt(wpmEl.textContent || '0', 10) : 0;
+          var acc = accEl ? parseInt(accEl.textContent || '0', 10) : 0;
+          var rank = rankEl ? (rankEl.textContent || 'Typist').trim() : 'Typist';
           var data = {
             wpm: wpm,
             accuracy: acc,
-            rank: 'Typist',
+            rank: rank,
             date: new Date().toLocaleDateString(),
           };
           // Try image download, fallback to text copy
