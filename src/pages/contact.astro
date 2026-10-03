@@ -40,7 +40,6 @@ import Icon from '../components/Icon.astro';
  required
  class="w-full h-9 px-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500"
  placeholder="e.g. Alex Morgan" data-i18n-placeholder="contact.placeholder_name"
-  data-i18n-placeholder="contact.placeholder_message"
  />
  <div id="error-name" class="text-[11px] text-red-500 hidden"><span data-i18n="contact.error_name">Please enter your name.</span></div>
  </div>
@@ -110,66 +109,86 @@ import Icon from '../components/Icon.astro';
  </button>
  </div>
 
- <!-- Success Feedback Alert -->
+     <!-- Direct Email Fallback -->
+    <div class="pt-4 border-t border-neutral-200 dark:border-neutral-800 text-xs text-ds-text-secondary flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+      <span>Prefer direct email?</span>
+      <a href="mailto:support@instanttyping.com" class="font-mono text-sky-500 hover:text-sky-400 underline flex items-center gap-1.5">
+        <Icon name="mail" class="w-3.5 h-3.5" />
+        support@instanttyping.com
+      </a>
+    </div>
+
+  <!-- Success Feedback Alert -->
  <div id="contact-success" class="hidden p-3 rounded-md bg-green-50 border border-green-200 text-green-700 text-xs"><span data-i18n="contact.success">Thank you! Your inquiry has been received. Our team will review your feedback shortly.</span></div>
  </form>
  </div>
 </Layout>
 
 <script>
- const form = document.getElementById('contact-form') as HTMLFormElement;
- const nameInput = document.getElementById('contact-name') as HTMLInputElement;
- const emailInput = document.getElementById('contact-email') as HTMLInputElement;
- const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement;
- const honeypotInput = document.getElementById('company_website') as HTMLInputElement;
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const nameInput = document.getElementById('contact-name') as HTMLInputElement;
+  const emailInput = document.getElementById('contact-email') as HTMLInputElement;
+  const subjectInput = document.getElementById('contact-subject') as HTMLSelectElement;
+  const messageInput = document.getElementById('contact-message') as HTMLTextAreaElement;
+  const honeypotInput = document.getElementById('company_website') as HTMLInputElement;
 
- const errorName = document.getElementById('error-name')!;
- const errorEmail = document.getElementById('error-email')!;
+  const errorName = document.getElementById('error-name')!;
+  const errorEmail = document.getElementById('error-email')!;
   const errorMessage = document.getElementById('error-message')!;
- const successAlert = document.getElementById('contact-success')!;
+  const successAlert = document.getElementById('contact-success')!;
 
- if (form) {
- form.addEventListener('submit', (e) => {
- e.preventDefault();
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
 
- // Honeypot check
- if (honeypotInput && honeypotInput.value !== '') {
- // Silently drop bot submissions
- return;
- }
+      // Honeypot check
+      if (honeypotInput && honeypotInput.value !== '') {
+        // Silently drop bot submissions
+        return;
+      }
 
- let valid = true;
+      let valid = true;
 
- // Validate name
- if (!nameInput.value.trim()) {
- errorName.classList.remove('hidden');
- valid = false;
- } else {
- errorName.classList.add('hidden');
- }
+      // Validate name
+      if (!nameInput.value.trim()) {
+        errorName.classList.remove('hidden');
+        valid = false;
+      } else {
+        errorName.classList.add('hidden');
+      }
 
- // Validate email
- const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
- if (!emailRegex.test(emailInput.value.trim())) {
- errorEmail.classList.remove('hidden');
- valid = false;
- } else {
- errorEmail.classList.add('hidden');
- }
+      // Validate email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailInput.value.trim())) {
+        errorEmail.classList.remove('hidden');
+        valid = false;
+      } else {
+        errorEmail.classList.add('hidden');
+      }
 
- // Validate message
- if (messageInput.value.trim().length < 10) {
- errorMessage.classList.remove('hidden');
- valid = false;
- } else {
- errorMessage.classList.add('hidden');
- }
+      // Validate message
+      if (messageInput.value.trim().length < 10) {
+        errorMessage.classList.remove('hidden');
+        valid = false;
+      } else {
+        errorMessage.classList.add('hidden');
+      }
 
- if (valid) {
- successAlert.classList.remove('hidden');
- form.reset();
- }
- });
- }
+      if (valid) {
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const subject = subjectInput ? (subjectInput.options[subjectInput.selectedIndex]?.text || subjectInput.value) : 'Feedback';
+        const msg = messageInput.value.trim();
+
+        // Pre-fill mailto link with encoded user inquiry
+        const mailtoSubject = encodeURIComponent(`[Instant Typing] ${subject} - ${name}`);
+        const mailtoBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nCategory: ${subject}\n\nMessage:\n${msg}`);
+
+        window.location.href = `mailto:support@instanttyping.com?subject=${mailtoSubject}&body=${mailtoBody}`;
+
+        successAlert.classList.remove('hidden');
+        form.reset();
+      }
+    });
+  }
 </script>
-

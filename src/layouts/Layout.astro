@@ -2,7 +2,6 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import CookieConsent from '../components/CookieConsent.astro';
 import MoonlitBackground from '../components/MoonlitBackground.astro';
 
 interface Props {
@@ -144,7 +143,7 @@ const ogImage = `${siteUrl}/og-image.png`;
   </style>
  <script src="../scripts/smooth-scroll.ts"></script>
 </head>
-  <body class="bg-[#FAFAFA] dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] min-h-screen flex flex-col font-sans transition-colors duration-150 selection:bg-[#0072F5] selection:text-white">
+  <body class="bg-[#FAFAFA] dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] min-h-screen flex flex-col font-sans transition-colors duration-150 selection:bg-[#0072F5] selection:text-white overflow-x-hidden">
   <MoonlitBackground />
   <Header currentPath={canonicalPath} />
 
@@ -153,7 +152,6 @@ const ogImage = `${siteUrl}/og-image.png`;
   </main>
 
  <Footer />
- <CookieConsent />
  </body>
 </html>
 
