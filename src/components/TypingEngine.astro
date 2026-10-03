@@ -220,7 +220,23 @@ const {
       </select>
     </div>
 
-    <!-- Sound Theme Selector -->
+    
+    <!-- Settings Panel -->
+    <div class="relative ml-auto shrink-0 z-50">
+      <button
+        id="settings-toggle-btn"
+        type="button"
+        class="w-8 h-8 flex items-center justify-center rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] transition-all duration-200"
+        aria-label="Settings"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+      </button>
+
+      <div
+        id="settings-panel"
+        class="hidden absolute top-full right-0 mt-2 p-4 premium-card flex-col gap-4 min-w-[240px] backdrop-blur-md rounded-xl shadow-lg border border-[#E5E5E5] dark:border-white/10 bg-white/90 dark:bg-[#1D1D1F]/90"
+      >
+<!-- Sound Theme Selector -->
     <div
       id="sound-select-container"
       class="flex items-center gap-1.5 font-mono shrink-0"
@@ -246,7 +262,7 @@ const {
     </div>
 
     <!-- Visual Theme Selector -->
-    <div class="flex items-center gap-1.5 font-mono ml-auto sm:ml-0 shrink-0">
+    <div class="flex items-center gap-1.5 font-mono  shrink-0">
       <label
         for="theme-select"
         class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
@@ -271,7 +287,7 @@ const {
     <!-- Backspace Behavior Selector -->
     <div
       id="backspace-select-container"
-      class="flex items-center gap-1.5 font-mono ml-auto sm:ml-0 shrink-0"
+      class="flex items-center gap-1.5 font-mono  shrink-0"
     >
       <label
         for="backspace-select"
@@ -306,6 +322,28 @@ const {
         <option class="dark:bg-[#1D1D1F]" value="off" data-i18n="options.off">Off</option>
         <option class="dark:bg-[#1D1D1F]" value="on" data-i18n="options.on">On</option>
       </select>
+    </div>
+
+    <!-- Roast Mode Selector -->
+    <div
+      id="roast-mode-container"
+      class="flex items-center gap-1.5 font-mono shrink-0"
+    >
+      <label
+        for="roast-mode-select"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
+        data-i18n="settings.roast_mode"
+      >Roast Mode</label>
+      <select
+        id="roast-mode-select"
+        class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
+      >
+        <option class="dark:bg-[#1D1D1F]" value="off" data-i18n="options.off">Off</option>
+        <option class="dark:bg-[#1D1D1F]" value="on" data-i18n="options.on">On</option>
+      </select>
+    </div>
+  
+      </div>
     </div>
   </div>
 
@@ -416,7 +454,7 @@ const {
       <div id="words-viewport" class="relative overflow-hidden h-[148px] sm:h-[160px]">
         <div
           id="words-wrapper"
-          class="relative flex flex-wrap gap-x-2 gap-y-1.5 items-center will-change-transform transition-transform duration-150 ease-out"
+          class="relative flex flex-wrap gap-x-2 gap-y-1.5 items-center will-change-transform transition-transform duration-[400ms] ease-[cubic-bezier(0.32,0.72,0,1)]"
         >
           <div
             id="typing-caret"
@@ -577,26 +615,16 @@ const {
         </div>
       </div>
     </div>
-    
-    <!-- 1b. Progress Strip -->
-    <div id="res-progress-strip" class="premium-card hidden">
-      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
-        <div class="flex items-center gap-2">
-          <span class="text-base" aria-hidden="true">🔥</span>
-          <span class="font-semibold" id="res-streak">0</span>
-          <span class="text-xs uppercase tracking-wide font-medium">day streak</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="font-semibold" id="res-level-title">Novice</span>
-          <div class="w-20 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/10 overflow-hidden">
-            <div id="res-xp-bar" class="h-full rounded-full bg-[#0072F5]" style="width:0%"></div>
-          </div>
-          <span class="text-xs font-mono" id="res-xp-text">+0 XP</span>
-        </div>
-        <div class="flex items-center gap-2">
-          <span class="text-xs uppercase tracking-wide font-medium">Today</span>
-          <span class="font-semibold font-mono" id="res-daily">0/3</span>
-        </div>
+
+    <!-- Roast Mascot Card -->
+    <div id="roast-card" class="premium-card flex flex-col sm:flex-row items-center gap-6 hidden">
+      <div class="relative w-[120px] h-[120px] shrink-0 rounded-2xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-sm flex items-center justify-center">
+        <video id="roast-video" class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline src="/videos/mascot-roast.mp4"></video>
+        <img id="roast-img" class="absolute inset-0 w-full h-full object-cover hidden" src="/images/mascot-roast.webp" alt="Roast Mascot" />
+      </div>
+      <div class="flex-1 space-y-2 text-center sm:text-left">
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-[#FF453A]">Roast Mode</h3>
+        <p id="roast-text" class="text-lg sm:text-xl font-medium italic text-ds-text-primary leading-snug">"Are you typing with your elbows?"</p>
       </div>
     </div>
     
@@ -874,8 +902,45 @@ const {
         alert('All data deleted. Reloading...');
         location.reload();
       });
-    })();
-    </script>
+    
+    // Settings Panel Logic
+    const settingsBtn = document.getElementById('settings-toggle-btn');
+    const settingsPanel = document.getElementById('settings-panel');
+    if (settingsBtn && settingsPanel) {
+      settingsBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isHidden = settingsPanel.classList.contains('hidden');
+        if (isHidden) {
+          settingsPanel.classList.remove('hidden');
+          settingsPanel.classList.add('flex');
+          
+          const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!prefersReduced) {
+            settingsPanel.classList.add('animate-spring-enter');
+          }
+        } else {
+          settingsPanel.classList.add('hidden');
+          settingsPanel.classList.remove('flex', 'animate-spring-enter');
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!settingsPanel.contains(e.target as Node) && e.target !== settingsBtn) {
+          settingsPanel.classList.add('hidden');
+          settingsPanel.classList.remove('flex', 'animate-spring-enter');
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          settingsPanel.classList.add('hidden');
+          settingsPanel.classList.remove('flex', 'animate-spring-enter');
+        }
+      });
+    }
+  
+})();
+</script>
 </section>
 
   <!-- Skill Certificate Modal (overlay isolated from page flow) -->
@@ -1033,6 +1098,14 @@ const {
       }
     } catch {}
 
+    let roastModeEnabled = false;
+    try {
+      const savedRoastMode = localStorage.getItem("it_roast_mode");
+      if (savedRoastMode === "on") {
+        roastModeEnabled = true;
+      }
+    } catch {}
+
     const wordsWrapper = document.getElementById("words-wrapper")!;
     const typingDisplay = document.getElementById("typing-display")!;
     const caretEl = (document.getElementById("typing-caret") || document.createElement("div")) as HTMLElement;
@@ -1080,6 +1153,9 @@ const {
     const stopOnErrorSelect = document.getElementById(
       "stop-on-error-select",
     ) as HTMLSelectElement | null;
+    const roastModeSelect = document.getElementById(
+      "roast-mode-select",
+    ) as HTMLSelectElement | null;
     const volumeSlider = document.getElementById(
       "volume-slider",
     ) as HTMLInputElement | null;
@@ -1111,7 +1187,13 @@ const {
       "cert-canvas",
     ) as HTMLCanvasElement;
     const personalBestBanner = document.getElementById("personal-best-banner")!;
-    const personalBestLabel = document.getElementById("personal-best-label")!
+    const personalBestLabel = document.getElementById("personal-best-label")!;
+    
+    // Roast Elements
+    const roastCard = document.getElementById("roast-card");
+    const roastVideo = document.getElementById("roast-video") as HTMLVideoElement | null;
+    const roastImg = document.getElementById("roast-img") as HTMLImageElement | null;
+    const roastText = document.getElementById("roast-text");
 
     let lastCompletedSummary: MetricSummary | null = null;
 
@@ -1754,6 +1836,52 @@ const {
         } else {
           personalBestBanner.classList.add("hidden");
         }
+      }
+
+      // Roast Mode Logic
+      if (roastModeEnabled && roastCard && roastText && roastVideo && roastImg) {
+        const roastQuotesLowWpm = [
+          "My grandma types faster. And she's a ghost.",
+          "Are you typing with your elbows?",
+          "I've seen snails with better WPM."
+        ];
+        const roastQuotesLowAcc = [
+          "Did your keyboard offend you? Because you're attacking it.",
+          "That wasn't typing, that was a cry for help.",
+          "Accuracy called — it wants a divorce."
+        ];
+        const roastQuotesGood = [
+          "Okay, that was actually decent. Don't let it go to your head.",
+          "Impressive. Still not faster than me though.",
+          "Fine. You can stay."
+        ];
+        
+        let roast = "";
+        if (summary.accuracy < 85) {
+          roast = roastQuotesLowAcc[Math.floor(Math.random() * roastQuotesLowAcc.length)];
+        } else if (summary.netWpm < 40) {
+          roast = roastQuotesLowWpm[Math.floor(Math.random() * roastQuotesLowWpm.length)];
+        } else if (summary.netWpm > 80) {
+          roast = roastQuotesGood[Math.floor(Math.random() * roastQuotesGood.length)];
+        }
+        
+        if (roast) {
+          roastText.innerText = `"${roast}"`;
+          roastCard.classList.remove("hidden");
+          const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (prefersReduced) {
+            roastVideo.classList.add("hidden");
+            roastImg.classList.remove("hidden");
+          } else {
+            roastVideo.classList.remove("hidden");
+            roastImg.classList.add("hidden");
+            roastVideo.play().catch(()=>{});
+          }
+        } else {
+          roastCard.classList.add("hidden");
+        }
+      } else if (roastCard) {
+        roastCard.classList.add("hidden");
       }
 
       resultsPanel.classList.remove("hidden");
@@ -2683,6 +2811,16 @@ const {
         selectedStopOnError = stopOnErrorSelect.value === "on" ? "on" : "off";
         try {
           localStorage.setItem("it_stop_on_error", selectedStopOnError);
+        } catch {}
+      });
+    }
+
+    if (roastModeSelect) {
+      roastModeSelect.value = roastModeEnabled ? "on" : "off";
+      roastModeSelect.addEventListener("change", (e) => {
+        roastModeEnabled = (e.target as HTMLSelectElement).value === "on";
+        try {
+          localStorage.setItem("it_roast_mode", roastModeEnabled ? "on" : "off");
         } catch {}
       });
     }

@@ -667,6 +667,59 @@ function getMechanicalNoiseBuffer(ctx: AudioContext): AudioBuffer {
   return mechanicalNoiseBuffer;
 }
 
+const mechAudioCache: Record<string, AudioBuffer> = {};
+const pendingFetches: Record<string, Promise<AudioBuffer | null>> = {};
+
+async function getMechBuffer(ctx: AudioContext, key: string): Promise<AudioBuffer | null> {
+  let fileName = "a"; // Default fallback
+  const normalizedKey = key.toLowerCase();
+  
+  if (normalizedKey.match(/^[a-z]$/)) {
+    fileName = normalizedKey;
+  } else if (normalizedKey === "backspace") {
+    fileName = "backspace";
+  } else if (normalizedKey === " " || normalizedKey === "space") {
+    fileName = "space";
+  } else if (normalizedKey === "enter") {
+    fileName = "enter";
+  } else if (normalizedKey === "tab") {
+    fileName = "tab";
+  } else if (normalizedKey === "capslock") {
+    fileName = "caps lock";
+  } else if (normalizedKey === "shift") {
+    fileName = "shift";
+  } else if (normalizedKey === "[" || normalizedKey === "]") {
+    fileName = normalizedKey;
+  } else {
+    // For punctuation or symbols we don't have, fallback to a random letter
+    const letters = "abcdefghijklmnopqrstuvwxyz";
+    fileName = letters[Math.floor(Math.random() * letters.length)];
+  }
+
+  if (mechAudioCache[fileName]) {
+    return mechAudioCache[fileName];
+  }
+
+  if (!pendingFetches[fileName]) {
+    pendingFetches[fileName] = fetch(`/sounds/nk-cream/${fileName}.wav`)
+      .then(res => {
+        if (!res.ok) throw new Error("Not found");
+        return res.arrayBuffer();
+      })
+      .then(buffer => ctx.decodeAudioData(buffer))
+      .then(audioBuffer => {
+        mechAudioCache[fileName] = audioBuffer;
+        return audioBuffer;
+      })
+      .catch(e => {
+        console.error("Failed to load mechanical sound", e);
+        return null;
+      });
+  }
+
+  return pendingFetches[fileName];
+}
+
 async function playMechanicalKey(key: string, isError: boolean) {
   if (typeof window === 'undefined') return;
   const ctx = ensureAudioContext();
@@ -675,42 +728,29 @@ async function playMechanicalKey(key: string, isError: boolean) {
   const masterDest = getMasterGainNode() || ctx.destination;
   const now = ctx.currentTime;
   
-  const isReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const intensity = isReducedMotion ? 0.4 : 1.0;
+  const buffer = await getMechBuffer(ctx, key);
   
-  // Oscillator for the "thud/thock" body
-  const osc = ctx.createOscillator();
-  const oscGain = ctx.createGain();
-  
-  osc.type = "sine";
-  const baseFreq = isError ? 100 : (key === "Backspace" || key === " " ? 160 : 250 + Math.random() * 30);
-  osc.frequency.setValueAtTime(baseFreq, now);
-  osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.5, now + 0.05);
-  
-  oscGain.gain.setValueAtTime(0.8 * intensity, now);
-  oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
-  
-  osc.connect(oscGain);
-  oscGain.connect(masterDest);
-  
-  // Noise burst for the "click" attack
-  const noiseSource = ctx.createBufferSource();
-  noiseSource.buffer = getMechanicalNoiseBuffer(ctx);
-  const noiseFilter = ctx.createBiquadFilter();
-  const noiseGain = ctx.createGain();
-  
-  noiseFilter.type = "highpass";
-  noiseFilter.frequency.value = isError ? 1000 : 2500;
-  
-  noiseGain.gain.setValueAtTime(0.4 * intensity, now);
-  noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
-  
-  noiseSource.connect(noiseFilter);
-  noiseFilter.connect(noiseGain);
-  noiseGain.connect(masterDest);
-  
-  osc.start(now);
-  osc.stop(now + 0.07);
-  noiseSource.start(now);
-  noiseSource.stop(now + 0.04);
+  if (buffer) {
+    const source = ctx.createBufferSource();
+    source.buffer = buffer;
+    
+    // Create a local gain node to handle error muting/pitching
+    const localGain = ctx.createGain();
+    localGain.gain.value = isError ? 0.6 : 1.0;
+    
+    if (isError) {
+      // Add a slight pitch down for errors
+      source.playbackRate.value = 0.85;
+    } else {
+      // Subtle pitch variation for realism
+      source.playbackRate.value = 0.98 + Math.random() * 0.04;
+    }
+    
+    source.connect(localGain);
+    localGain.connect(masterDest);
+    source.start(now);
+  } else {
+    // Fallback to synthesized click if buffer fails to load
+    playDefaultClick(key === " " || key === "Space", isError);
+  }
 }
