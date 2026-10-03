@@ -23,3 +23,8 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 practicetesttyping.com/
+
+# Backup and scratch files
+*.bak*
+*.cjs
+
