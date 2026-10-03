@@ -30,7 +30,7 @@
 
     <!-- Off-switch -->
     <label class="flex items-center gap-2 cursor-pointer" id="gk-toggle-label">
-      <span class="text-[11px] font-mono text-ds-text-secondary uppercase tracking-wider">Guide</span>
+      <span class="text-[11px] font-mono text-ds-text-secondary uppercase tracking-wider">Keyboard</span>
       <button
         id="gk-toggle"
         role="switch"
@@ -364,11 +364,19 @@
   }
 
   function applyToggleUI() {
+    const root = document.getElementById('gk-root');
     if (!toggle || !toggleThumb || !fingerZones) return;
     toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
-    if (shouldShow()) {
-      fingerZones.classList.remove('opacity-0');
+    // User toggle controls visibility; language only affects guides
+    if (enabled) {
+      document.getElementById('gk-keyboard')?.classList.remove('hidden');
+      if (isEnglish()) {
+        fingerZones.classList.remove('opacity-0');
+      } else {
+        fingerZones.classList.add('opacity-0');
+      }
     } else {
+      document.getElementById('gk-keyboard')?.classList.add('hidden');
       fingerZones.classList.add('opacity-0');
       clearAll();
     }
@@ -379,6 +387,13 @@
     if (activeShiftEl) { activeShiftEl.classList.remove('gk-next'); activeShiftEl = null; }
     if (activeZoneEl)  { activeZoneEl.classList.remove('gk-active-zone'); activeZoneEl = null; }
     if (instruction)   instruction.style.opacity = '0';
+    // Sweep any stuck highlights (e.g. from interrupted timeouts between tests)
+    document.querySelectorAll('.gk-key.gk-correct, .gk-key.gk-wrong, .gk-key.gk-next').forEach(el => {
+      el.classList.remove('gk-correct', 'gk-wrong', 'gk-next');
+    });
+    document.querySelectorAll('.gk-active-zone').forEach(el => {
+      el.classList.remove('gk-active-zone');
+    });
   }
 
   function highlightNext(char: string) {

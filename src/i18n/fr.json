@@ -1,4 +1,4 @@
-{
+﻿{
   "about.wpm_intro": "Pour fournir des résultats objectifs et standardisés comparables aux tests d'emploi officiels, notre plateforme implémente strictement le standard international de 5 frappes :",
   "page_beginner.pinky": "Auriculaire",
   "contact.label_email": "Adresse e-mail",
@@ -201,6 +201,7 @@
   "results.cert_title": "Certificat de compétence en frappe",
   "results.skill_band_desc": "Bande de compétence honnête basée sur le MPM net — sans percentiles gonflés.",
   "test.mode_quote": "Citation",
+  "test.mode_classics": "Classiques",
   "test.mode_custom": "Personnalisé",
   "test.custom_label": "Entrez votre propre texte à pratiquer :",
   "test.custom_placeholder": "Collez ou tapez votre texte personnalisé ici...",
@@ -224,6 +225,7 @@
   "options.corpus_numbers": "Nombres et symboles",
   "options.corpus_beginner": "Pour débutants",
   "options.corpus_quote": "Citations célèbres",
+  "options.corpus_classics": "Passages Classiques",
   "options.sound_mechanical": "Mécanique",
   "options.sound_click": "Clic",
   "options.sound_piano": "Piano",
@@ -301,3 +303,4 @@
   "engine.numbers.heading": "Numbers & Punctuation Typing Test",
   "engine.numbers.subheading": "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }
+

@@ -1,4 +1,4 @@
-{
+﻿{
   "about.title": "Chi è Instant Typing",
   "about.mission_p2": "Instant Typing è stato progettato per fornire un ambiente di test ultra-pulito e ultra-veloce che rispetta la tua attenzione.",
   "privacy.s3_body": "Non trasmettiamo le tue battiture a nessun server remoto.",
@@ -201,6 +201,7 @@
   "results.cert_title": "Certificato di abilità di digitazione",
   "results.skill_band_desc": "Fascia di abilità onesta basata su PAM nette — nessun percentile gonfiato.",
   "test.mode_quote": "Citazione",
+  "test.mode_classics": "Classici",
   "test.mode_custom": "Personalizzato",
   "test.custom_label": "Inserisci il tuo testo da praticare:",
   "test.custom_placeholder": "Incolla o digita il tuo testo personalizzato qui...",
@@ -224,6 +225,7 @@
   "options.corpus_numbers": "Numeri e simboli",
   "options.corpus_beginner": "Per principianti",
   "options.corpus_quote": "Citazioni famose",
+  "options.corpus_classics": "Brani Classici",
   "options.sound_mechanical": "Meccanico",
   "options.sound_click": "Clic",
   "options.sound_piano": "Pianoforte",
@@ -301,3 +303,4 @@
   "engine.numbers.heading": "Numbers & Punctuation Typing Test",
   "engine.numbers.subheading": "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }
+

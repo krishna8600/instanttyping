@@ -1,4 +1,4 @@
-{
+﻿{
   "index.row6_skill": "Iniciante / Novato",
   "footer.test_modes": "Modos de teste",
   "results.time": "Tempo",
@@ -201,6 +201,7 @@
   "results.cert_title": "Certificado de habilidade de digitação",
   "results.skill_band_desc": "Faixa de habilidade honesta baseada em PPM líquidas — sem percentis inflados.",
   "test.mode_quote": "Citação",
+  "test.mode_classics": "Clássicos",
   "test.mode_custom": "Personalizado",
   "test.custom_label": "Digite seu próprio texto para praticar:",
   "test.custom_placeholder": "Cole ou escreva seu texto personalizado aqui...",
@@ -224,6 +225,7 @@
   "options.corpus_numbers": "Números e Símbolos",
   "options.corpus_beginner": "Para iniciantes",
   "options.corpus_quote": "Citações Famosas",
+  "options.corpus_classics": "Passagens Clássicas",
   "options.sound_mechanical": "Mecânico",
   "options.sound_click": "Clique",
   "options.sound_piano": "Piano",
@@ -301,3 +303,4 @@
   "engine.numbers.heading": "Numbers & Punctuation Typing Test",
   "engine.numbers.subheading": "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }
+

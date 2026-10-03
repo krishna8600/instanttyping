@@ -21,12 +21,20 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 }
 
 function handleTypingStart() {
-  const testSection = document.getElementById('typing-test-container');
-  if (lenis && testSection) {
-    const rect = testSection.getBoundingClientRect();
-    // Scroll if test section is not already well in view
-    if (rect.top < 0 || rect.top > window.innerHeight * 0.5) {
-      lenis.scrollTo(testSection, { offset: -20 });
+  // Scroll to the WORDS (not the container top) so the words viewport
+  // and the guided keyboard below it land together in the viewport.
+  // Scrolling to #typing-test-container puts the big heading at the top,
+  // which pushes the keyboard below the fold.
+  const wordsEl = document.getElementById('typing-surface-wrapper');
+  const keyboardEl = document.getElementById('gk-root');
+  if (lenis && wordsEl) {
+    const wordsRect = wordsEl.getBoundingClientRect();
+    const kbRect = keyboardEl?.getBoundingClientRect();
+    const keyboardOutOfView = kbRect ? kbRect.bottom > window.innerHeight + 40 : false;
+    const wordsNotWellInView = wordsRect.top < 0 || wordsRect.top > window.innerHeight * 0.4;
+    // Scroll if words aren't well placed OR the keyboard is cut off below
+    if (wordsNotWellInView || keyboardOutOfView) {
+      lenis.scrollTo(wordsEl, { offset: -16 });
     }
   }
 }

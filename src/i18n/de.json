@@ -1,4 +1,4 @@
-{
+﻿{
   "index.row1_roles": "Gerichtsreporter, Geschwindigkeitsschreiber, Datenverarbeiter mit hohem Volumen",
   "page_3min.tip1_title": "Metronom-Tempo aufbauen",
   "privacy.last_updated": "Zuletzt aktualisiert: September 2026",
@@ -201,6 +201,7 @@
   "results.cert_title": "Tipp-Kompetenz-Zertifikat",
   "results.skill_band_desc": "Ehrliches Fähigkeitsband basierend auf Netto-WpM — keine aufgeblähten Perzentile.",
   "test.mode_quote": "Zitat",
+  "test.mode_classics": "Klassiker",
   "test.mode_custom": "Benutzerdefiniert",
   "test.custom_label": "Geben Sie Ihren eigenen Text zum Üben ein:",
   "test.custom_placeholder": "Fügen Sie Ihren benutzerdefinierten Text hier ein oder geben Sie ihn ein...",
@@ -224,6 +225,7 @@
   "options.corpus_numbers": "Zahlen & Symbole",
   "options.corpus_beginner": "Anfängerfreundlich",
   "options.corpus_quote": "Berühmte Zitate",
+  "options.corpus_classics": "Klassische Passagen",
   "options.sound_mechanical": "Mechanisch",
   "options.sound_click": "Klick",
   "options.sound_piano": "Klavier",
@@ -301,3 +303,4 @@
   "engine.numbers.heading": "Numbers & Punctuation Typing Test",
   "engine.numbers.subheading": "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }
+

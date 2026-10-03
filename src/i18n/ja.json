@@ -1,4 +1,4 @@
-{
+﻿{
   "page_3min.tip1_body": "各キーストロークを時計の安定したチクタクとして扱ってください。",
   "settings.sound": "サウンド",
   "index.row3_skill": "熟練",
@@ -201,6 +201,7 @@
   "results.cert_title": "タイピングスキル証明書",
   "results.skill_band_desc": "正味WPMに基づく正直なスキルバンド — 誇張されたパーセンタイルなし。",
   "test.mode_quote": "引用",
+  "test.mode_classics": "名作",
   "test.mode_custom": "カスタム",
   "test.custom_label": "練習するテキストを入力してください：",
   "test.custom_placeholder": "カスタムテキストをここに貼り付けるか入力してください...",
@@ -224,6 +225,7 @@
   "options.corpus_numbers": "数字と記号",
   "options.corpus_beginner": "初心者向け",
   "options.corpus_quote": "名言集",
+  "options.corpus_classics": "名作の一節",
   "options.sound_mechanical": "メカニカル",
   "options.sound_click": "クリック",
   "options.sound_piano": "ピアノ",
@@ -301,3 +303,4 @@
   "engine.numbers.heading": "Numbers & Punctuation Typing Test",
   "engine.numbers.subheading": "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }
+

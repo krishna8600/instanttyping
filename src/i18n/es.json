@@ -1,4 +1,4 @@
-{
+﻿{
   "index.row4_band": "Intermedio",
   "terms.title": "Términos del servicio",
   "index.th_wpm": "Rango WPM",
@@ -201,6 +201,7 @@
   "results.cert_title": "Certificado de habilidad de escritura",
   "results.skill_band_desc": "Banda de habilidad basada en PPM netas — sin percentiles inflados.",
   "test.mode_quote": "Cita",
+  "test.mode_classics": "Clásicos",
   "test.mode_custom": "Personalizado",
   "test.custom_label": "Ingresa tu propio texto para practicar:",
   "test.custom_placeholder": "Pega o escribe tu texto personalizado aquí...",
@@ -224,6 +225,7 @@
   "options.corpus_numbers": "Números y símbolos",
   "options.corpus_beginner": "Para principiantes",
   "options.corpus_quote": "Citas famosas",
+  "options.corpus_classics": "Pasajes Clásicos",
   "options.sound_mechanical": "Mecánico",
   "options.sound_click": "Clic",
   "options.sound_piano": "Piano",
@@ -301,3 +303,4 @@
   "engine.numbers.heading": "Numbers & Punctuation Typing Test",
   "engine.numbers.subheading": "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }
+

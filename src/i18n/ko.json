@@ -1,4 +1,4 @@
-{
+﻿{
   "page_3min.guide_intro": "여러 분 동안 높은 속도를 유지하려면 리듬 조절이 필요합니다.",
   "page_1min.tip1_title": "두 단어 앞을 내다보기",
   "index.row6_skill": "초보자 / 입문",
@@ -201,6 +201,7 @@
   "results.cert_title": "타이핑 기술 인증서",
   "results.skill_band_desc": "순 WPM 기반의 정직한 기술 등급 — 부풀린 백분위 없음.",
   "test.mode_quote": "인용문",
+  "test.mode_classics": "고전",
   "test.mode_custom": "사용자 정의",
   "test.custom_label": "연습할 자신의 텍스트를 입력하세요:",
   "test.custom_placeholder": "여기에 사용자 정의 텍스트를 붙여넣거나 입력하세요...",
@@ -224,6 +225,7 @@
   "options.corpus_numbers": "숫자 및 기호",
   "options.corpus_beginner": "초보자용",
   "options.corpus_quote": "명언",
+  "options.corpus_classics": "고전 명문",
   "options.sound_mechanical": "기계식",
   "options.sound_click": "클릭",
   "options.sound_piano": "피아노",
@@ -301,3 +303,4 @@
   "engine.numbers.heading": "Numbers & Punctuation Typing Test",
   "engine.numbers.subheading": "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }
+
