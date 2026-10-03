@@ -223,7 +223,13 @@ const navItems = [
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.45),
       inset 0 1px 0 rgba(255, 255, 255, 0.08);
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .pill-nav::-webkit-scrollbar {
+    display: none;
   }
   .pill-nav .brand {
     display: flex;
