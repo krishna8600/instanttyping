@@ -1,10 +1,10 @@
----
+﻿---
 import Icon from "./Icon.astro";
 
 interface Props {
   initialDuration?: number;
-  initialMode?: "time" | "words" | "quote" | "custom";
-  initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote";
+  initialMode?: "time" | "words" | "quote" | "custom" | "classics";
+  initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote" | "classics";
   pageHeading?: string;
   pageSubheading?: string;
   pageHeadingKey?: string;
@@ -80,8 +80,8 @@ const {
       </button>
       <button
         type="button"
-        data-mode-btn="custom"
-        data-i18n="test.mode_custom"
+        data-mode-btn="classics"
+        data-i18n="test.mode_classics"
         class="mode-tab-btn px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
       >
         Custom
@@ -196,6 +196,7 @@ const {
           >Beginner Friendly</option
         >
         <option class="dark:bg-[#1D1D1F]" value="quote" data-i18n="options.corpus_quote">Famous Quotes</option>
+        <option class="dark:bg-[#1D1D1F]" value="classics" data-i18n="options.corpus_classics">Classic Passages</option>
       </select>
     </div>
 
@@ -807,6 +808,7 @@ const {
     NUMBERS_PUNCTUATION_WORDS,
     BEGINNER_WORDS,
     FAMOUS_QUOTES,
+    CLASSIC_PASSAGES,
     SPANISH_WORDS,
     FRENCH_WORDS,
     GERMAN_WORDS,
@@ -835,11 +837,11 @@ const {
       10,
     );
     const initialModeAttr = (container.dataset.initialMode || "time") as
-      "time" | "words" | "quote" | "custom";
+      "time" | "words" | "quote" | "custom" | "classics";
     const initialWordbankAttr = container.dataset.initialWordbank || "top200";
 
     // State Variables
-    let currentMode: "time" | "words" | "quote" | "custom" = initialModeAttr;
+    let currentMode: "time" | "words" | "quote" | "custom" | "classics" = initialModeAttr;
     let targetDuration = initialDurationAttr;
     let targetWordCount = 25;
     let currentWordbankName = initialWordbankAttr;
@@ -1019,11 +1021,23 @@ const {
             "test.",
           ];
         }
+      } else if (currentMode === "classics" || currentWordbankName === "classics") {
+        const passageObj =
+          CLASSIC_PASSAGES[Math.floor(Math.random() * CLASSIC_PASSAGES.length)];
+        wordsList = passageObj.text.split(" ");
+        quoteCitation.textContent = "â€” " + passageObj.source + " Â· Public domain";
+        quoteCitation.classList.remove("hidden");
       } else if (currentMode === "quote" || currentWordbankName === "quote") {
         const quoteObj =
           FAMOUS_QUOTES[Math.floor(Math.random() * FAMOUS_QUOTES.length)];
         wordsList = quoteObj.text.split(" ");
         quoteCitation.textContent = `— ${quoteObj.source}`;
+        quoteCitation.classList.remove("hidden");
+      } else if (currentWordbankName === "classics") {
+        const passageObj =
+          CLASSIC_PASSAGES[Math.floor(Math.random() * CLASSIC_PASSAGES.length)];
+        wordsList = passageObj.text.split(" ");
+        quoteCitation.textContent = "— " + passageObj.source + " · Public domain";
         quoteCitation.classList.remove("hidden");
       } else if (currentMode === "words") {
         wordsList = getRandomWords(targetWordCount, getSelectedCorpus());
@@ -2020,7 +2034,7 @@ const {
         );
 
         const mode = (btn as HTMLElement).dataset.modeBtn as
-          "time" | "words" | "quote" | "custom";
+          "time" | "words" | "quote" | "custom" | "classics";
         currentMode = mode;
         customMistakeWords = null;
 
@@ -2411,3 +2425,5 @@ const {
     document.addEventListener("astro:before-swap", cleanup, { once: true });
   }
 </script>
+
+

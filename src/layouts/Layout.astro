@@ -63,8 +63,9 @@ const ogImage = `${siteUrl}/og-image.png`;
  <meta name="twitter:description" content={description} />
  <meta name="twitter:image" content={ogImage} />
 
- <!-- JSON-LD WebSite Schema -->
- <script type="application/ld+json" set:html={JSON.stringify({
+ <!-- JSON-LD WebSite & Organization Schema -->
+ <script type="application/ld+json" set:html={JSON.stringify([
+ {
  "@context": "https://schema.org",
  "@type": "WebSite",
  "name": "Instant Typing",
@@ -75,7 +76,15 @@ const ogImage = `${siteUrl}/og-image.png`;
  "target": `${siteUrl}/?q={search_term_string}`,
  "query-input": "required name=search_term_string"
  }
- })} />
+ },
+ {
+ "@context": "https://schema.org",
+ "@type": "Organization",
+ "name": "Instant Typing",
+ "url": siteUrl,
+ "logo": `${siteUrl}/favicon-96x96.png`
+ }
+ ])} />
 
  <!-- Theme Initializer Script (prevents theme flicker) -->
  <script is:inline>

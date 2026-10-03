@@ -1,0 +1,381 @@
+﻿---
+// GuidedKeyboard.astro — Premium rebuild
+// Design law: monochrome + #0072F5 only on target key, shadow-simulated borders
+// Instruction format: "Right index → J" (label, never sentence)
+// No function row, no finger-dot diagram — restraint over clutter
+---
+
+<div
+  id="gk-root"
+  class="hidden md:block w-full max-w-3xl mx-auto mt-2 select-none"
+  aria-label="Finger guide keyboard"
+  role="region"
+>
+  <!-- Header: instruction + toggle -->
+  <div class="flex items-center justify-between mb-1.5 px-1">
+    <div
+      id="gk-instruction"
+      class="flex items-center gap-2.5 min-h-[1.75rem] opacity-0 transition-opacity duration-150"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      <span id="gk-hand-label" class="text-[11px] font-mono uppercase tracking-[0.14em] text-ds-text-secondary"></span>
+      <span class="text-ds-text-secondary opacity-40 text-[11px]">→</span>
+      <kbd
+        id="gk-key-label"
+        class="inline-flex items-center justify-center h-6 min-w-[1.5rem] px-2 rounded-md text-[#0072F5] text-[11px] font-mono font-semibold tracking-wide"
+        style="box-shadow: 0 0 0 1px rgba(0,114,245,0.45), 0 0 0 3px rgba(0,114,245,0.08); background: rgba(0,114,245,0.05);"
+      ></kbd>
+    </div>
+
+    <label class="flex items-center gap-2 cursor-pointer" id="gk-toggle-label">
+      <span class="text-[10px] font-mono text-ds-text-secondary uppercase tracking-[0.14em]">Keyboard</span>
+      <button
+        id="gk-toggle"
+        role="switch"
+        aria-checked="true"
+        class="relative inline-flex h-[18px] w-9 shrink-0 cursor-pointer rounded-full transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5] focus-visible:ring-offset-2"
+        style="box-shadow: inset 0 0 0 1px var(--ds-border, #E5E5E5); background: var(--ds-bg-100, #F5F5F7);"
+      >
+        <span
+          id="gk-toggle-thumb"
+          class="pointer-events-none inline-block h-[14px] w-[14px] mt-[2px] ml-[2px] rounded-full bg-white shadow transition-transform duration-200"
+          style="box-shadow: 0 1px 3px rgba(0,0,0,0.18), 0 0 0 1px rgba(0,0,0,0.06);"
+        ></span>
+      </button>
+    </label>
+  </div>
+
+  <!-- Keyboard -->
+  <div id="gk-keyboard" class="premium-card !p-2 sm:!p-2.5 overflow-x-auto">
+    <div class="flex flex-col gap-1 min-w-[560px]">
+
+      <!-- Row 1: Digits -->
+      <div class="flex gap-1">
+        {[
+          {code:'Backquote', p:'`', s:'~'},
+          {code:'Digit1', p:'1', s:'!'},
+          {code:'Digit2', p:'2', s:'@'},
+          {code:'Digit3', p:'3', s:'#'},
+          {code:'Digit4', p:'4', s:'$'},
+          {code:'Digit5', p:'5', s:'%'},
+          {code:'Digit6', p:'6', s:'^'},
+          {code:'Digit7', p:'7', s:'&'},
+          {code:'Digit8', p:'8', s:'*'},
+          {code:'Digit9', p:'9', s:'('},
+          {code:'Digit0', p:'0', s:')'},
+          {code:'Minus', p:'-', s:'_'},
+          {code:'Equal', p:'=', s:'+'},
+        ].map(k => (
+          <div data-code={k.code} class="gk-key relative flex-1 h-10 hand-left">
+            <span class="absolute top-1 left-1.5 text-[8px] opacity-45 leading-none font-mono">{k.s}</span>
+            <span class="text-[11px] mt-2.5 font-medium">{k.p}</span>
+          </div>
+        ))}
+        <div class="gk-key w-14 h-10 text-[9px] font-mono uppercase tracking-wider hand-left">del</div>
+      </div>
+
+      <!-- Row 2: QWERTY -->
+      <div class="flex gap-1">
+        <div class="gk-key w-12 h-10 text-[9px] font-mono uppercase tracking-wider hand-left">tab</div>
+        {[
+          {code:'KeyQ', p:'Q', hand:'left'},
+          {code:'KeyW', p:'W', hand:'left'},
+          {code:'KeyE', p:'E', hand:'left'},
+          {code:'KeyR', p:'R', hand:'left'},
+          {code:'KeyT', p:'T', hand:'left'},
+          {code:'KeyY', p:'Y', hand:'right'},
+          {code:'KeyU', p:'U', hand:'right'},
+          {code:'KeyI', p:'I', hand:'right'},
+          {code:'KeyO', p:'O', hand:'right'},
+          {code:'KeyP', p:'P', hand:'right'},
+          {code:'BracketLeft', p:'[', s:'{', hand:'right'},
+          {code:'BracketRight', p:']', s:'}', hand:'right'},
+          {code:'Backslash', p:'\\', s:'|', hand:'right'},
+        ].map(k => (
+          <div data-code={k.code} class={`gk-key relative flex-1 h-10 hand-${k.hand}`}>
+            {k.s && <span class="absolute top-1 left-1.5 text-[8px] opacity-45 leading-none font-mono">{k.s}</span>}
+            <span class={k.s ? 'text-[11px] mt-2.5 font-medium' : 'text-[11px] font-medium'}>{k.p}</span>
+          </div>
+        ))}
+      </div>
+
+      <!-- Row 3: Home row -->
+      <div class="flex gap-1">
+        <div class="gk-key w-14 h-10 text-[9px] font-mono uppercase tracking-wider hand-left">caps</div>
+        {[
+          {code:'KeyA', p:'A', hand:'left'},
+          {code:'KeyS', p:'S', hand:'left'},
+          {code:'KeyD', p:'D', hand:'left'},
+          {code:'KeyF', p:'F', hand:'left', home:true},
+          {code:'KeyG', p:'G', hand:'left'},
+          {code:'KeyH', p:'H', hand:'right'},
+          {code:'KeyJ', p:'J', hand:'right', home:true},
+          {code:'KeyK', p:'K', hand:'right'},
+          {code:'KeyL', p:'L', hand:'right'},
+          {code:'Semicolon', p:';', s:':', hand:'right'},
+          {code:'Quote', p:"'", s:'"', hand:'right'},
+        ].map(k => (
+          <div data-code={k.code} class={`gk-key relative flex-1 h-10 hand-${k.hand}`}>
+            {k.s && <span class="absolute top-1 left-1.5 text-[8px] opacity-45 leading-none font-mono">{k.s}</span>}
+            <span class={k.s ? 'text-[11px] mt-2.5 font-medium' : 'text-[11px] font-medium'}>{k.p}</span>
+            {k.home && <span class="gk-home-nub" aria-hidden="true"></span>}
+          </div>
+        ))}
+        <div class="gk-key w-16 h-10 text-[9px] font-mono uppercase tracking-wider hand-right">enter</div>
+      </div>
+
+      <!-- Row 4: Bottom row -->
+      <div class="flex gap-1">
+        <div data-code="ShiftLeft" class="gk-key w-20 h-10 text-[9px] font-mono uppercase tracking-wider hand-left">shift</div>
+        {[
+          {code:'KeyZ', p:'Z', hand:'left'},
+          {code:'KeyX', p:'X', hand:'left'},
+          {code:'KeyC', p:'C', hand:'left'},
+          {code:'KeyV', p:'V', hand:'left'},
+          {code:'KeyB', p:'B', hand:'left'},
+          {code:'KeyN', p:'N', hand:'right'},
+          {code:'KeyM', p:'M', hand:'right'},
+          {code:'Comma', p:',', s:'<', hand:'right'},
+          {code:'Period', p:'.', s:'>', hand:'right'},
+          {code:'Slash', p:'/', s:'?', hand:'right'},
+        ].map(k => (
+          <div data-code={k.code} class={`gk-key relative flex-1 h-10 hand-${k.hand}`}>
+            {k.s && <span class="absolute top-1 left-1.5 text-[8px] opacity-45 leading-none font-mono">{k.s}</span>}
+            <span class={k.s ? 'text-[11px] mt-2.5 font-medium' : 'text-[11px] font-medium'}>{k.p}</span>
+          </div>
+        ))}
+        <div data-code="ShiftRight" class="gk-key w-20 h-10 text-[9px] font-mono uppercase tracking-wider hand-right">shift</div>
+      </div>
+
+      <!-- Row 5: Space -->
+      <div class="flex gap-1">
+        <div class="gk-key w-16 h-10 hand-left"></div>
+        <div data-code="Space" class="gk-key flex-1 h-10 hand-none">
+          <span class="text-[9px] font-mono uppercase tracking-[0.2em] opacity-45">space</span>
+        </div>
+        <div class="gk-key w-16 h-10 hand-right"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /* ── Keys: shadow-simulated borders, monochrome ── */
+  .gk-key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    font-family: ui-monospace, 'JetBrains Mono', monospace;
+    color: #525252;
+    background-color: #FAFAFA;
+    box-shadow: 0 0 0 1px #E8E8E8, 0 1px 2px rgba(0,0,0,0.04);
+    transition: background-color 120ms ease, box-shadow 120ms ease, color 120ms ease, transform 120ms ease;
+    user-select: none;
+  }
+  :global(.dark) .gk-key {
+    color: #A3A3A3;
+    background-color: #161616;
+    box-shadow: 0 0 0 1px #2A2A2A, 0 1px 2px rgba(0,0,0,0.3);
+  }
+
+  /* ── Hand zones: barely-there tint ── */
+  .gk-key.hand-left  { background-color: #F7F7F8; }
+  .gk-key.hand-right { background-color: #FBFBFC; }
+  .gk-key.hand-none  { background-color: #FAFAFA; }
+  :global(.dark) .gk-key.hand-left  { background-color: #141414; }
+  :global(.dark) .gk-key.hand-right { background-color: #181818; }
+  :global(.dark) .gk-key.hand-none  { background-color: #161616; }
+
+  /* ── Home-key nubs (F / J) ── */
+  .gk-home-nub {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 14px;
+    height: 2px;
+    border-radius: 1px;
+    background-color: #C9C9CE;
+  }
+  :global(.dark) .gk-home-nub { background-color: #3A3A3E; }
+
+  /* ── States ── */
+  .gk-key.gk-next {
+    color: #0072F5 !important;
+    background-color: rgba(0, 114, 245, 0.07) !important;
+    box-shadow: 0 0 0 1.5px #0072F5, 0 0 0 4px rgba(0,114,245,0.12), 0 1px 2px rgba(0,0,0,0.04) !important;
+  }
+  :global(.dark) .gk-key.gk-next {
+    background-color: rgba(0, 114, 245, 0.12) !important;
+  }
+
+  .gk-key.gk-correct {
+    color: #0072F5 !important;
+    background-color: rgba(0, 114, 245, 0.16) !important;
+    box-shadow: 0 0 0 1.5px #0072F5 !important;
+    transition: none !important;
+  }
+
+  .gk-key.gk-wrong {
+    color: #E5484D !important;
+    background-color: rgba(229, 72, 77, 0.10) !important;
+    box-shadow: 0 0 0 1.5px #E5484D !important;
+    transition: none !important;
+    animation: gk-shake 220ms cubic-bezier(.36,.07,.19,.97) both;
+  }
+
+  @keyframes gk-shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-2px); }
+    40%, 60% { transform: translateX(2px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gk-key,
+    #gk-instruction {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+
+  /* ── Toggle states ── */
+  #gk-toggle[aria-checked="true"] {
+    background: rgba(0, 114, 245, 0.16) !important;
+    box-shadow: inset 0 0 0 1px rgba(0,114,245,0.45) !important;
+  }
+  #gk-toggle[aria-checked="true"] #gk-toggle-thumb {
+    transform: translateX(18px);
+    background-color: #0072F5 !important;
+  }
+  :global(.dark) #gk-toggle[aria-checked="false"] #gk-toggle-thumb {
+    background-color: #525252;
+  }
+</style>
+
+<script>
+  import { getKeyForChar, getShiftKeyFor } from '../scripts/keyboard-map';
+
+  let enabled = true;
+  try { const v = localStorage.getItem('gk-enabled'); if (v !== null) enabled = v === 'true'; } catch {}
+
+  const instruction = document.getElementById('gk-instruction');
+  const handLabel   = document.getElementById('gk-hand-label');
+  const keyLabel    = document.getElementById('gk-key-label');
+  const toggle      = document.getElementById('gk-toggle') as HTMLButtonElement;
+
+  let activeKeyEl:   HTMLElement | null = null;
+  let activeShiftEl: HTMLElement | null = null;
+
+  const fingerLabel: Record<string, string> = {
+    left_pinky:  'Left pinky',
+    left_ring:   'Left ring',
+    left_middle: 'Left middle',
+    left_index:  'Left index',
+    right_index: 'Right index',
+    right_middle:'Right middle',
+    right_ring:  'Right ring',
+    right_pinky: 'Right pinky',
+    thumb:       'Thumb',
+  };
+
+  function isEnglish(): boolean {
+    const sel = document.getElementById('wordbank-select') as HTMLSelectElement | null;
+    if (!sel) return true;
+    return !['es','fr','de','pt','it'].includes(sel.value);
+  }
+
+  function shouldShow(): boolean {
+    return enabled && isEnglish();
+  }
+
+  function applyToggleUI() {
+    if (!toggle) return;
+    toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
+    if (!shouldShow()) clearAll();
+  }
+
+  function clearAll() {
+    if (activeKeyEl)   { activeKeyEl.classList.remove('gk-next', 'gk-correct', 'gk-wrong'); activeKeyEl = null; }
+    if (activeShiftEl) { activeShiftEl.classList.remove('gk-next'); activeShiftEl = null; }
+    if (instruction)   instruction.style.opacity = '0';
+    // Sweep stuck highlights
+    document.querySelectorAll('.gk-key.gk-correct, .gk-key.gk-wrong, .gk-key.gk-next').forEach(el => {
+      el.classList.remove('gk-correct', 'gk-wrong', 'gk-next');
+    });
+    document.querySelectorAll('.gk-active-zone').forEach(el => {
+      el.classList.remove('gk-active-zone');
+    });
+  }
+
+  function highlightNext(char: string) {
+    clearAll();
+    if (!shouldShow()) return;
+
+    const res = getKeyForChar(char);
+    if (!res) return;
+
+    activeKeyEl = document.querySelector(`.gk-key[data-code="${res.code}"]`);
+    activeKeyEl?.classList.add('gk-next');
+
+    if (res.shift) {
+      const shiftCode = getShiftKeyFor(res.hand);
+      activeShiftEl = document.querySelector(`.gk-key[data-code="${shiftCode}"]`);
+      activeShiftEl?.classList.add('gk-next');
+    }
+
+    if (handLabel && keyLabel && instruction) {
+      handLabel.textContent = fingerLabel[res.finger] ?? res.finger;
+      keyLabel.textContent  = char === ' ' ? 'Space' : char.toUpperCase();
+      instruction.style.opacity = '1';
+    }
+  }
+
+  window.addEventListener('typing-next-char', (e: Event) => {
+    const detail = (e as CustomEvent).detail;
+    if (!detail?.char) { clearAll(); return; }
+    highlightNext(detail.char);
+  });
+
+  window.addEventListener('typing-key-result', (e: Event) => {
+    if (!shouldShow()) return;
+    const { char, correct } = (e as CustomEvent).detail;
+    const res = getKeyForChar(char);
+    if (!res) return;
+    const el = document.querySelector<HTMLElement>(`.gk-key[data-code="${res.code}"]`);
+    if (!el) return;
+
+    el.classList.remove('gk-correct', 'gk-wrong', 'gk-next');
+    void el.offsetWidth;
+
+    if (correct) {
+      el.classList.add('gk-correct');
+      setTimeout(() => el.classList.remove('gk-correct'), 200);
+    } else {
+      el.classList.add('gk-wrong');
+      setTimeout(() => el.classList.remove('gk-wrong'), 320);
+    }
+  });
+
+  window.addEventListener('typing-reset', () => {
+    clearAll();
+    applyToggleUI();
+  });
+
+  toggle?.addEventListener('click', () => {
+    enabled = !enabled;
+    try { localStorage.setItem('gk-enabled', String(enabled)); } catch {}
+    applyToggleUI();
+  });
+
+  document.getElementById('wordbank-select')?.addEventListener('change', () => {
+    if (!isEnglish()) clearAll();
+    applyToggleUI();
+  });
+
+  applyToggleUI();
+</script>
+

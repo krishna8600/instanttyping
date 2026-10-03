@@ -550,12 +550,31 @@ async function playSonicFlowNote(_theme: 'nature' | 'creative', _isError: boolea
     const { play } = await import('sonic-flow');
     const soundName = scaleIndex % 2 === 0 ? "sparkle" : "chime";
     scaleIndex++;
+    
     // Scale volume according to current master volume level
     const baseVol = 0.25;
     const effectiveVol = soundEnabled ? (currentVolume / 100) : 0;
     const vol = baseVol * Math.pow(effectiveVol, 2);
+    
     if (vol > 0.001) {
+      // sonic-flow strictly returns if prefers-reduced-motion is true.
+      // We bypass this so the user can hear the sound (we scale intensity ourselves).
+      let originalMatchMedia: any = null;
+      if (typeof window !== 'undefined' && window.matchMedia) {
+        originalMatchMedia = window.matchMedia;
+        window.matchMedia = (query: string) => {
+          if (query === '(prefers-reduced-motion: reduce)') {
+            return { matches: false, addListener: ()=>{}, removeListener: ()=>{} } as any;
+          }
+          return originalMatchMedia(query);
+        };
+      }
+      
       play(soundName, { volume: vol });
+      
+      if (originalMatchMedia) {
+        window.matchMedia = originalMatchMedia;
+      }
     }
   } catch (err) {
     console.error("Creative theme error:", err);
@@ -635,57 +654,63 @@ function playDefaultClick(isSpace: boolean, isError: boolean): void {
   }
 }
 
-// Mechanical Theme (NK Cream samples)
-const mechanicalCache = new Map<string, AudioBuffer>();
-let mechAudioCtx: AudioContext | null = null;
-const letterWavs = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+// Shared noise buffer for mechanical thock
+let mechanicalNoiseBuffer: AudioBuffer | null = null;
+function getMechanicalNoiseBuffer(ctx: AudioContext): AudioBuffer {
+  if (mechanicalNoiseBuffer) return mechanicalNoiseBuffer;
+  const bufferSize = ctx.sampleRate * 0.1; // 100ms
+  mechanicalNoiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const output = mechanicalNoiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) {
+    output[i] = Math.random() * 2 - 1;
+  }
+  return mechanicalNoiseBuffer;
+}
 
 async function playMechanicalKey(key: string, isError: boolean) {
   if (typeof window === 'undefined') return;
-
-  if (!mechAudioCtx) {
-    mechAudioCtx = ensureAudioContext();
-    if (!mechAudioCtx) return;
-  }
-
-  let mappedKey = key.toLowerCase();
-  if (mappedKey === ' ') {
-    mappedKey = 'space';
-  } else if (mappedKey === 'enter') {
-    mappedKey = 'enter';
-  } else if (mappedKey === 'backspace') {
-    mappedKey = 'backspace';
-  } else if (!letterWavs.includes(mappedKey)) {
-    mappedKey = letterWavs[Math.floor(Math.random() * letterWavs.length)];
-  }
-
-  const url = `/sounds/nk-cream/${mappedKey}.wav`;
-
-  let buffer = mechanicalCache.get(url);
-  if (!buffer) {
-    try {
-      const response = await fetch(url);
-      const arrayBuffer = await response.arrayBuffer();
-      buffer = await mechAudioCtx.decodeAudioData(arrayBuffer);
-      mechanicalCache.set(url, buffer);
-    } catch (e) {
-      console.error(`Failed to load mechanical sound ${url}`, e);
-      throw e;
-    }
-  }
-
-  const source = mechAudioCtx.createBufferSource();
-  source.buffer = buffer!;
-
-  const gainNode = mechAudioCtx.createGain();
-  const volOffset = (Math.random() * 0.14) - 0.07;
-  gainNode.gain.value = 1.0 + volOffset;
-
-  const rateOffset = (Math.random() * 0.08) - 0.04;
-  source.playbackRate.value = 1.0 + rateOffset;
-
-  const masterDest = getMasterGainNode() || mechAudioCtx.destination;
-  source.connect(gainNode);
-  gainNode.connect(masterDest);
-  source.start(0);
+  const ctx = ensureAudioContext();
+  if (!ctx) return;
+  
+  const masterDest = getMasterGainNode() || ctx.destination;
+  const now = ctx.currentTime;
+  
+  const isReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const intensity = isReducedMotion ? 0.4 : 1.0;
+  
+  // Oscillator for the "thud/thock" body
+  const osc = ctx.createOscillator();
+  const oscGain = ctx.createGain();
+  
+  osc.type = "sine";
+  const baseFreq = isError ? 100 : (key === "Backspace" || key === " " ? 160 : 250 + Math.random() * 30);
+  osc.frequency.setValueAtTime(baseFreq, now);
+  osc.frequency.exponentialRampToValueAtTime(baseFreq * 0.5, now + 0.05);
+  
+  oscGain.gain.setValueAtTime(0.8 * intensity, now);
+  oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+  
+  osc.connect(oscGain);
+  oscGain.connect(masterDest);
+  
+  // Noise burst for the "click" attack
+  const noiseSource = ctx.createBufferSource();
+  noiseSource.buffer = getMechanicalNoiseBuffer(ctx);
+  const noiseFilter = ctx.createBiquadFilter();
+  const noiseGain = ctx.createGain();
+  
+  noiseFilter.type = "highpass";
+  noiseFilter.frequency.value = isError ? 1000 : 2500;
+  
+  noiseGain.gain.setValueAtTime(0.4 * intensity, now);
+  noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+  
+  noiseSource.connect(noiseFilter);
+  noiseFilter.connect(noiseGain);
+  noiseGain.connect(masterDest);
+  
+  osc.start(now);
+  osc.stop(now + 0.07);
+  noiseSource.start(now);
+  noiseSource.stop(now + 0.04);
 }

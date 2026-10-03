@@ -1,7 +1,4 @@
-{
-    "settings.stop_on_error": "Stop on Error",
-    "options.on": "On",
-    "options.off": "Off",
+﻿{
     "page_numbers.tip1_title":  "Anchor Your Thumbs",
     "privacy.s4_heading":  "4. Analytics \u0026 Web Measurement",
     "about.raw_wpm_label":  "Gross Words Per Minute (Raw WPM)",
@@ -115,7 +112,7 @@
     "privacy.s6_link":  "Contact Page",
     "index.th_skill":  "Skill Level",
     "contact.option_corpus":  "Wordbank / Vocabulary Suggestion",
-    "hero.subtitle":  "No ads. No account. Your scores never leave your browser.",
+    "hero.subtitle":  "60 seconds. No account. Your scores never leave your browser.",
     "index.th_roles":  "Typical Roles",
     "page_1min.tip1_title":  "Look Ahead Two Words",
     "terms.s6_body":  "We reserve the right to revise or replace these terms at any time. Continued use of the platform after updates are published constitutes binding acceptance of the modified terms.",
@@ -304,8 +301,5 @@
     "engine.typing.heading":  "Typing Test for Beginners: Learn Touch Typing",
     "engine.typing.subheading":  "A gentle, distraction-free typing test featuring common words and simple sentences. Ideal for learning finger placement.",
     "engine.numbers.heading":  "Numbers \u0026 Punctuation Typing Test",
-    "engine.numbers.subheading":  "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists.",
-    "nav.classics":  "Classics",
-    "nav.quotes":  "Quotes",
-    "results.share":  "Share"
+    "engine.numbers.subheading":  "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }

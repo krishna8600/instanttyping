@@ -1,7 +1,4 @@
-{
-    "settings.stop_on_error": "Stop on Error",
-    "options.on": "On",
-    "options.off": "Off",
+﻿{
     "page_numbers.tip1_title":  "Anchor Your Thumbs",
     "privacy.s4_heading":  "4. Analytics \u0026 Web Measurement",
     "about.raw_wpm_label":  "Gross Words Per Minute (Raw WPM)",
@@ -115,7 +112,7 @@
     "privacy.s6_link":  "Contact Page",
     "index.th_skill":  "Skill Level",
     "contact.option_corpus":  "Wordbank / Vocabulary Suggestion",
-    "hero.subtitle":  "No ads. No account. Your scores never leave your browser.",
+    "hero.subtitle":  "60 seconds. No account. Your scores never leave your browser.",
     "index.th_roles":  "Typical Roles",
     "page_1min.tip1_title":  "Look Ahead Two Words",
     "terms.s6_body":  "We reserve the right to revise or replace these terms at any time. Continued use of the platform after updates are published constitutes binding acceptance of the modified terms.",
@@ -258,15 +255,15 @@
     "contact.honeypot":  "Do not fill this out if human",
     "faq.idx.title":  "Frequently Asked Questions About Typing Tests",
     "faq.idx.q1":  "How is Words Per Minute (WPM) calculated on Instant Typing?",
-    "faq.idx.a1":  "One word equals five keystrokes - that is the international standard. We count your correct keystrokes, divide by 5, then divide by minutes. Same method everywhere, so your score means the same on any text.",
+    "faq.idx.a1":  "Following standard international typing measurement guidelines, one word is defined as exactly five keystrokes (including letters, spaces, and punctuation). Net WPM is calculated as: (Correct Keystrokes / 5) divided by the time elapsed in minutes. This ensures an objective and standardized measurement regardless of vocabulary complexity.",
     "faq.idx.q2":  "What is considered an average typing speed?",
-    "faq.idx.a2":  "40 WPM is average. 65-85 WPM is professional (typists, transcriptionists). Above 100 WPM with 98% accuracy is competitive level.",
+    "faq.idx.a2":  "The average global typing speed is approximately 40 words per minute (WPM). Professional typists, transcriptionists, and legal secretaries typically type between 65 and 85 WPM, while high-speed competitive typists achieve speeds upwards of 100 to 120+ WPM with 98% accuracy.",
     "faq.idx.q3":  "What is the difference between Raw WPM and Net WPM?",
-    "faq.idx.a3":  "Raw WPM counts every keystroke, including typos. Net WPM counts only correct ones. Employers use Net WPM because typos slow real work down.",
+    "faq.idx.a3":  "Raw WPM (Gross WPM) represents the total number of keystrokes typed divided by 5 per minute, regardless of whether characters were correct or incorrect. Net WPM only counts correctly typed characters. Net WPM is the true metric used in professional assessments because typos decrease productivity.",
     "faq.idx.q4":  "How does the \u0027Train My Mistakes\u0027 feature work?",
-    "faq.idx.a4":  "After a test with errors, click \"Train My Mistakes\". We pull the exact words you mistyped and build a drill from them. Practice your weak spots, not random text.",
+    "faq.idx.a4":  "Whenever you complete a test with errors, our engine analyzes your exact keystroke log and isolates the words and keys that triggered typos. Clicking \u0027Train My Mistakes\u0027 automatically generates a targeted practice drill focusing strictly on your problem areas so you improve where it counts.",
     "faq.idx.q5":  "Can I download or share a typing certificate?",
-    "faq.idx.a5":  "Yes. Click \"View Skill Certificate\" after any test. You get a PNG with your WPM, accuracy, and consistency - ready for resumes or job applications.",
+    "faq.idx.a5":  "Yes. After completing any test, click \u0027View Skill Certificate\u0027. The engine renders a high-resolution performance certificate complete with your Net WPM, Accuracy, and Consistency. You can download this PNG certificate directly for resumes, portfolios, or job applications.",
     "faq.1.title":  "Frequently Asked Questions About the 1-Minute Test",
     "faq.1.q1":  "Why is the 1-minute typing test the standard benchmark?",
     "faq.1.a1":  "A 60-second test provides the optimal balance between measuring peak burst speed and sustaining consistent finger rhythm without causing hand strain. Most recruitment portals and standardized assessments utilize 1-minute intervals to evaluate core keyboard proficiency.",
@@ -304,8 +301,5 @@
     "engine.typing.heading":  "Typing Test for Beginners: Learn Touch Typing",
     "engine.typing.subheading":  "A gentle, distraction-free typing test featuring common words and simple sentences. Ideal for learning finger placement.",
     "engine.numbers.heading":  "Numbers \u0026 Punctuation Typing Test",
-    "engine.numbers.subheading":  "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists.",
-    "nav.classics":  "Classics",
-    "nav.quotes":  "Quotes",
-    "results.share":  "Share"
+    "engine.numbers.subheading":  "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists."
 }

@@ -1,9 +1,9 @@
-﻿---
+---
 import Icon from "./Icon.astro";
 
 interface Props {
   initialDuration?: number;
-  initialMode?: "time" | "words" | "quote" | "custom" | "classics";
+  initialMode?: "time" | "words" | "quote" | "custom" | "classics" | "code";
   initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote" | "classics";
   pageHeading?: string;
   pageSubheading?: string;
@@ -14,7 +14,7 @@ interface Props {
 const {
   initialDuration = 60,
   initialMode = "time",
-  initialWordbank = "top200",
+  initialWordbank = "top1000",
   pageHeading = "Typing Speed & Accuracy Test",
   pageSubheading = "Test your typing speed with real-time Words Per Minute (WPM), accuracy, and detailed error analysis.",
   pageHeadingKey,
@@ -89,7 +89,22 @@ const {
         data-i18n="test.mode_classics"
         class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
       >
+        Classics
+      </button>
+      <button
+        type="button"
+        data-mode-btn="custom"
+        data-i18n="test.mode_custom"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+      >
         Custom
+      </button>
+      <button
+        type="button"
+        data-mode-btn="code"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+      >
+        Code
       </button>
     </div>
 
@@ -227,6 +242,7 @@ const {
         <option class="dark:bg-[#1D1D1F]" value="nature" data-i18n="options.sound_nature">Nature</option>
         <option class="dark:bg-[#1D1D1F]" value="creative" data-i18n="options.sound_creative">Creative</option>
       </select>
+      <input type="range" id="volume-slider" min="0" max="100" title="Volume" class="w-16 h-1 ml-1 bg-[#E5E5E5] dark:bg-white/10 rounded-full appearance-none cursor-pointer focus:outline-none focus:bg-[#0072F5]/50 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[#E5E5E5] [&::-webkit-slider-thumb]:shadow-sm" />
     </div>
 
     <!-- Visual Theme Selector -->
@@ -269,6 +285,26 @@ const {
       >
         <option class="dark:bg-[#1D1D1F]" value="full" data-i18n="options.backspace_full">Full</option>
         <option class="dark:bg-[#1D1D1F]" value="current" data-i18n="options.backspace_current">Current Word Only</option>
+      </select>
+    </div>
+
+    <!-- Stop on Error Selector -->
+    <div
+      id="stop-on-error-container"
+      class="flex items-center gap-1.5 font-mono shrink-0"
+    >
+      <label
+        for="stop-on-error-select"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
+        data-i18n="settings.stop_on_error"
+        >Stop on Error:</label
+      >
+      <select
+        id="stop-on-error-select"
+        class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
+      >
+        <option class="dark:bg-[#1D1D1F]" value="off" data-i18n="options.off">Off</option>
+        <option class="dark:bg-[#1D1D1F]" value="on" data-i18n="options.on">On</option>
       </select>
     </div>
   </div>
@@ -916,6 +952,7 @@ const {
     BEGINNER_WORDS,
     FAMOUS_QUOTES,
     CLASSIC_PASSAGES,
+    CODE_SNIPPETS,
     SPANISH_WORDS,
     FRENCH_WORDS,
     GERMAN_WORDS,
@@ -934,7 +971,9 @@ const {
     playKeyStrokeSound, 
     ensureAudioContext, 
     setSoundTheme, 
-    initSoundThemeFromStorage 
+    initSoundThemeFromStorage,
+    getVolume,
+    setVolume
   } from "../utils/audio";
 
   const container = document.getElementById("typing-test-container");
@@ -945,10 +984,10 @@ const {
     );
     const initialModeAttr = (container.dataset.initialMode || "time") as
       "time" | "words" | "quote" | "custom" | "classics";
-    const initialWordbankAttr = container.dataset.initialWordbank || "top200";
+    const initialWordbankAttr = container.dataset.initialWordbank || "top1000";
 
     // State Variables
-    let currentMode: "time" | "words" | "quote" | "custom" | "classics" = initialModeAttr;
+    let currentMode: "time" | "words" | "quote" | "custom" | "classics" | "code" = initialModeAttr;
     let targetDuration = initialDurationAttr;
     let targetWordCount = 25;
     let currentWordbankName = initialWordbankAttr;
@@ -985,6 +1024,14 @@ const {
       }
     } catch {}
     let activeBackspaceMode: "full" | "current" = selectedBackspaceMode;
+
+    let selectedStopOnError: "on" | "off" = "off";
+    try {
+      const savedStopOnError = localStorage.getItem("it_stop_on_error");
+      if (savedStopOnError === "on" || savedStopOnError === "off") {
+        selectedStopOnError = savedStopOnError;
+      }
+    } catch {}
 
     const wordsWrapper = document.getElementById("words-wrapper")!;
     const typingDisplay = document.getElementById("typing-display")!;
@@ -1030,6 +1077,12 @@ const {
     const backspaceSelect = document.getElementById(
       "backspace-select",
     ) as HTMLSelectElement | null;
+    const stopOnErrorSelect = document.getElementById(
+      "stop-on-error-select",
+    ) as HTMLSelectElement | null;
+    const volumeSlider = document.getElementById(
+      "volume-slider",
+    ) as HTMLInputElement | null;
     const customTextContainer = document.getElementById(
       "custom-text-container",
     )!;
@@ -1139,6 +1192,12 @@ const {
           FAMOUS_QUOTES[Math.floor(Math.random() * FAMOUS_QUOTES.length)];
         wordsList = quoteObj.text.split(" ");
         quoteCitation.textContent = `— ${quoteObj.source}`;
+        quoteCitation.classList.remove("hidden");
+      } else if (currentMode === "code" || currentWordbankName === "code") {
+        const snippetObj =
+          CODE_SNIPPETS[Math.floor(Math.random() * CODE_SNIPPETS.length)];
+        wordsList = snippetObj.text.split(" ");
+        quoteCitation.textContent = `</> ${snippetObj.source}`;
         quoteCitation.classList.remove("hidden");
       } else if (currentWordbankName === "classics") {
         const passageObj =
@@ -1562,7 +1621,9 @@ const {
               ? `${targetWordCount} words`
               : currentMode === "custom"
                 ? "Custom"
-                : "Quote",
+                : currentMode === "code"
+                  ? "Code Snippet"
+                  : "Quote",
         durationSeconds: Math.round(totalTime),
         netWpm: summary.netWpm,
         rawWpm: summary.rawWpm,
@@ -1793,6 +1854,12 @@ const {
         wordInputs[currentWordIndex] = currentInput;
 
         if (!isWordCorrect) {
+          if (selectedStopOnError === "on") {
+            incorrectKeystrokes++;
+            playKeyStrokeSound(" ", true, true);
+            emitTyping('typing-key-result', { char: " ", correct: false });
+            return;
+          }
           missedWords.push(targetWord);
           playKeyStrokeSound(" ", true, true);
           emitTyping('typing-key-result', { char: " ", correct: false });
@@ -1856,6 +1923,20 @@ const {
         playKeyStrokeSound(char, false, false);
         emitTyping('typing-key-result', { char, correct: true });
       } else {
+        if (selectedStopOnError === "on") {
+          incorrectKeystrokes++;
+          if (!keyMistakes[char]) keyMistakes[char] = { errors: 0, total: 0 };
+          keyMistakes[char].errors++;
+          playKeyStrokeSound(char, false, true);
+          emitTyping('typing-key-result', { char, correct: false });
+          
+          const chars = cachedCharNodes[currentWordIndex];
+          if (charIdx < targetWordChars.length && chars && chars[charIdx]) {
+            chars[charIdx].className = "char char-error";
+          }
+          return;
+        }
+
         incorrectKeystrokes++;
         keyMistakes[char].errors++;
         playKeyStrokeSound(char, false, true);
@@ -2034,6 +2115,7 @@ const {
     }
 
     function handleKeydown(e: KeyboardEvent) {
+      ensureAudioContext();
       // Caps Lock warning: show pill + amber ring on typing area when on
       try {
         const capsOn = e.getModifierState && e.getModifierState("CapsLock");
@@ -2205,18 +2287,18 @@ const {
       btn.addEventListener("click", () => {
         modeBtns.forEach((b) =>
           b.classList.remove(
-            "bg-[#1D1D1F]",
-            "text-white",
-            "dark:bg-white",
-            "dark:text-black",
+            "!bg-[#1D1D1F]",
+            "!text-white",
+            "dark:!bg-white",
+            "dark:!text-black",
             "font-semibold",
           ),
         );
         btn.classList.add(
-          "bg-[#1D1D1F]",
-          "text-white",
-          "dark:bg-white",
-          "dark:text-black",
+          "!bg-[#1D1D1F]",
+          "!text-white",
+          "dark:!bg-white",
+          "dark:!text-black",
           "font-semibold",
         );
 
@@ -2277,19 +2359,19 @@ const {
         timeBtns.forEach((b) =>
           b.classList.remove(
             "font-semibold",
-            "bg-[#1D1D1F]",
-            "text-white",
-            "dark:bg-white",
-            "dark:text-black",
+            "!bg-[#1D1D1F]",
+            "!text-white",
+            "dark:!bg-white",
+            "dark:!text-black",
             "!border-[#1D1D1F]",
           ),
         );
         btn.classList.add(
           "font-semibold",
-          "bg-[#1D1D1F]",
-          "text-white",
-          "dark:bg-white",
-          "dark:text-black",
+          "!bg-[#1D1D1F]",
+          "!text-white",
+          "dark:!bg-white",
+          "dark:!text-black",
           "!border-[#1D1D1F]",
         );
         targetDuration = parseInt(
@@ -2305,18 +2387,18 @@ const {
         wordCountBtns.forEach((b) =>
           b.classList.remove(
             "font-semibold",
-            "bg-[#1D1D1F]",
-            "text-white",
-            "dark:bg-white",
-            "dark:text-black",
+            "!bg-[#1D1D1F]",
+            "!text-white",
+            "dark:!bg-white",
+            "dark:!text-black",
           ),
         );
         btn.classList.add(
           "font-semibold",
-          "bg-[#1D1D1F]",
-          "text-white",
-          "dark:bg-white",
-          "dark:text-black",
+          "!bg-[#1D1D1F]",
+          "!text-white",
+          "dark:!bg-white",
+          "dark:!text-black",
         );
         targetWordCount = parseInt(
           (btn as HTMLElement).dataset.wordCountVal || "25",
@@ -2335,13 +2417,13 @@ const {
     function handleLanguageChange(e: any) {
       const lang = e.detail?.language;
       if (!testActive) {
-        if (["top200", "es", "fr", "de", "pt", "it"].includes(currentWordbankName)) {
+        if (["top1000", "top200", "es", "fr", "de", "pt", "it"].includes(currentWordbankName)) {
           if (["es", "fr", "de", "pt", "it"].includes(lang)) {
             currentWordbankName = lang;
             wordbankSelect.value = lang;
           } else {
-            currentWordbankName = "top200";
-            wordbankSelect.value = "top200";
+            currentWordbankName = "top1000";
+            wordbankSelect.value = "top1000";
           }
         }
         resetTest();
@@ -2534,10 +2616,10 @@ const {
     );
     if (defaultModeBtn) {
       defaultModeBtn.classList.add(
-        "bg-[#1D1D1F]",
-        "text-white",
-        "dark:bg-white",
-        "dark:text-black",
+        "!bg-[#1D1D1F]",
+        "!text-white",
+        "dark:!bg-white",
+        "dark:!text-black",
         "font-semibold",
       );
     }
@@ -2547,10 +2629,10 @@ const {
     if (defaultTimeBtn) {
       defaultTimeBtn.classList.add(
         "font-semibold",
-        "bg-[#1D1D1F]",
-        "text-white",
-        "dark:bg-white",
-        "dark:text-black",
+        "!bg-[#1D1D1F]",
+        "!text-white",
+        "dark:!bg-white",
+        "dark:!text-black",
         "!border-[#1D1D1F]",
       );
     }
@@ -2571,6 +2653,17 @@ const {
       });
     }
 
+    if (volumeSlider) {
+      volumeSlider.value = String(getVolume());
+      volumeSlider.addEventListener("input", (e) => {
+        const vol = parseInt((e.target as HTMLInputElement).value, 10);
+        setVolume(vol);
+      });
+      volumeSlider.addEventListener("change", () => {
+        playKeyStrokeSound("a", false, false);
+      });
+    }
+
     if (backspaceSelect) {
       backspaceSelect.value = selectedBackspaceMode;
       backspaceSelect.addEventListener("change", () => {
@@ -2584,8 +2677,18 @@ const {
       });
     }
 
+    if (stopOnErrorSelect) {
+      stopOnErrorSelect.value = selectedStopOnError;
+      stopOnErrorSelect.addEventListener("change", () => {
+        selectedStopOnError = stopOnErrorSelect.value === "on" ? "on" : "off";
+        try {
+          localStorage.setItem("it_stop_on_error", selectedStopOnError);
+        } catch {}
+      });
+    }
+
     const currentLang = getLanguage();
-    if (["es", "fr", "de", "pt", "it"].includes(currentLang) && currentWordbankName === "top200") {
+    if (["es", "fr", "de", "pt", "it"].includes(currentLang) && ["top1000", "top200"].includes(currentWordbankName)) {
       currentWordbankName = currentLang;
       wordbankSelect.value = currentLang;
     }

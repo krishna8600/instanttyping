@@ -1,10 +1,10 @@
----
+﻿---
 import Icon from "./Icon.astro";
 
 interface Props {
   initialDuration?: number;
-  initialMode?: "time" | "words" | "quote" | "custom";
-  initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote";
+  initialMode?: "time" | "words" | "quote" | "custom" | "classics";
+  initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote" | "classics";
   pageHeading?: string;
   pageSubheading?: string;
   pageHeadingKey?: string;
@@ -52,13 +52,18 @@ const {
   >
     <!-- Test Type Selector -->
     <div
-      class="flex items-center gap-1 bg-[#F5F5F7] dark:bg-white/10 p-1 rounded-full shrink-0"
+      id="mode-tab-container" class="relative flex items-center gap-1 bg-[#F5F5F7] dark:bg-white/10 p-1 rounded-full shrink-0"
     >
+      <span
+        id="mode-tab-slider"
+        class="absolute top-1 bottom-1 rounded-full bg-white dark:bg-white/20 shadow-sm pointer-events-none"
+        style="transition: transform 350ms cubic-bezier(0.32, 0.72, 0, 1), width 350ms cubic-bezier(0.32, 0.72, 0, 1); will-change: transform, width;"
+      ></span>
       <button
         type="button"
         data-mode-btn="time"
         data-i18n="test.time"
-        class="mode-tab-btn px-4 py-1.5 rounded-full font-semibold transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-semibold transition-all duration-200 ease-out text-sm"
       >
         Time
       </button>
@@ -66,7 +71,7 @@ const {
         type="button"
         data-mode-btn="words"
         data-i18n="test.words"
-        class="mode-tab-btn px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
       >
         Words
       </button>
@@ -74,15 +79,15 @@ const {
         type="button"
         data-mode-btn="quote"
         data-i18n="test.mode_quote"
-        class="mode-tab-btn px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
       >
         Quote
       </button>
       <button
         type="button"
-        data-mode-btn="custom"
-        data-i18n="test.mode_custom"
-        class="mode-tab-btn px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+        data-mode-btn="classics"
+        data-i18n="test.mode_classics"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
       >
         Custom
       </button>
@@ -196,6 +201,7 @@ const {
           >Beginner Friendly</option
         >
         <option class="dark:bg-[#1D1D1F]" value="quote" data-i18n="options.corpus_quote">Famous Quotes</option>
+        <option class="dark:bg-[#1D1D1F]" value="classics" data-i18n="options.corpus_classics">Classic Passages</option>
       </select>
     </div>
 
@@ -294,7 +300,7 @@ const {
   <div id="metrics-strip" class="grid grid-cols-2 lg:grid-cols-4 gap-2">
     <div class="premium-card flex items-start gap-3 !p-2">
       <span
-        class="flex items-center justify-center w-7 h-7 rounded-xl bg-[#0072F5]/10 text-[#0072F5] shrink-0"
+        class="flex items-center justify-center w-7 h-7 shrink-0 text-ds-text-secondary"
         aria-hidden="true"
       >
         <Icon name="timer" class="w-4 h-4" />
@@ -311,7 +317,7 @@ const {
     </div>
     <div class="premium-card flex items-start gap-3 !p-2">
       <span
-        class="flex items-center justify-center w-7 h-7 rounded-xl bg-[#0072F5]/10 text-[#0072F5] shrink-0"
+        class="flex items-center justify-center w-7 h-7 shrink-0 text-ds-text-secondary"
         aria-hidden="true"
       >
         <Icon name="bolt" class="w-4 h-4" />
@@ -328,7 +334,7 @@ const {
     </div>
     <div class="premium-card flex items-start gap-3 !p-2">
       <span
-        class="flex items-center justify-center w-7 h-7 rounded-xl bg-emerald-500/10 text-emerald-600 shrink-0"
+        class="flex items-center justify-center w-7 h-7 shrink-0 text-ds-text-secondary"
         aria-hidden="true"
       >
         <Icon name="target" class="w-4 h-4" />
@@ -345,7 +351,7 @@ const {
     </div>
     <div class="premium-card flex items-start gap-3 !p-2">
       <span
-        class="flex items-center justify-center w-7 h-7 rounded-xl bg-red-500/10 text-red-600 shrink-0"
+        class="flex items-center justify-center w-7 h-7 shrink-0 text-ds-text-secondary"
         aria-hidden="true"
       >
         <Icon name="cancel" class="w-4 h-4" />
@@ -404,10 +410,11 @@ const {
         class="hidden absolute top-3 left-1/2 -translate-x-1/2 z-10 pointer-events-none"
       >
         <div
-          class="caps-pill px-3.5 py-1.5 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-xs font-semibold flex items-center gap-2 shadow-xl border border-black/10 dark:border-white/10"
+          class="caps-pill px-4 py-2 rounded-xl bg-[#FF9F0A]/12 dark:bg-[#FF9F0A]/15 border border-[#FF9F0A]/35 dark:border-[#FF9F0A]/30 text-[#7A5200] dark:text-[#FFB340] text-xs font-semibold flex items-center gap-2.5 shadow-[0_4px_16px_rgba(255,159,10,0.15)] backdrop-blur-sm"
         >
-          <Icon name="warning" class="w-3.5 h-3.5 text-[#FF9F0A]" />
+          <Icon name="warning" class="w-4 h-4 shrink-0" />
           <span>Caps Lock is on</span>
+          <span class="font-normal opacity-70 hidden sm:inline">â€” press Caps Lock to turn it off</span>
         </div>
       </div>
 
@@ -512,6 +519,72 @@ const {
       </p>
     </div>
 
+    
+    <!-- 1b. Progress Strip -->
+    <div id="res-progress-strip" class="premium-card hidden">
+      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-base" aria-hidden="true">🔥</span>
+          <span class="font-semibold" id="res-streak">0</span>
+          <span class="text-xs uppercase tracking-wide font-medium">day streak</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold" id="res-level-title">Novice</span>
+          <div class="w-20 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/10 overflow-hidden">
+            <div id="res-xp-bar" class="h-full rounded-full bg-[#0072F5]" style="width:0%"></div>
+          </div>
+          <span class="text-xs font-mono" id="res-xp-text">+0 XP</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs uppercase tracking-wide font-medium">Today</span>
+          <span class="font-semibold font-mono" id="res-daily">0/3</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 1b. Progress Strip -->
+    <div id="res-progress-strip" class="premium-card hidden">
+      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-base" aria-hidden="true">🔥</span>
+          <span class="font-semibold" id="res-streak">0</span>
+          <span class="text-xs uppercase tracking-wide font-medium">day streak</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold" id="res-level-title">Novice</span>
+          <div class="w-20 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/10 overflow-hidden">
+            <div id="res-xp-bar" class="h-full rounded-full bg-[#0072F5]" style="width:0%"></div>
+          </div>
+          <span class="text-xs font-mono" id="res-xp-text">+0 XP</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs uppercase tracking-wide font-medium">Today</span>
+          <span class="font-semibold font-mono" id="res-daily">0/3</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 1b. Progress Strip -->
+    <div id="res-progress-strip" class="premium-card hidden">
+      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm">
+        <div class="flex items-center gap-2">
+          <span class="text-base" aria-hidden="true">🔥</span>
+          <span class="font-semibold" id="res-streak">0</span>
+          <span class="text-xs uppercase tracking-wide font-medium">day streak</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="font-semibold" id="res-level-title">Novice</span>
+          <div class="w-20 h-1.5 rounded-full bg-[#E5E5E5] dark:bg-white/10 overflow-hidden">
+            <div id="res-xp-bar" class="h-full rounded-full bg-[#0072F5]" style="width:0%"></div>
+          </div>
+          <span class="text-xs font-mono" id="res-xp-text">+0 XP</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs uppercase tracking-wide font-medium">Today</span>
+          <span class="font-semibold font-mono" id="res-daily">0/3</span>
+        </div>
+      </div>
+    </div>
     <!-- 2. Main Score Grid — each stat is its own card, 24px padding, no overlap -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="premium-card text-center">
@@ -800,13 +873,16 @@ const {
     return id;
   };
   import { animate } from "animejs";
+  import { animate as motionAnimate } from "motion";
   import { getLanguage, updateDOM, t } from "../i18n";
+  import { recordTest, getLevel, getDailyProgress, loadProgress } from "../scripts/progress";
   import {
     TOP_200_WORDS,
     TOP_1000_WORDS,
     NUMBERS_PUNCTUATION_WORDS,
     BEGINNER_WORDS,
     FAMOUS_QUOTES,
+    CLASSIC_PASSAGES,
     SPANISH_WORDS,
     FRENCH_WORDS,
     GERMAN_WORDS,
@@ -835,11 +911,11 @@ const {
       10,
     );
     const initialModeAttr = (container.dataset.initialMode || "time") as
-      "time" | "words" | "quote" | "custom";
+      "time" | "words" | "quote" | "custom" | "classics";
     const initialWordbankAttr = container.dataset.initialWordbank || "top200";
 
     // State Variables
-    let currentMode: "time" | "words" | "quote" | "custom" = initialModeAttr;
+    let currentMode: "time" | "words" | "quote" | "custom" | "classics" = initialModeAttr;
     let targetDuration = initialDurationAttr;
     let targetWordCount = 25;
     let currentWordbankName = initialWordbankAttr;
@@ -1019,11 +1095,23 @@ const {
             "test.",
           ];
         }
+      } else if (currentMode === "classics" || currentWordbankName === "classics") {
+        const passageObj =
+          CLASSIC_PASSAGES[Math.floor(Math.random() * CLASSIC_PASSAGES.length)];
+        wordsList = passageObj.text.split(" ");
+        quoteCitation.textContent = "â€” " + passageObj.source + " Â· Public domain";
+        quoteCitation.classList.remove("hidden");
       } else if (currentMode === "quote" || currentWordbankName === "quote") {
         const quoteObj =
           FAMOUS_QUOTES[Math.floor(Math.random() * FAMOUS_QUOTES.length)];
         wordsList = quoteObj.text.split(" ");
         quoteCitation.textContent = `— ${quoteObj.source}`;
+        quoteCitation.classList.remove("hidden");
+      } else if (currentWordbankName === "classics") {
+        const passageObj =
+          CLASSIC_PASSAGES[Math.floor(Math.random() * CLASSIC_PASSAGES.length)];
+        wordsList = passageObj.text.split(" ");
+        quoteCitation.textContent = "— " + passageObj.source + " · Public domain";
         quoteCitation.classList.remove("hidden");
       } else if (currentMode === "words") {
         wordsList = getRandomWords(targetWordCount, getSelectedCorpus());
@@ -1452,11 +1540,11 @@ const {
         missedWords: [...new Set(missedWords)],
       });
 
-      showResults(summary);
+      showResults(summary, recordTest(summary.netWpm, summary.accuracy, currentMode));
       dispatchNextChar(); // Emits char: null since testCompleted is true
     }
 
-    function showResults(summary: MetricSummary) {
+    function showResults(summary: MetricSummary, psych?: import("../scripts/progress").TestResult) {
       updateDOM();
       const bandEl = document.getElementById("res-band")!;
       const rankEl = document.getElementById("res-rank-title")!;
@@ -1493,6 +1581,37 @@ const {
       document.getElementById("res-time-elapsed")!.textContent =
         `${Math.round(summary.elapsedSeconds)}s`;
 
+
+      // â”€â”€ Psychology engine UI â”€â”€
+      if (psych) {
+        const strip = document.getElementById("res-progress-strip");
+        if (strip) strip.classList.remove("hidden");
+        const prog = loadProgress();
+        const lvl = getLevel(prog.xp);
+        const daily = getDailyProgress();
+        document.getElementById("res-streak")!.textContent = String(psych.streak);
+        document.getElementById("res-level-title")!.textContent = lvl.title;
+        (document.getElementById("res-xp-bar")! as HTMLElement).style.width = `${Math.round(lvl.progress * 100)}%`;
+        document.getElementById("res-xp-text")!.textContent = `+${psych.xpGained} XP`;
+        document.getElementById("res-daily")!.textContent = `${daily.done}/${daily.goal}`;
+        const nudge = document.getElementById("res-psych-nudge");
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (psych.isNewPb) {
+          if (nudge) nudge.classList.remove("hidden");
+          if (nudge) nudge.innerHTML = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#0072F5]/10 text-[#0072F5] text-xs font-bold">New personal best</span>`;
+          if (!reduceMotion) {
+            resNetWpmEl.animate(
+              [{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }],
+              { duration: 300, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }
+            );
+          }
+        } else if (psych.nearMiss !== null) {
+          if (nudge) nudge.classList.remove("hidden");
+          if (nudge) nudge.innerHTML = `<span class="text-[#6E6E73] dark:text-[#A1A1A6]">${psych.nearMiss} WPM from your best â€” one more?</span>`;
+        } else {
+          if (nudge) nudge.classList.add("hidden");
+        }
+      }
       renderTimelineChart(secondBySecondWpm);
 
       const weakKeysListEl = document.getElementById("weak-keys-list")!;
@@ -1537,12 +1656,31 @@ const {
           personalBestLabel.textContent = `🏆 ${t("results.new_best")} — ${summary.netWpm} ${t("results.wpm_short")}`;
         } else if (pb.highestWpm > 0) {
           personalBestLabel.textContent = `${t("results.best")}: ${pb.highestWpm} ${t("results.wpm_short")}`;
+          personalBestBanner.classList.remove("aurora-border");
         } else {
           personalBestBanner.classList.add("hidden");
         }
       }
 
       resultsPanel.classList.remove("hidden");
+      // Spring entrance with Motion (interruptible, Apple-grade)
+      try {
+        const cards = resultsPanel.querySelectorAll(':scope > *');
+        motionAnimate(
+          resultsPanel,
+          { opacity: [0, 1], y: [24, 0], scale: [0.98, 1] },
+          { type: 'spring', bounce: 0, duration: 0.5 }
+        );
+        cards.forEach((card, i) => {
+          motionAnimate(
+            card,
+            { opacity: [0, 1], y: [16, 0] },
+            { type: 'spring', bounce: 0, duration: 0.45, delay: i * 0.06 }
+          );
+        });
+      } catch (e) {
+        // CSS fallback handles this
+      }
       // Natural scroll to results
       safeSetTimeout(() => {
         resultsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -2000,6 +2138,27 @@ const {
     hiddenInput.addEventListener("input", handleInput);
 
 
+
+    // Sliding tab indicator (Vercel-style)
+    function moveTabSlider(activeBtn: HTMLElement) {
+      const slider = document.getElementById("mode-tab-slider");
+      const container = document.getElementById("mode-tab-container");
+      if (!slider || !container) return;
+      const cRect = container.getBoundingClientRect();
+      const bRect = activeBtn.getBoundingClientRect();
+      const x = bRect.left - cRect.left;
+      slider.style.width = bRect.width + "px";
+      slider.style.transform = `translateX(${x}px)`;
+    }
+    const initTabBtn = document.querySelector('[data-mode-btn="time"]') as HTMLElement;
+    if (initTabBtn) {
+      requestAnimationFrame(() => moveTabSlider(initTabBtn));
+    }
+    window.addEventListener("resize", () => {
+      const active = document.querySelector(".mode-tab-btn.bg-\\[\\#1D1D1F\\]") as HTMLElement
+        || document.querySelector('[data-mode-btn="time"]') as HTMLElement;
+      if (active) moveTabSlider(active);
+    });
     modeBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         modeBtns.forEach((b) =>
@@ -2020,7 +2179,7 @@ const {
         );
 
         const mode = (btn as HTMLElement).dataset.modeBtn as
-          "time" | "words" | "quote" | "custom";
+          "time" | "words" | "quote" | "custom" | "classics";
         currentMode = mode;
         customMistakeWords = null;
 
@@ -2411,3 +2570,15 @@ const {
     document.addEventListener("astro:before-swap", cleanup, { once: true });
   }
 </script>
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,10 +1,10 @@
----
+﻿---
 import Icon from "./Icon.astro";
 
 interface Props {
   initialDuration?: number;
   initialMode?: "time" | "words" | "quote" | "custom";
-  initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote";
+  initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote" | "classics";
   pageHeading?: string;
   pageSubheading?: string;
   pageHeadingKey?: string;
@@ -196,6 +196,7 @@ const {
           >Beginner Friendly</option
         >
         <option class="dark:bg-[#1D1D1F]" value="quote" data-i18n="options.corpus_quote">Famous Quotes</option>
+        <option class="dark:bg-[#1D1D1F]" value="classics" data-i18n="options.corpus_classics">Classic Passages</option>
       </select>
     </div>
 
@@ -807,6 +808,7 @@ const {
     NUMBERS_PUNCTUATION_WORDS,
     BEGINNER_WORDS,
     FAMOUS_QUOTES,
+    CLASSIC_PASSAGES,
     SPANISH_WORDS,
     FRENCH_WORDS,
     GERMAN_WORDS,
@@ -1024,6 +1026,12 @@ const {
           FAMOUS_QUOTES[Math.floor(Math.random() * FAMOUS_QUOTES.length)];
         wordsList = quoteObj.text.split(" ");
         quoteCitation.textContent = `— ${quoteObj.source}`;
+        quoteCitation.classList.remove("hidden");
+      } else if (currentWordbankName === "classics") {
+        const passageObj =
+          CLASSIC_PASSAGES[Math.floor(Math.random() * CLASSIC_PASSAGES.length)];
+        wordsList = passageObj.text.split(" ");
+        quoteCitation.textContent = "— " + passageObj.source + " · Public domain";
         quoteCitation.classList.remove("hidden");
       } else if (currentMode === "words") {
         wordsList = getRandomWords(targetWordCount, getSelectedCorpus());
@@ -2411,3 +2419,4 @@ const {
     document.addEventListener("astro:before-swap", cleanup, { once: true });
   }
 </script>
+

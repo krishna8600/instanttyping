@@ -1,7 +1,4 @@
-{
-    "settings.stop_on_error": "Stop on Error",
-    "options.on": "On",
-    "options.off": "Off",
+﻿{
     "page_numbers.tip1_title":  "Anchor Your Thumbs",
     "privacy.s4_heading":  "4. Analytics \u0026 Web Measurement",
     "about.raw_wpm_label":  "Gross Words Per Minute (Raw WPM)",
@@ -306,6 +303,5 @@
     "engine.numbers.heading":  "Numbers \u0026 Punctuation Typing Test",
     "engine.numbers.subheading":  "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists.",
     "nav.classics":  "Classics",
-    "nav.quotes":  "Quotes",
-    "results.share":  "Share"
+    "nav.quotes":  "Quotes"
 }
