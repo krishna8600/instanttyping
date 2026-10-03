@@ -1,4 +1,5 @@
 <canvas id="moonlit-bg" aria-hidden="true"></canvas>
+<canvas id="starfield" aria-hidden="true"></canvas>
 <style>
   #moonlit-bg {
     position: fixed;
@@ -29,6 +30,23 @@
      stays correct — it simply paints above a -1 canvas as well. */
   html.dark body,
   html:not(.dark) body { background: transparent; }
+
+  #starfield {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    display: block;
+    mask-image: linear-gradient(to bottom, black 35%, transparent 55%);
+    -webkit-mask-image: linear-gradient(to bottom, black 35%, transparent 55%);
+    transition: opacity 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 1;
+  }
+  html:not(.dark) #starfield {
+    opacity: 0;
+  }
 </style>
 <script>
 (function () {
@@ -377,5 +395,113 @@
   } else {
     requestAnimationFrame(render);
   }
+
+  // --- Starfield Engine --------------------------------------------------
+  (function initStarfield() {
+    var starCanvas = document.getElementById('starfield') as HTMLCanvasElement | null;
+    if (!starCanvas) return;
+    var sCtx = starCanvas.getContext('2d', { alpha: true });
+    if (!sCtx) return;
+
+    var stars: {x: number, y: number, r: number, a: number}[] = [];
+    var meteors: {x: number, y: number, vx: number, vy: number, l: number, a: number, life: number}[] = [];
+    var lastMeteorTime = 0;
+    var nextMeteorDelay = Math.random() * 7000 + 8000; // 8 to 15 seconds
+
+    function resizeStarfield() {
+      if (!starCanvas) return;
+      var w = window.innerWidth * dpr;
+      var h = window.innerHeight * dpr;
+      starCanvas.width = w;
+      starCanvas.height = h;
+      
+      stars = [];
+      for (var i = 0; i < 150; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * (h * 0.6), // Only spawn in top 60%
+          r: Math.random() * 1.2 * dpr,
+          a: Math.random() * 0.5 + 0.1
+        });
+      }
+    }
+
+    function drawStarfield(now: number) {
+      if (!sCtx || !starCanvas) return;
+      sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+      
+      // Draw static stars
+      sCtx.fillStyle = '#FFFFFF';
+      for (var i = 0; i < stars.length; i++) {
+        var s = stars[i];
+        sCtx.globalAlpha = s.a;
+        sCtx.beginPath();
+        sCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        sCtx.fill();
+      }
+
+      // Handle Meteors
+      if (!prefersReduced && running && !isTyping) {
+        if (now - lastMeteorTime > nextMeteorDelay) {
+          meteors.push({
+            x: Math.random() * starCanvas.width,
+            y: Math.random() * (starCanvas.height * 0.2),
+            vx: (Math.random() * 8 + 15) * dpr,
+            vy: (Math.random() * 3 + 5) * dpr,
+            l: (Math.random() * 40 + 60) * dpr,
+            a: 1.0,
+            life: 1.0
+          });
+          lastMeteorTime = now;
+          nextMeteorDelay = Math.random() * 7000 + 8000;
+        }
+
+        for (var j = meteors.length - 1; j >= 0; j--) {
+          var m = meteors[j];
+          m.x += m.vx;
+          m.y += m.vy;
+          m.life -= 0.02; // Fade out quickly
+          m.a = Math.max(0, m.life);
+
+          if (m.life <= 0) {
+            meteors.splice(j, 1);
+            continue;
+          }
+
+          var len = Math.sqrt(m.vx*m.vx + m.vy*m.vy);
+          var dx = (m.vx/len) * m.l;
+          var dy = (m.vy/len) * m.l;
+
+          var grad = sCtx.createLinearGradient(m.x, m.y, m.x - dx, m.y - dy);
+          grad.addColorStop(0, 'rgba(255, 255, 255, ' + m.a + ')');
+          grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+
+          sCtx.globalAlpha = 1.0;
+          sCtx.strokeStyle = grad;
+          sCtx.lineWidth = 1.5 * dpr;
+          sCtx.lineCap = 'round';
+          sCtx.beginPath();
+          sCtx.moveTo(m.x, m.y);
+          sCtx.lineTo(m.x - dx, m.y - dy);
+          sCtx.stroke();
+        }
+      }
+
+      sCtx.globalAlpha = 1.0;
+
+      if (!prefersReduced) {
+        requestAnimationFrame(drawStarfield);
+      }
+    }
+
+    window.addEventListener('resize', resizeStarfield);
+    resizeStarfield();
+
+    if (prefersReduced) {
+      drawStarfield(0);
+    } else {
+      requestAnimationFrame(drawStarfield);
+    }
+  })();
 })();
 </script>
