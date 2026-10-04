@@ -1495,7 +1495,6 @@ const {
       focusPrompt.style.display = "";
 
       hiddenInput.value = "";
-      (hiddenInput as any)._last = "";
       timerMetric.textContent =
         currentMode === "time"
           ? `${targetDuration}s`
@@ -1929,8 +1928,6 @@ const {
     function focusTyping() {
       if (testCompleted) return;
       ensureAudioContext();
-      // On mobile, allow native scroll so the keyboard appears reliably;
-      // on desktop, prevent scroll to avoid page jump on load.
       const isMobile = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
       if (isMobile) {
         hiddenInput.focus();
@@ -2003,7 +2000,6 @@ const {
         currentWordIndex++;
         currentInput = "";
         hiddenInput.value = "";
-      (hiddenInput as any)._last = "";
 
         // Guardrail 2: Preserve on-demand word appending for timed modes
         if (currentMode === "time" && wordsList.length - currentWordIndex < 35) {
@@ -2181,7 +2177,6 @@ const {
         }
         currentInput = "";
         hiddenInput.value = "";
-      (hiddenInput as any)._last = "";
         if (hadExtras) {
           updateWordOffsets(currentWordIndex);
         }
@@ -2229,7 +2224,6 @@ const {
         currentInput = "";
         wordInputs[currentWordIndex] = "";
         hiddenInput.value = "";
-      (hiddenInput as any)._last = "";
         updateWordOffsets(currentWordIndex);
         updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
@@ -2349,50 +2343,30 @@ const {
 
     function handleInput(e: Event) {
       const inputEv = e as InputEvent;
-      const el = hiddenInput as HTMLInputElement & { _ign?: boolean; _last?: string };
 
-      // Ignore events triggered by our own programmatic value reset
-      if (el._ign) {
-        el._ign = false;
-        return;
-      }
-
-      // Guard against IME composition (some keyboards fire input events twice)
-      if (inputEv.isComposing) return;
-
-      const newValue = hiddenInput.value;
-      const oldValue = el._last ?? "";
-
-      if (newValue.length < oldValue.length) {
-        // Deletion: handle each removed character
-        const diff = oldValue.length - newValue.length;
+      if (
+        inputEv.inputType === "deleteContentBackward" ||
+        inputEv.inputType === "deleteWordBackward" ||
+        hiddenInput.value.length < currentInput.length
+      ) {
         if (inputEv.inputType === "deleteWordBackward") {
           handleCtrlBackspace();
         } else {
-          for (let i = 0; i < diff; i++) {
-            handleBackspace();
-          }
+          handleBackspace();
         }
-      } else if (newValue.length > oldValue.length) {
-        // Addition: process only the new characters
-        let newChars: string;
-        if (inputEv.data && newValue.endsWith(inputEv.data)) {
-          newChars = inputEv.data;
-        } else {
-          newChars = newValue.slice(oldValue.length);
+      } else if (inputEv.data) {
+        const val = inputEv.data;
+        for (let i = 0; i < val.length; i++) {
+          handleCharacterInput(val[i]);
         }
-        for (let i = 0; i < newChars.length; i++) {
-          handleCharacterInput(newChars[i]);
+      } else if (hiddenInput.value.length > currentInput.length) {
+        const val = hiddenInput.value.slice(currentInput.length);
+        for (let i = 0; i < val.length; i++) {
+          handleCharacterInput(val[i]);
         }
       }
 
-      el._last = newValue;
-
-      if (hiddenInput.value !== currentInput) {
-        el._ign = true;
-        hiddenInput.value = currentInput;
-        el._last = currentInput;
-      }
+      hiddenInput.value = currentInput;
     }
     hiddenInput.addEventListener("input", handleInput);
 
