@@ -9,13 +9,15 @@ interface Props {
  description: string;
  canonicalPath?: string;
  ogType?: string;
+ robots?: string;
 }
 
 const {
  title,
  description,
  canonicalPath = '',
- ogType = 'website'
+ ogType = 'website',
+ robots = 'index, follow'
 } = Astro.props;
 
 const siteUrl = 'https://instanttyping.com';
@@ -33,7 +35,7 @@ const ogImage = `${siteUrl}/og-image.png`;
  <title>{title}</title>
  <meta name="title" content={title} />
  <meta name="description" content={description} />
- <meta name="robots" content="index, follow" />
+ <meta name="robots" content={robots} />
  <link rel="canonical" href={canonicalUrl} />
 
  <!-- Google Search Console Verification Slot (pre-configured) -->
