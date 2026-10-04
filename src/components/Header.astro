@@ -10,7 +10,7 @@ const navItems = [
   { href: "/", label: "Typing Test", key: "nav.test" },
   { href: "#", label: "Classics", key: "nav.classics", navMode: "classics" },
   { href: "/typing-test-for-beginners", label: "Beginners", key: "nav.beginners" },
-  { href: "/numbers-punctuation-typing-test", label: "Numbers", key: "nav.numbers" },
+  { href: "/numbers-punctuation-typing-test", label: "Numbers & Symbols", key: "nav.numbers", mobileLabel: "Numbers", mobileKey: "nav.numbers_short" },
   { href: "#", label: "Quotes", key: "nav.quotes", navMode: "quote" },
 ];
 ---
@@ -33,15 +33,28 @@ const navItems = [
       navItems.map((item) => {
         const isActive = currentPath === item.href;
         return (
-          <a
-            href={item.href}
-            class={isActive ? "active" : ""}
-            aria-current={isActive ? "page" : undefined}
-            data-i18n={item.key || undefined}
-            data-nav-mode={(item as any).navMode || undefined}
-          >
-            {item.label}
-          </a>
+          <>
+            <a
+              href={item.href}
+              class={(isActive ? "active " : "") + ((item as any).mobileKey ? "desktop-nav-item" : "")}
+              aria-current={isActive ? "page" : undefined}
+              data-i18n={item.key || undefined}
+              data-nav-mode={(item as any).navMode || undefined}
+            >
+              {item.label}
+            </a>
+            {(item as any).mobileKey && (
+              <a
+                href={item.href}
+                class={(isActive ? "active " : "") + "mobile-nav-item"}
+                aria-current={isActive ? "page" : undefined}
+                data-i18n={(item as any).mobileKey}
+                data-nav-mode={(item as any).navMode || undefined}
+              >
+                {(item as any).mobileLabel}
+              </a>
+            )}
+          </>
         );
       })
     }
@@ -263,6 +276,9 @@ const navItems = [
     color: #fff;
     background: rgba(255, 255, 255, 0.13);
   }
+  .mobile-nav-item {
+    display: none;
+  }
   .nav-actions {
     display: flex;
     gap: 4px;
@@ -455,6 +471,12 @@ const navItems = [
     }
     .pill-nav nav::-webkit-scrollbar {
       display: none;
+    }
+    .desktop-nav-item {
+      display: none;
+    }
+    .mobile-nav-item {
+      display: block;
     }
   }
 </style>
