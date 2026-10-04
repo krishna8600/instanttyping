@@ -31,13 +31,13 @@ const {
 >
   <!-- Heading Section -->
   <div class="pb-6 border-b border-[#E5E5E5] dark:border-white/10">
-    <h1
+    <h2
       class="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1] text-balance mb-3"
       style="letter-spacing:-0.02em"
       data-i18n={pageHeadingKey}
     >
       {pageHeading}
-    </h1>
+    </h2>
     <p
       class="text-[1.125rem] leading-[1.6] text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl"
       data-i18n={pageSubheadingKey}
@@ -1927,7 +1927,7 @@ const {
     function focusTyping() {
       if (testCompleted) return;
       ensureAudioContext();
-      hiddenInput.focus();
+      hiddenInput.focus({ preventScroll: true });
       focusPrompt.classList.add("opacity-0");
       typingDisplay.classList.add("!border-[#0072F5]/30");
       caretEl.style.display = "";

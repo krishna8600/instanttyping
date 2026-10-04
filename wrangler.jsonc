@@ -3,6 +3,7 @@
   "name": "instanttyping",
   "compatibility_date": "2026-10-01",
   "assets": {
-    "directory": "./dist"
+    "directory": "./dist",\n  "pages_build_output_dir": "./dist"
   }
 }
+
