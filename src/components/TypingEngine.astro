@@ -2341,55 +2341,34 @@ const {
       });
     }
 
-    let _skipNextInput = false;
-    let _lastCharTime = 0;
-    let _lastChar = "";
     function handleInput(e: Event) {
       const inputEv = e as InputEvent;
-
-      // Ignore input events triggered by our own programmatic value reset
-      if (_skipNextInput) {
-        _skipNextInput = false;
-        return;
-      }
-
-      // Deduplicate: Samsung fires duplicate input events for the same keystroke.
-      // If we see the same single character within 80ms, it's a duplicate.
-      const now = Date.now();
-      if (inputEv.data && inputEv.data.length === 1) {
-        if (inputEv.data === _lastChar && now - _lastCharTime < 80) {
-          return;
-        }
-        _lastChar = inputEv.data;
-        _lastCharTime = now;
-      }
+      const newValue = hiddenInput.value;
 
       if (
         inputEv.inputType === "deleteContentBackward" ||
         inputEv.inputType === "deleteWordBackward" ||
-        hiddenInput.value.length < currentInput.length
+        newValue.length < currentInput.length
       ) {
         if (inputEv.inputType === "deleteWordBackward") {
           handleCtrlBackspace();
         } else {
           handleBackspace();
         }
-      } else if (inputEv.data) {
-        const val = inputEv.data;
-        for (let i = 0; i < val.length; i++) {
-          handleCharacterInput(val[i]);
+      } else {
+        let commonPrefixLen = 0;
+        const minLen = Math.min(currentInput.length, newValue.length);
+        while (commonPrefixLen < minLen && currentInput[commonPrefixLen] === newValue[commonPrefixLen]) {
+          commonPrefixLen++;
         }
-      } else if (hiddenInput.value.length > currentInput.length) {
-        const val = hiddenInput.value.slice(currentInput.length);
-        for (let i = 0; i < val.length; i++) {
-          handleCharacterInput(val[i]);
+        
+        const newChars = newValue.slice(commonPrefixLen);
+        for (let i = 0; i < newChars.length; i++) {
+          handleCharacterInput(newChars[i]);
         }
       }
 
-      if (hiddenInput.value !== currentInput) {
-        _skipNextInput = true;
-        hiddenInput.value = currentInput;
-      }
+      hiddenInput.value = currentInput;
     }
     hiddenInput.addEventListener("input", handleInput);
 
