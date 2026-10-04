@@ -2342,6 +2342,8 @@ const {
     }
 
     let _skipNextInput = false;
+    let _lastCharTime = 0;
+    let _lastChar = "";
     function handleInput(e: Event) {
       const inputEv = e as InputEvent;
 
@@ -2349,6 +2351,17 @@ const {
       if (_skipNextInput) {
         _skipNextInput = false;
         return;
+      }
+
+      // Deduplicate: Samsung fires duplicate input events for the same keystroke.
+      // If we see the same single character within 80ms, it's a duplicate.
+      const now = Date.now();
+      if (inputEv.data && inputEv.data.length === 1) {
+        if (inputEv.data === _lastChar && now - _lastCharTime < 80) {
+          return;
+        }
+        _lastChar = inputEv.data;
+        _lastCharTime = now;
       }
 
       if (
