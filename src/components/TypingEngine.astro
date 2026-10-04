@@ -1079,11 +1079,11 @@ const {
       }
     } catch {}
 
-    let roastModeEnabled = false;
+    let roastModeEnabled = true;
     try {
       const savedRoastMode = localStorage.getItem("it_roast_mode");
-      if (savedRoastMode === "on") {
-        roastModeEnabled = true;
+      if (savedRoastMode === "off") {
+        roastModeEnabled = false;
       }
     } catch {}
 
@@ -1816,19 +1816,28 @@ const {
       // Roast Mode Logic
       if (roastModeEnabled && roastCard && roastText && roastVideo && roastImg) {
         const roastQuotesLowWpm = [
-          "My grandma types faster. And she's a ghost.",
-          "Are you typing with your elbows?",
-          "I've seen snails with better WPM."
+          t("roast.low_wpm_1"),
+          t("roast.low_wpm_2"),
+          t("roast.low_wpm_3"),
+          t("roast.low_wpm_4"),
+          t("roast.low_wpm_5"),
+          t("roast.low_wpm_6"),
         ];
         const roastQuotesLowAcc = [
-          "Did your keyboard offend you? Because you're attacking it.",
-          "That wasn't typing, that was a cry for help.",
-          "Accuracy called — it wants a divorce."
+          t("roast.low_acc_1"),
+          t("roast.low_acc_2"),
+          t("roast.low_acc_3"),
+          t("roast.low_acc_4"),
+          t("roast.low_acc_5"),
+          t("roast.low_acc_6"),
         ];
         const roastQuotesGood = [
-          "Okay, that was actually decent. Don't let it go to your head.",
-          "Impressive. Still not faster than me though.",
-          "Fine. You can stay."
+          t("roast.good_1"),
+          t("roast.good_2"),
+          t("roast.good_3"),
+          t("roast.good_4"),
+          t("roast.good_5"),
+          t("roast.good_6"),
         ];
         
         let roast = "";
