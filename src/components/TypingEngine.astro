@@ -240,33 +240,35 @@ const {
 <!-- Sound Theme Selector -->
     <div
       id="sound-select-container"
-      class="flex items-center gap-1.5 font-mono shrink-0"
+      class="flex items-center justify-between w-full gap-2 font-mono shrink-0"
     >
       <label
         for="sound-select"
-        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] uppercase tracking-wide font-semibold"
         data-i18n="settings.sound"
         >Sound:</label
       >
-      <select
-        id="sound-select"
-        class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
-      >
-        <option class="dark:bg-[#1D1D1F]" value="mechanical" data-i18n="options.sound_mechanical">Mechanical</option>
-        <option class="dark:bg-[#1D1D1F]" value="click" data-i18n="options.sound_click">Click</option>
-        <option class="dark:bg-[#1D1D1F]" value="piano" data-i18n="options.sound_piano">Piano</option>
-        <option class="dark:bg-[#1D1D1F]" value="guitar" data-i18n="options.sound_guitar">Guitar</option>
-        <option class="dark:bg-[#1D1D1F]" value="nature" data-i18n="options.sound_nature">Nature</option>
-        <option class="dark:bg-[#1D1D1F]" value="creative" data-i18n="options.sound_creative">Creative</option>
-      </select>
-      <input type="range" id="engine-volume-slider" min="0" max="100" title="Volume" class="w-16 h-1 ml-1 bg-[#E5E5E5] dark:bg-white/10 rounded-full appearance-none cursor-pointer focus:outline-none focus:bg-[#0072F5]/50 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[#E5E5E5] [&::-webkit-slider-thumb]:shadow-sm" />
+      <div class="flex items-center gap-1.5 shrink-0">
+        <select
+          id="sound-select"
+          class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
+        >
+          <option class="dark:bg-[#1D1D1F]" value="mechanical" data-i18n="options.sound_mechanical">Mechanical</option>
+          <option class="dark:bg-[#1D1D1F]" value="click" data-i18n="options.sound_click">Click</option>
+          <option class="dark:bg-[#1D1D1F]" value="piano" data-i18n="options.sound_piano">Piano</option>
+          <option class="dark:bg-[#1D1D1F]" value="guitar" data-i18n="options.sound_guitar">Guitar</option>
+          <option class="dark:bg-[#1D1D1F]" value="nature" data-i18n="options.sound_nature">Nature</option>
+          <option class="dark:bg-[#1D1D1F]" value="creative" data-i18n="options.sound_creative">Creative</option>
+        </select>
+        <input type="range" id="engine-volume-slider" min="0" max="100" title="Volume" class="w-16 h-1 ml-1 bg-[#E5E5E5] dark:bg-white/10 rounded-full appearance-none cursor-pointer focus:outline-none focus:bg-[#0072F5]/50 [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-[#E5E5E5] [&::-webkit-slider-thumb]:shadow-sm" />
+      </div>
     </div>
 
     <!-- Visual Theme Selector -->
-    <div class="flex items-center gap-1.5 font-mono  shrink-0">
+    <div class="flex items-center justify-between w-full gap-2 font-mono shrink-0">
       <label
         for="theme-select"
-        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] uppercase tracking-wide font-semibold"
         data-i18n="settings.theme"
         >Theme:</label
       >
@@ -288,11 +290,11 @@ const {
     <!-- Backspace Behavior Selector -->
     <div
       id="backspace-select-container"
-      class="flex items-center gap-1.5 font-mono  shrink-0"
+      class="flex items-center justify-between w-full gap-2 font-mono shrink-0"
     >
       <label
         for="backspace-select"
-        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] uppercase tracking-wide font-semibold"
         data-i18n="test.backspace"
         >Backspace:</label
       >
@@ -308,11 +310,11 @@ const {
     <!-- Stop on Error Selector -->
     <div
       id="stop-on-error-container"
-      class="flex items-center gap-1.5 font-mono shrink-0"
+      class="flex items-center justify-between w-full gap-2 font-mono shrink-0"
     >
       <label
         for="stop-on-error-select"
-        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] uppercase tracking-wide font-semibold"
         data-i18n="settings.stop_on_error"
         >Stop on Error:</label
       >
@@ -328,11 +330,11 @@ const {
     <!-- Roast Mode Selector -->
     <div
       id="roast-mode-container"
-      class="flex items-center gap-1.5 font-mono shrink-0"
+      class="flex items-center justify-between w-full gap-2 font-mono shrink-0"
     >
       <label
         for="roast-mode-select"
-        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] uppercase tracking-wide font-semibold"
         data-i18n="settings.roast_mode"
       >Roast Mode</label>
       <select
