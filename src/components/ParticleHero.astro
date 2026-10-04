@@ -37,17 +37,27 @@ import FloatingKeyboard from './FloatingKeyboard.astro';
     overflow: hidden;
   }
 
-  /* Vercel-style spotlight: headline illuminates where mouse hovers */
+  /* Vercel-style spotlight: headline illuminates where mouse hovers.
+     Base is solid text (always visible); gradient is progressive enhancement. */
   .hero-spotlight {
     --mx: 50%; --my: 50%;
-    color: transparent;
-    background-image: radial-gradient(circle 220px at var(--mx) var(--my),
-      #ffffff 0%, rgba(255,255,255,0.9) 40%, rgba(255,255,255,0.25) 70%, rgba(255,255,255,0.08) 100%);
-    -webkit-background-clip: text; background-clip: text;
+    color: #fff;
   }
   html:not(.dark) .hero-spotlight {
-    background-image: radial-gradient(circle 220px at var(--mx) var(--my),
-      #000000 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.08) 100%);
+    color: #000;
+  }
+  @supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .hero-spotlight {
+      color: transparent;
+      background-image: radial-gradient(circle 220px at var(--mx) var(--my),
+        #ffffff 0%, rgba(255,255,255,0.9) 40%, rgba(255,255,255,0.25) 70%, rgba(255,255,255,0.08) 100%);
+      -webkit-background-clip: text; background-clip: text;
+    }
+    html:not(.dark) .hero-spotlight {
+      color: transparent;
+      background-image: radial-gradient(circle 220px at var(--mx) var(--my),
+        #000000 0%, rgba(0,0,0,0.9) 40%, rgba(0,0,0,0.25) 70%, rgba(0,0,0,0.08) 100%);
+    }
   }
   @media (prefers-reduced-motion: reduce) {
     .hero-spotlight { color: inherit; background: none; -webkit-background-clip: unset; background-clip: unset; }
