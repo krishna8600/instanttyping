@@ -2341,8 +2341,15 @@ const {
       });
     }
 
+    let _skipNextInput = false;
     function handleInput(e: Event) {
       const inputEv = e as InputEvent;
+
+      // Ignore input events triggered by our own programmatic value reset
+      if (_skipNextInput) {
+        _skipNextInput = false;
+        return;
+      }
 
       if (
         inputEv.inputType === "deleteContentBackward" ||
@@ -2366,7 +2373,10 @@ const {
         }
       }
 
-      hiddenInput.value = currentInput;
+      if (hiddenInput.value !== currentInput) {
+        _skipNextInput = true;
+        hiddenInput.value = currentInput;
+      }
     }
     hiddenInput.addEventListener("input", handleInput);
 
@@ -2822,11 +2832,7 @@ const {
 
     resetTest();
     // Auto-focus on load so user can start typing immediately
-    // (desktop only — on mobile this would pop the keyboard on page load)
-    safeSetTimeout(() => {
-      const isMobile = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-      if (!isMobile) focusTyping();
-    }, 50);
+    safeSetTimeout(() => focusTyping(), 50);
 
     const cleanup = () => {
       window.removeEventListener("keydown", handleKeydown);
