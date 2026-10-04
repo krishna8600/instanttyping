@@ -7,7 +7,7 @@ interface Props {
 const { currentPath = "/" } = Astro.props;
 
 const navItems = [
-  { href: "/", label: "Typing Test", key: "nav.test" },
+  { href: "/", label: "Typing Test", key: "nav.test", mobileLabel: "Test", mobileKey: "nav.test_short" },
   { href: "#", label: "Classics", key: "nav.classics", navMode: "classics" },
   { href: "/typing-test-for-beginners", label: "Beginners", key: "nav.beginners" },
   { href: "/numbers-punctuation-typing-test", label: "Numbers & Symbols", key: "nav.numbers", mobileLabel: "Numbers", mobileKey: "nav.numbers_short" },
@@ -321,6 +321,7 @@ const navItems = [
     width: 36px;
     border-radius: 50%;
     flex-shrink: 0;
+    color: #fff;
     background: rgba(12, 12, 14, 0.85);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);

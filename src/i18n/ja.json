@@ -302,5 +302,6 @@
   "engine.typing.subheading": "A gentle, distraction-free typing test featuring common words and simple sentences. Ideal for learning finger placement.",
   "engine.numbers.heading": "Numbers & Punctuation Typing Test",
   "engine.numbers.subheading": "Test your speed with numbers, symbols, brackets, and mixed punctuation. Built for developers, data entry, and technical typists.",
-  "nav.numbers_short": "数字"
+  "nav.numbers_short": "数字",
+  "nav.test_short": "テスト"
 }

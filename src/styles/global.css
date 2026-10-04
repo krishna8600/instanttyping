@@ -259,6 +259,7 @@ html.dark header, html.dark main, html.dark footer { position: relative; z-index
 }
 .mode-tab-btn {
   transition: all 250ms var(--spring) !important;
+  flex-shrink: 0;
 }
 .mode-tab-btn:active {
   transform: scale(0.96);
