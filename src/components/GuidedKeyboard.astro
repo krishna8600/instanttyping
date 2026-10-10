@@ -7,7 +7,7 @@
 
 <div
   id="gk-root"
-  class="hidden md:block w-full max-w-4xl mx-auto mt-2 select-none"
+  class="hidden md:block w-full max-w-3xl mx-auto mt-2 select-none"
   aria-label="Finger guide keyboard"
   role="region"
 >
@@ -48,16 +48,7 @@
   <!-- ② KEYBOARD CARD -->
   <div id="gk-keyboard" class="premium-card !p-1 sm:!p-2 overflow-x-auto">
     <!-- Keyboard rows -->
-    <div class="flex flex-col gap-1 min-w-[600px]">
-
-      <!-- Row 0: Function-row stub (visual balance only, no labels) -->
-      <div class="flex gap-1 mb-0.5">
-        <div class="gk-key w-9 h-7 text-[9px] opacity-40">esc</div>
-        {['F1','F2','F3','F4','F5','F6','F7','F8','F9','F10','F11','F12'].map(k => (
-          <div class="gk-key flex-1 h-7 text-[9px] opacity-30">{k}</div>
-        ))}
-        <div class="gk-key w-8 h-7 opacity-20"></div>
-      </div>
+    <div class="flex flex-col gap-0.5 min-w-[600px]">
 
       <!-- Row 1: Digits -->
       <div class="flex gap-1">
@@ -76,17 +67,17 @@
           {code:'Minus', p:'-', s:'_'},
           {code:'Equal', p:'=', s:'+'},
         ].map(k => (
-          <div data-code={k.code} class="gk-key relative flex-1 h-9 hand-left">
+          <div data-code={k.code} class="gk-key relative flex-1 h-8 hand-left">
             <span class="absolute top-0.5 left-1 text-[8px] opacity-50 leading-none">{k.s}</span>
             <span class="text-[10px] mt-2">{k.p}</span>
           </div>
         ))}
-        <div class="gk-key w-14 h-9 text-[9px] hand-left">del</div>
+        <div class="gk-key w-14 h-8 text-[9px] hand-left">del</div>
       </div>
 
       <!-- Row 2: QWERTY -->
       <div class="flex gap-1">
-        <div class="gk-key w-12 h-9 text-[9px] hand-left">tab</div>
+        <div class="gk-key w-12 h-8 text-[9px] hand-left">tab</div>
         {[
           {code:'KeyQ', p:'Q', hand:'left'},
           {code:'KeyW', p:'W', hand:'left'},
@@ -102,7 +93,7 @@
           {code:'BracketRight', p:']', s:'}', hand:'right'},
           {code:'Backslash', p:'\\', s:'|', hand:'right'},
         ].map(k => (
-          <div data-code={k.code} class={`gk-key relative flex-1 h-9 hand-${k.hand}`}>
+          <div data-code={k.code} class={`gk-key relative flex-1 h-8 hand-${k.hand}`}>
             {k.s && <span class="absolute top-0.5 left-1 text-[8px] opacity-50 leading-none">{k.s}</span>}
             <span class={k.s ? 'text-[11px] mt-2' : 'text-[11px]'}>{k.p}</span>
           </div>
@@ -111,7 +102,7 @@
 
       <!-- Row 3: Home row (ASDF…) -->
       <div class="flex gap-1">
-        <div class="gk-key w-14 h-9 text-[9px] hand-left">caps</div>
+        <div class="gk-key w-14 h-8 text-[9px] hand-left">caps</div>
         {[
           {code:'KeyA', p:'A', hand:'left'},
           {code:'KeyS', p:'S', hand:'left'},
@@ -125,7 +116,7 @@
           {code:'Semicolon', p:';', s:':', hand:'right'},
           {code:'Quote', p:"'", s:'"', hand:'right'},
         ].map(k => (
-          <div data-code={k.code} class={`gk-key relative flex-1 h-9 hand-${k.hand}`}>
+          <div data-code={k.code} class={`gk-key relative flex-1 h-8 hand-${k.hand}`}>
             {k.s && <span class="absolute top-0.5 left-1 text-[8px] opacity-50 leading-none">{k.s}</span>}
             <span class={k.s ? 'text-[11px] mt-2' : 'text-[11px]'}>{k.p}</span>
             {k.home && (
@@ -133,12 +124,12 @@
             )}
           </div>
         ))}
-        <div class="gk-key flex-1 w-16 h-9 text-[9px] hand-right">enter</div>
+        <div class="gk-key flex-1 w-16 h-8 text-[9px] hand-right">enter</div>
       </div>
 
       <!-- Row 4: ZXCV… -->
       <div class="flex gap-1">
-        <div data-code="ShiftLeft" class="gk-key w-[4.5rem] h-9 text-[9px] hand-left">shift</div>
+        <div data-code="ShiftLeft" class="gk-key w-[4.5rem] h-8 text-[9px] hand-left">shift</div>
         {[
           {code:'KeyZ', p:'Z', hand:'left'},
           {code:'KeyX', p:'X', hand:'left'},
@@ -151,64 +142,62 @@
           {code:'Period', p:'.', s:'>', hand:'right'},
           {code:'Slash', p:'/', s:'?', hand:'right'},
         ].map(k => (
-          <div data-code={k.code} class={`gk-key relative flex-1 h-9 hand-${k.hand}`}>
+          <div data-code={k.code} class={`gk-key relative flex-1 h-8 hand-${k.hand}`}>
             {k.s && <span class="absolute top-0.5 left-1 text-[8px] opacity-50 leading-none">{k.s}</span>}
             <span class={k.s ? 'text-[11px] mt-2' : 'text-[11px]'}>{k.p}</span>
           </div>
         ))}
-        <div data-code="ShiftRight" class="gk-key w-[4.5rem] h-9 text-[9px] hand-right">shift</div>
+        <div data-code="ShiftRight" class="gk-key w-[4.5rem] h-8 text-[9px] hand-right">shift</div>
       </div>
 
       <!-- Row 5: Space row -->
       <div class="flex gap-1">
-        <div class="gk-key w-12 h-9 text-[9px] hand-left">ctrl</div>
-        <div class="gk-key w-10 h-9 text-[9px] hand-left">opt</div>
-        <div class="gk-key w-10 h-9 text-[9px] hand-left">cmd</div>
-        <div data-code="Space" class="gk-key flex-1 h-9 hand-right"></div>
-        <div class="gk-key w-10 h-9 text-[9px] hand-right">cmd</div>
-        <div class="gk-key w-10 h-9 text-[9px] hand-right">opt</div>
-        <div class="gk-key w-12 h-9 text-[9px] hand-right">ctrl</div>
+        <div class="gk-key w-12 h-8 text-[9px] hand-left">ctrl</div>
+        <div class="gk-key w-10 h-8 text-[9px] hand-left">opt</div>
+        <div class="gk-key w-10 h-8 text-[9px] hand-left">cmd</div>
+        <div data-code="Space" class="gk-key flex-1 h-8 hand-right"></div>
+        <div class="gk-key w-10 h-8 text-[9px] hand-right">cmd</div>
+        <div class="gk-key w-10 h-8 text-[9px] hand-right">opt</div>
+        <div class="gk-key w-12 h-8 text-[9px] hand-right">ctrl</div>
       </div>
     </div>
 
-    <!-- ③ FINGER ZONE DIAGRAM — below keyboard, inside card -->
+    <!-- ③ FINGER ZONE DIAGRAM — below keyboard, inside card (compact dots only) -->
     <div
       id="gk-finger-zones"
-      class="mt-5 pt-4 border-t border-ds-border flex justify-between opacity-0 transition-opacity duration-200"
+      class="mt-2 pt-1 border-t border-ds-border flex justify-between opacity-0 transition-opacity duration-200"
     >
       <!-- Left hand -->
-      <div class="flex gap-4 sm:gap-6 items-end">
+      <div class="flex gap-3 sm:gap-4 items-end">
         {[
           {id:'left_pinky',  label:'Pinky'},
           {id:'left_ring',   label:'Ring'},
           {id:'left_middle', label:'Middle'},
           {id:'left_index',  label:'Index'},
-          {id:'thumb',       label:'Thumb', extra:'ml-4'},
+          {id:'thumb',       label:'Thumb', extra:'ml-3'},
         ].map(f => (
-          <div class={`flex flex-col items-center gap-1.5 ${f.extra ?? ''}`}>
+          <div class={`flex flex-col items-center ${f.extra ?? ''}`} title={f.label}>
             <div
               id={`gk-zone-${f.id}`}
-              class="zone-dot w-2.5 h-2.5 rounded-full bg-ds-border transition-all duration-150"
+              class="zone-dot w-2 h-2 rounded-full bg-ds-border transition-all duration-150"
             ></div>
-            <span class="text-[9px] font-mono uppercase tracking-wider text-ds-text-secondary hidden sm:block">{f.label}</span>
           </div>
         ))}
       </div>
       <!-- Right hand -->
-      <div class="flex gap-4 sm:gap-6 items-end flex-row-reverse">
+      <div class="flex gap-3 sm:gap-4 items-end flex-row-reverse">
         {[
           {id:'right_pinky',  label:'Pinky'},
           {id:'right_ring',   label:'Ring'},
           {id:'right_middle', label:'Middle'},
           {id:'right_index',  label:'Index'},
-          {id:'right_thumb',  label:'Thumb', extra:'mr-4'},
+          {id:'right_thumb',  label:'Thumb', extra:'mr-3'},
         ].map(f => (
-          <div class={`flex flex-col items-center gap-1.5 ${f.extra ?? ''}`}>
+          <div class={`flex flex-col items-center ${f.extra ?? ''}`} title={f.label}>
             <div
               id={`gk-zone-${f.id}`}
-              class="zone-dot w-2.5 h-2.5 rounded-full bg-ds-border transition-all duration-150"
+              class="zone-dot w-2 h-2 rounded-full bg-ds-border transition-all duration-150"
             ></div>
-            <span class="text-[9px] font-mono uppercase tracking-wider text-ds-text-secondary hidden sm:block">{f.label}</span>
           </div>
         ))}
       </div>
@@ -429,6 +418,9 @@
 
   // ── Event listeners ────────────────────────────────────────────────────────
   window.addEventListener('typing-next-char', (e: Event) => {
+    // Skip ALL work if keyboard is hidden — this runs on every keystroke,
+    // so even the clearAll() DOM queries were adding lag.
+    if (!shouldShow()) return;
     const detail = (e as CustomEvent).detail;
     if (!detail?.char) { clearAll(); return; }
     highlightNext(detail.char);

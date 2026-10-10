@@ -1,4 +1,4 @@
-﻿{
+{
   "page_3min.tip1_body": "各キーストロークを時計の安定したチクタクとして扱ってください。",
   "settings.sound": "サウンド",
   "index.row3_skill": "熟練",
@@ -192,8 +192,7 @@
   "results.total_keystrokes": "総打鍵数",
   "results.speed_progression": "速度推移",
   "results.wpm_sampled": "毎秒サンプリングWPM",
-  "results.weak_key_heading": "弱いキー診断",
-  "results.weak_key_heatmap": "最もタイプミスが多いキーのヒートマップ — 次の練習はこれらに集中してください。",
+  "results.weak_key_heading": "修正するキー",
   "results.flawless": "ゼロミス — 完璧なタイピング！",
   "results.train_mistakes": "ミスをトレーニング",
   "results.view_cert": "証明書を見る",
@@ -321,5 +320,14 @@
   "roast.low_acc_6": "バックスペースキーはこのテストを支えた功労でメダルものだね。",
   "roast.good_4": "はいはい、自慢屋さん。他の人のために少し速度を残しといて。",
   "roast.good_5": "悪くないね。マスコットもちょっと感心したよ。ちょっとだけね。",
-  "roast.good_6": "完璧な走りだ。私でもツッコめないよ。"
+  "roast.good_6": "完璧な走りだ。私でもツッコめないよ。",
+  "results.weakest_key": "が最も弱いキーです",
+  "settings.stop_on_error": "エラーで停止",
+  "options.on": "オン",
+  "options.off": "オフ",
+  "nav.classics": "名作",
+  "nav.quotes": "引用",
+  "results.share": "共有",
+  "settings.roast_mode": "ローストモード",
+  "test.mode_code": "コード"
 }

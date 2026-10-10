@@ -1,5 +1,7 @@
 import Lenis from 'lenis';
 
+const NAVBAR_CLEARANCE = 120; // The fixed navbar is ~76px tall; this safe margin ensures the passage clears it completely.
+
 if ((window as any).__lenisCleanup) {
   (window as any).__lenisCleanup();
 }
@@ -31,10 +33,10 @@ function handleTypingStart() {
     const wordsRect = wordsEl.getBoundingClientRect();
     const kbRect = keyboardEl?.getBoundingClientRect();
     const keyboardOutOfView = kbRect ? kbRect.bottom > window.innerHeight + 40 : false;
-    const wordsNotWellInView = wordsRect.top < 0 || wordsRect.top > window.innerHeight * 0.4;
+    const wordsNotWellInView = wordsRect.top < NAVBAR_CLEARANCE || wordsRect.top > window.innerHeight * 0.4;
     // Scroll if words aren't well placed OR the keyboard is cut off below
     if (wordsNotWellInView || keyboardOutOfView) {
-      lenis.scrollTo(wordsEl, { offset: -16 });
+      lenis.scrollTo(wordsEl, { offset: -NAVBAR_CLEARANCE });
     }
   }
 }
@@ -46,7 +48,7 @@ function handleCTAClick(e: MouseEvent) {
   if (testSection) {
     e.preventDefault();
     if (lenis) {
-      lenis.scrollTo(testSection, { offset: -20 });
+      lenis.scrollTo(testSection, { offset: -NAVBAR_CLEARANCE });
     } else {
       testSection.scrollIntoView({ behavior: 'smooth' });
     }

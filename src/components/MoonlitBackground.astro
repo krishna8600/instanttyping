@@ -54,10 +54,30 @@
   if (!canvas) return;
   var win = window as Window & { __moonlitBgThemeObserver?: MutationObserver };
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var gl = canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false });
-  if (!gl) return;
+  var gl: WebGLRenderingContext | null = null;
+  var uTime: WebGLUniformLocation | null = null;
+  var uRes: WebGLUniformLocation | null = null;
+  var uRippleSpeed: WebGLUniformLocation | null = null;
+  var uMoonGlow: WebGLUniformLocation | null = null;
+  var uMouse: WebGLUniformLocation | null = null;
+  var uTilt: WebGLUniformLocation | null = null;
+  var uWaves: WebGLUniformLocation | null = null;
+  var uDaylight: WebGLUniformLocation | null = null;
+  var webglInited = false;
+  var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+  var needsResize = true;
+  var running = true;
+  var renderLoopPaused = false;
+  var mouseX = -1.0, mouseY = -1.0;
+  var lastTime = 0;
 
-  var vertSrc = [
+  function initWebGL() {
+    if (webglInited || !canvas) return;
+    gl = canvas.getContext('webgl', { alpha: false, antialias: false, preserveDrawingBuffer: false });
+    if (!gl) return;
+    webglInited = true;
+
+    var vertSrc = [
     'attribute vec2 a_pos;',
     'void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }'
   ].join('\n');
@@ -238,20 +258,25 @@
   gl.enableVertexAttribArray(aPos);
   gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-  var uTime = gl.getUniformLocation(prog, 'u_time');
-  var uRes = gl.getUniformLocation(prog, 'u_res');
-  var uRippleSpeed = gl.getUniformLocation(prog, 'u_rippleSpeed');
-  var uMoonGlow = gl.getUniformLocation(prog, 'u_moonGlow');
-  var uMouse = gl.getUniformLocation(prog, 'u_mouse');
-  var uTilt = gl.getUniformLocation(prog, 'u_tilt');
-  var uWaves = gl.getUniformLocation(prog, 'u_waves');
-  var uDaylight = gl.getUniformLocation(prog, 'u_daylight');
-
-  var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-  var needsResize = true;
-  var running = true;
-  var mouseX = -1.0, mouseY = -1.0;
-  var lastTime = 0;
+  uTime = gl.getUniformLocation(prog, 'u_time');
+  uRes = gl.getUniformLocation(prog, 'u_res');
+  uRippleSpeed = gl.getUniformLocation(prog, 'u_rippleSpeed');
+  uMoonGlow = gl.getUniformLocation(prog, 'u_moonGlow');
+  uMouse = gl.getUniformLocation(prog, 'u_mouse');
+  uTilt = gl.getUniformLocation(prog, 'u_tilt');
+  uWaves = gl.getUniformLocation(prog, 'u_waves');
+  uDaylight = gl.getUniformLocation(prog, 'u_daylight');
+  
+  resize();
+  if (prefersReduced) {
+    setStaticUniforms();
+    applyDaylight();
+    gl.uniform1f(uTime, 0.0);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  } else {
+    requestAnimationFrame(render);
+  }
+  }
 
   // --- Theme -> palette blend -------------------------------------------
   // 0.0 = moonlit water (html.dark), 1.0 = daylight water (light mode).
@@ -305,7 +330,7 @@
   }
 
   function render(now: number) {
-    if (!running) { requestAnimationFrame(render); return; }
+    if (!running || renderLoopPaused) return;
     if (!gl) return;
     if (needsResize) resize();
     setStaticUniforms();
@@ -338,6 +363,15 @@
     daylightFrom = daylight;
     daylightTarget = next;
     fadeStart = prefersReduced ? 0 : performance.now();
+    
+    var wasRunning = running;
+    running = true;
+    if (!webglInited) {
+      initWebGL();
+    } else if (!wasRunning && !prefersReduced) {
+      requestAnimationFrame(render);
+    }
+    
     if (prefersReduced) {
       // No animation loop in reduced-motion mode: repaint exactly one still frame.
       // Scheduled inside a frame so the drawing buffer actually gets composited
@@ -361,22 +395,43 @@
   window.addEventListener('mousemove', function (e) {
     if (!canvas) return;
     mouseX = e.clientX * dpr;
-    mouseY = (canvas.clientHeight - e.clientY) * dpr;
+    mouseY = (window.innerHeight - e.clientY) * dpr;
   }, { passive: true });
   document.documentElement.addEventListener('mouseleave', function () { mouseX = -1.0; mouseY = -1.0; });
   window.addEventListener('touchstart', function (e) {
     if (!canvas) return;
     var t = e.touches[0];
     mouseX = t.clientX * dpr;
-    mouseY = (canvas.clientHeight - t.clientY) * dpr;
+    mouseY = (window.innerHeight - t.clientY) * dpr;
   }, { passive: true });
   window.addEventListener('touchmove', function (e) {
     if (!canvas) return;
     var t = e.touches[0];
     mouseX = t.clientX * dpr;
-    mouseY = (canvas.clientHeight - t.clientY) * dpr;
+    mouseY = (window.innerHeight - t.clientY) * dpr;
   }, { passive: true });
   window.addEventListener('touchend', function () { mouseX = -1.0; mouseY = -1.0; }, { passive: true });
+
+  // Temporary diagnostic: pause WebGL render loop during typing to test friction
+  var typingPauseTimer: number | undefined;
+  var typingDisplayEl = document.getElementById('typing-display');
+  if (typingDisplayEl) {
+    typingDisplayEl.addEventListener('keydown', function(e) {
+      // Don't trigger on meta keys (Cmd/Ctrl) to avoid pausing on shortcuts
+      if (e.metaKey || e.ctrlKey) return;
+      
+      if (!renderLoopPaused) {
+        renderLoopPaused = true;
+      }
+      clearTimeout(typingPauseTimer);
+      typingPauseTimer = window.setTimeout(function() {
+        renderLoopPaused = false;
+        if (running && !prefersReduced) {
+          requestAnimationFrame(render);
+        }
+      }, 2000);
+    }, { passive: true });
+  }
 
   // Optional runtime tuning (Radiant param protocol)
   window.addEventListener('message', function (e) {
@@ -385,16 +440,7 @@
     // (wired for future use; defaults are set in setStaticUniforms)
   });
 
-  resize();
-  if (prefersReduced) {
-    // Reduced motion: paint ONE static frame, no animation loop
-    setStaticUniforms();
-    applyDaylight();
-    gl.uniform1f(uTime, 0.0);
-    gl.drawArrays(gl.TRIANGLES, 0, 3);
-  } else {
-    requestAnimationFrame(render);
-  }
+  initWebGL();
 
   // --- Starfield Engine --------------------------------------------------
   (function initStarfield() {

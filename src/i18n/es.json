@@ -1,4 +1,4 @@
-﻿{
+{
   "index.row4_band": "Intermedio",
   "terms.title": "Términos del servicio",
   "index.th_wpm": "Rango WPM",
@@ -192,8 +192,7 @@
   "results.total_keystrokes": "Total de pulsaciones",
   "results.speed_progression": "Progresión de velocidad",
   "results.wpm_sampled": "PPM muestreadas por segundo",
-  "results.weak_key_heading": "Diagnóstico de teclas débiles",
-  "results.weak_key_heatmap": "Mapa de calor de teclas con más errores — enfoca tu siguiente práctica en estas.",
+  "results.weak_key_heading": "Teclas a corregir",
   "results.flawless": "¡Cero errores — ejecución impecable!",
   "results.train_mistakes": "Entrenar mis errores",
   "results.view_cert": "Ver certificado",
@@ -321,5 +320,14 @@
   "roast.low_acc_6": "La tecla de retroceso merece una medalla por cargar con esta prueba.",
   "roast.good_4": "Vale, presumido. Guarda algo de velocidad para los demás.",
   "roast.good_5": "Nada mal. La mascota está ligeramente impresionada. Ligeramente.",
-  "roast.good_6": "Prueba limpia. Ni yo puedo criticar eso."
+  "roast.good_6": "Prueba limpia. Ni yo puedo criticar eso.",
+  "results.weakest_key": "es tu tecla más débil",
+  "nav.classics": "Clásicos",
+  "nav.quotes": "Citas",
+  "settings.stop_on_error": "Detener en error",
+  "options.on": "Activado",
+  "options.off": "Desactivado",
+  "results.share": "Compartir",
+  "settings.roast_mode": "Modo Roast",
+  "test.mode_code": "Código"
 }

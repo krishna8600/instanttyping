@@ -1,4 +1,4 @@
-﻿{
+{
   "about.wpm_intro": "Pour fournir des résultats objectifs et standardisés comparables aux tests d'emploi officiels, notre plateforme implémente strictement le standard international de 5 frappes :",
   "page_beginner.pinky": "Auriculaire",
   "contact.label_email": "Adresse e-mail",
@@ -192,8 +192,7 @@
   "results.total_keystrokes": "Total des frappes",
   "results.speed_progression": "Progression de vitesse",
   "results.wpm_sampled": "MPM échantillonnés par seconde",
-  "results.weak_key_heading": "Diagnostic des touches faibles",
-  "results.weak_key_heatmap": "Carte thermique des touches avec le plus de fautes — concentrez votre prochaine pratique sur celles-ci.",
+  "results.weak_key_heading": "Touches à corriger",
   "results.flawless": "Zéro faute — exécution parfaite !",
   "results.train_mistakes": "Entraîner mes erreurs",
   "results.view_cert": "Voir le certificat",
@@ -321,5 +320,14 @@
   "roast.low_acc_6": "La touche retour mérite une médaille pour avoir porté ce test.",
   "roast.good_4": "Bon, frimeur. Garde un peu de vitesse pour les autres.",
   "roast.good_5": "Pas mal. La mascotte est légèrement impressionnée. Légèrement.",
-  "roast.good_6": "Test parfait. Même moi je ne peux pas critiquer ça."
+  "roast.good_6": "Test parfait. Même moi je ne peux pas critiquer ça.",
+  "results.weakest_key": "est votre touche la plus faible",
+  "settings.stop_on_error": "Arrêter sur erreur",
+  "options.on": "Activé",
+  "options.off": "Désactivé",
+  "nav.classics": "Classiques",
+  "nav.quotes": "Citations",
+  "results.share": "Partager",
+  "settings.roast_mode": "Mode Roast",
+  "test.mode_code": "Code"
 }

@@ -701,7 +701,7 @@ async function getMechBuffer(ctx: AudioContext, key: string): Promise<AudioBuffe
   }
 
   if (!pendingFetches[fileName]) {
-    pendingFetches[fileName] = fetch(`/sounds/nk-cream/${fileName}.wav`)
+    pendingFetches[fileName] = window.fetch(`/sounds/nk-cream/${fileName}.wav`)
       .then(res => {
         if (!res.ok) throw new Error("Not found");
         return res.arrayBuffer();

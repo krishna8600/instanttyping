@@ -1,4 +1,4 @@
-﻿{
+{
   "about.title": "Chi è Instant Typing",
   "about.mission_p2": "Instant Typing è stato progettato per fornire un ambiente di test ultra-pulito e ultra-veloce che rispetta la tua attenzione.",
   "privacy.s3_body": "Non trasmettiamo le tue battiture a nessun server remoto.",
@@ -192,8 +192,7 @@
   "results.total_keystrokes": "Totale battiture",
   "results.speed_progression": "Progressione della velocità",
   "results.wpm_sampled": "PAM campionate al secondo",
-  "results.weak_key_heading": "Diagnosi tasti deboli",
-  "results.weak_key_heatmap": "Mappa termica dei tasti con più errori — concentra il prossimo allenamento su questi.",
+  "results.weak_key_heading": "Tasti da correggere",
   "results.flawless": "Zero errori — esecuzione impeccabile!",
   "results.train_mistakes": "Allenare i miei errori",
   "results.view_cert": "Visualizza certificato",
@@ -321,5 +320,14 @@
   "roast.low_acc_6": "Il tasto backspace merita una medaglia per aver portato questo test.",
   "roast.good_4": "Va bene, spaccone. Tieni un po di velocità per noi altri.",
   "roast.good_5": "Niente male. La mascotte è leggermente impressionata. Leggermente.",
-  "roast.good_6": "Prova pulita. Nemmeno io posso criticare questo."
+  "roast.good_6": "Prova pulita. Nemmeno io posso criticare questo.",
+  "results.weakest_key": "è il tuo tasto più debole",
+  "settings.stop_on_error": "Ferma in caso di errore",
+  "options.on": "Attivato",
+  "options.off": "Disattivato",
+  "nav.classics": "Classici",
+  "nav.quotes": "Citazioni",
+  "results.share": "Condividi",
+  "settings.roast_mode": "Modalità Roast",
+  "test.mode_code": "Codice"
 }

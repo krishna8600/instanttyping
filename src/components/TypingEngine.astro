@@ -23,16 +23,16 @@ const {
 ---
 
 <div
-  class="w-full space-y-3 scroll-mt-28"
+  class="w-full space-y-1.5 scroll-mt-[120px]"
   id="typing-test-container"
   data-initial-duration={initialDuration}
   data-initial-mode={initialMode}
   data-initial-wordbank={initialWordbank}
 >
   <!-- Heading Section -->
-  <div class="pb-6 border-b border-[#E5E5E5] dark:border-white/10">
+  <div class="pb-2 border-b border-[#E5E5E5] dark:border-white/10">
     <h2
-      class="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1] text-balance mb-3"
+      class="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1] text-balance mb-1"
       style="letter-spacing:-0.02em"
       data-i18n={pageHeadingKey}
     >
@@ -48,7 +48,7 @@ const {
 
   <!-- Mode & Configuration Bar -->
   <div
-    class="premium-card flex flex-wrap items-center justify-between gap-3 text-sm"
+    class="relative z-30 premium-card flex flex-wrap items-center justify-between gap-2 !py-2 !px-3 text-sm"
   >
     <!-- Test Type Selector -->
     <div
@@ -57,7 +57,7 @@ const {
     >
       <span
         id="mode-tab-slider"
-        class="absolute top-1 bottom-1 rounded-full bg-white dark:bg-white/20 shadow-sm pointer-events-none"
+        class="absolute left-0 top-1 bottom-1 rounded-full bg-[#1D1D1F] dark:bg-white shadow-sm pointer-events-none"
         style="transition: transform 350ms cubic-bezier(0.32, 0.72, 0, 1), width 350ms cubic-bezier(0.32, 0.72, 0, 1); will-change: transform, width;"
       ></span>
       <button
@@ -103,6 +103,7 @@ const {
       <button
         type="button"
         data-mode-btn="code"
+        data-i18n="test.mode_code"
         class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
       >
         Code
@@ -235,7 +236,7 @@ const {
 
       <div
         id="settings-panel"
-        class="hidden absolute top-full right-0 mt-2 p-4 premium-card flex-col gap-4 min-w-[240px] backdrop-blur-md rounded-xl shadow-lg border border-[#E5E5E5] dark:border-white/10 bg-white/90 dark:bg-[#1D1D1F]/90"
+        class="hidden absolute top-full right-0 mt-2 p-4 premium-card flex-col gap-4 min-w-[240px] backdrop-blur-md rounded-xl shadow-lg border border-[#E5E5E5] dark:border-white/10 bg-white/90 dark:bg-[#1D1D1F]/90 z-50"
       >
 <!-- Sound Theme Selector -->
     <div
@@ -353,7 +354,7 @@ const {
   <!-- Custom Text Input Section -->
   <div
     id="custom-text-container"
-    class="hidden flex-col gap-3 premium-card animate-spring-enter"
+    class="hidden flex-col gap-3 premium-card animate-spring-enter relative z-10"
   >
     <label
       for="custom-text-input"
@@ -374,70 +375,70 @@ const {
   </div>
 
   <!-- Real-Time Metrics Strip -->
-  <div id="metrics-strip" class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-    <div class="premium-card flex items-start gap-3 !p-2">
+  <div id="metrics-strip" class="grid grid-cols-2 lg:grid-cols-4 gap-2 relative z-10">
+    <div class="premium-card flex items-start gap-2 !p-2">
       <span
-        class="flex items-center justify-center w-7 h-7 shrink-0 text-ds-text-secondary"
+        class="flex items-center justify-center w-6 h-6 shrink-0 text-ds-text-secondary"
         aria-hidden="true"
       >
         <Icon name="timer" class="w-4 h-4" />
       </span>
       <div class="min-w-0">
-        <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.time">Timer</div>
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.time">Timer</div>
         <div
           id="metric-timer"
-          class="text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary mt-1 text-[#1D1D1F] dark:text-[#F5F5F7] font-mono"
+          class="text-2xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
         >
           60s
         </div>
       </div>
     </div>
-    <div class="premium-card flex items-start gap-3 !p-2">
+    <div class="premium-card flex items-start gap-2 !p-2">
       <span
-        class="flex items-center justify-center w-7 h-7 shrink-0 text-ds-text-secondary"
+        class="flex items-center justify-center w-6 h-6 shrink-0 text-ds-text-secondary"
         aria-hidden="true"
       >
         <Icon name="bolt" class="w-4 h-4" />
       </span>
       <div class="min-w-0">
-        <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.wpm_short">Net WPM</div>
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.wpm_short">Net WPM</div>
         <div
           id="metric-wpm"
-          class="text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary mt-1 text-[#0072F5] font-mono"
+          class="text-2xl font-mono font-bold tracking-tight text-ds-text-primary text-[#0072F5]"
         >
           0
         </div>
       </div>
     </div>
-    <div class="premium-card flex items-start gap-3 !p-2">
+    <div class="premium-card flex items-start gap-2 !p-2">
       <span
-        class="flex items-center justify-center w-7 h-7 shrink-0 text-ds-text-secondary"
+        class="flex items-center justify-center w-6 h-6 shrink-0 text-ds-text-secondary"
         aria-hidden="true"
       >
         <Icon name="target" class="w-4 h-4" />
       </span>
       <div class="min-w-0">
-        <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.accuracy">Accuracy</div>
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.accuracy">Accuracy</div>
         <div
           id="metric-accuracy"
-          class="text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary mt-1 text-[#1D1D1F] dark:text-[#F5F5F7] font-mono"
+          class="text-2xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
         >
           100%
         </div>
       </div>
     </div>
-    <div class="premium-card flex items-start gap-3 !p-2">
+    <div class="premium-card flex items-start gap-2 !p-2">
       <span
-        class="flex items-center justify-center w-7 h-7 shrink-0 text-ds-text-secondary"
+        class="flex items-center justify-center w-6 h-6 shrink-0 text-ds-text-secondary"
         aria-hidden="true"
       >
         <Icon name="cancel" class="w-4 h-4" />
       </span>
       <div class="min-w-0">
-        <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.errors_metric">Errors</div>
+        <div class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.errors_metric">Errors</div>
         <div
           id="metric-errors"
-          class="text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary mt-1 text-[#1D1D1F] dark:text-[#F5F5F7] font-mono"
+          class="text-2xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
         >
           0
         </div>
@@ -446,18 +447,18 @@ const {
   </div>
 
   <!-- Active Typing Surface -->
-  <div id="typing-surface-wrapper" class="relative">
+  <div id="typing-surface-wrapper" class="relative scroll-mt-[120px]">
     <div
       id="typing-display"
-      tabindex="0"
+      tabindex="-1"
       role="textbox"
       aria-label="Typing test text area" data-i18n-aria-label="engine.aria_textarea"
-      class="relative w-full min-h-[168px] p-6 font-mono text-xl sm:text-2xl leading-loose tracking-[0.01em] select-none cursor-text transition-all duration-200"
+      class="relative w-full max-w-[1100px] mx-auto p-2 sm:p-4 font-mono text-[22px] md:text-[28px] lg:text-[32px] leading-[2.5] tracking-[0.02em] select-none cursor-text transition-all duration-200"
     >
-      <div id="words-viewport" class="relative overflow-hidden h-[148px] sm:h-[160px]">
+      <div id="words-viewport" class="relative overflow-hidden">
         <div
           id="words-wrapper"
-          class="relative flex flex-wrap gap-x-2 gap-y-1.5 items-center will-change-transform transition-transform duration-[400ms] ease-[cubic-bezier(0.32,0.72,0,1)]"
+          class="relative flex flex-wrap gap-x-3 lg:gap-x-4 items-center will-change-transform transition-transform duration-[400ms] ease-[cubic-bezier(0.32,0.72,0,1)]"
         >
           <div
             id="typing-caret"
@@ -759,7 +760,7 @@ const {
     </div>
 
     <!-- 4. Speed Progression Card -->
-    <div class="premium-card space-y-4">
+    <div class="premium-card space-y-4 relative">
       <h3
         class="text-sm font-bold tracking-tight flex items-center gap-2"
         style="letter-spacing:-0.02em"
@@ -775,7 +776,7 @@ const {
       >
         <svg
           id="timeline-chart-svg"
-          class="w-full h-full"
+          class="w-full h-full cursor-crosshair touch-none"
           viewBox="0 0 500 100"
           preserveAspectRatio="none"
           role="img"
@@ -784,6 +785,7 @@ const {
           <!-- Dynamic path rendered in JS -->
         </svg>
       </div>
+      <div id="chart-tooltip" class="absolute pointer-events-none opacity-0 bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black px-2 py-1 rounded-md text-[11px] font-bold shadow-lg whitespace-nowrap transform -translate-x-1/2 -translate-y-full mt-[-8px] transition-opacity duration-75 motion-reduce:transition-none z-10 font-mono tracking-tight" style="left: 0; top: 0;"></div>
     </div>
 
     <!-- 5. Weak-Key Diagnostic Card -->
@@ -792,20 +794,14 @@ const {
         class="text-sm font-bold tracking-tight flex items-center gap-2"
         style="letter-spacing:-0.02em"
       >
-        <Icon name="warning" class="w-4 h-4 text-amber-500" />
-        <span data-i18n="results.weak_key_heading">Weak-Key Diagnostic</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        <span data-i18n="results.weak_key_heading">Keys to fix</span>
       </h3>
-      <div id="weak-keys-list" class="flex flex-wrap gap-2 min-h-[28px]">
+      <div id="weak-keys-list" class="flex flex-col min-h-[28px]">
         <span class="text-sm text-[#6E6E73] dark:text-[#A1A1A6]" data-i18n="results.flawless"
           >Zero typos — flawless run!</span
         >
       </div>
-      <p
-        class="text-xs leading-relaxed text-[#86868B] pt-2 border-t border-[#E5E5E5] dark:border-white/10"
-        data-i18n="results.weak_key_heatmap"
-      >
-        Heatmap of keys with the most typos — focus your next practice on these.
-      </p>
     </div>
 
     <!-- 6. Personal Best Badge -->
@@ -1044,6 +1040,7 @@ const {
     // Timing via performance.now() and requestAnimationFrame
     let startTime = 0;
     let animationFrameId: number | null = null;
+    let lastStatUpdate = 0;
     let elapsedSeconds = 0;
 
     // Idle pause: pause the test after 10s of no typing
@@ -1324,6 +1321,11 @@ const {
       lineHeight = Math.max(20, line1Y - line0Y);
       const wordH = cachedWordNodes[0]?.offsetHeight || 48;
       caretYOffset = Math.round((wordH - caretH) / 2);
+      
+      const viewportEl = document.getElementById("words-viewport");
+      if (viewportEl) {
+        viewportEl.style.height = `${lineHeight * 3}px`;
+      }
     }
 
     function updateWordOffsets(fromIndex: number = 0) {
@@ -1340,22 +1342,87 @@ const {
           wordOffsets.push({ x, y });
         }
       }
+
+      // Dynamic line-height check on the fly (e.g., during active typing)
+      if (wordOffsets.length > 0) {
+        const currentLine0Y = wordOffsets[0].y;
+        let currentLine1Y = -1;
+        for (let i = 1; i < wordOffsets.length; i++) {
+          if (wordOffsets[i].y > currentLine0Y) {
+            currentLine1Y = wordOffsets[i].y;
+            break;
+          }
+        }
+        
+        if (currentLine1Y !== -1) {
+          const newLH = Math.max(20, currentLine1Y - currentLine0Y);
+          if (newLH !== lineHeight) {
+            lineHeight = newLH;
+            const wordH = cachedWordNodes[0]?.offsetHeight || 48;
+            let caretH = 18;
+            if (caretEl) {
+              const cRect = caretEl.getBoundingClientRect();
+              if (cRect.height > 0) caretH = cRect.height;
+            }
+            caretYOffset = Math.round((wordH - caretH) / 2);
+            const viewportEl = document.getElementById("words-viewport");
+            if (viewportEl) {
+              viewportEl.style.height = `${lineHeight * 3}px`;
+            }
+          }
+        }
+      }
+    }
+
+    let transformRafId: number | null = null;
+    let targetCaretX = 0;
+    let targetCaretY = 0;
+    let targetScrollY = 0;
+
+    function applyTransforms() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        wordsWrapper.style.transition = 'none';
+      } else {
+        wordsWrapper.style.transition = '';
+      }
+      wordsWrapper.style.transform = `translate3d(0, -${targetScrollY}px, 0)`;
+      transformRafId = null;
     }
 
     function updateCaretPosition() {
       const wOffset = wordOffsets[currentWordIndex];
       if (!wOffset) return;
 
-      // 2.5px caret center aligned with character boundary (offset by -1.25px for exact centering)
-      const caretX = wOffset.x + currentInput.length * charWidth - 1.25;
-      const caretY = wOffset.y + caretYOffset;
+      // Fast path: use cached math instead of DOM measurements.
+      // getBoundingClientRect() forces synchronous layout recalculation (~16ms),
+      // which caused the typing lag. The monospace font means charWidth is
+      // consistent, so the math is accurate without measuring.
+      let cx = wOffset.x + currentInput.length * charWidth - 1.25;
+      let cy = wOffset.y + caretYOffset;
 
-      caretEl.style.transform = `translate3d(${caretX}px, ${caretY}px, 0)`;
+      targetCaretX = Math.max(0, cx);
+      targetCaretY = Math.max(0, cy);
 
-      // Item 8: Exact N * lineHeight scroll with zero drift
+      // Note: prefers-reduced-motion is checked once at init (cachedPrefersReduced),
+      // not on every keystroke, to avoid the matchMedia overhead.
+      if ((window as any).__smoothCaretTo) (window as any).__smoothCaretTo(targetCaretX, targetCaretY); else caretEl.style.transform = `translate3d(${targetCaretX}px, ${targetCaretY}px, 0)`;
+
+      const lastWordOffset = wordOffsets[wordOffsets.length - 1];
+      const totalLines = lastWordOffset ? Math.max(1, Math.round((lastWordOffset.y - line0Y) / lineHeight) + 1) : 1;
+
+      // Exact N * lineHeight scroll with zero drift (Monkeytype style)
       const lineIdx = Math.max(0, Math.round((wOffset.y - line0Y) / lineHeight));
-      const scrollY = lineIdx > 1 ? (lineIdx - 1) * lineHeight : 0;
-      wordsWrapper.style.transform = `translate3d(0, -${scrollY}px, 0)`;
+      let desiredScrollLines = lineIdx - 1;
+      
+      const maxScrollLines = Math.max(0, totalLines - 3);
+      desiredScrollLines = Math.max(0, Math.min(desiredScrollLines, maxScrollLines));
+      
+      targetScrollY = desiredScrollLines * lineHeight;
+
+      if (!transformRafId) {
+        transformRafId = requestAnimationFrame(applyTransforms);
+      }
     }
 
     function appendMoreWords(count: number) {
@@ -1466,6 +1533,10 @@ const {
         cancelAnimationFrame(animationFrameId);
         animationFrameId = null;
       }
+      if (transformRafId) {
+        cancelAnimationFrame(transformRafId);
+        transformRafId = null;
+      }
       testActive = false;
       testCompleted = false;
       startTime = 0;
@@ -1506,12 +1577,14 @@ const {
       wpmMetric.textContent = "0";
       accMetric.textContent = "100%";
       errMetric.textContent = "0";
+      lastStatUpdate = 0;
 
       certModal.classList.add("hidden");
       activeBackspaceMode = selectedBackspaceMode;
       // Item 10 & 3: Reset caret, scroll, and word inputs
       caretEl.style.display = "";
       caretEl.style.opacity = "0";
+      targetScrollY = 0;
       wordsWrapper.style.transform = "translate3d(0, 0, 0)";
       wordInputs = [];
       generateWords();
@@ -1605,15 +1678,18 @@ const {
       } else {
         timerMetric.textContent = `${Math.floor(elapsedSeconds)}s`;
       }
-
-      const live = calculateMetrics(
-        correctKeystrokes,
-        incorrectKeystrokes,
-        elapsedSeconds,
-      );
-      wpmMetric.textContent = String(live.netWpm);
-      accMetric.textContent = `${live.accuracy}%`;
-      errMetric.textContent = String(incorrectKeystrokes);
+      const nowTs = performance.now();
+      if (nowTs - lastStatUpdate > 250 || elapsedSeconds === 0) {
+        lastStatUpdate = nowTs;
+        const live = calculateMetrics(
+          correctKeystrokes,
+          incorrectKeystrokes,
+          elapsedSeconds,
+        );
+        wpmMetric.textContent = String(live.netWpm);
+        accMetric.textContent = `${live.accuracy}%`;
+        errMetric.textContent = String(incorrectKeystrokes);
+      }
 
       animationFrameId = requestAnimationFrame(runTimerLoop);
     }
@@ -1774,14 +1850,41 @@ const {
         .filter((item) => item.errors > 0);
 
       if (mistakesArr.length > 0) {
-        mistakesArr.slice(0, 8).forEach((item) => {
-          const badge = document.createElement("span");
-          badge.className =
-            "inline-flex items-center px-3 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold border border-red-500/15 whitespace-nowrap";
-          const typoWord = item.errors > 1 ? t("results.typos") : t("results.typo");
-          badge.textContent = `'${item.key}' · ${item.errors} ${typoWord}`;
-          weakKeysListEl.appendChild(badge);
-        });
+        const worstKey = mistakesArr[0];
+        const typoWord = worstKey.errors > 1 ? t("results.typos") : t("results.typo");
+        const remaining = mistakesArr.slice(1, 8);
+        
+        const worstDiv = document.createElement("div");
+        worstDiv.className = "mb-4 text-[#171717] dark:text-[#E5E5E5] text-[15px] font-medium tracking-tight flex items-center";
+        worstDiv.innerHTML = `
+          <span class="inline-flex items-center justify-center min-w-[28px] h-7 px-2 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border border-red-500/50 shadow-[0_0_12px_rgba(239,68,68,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_12px_rgba(239,68,68,0.4)] font-mono text-sm mr-2.5">${worstKey.key}</span>
+          <span>${t("results.weakest_key") || "is your weakest key"} &mdash; <span class="text-red-500 font-semibold">${worstKey.errors} ${typoWord}</span></span>
+        `;
+        weakKeysListEl.appendChild(worstDiv);
+
+        if (remaining.length > 0) {
+          const remContainer = document.createElement("div");
+          remContainer.className = "flex flex-wrap gap-2";
+          
+          const maxErrors = worstKey.errors;
+          remaining.forEach((item) => {
+            const intensity = item.errors / maxErrors;
+            const borderOpacity = 0.2 + (0.3 * intensity); 
+            const shadowOpacity = 0.1 + (0.3 * intensity);
+            const tWord = item.errors > 1 ? t("results.typos") : t("results.typo");
+            
+            const badge = document.createElement("div");
+            badge.className = "flex items-center gap-2 px-2.5 py-1.5 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]";
+            badge.style.borderColor = `rgba(239,68,68,${borderOpacity})`;
+            badge.style.boxShadow = `inset 0 1px 1px rgba(255,255,255,0.1), 0 0 ${4 + 6 * intensity}px rgba(239,68,68,${shadowOpacity})`;
+            badge.innerHTML = `
+              <span class="font-mono text-[13px] text-[#171717] dark:text-white">${item.key}</span>
+              <span class="text-[11px] text-[#86868B]">${item.errors} ${tWord}</span>
+            `;
+            remContainer.appendChild(badge);
+          });
+          weakKeysListEl.appendChild(remContainer);
+        }
       } else {
         weakKeysListEl.innerHTML =
           `<span class="text-sm font-medium text-emerald-600">${t("results.flawless")}</span>`;
@@ -1899,45 +2002,160 @@ const {
       if (!data || data.length < 2) {
         svg.innerHTML =
           `<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#86868B" font-size="12" font-family="system-ui">${t("results.chart_no_data")}</text>`;
+        (svg as any).__chartData = null;
         return;
       }
 
       const maxWpm = Math.max(...data, 40);
+      const roundedMax = Math.ceil(maxWpm / 20) * 20;
+      const avgWpm = Math.round(data.reduce((a, b) => a + b, 0) / data.length);
+      (svg as any).__avgWpm = avgWpm;
+      
       const width = 500;
       const height = 100;
-      const padding = 10;
+      const pl = 30; // padding left
+      const pr = 10; // padding right
+      const pt = 10; // padding top
+      const pb = 20; // padding bottom
 
-      const points = data.map((val, idx) => {
-        const x = (idx / (data.length - 1)) * (width - padding * 2) + padding;
-        const y = height - ((val / maxWpm) * (height - padding * 2) + padding);
-        return `${x},${y}`;
+      const plotW = width - pl - pr;
+      const plotH = height - pt - pb;
+
+      const chartPoints = data.map((val, idx) => {
+        const x = pl + (idx / (data.length - 1)) * plotW;
+        const y = pt + plotH - ((val / roundedMax) * plotH);
+        return { x, y, val, sec: idx + 1 };
       });
+      (svg as any).__chartData = chartPoints;
 
-      const pathData = `M ${points.join(" L ")}`;
+      let pathData = chartPoints.length > 0 ? `M ${chartPoints[0].x},${chartPoints[0].y}` : "";
+      const tension = 0.2;
+      for (let i = 0; i < chartPoints.length - 1; i++) {
+        const p0 = i > 0 ? chartPoints[i - 1] : chartPoints[i];
+        const p1 = chartPoints[i];
+        const p2 = chartPoints[i + 1];
+        const p3 = i !== chartPoints.length - 2 ? chartPoints[i + 2] : p2;
+        
+        const cp1x = p1.x + (p2.x - p0.x) * tension;
+        const cp1y = p1.y + (p2.y - p0.y) * tension;
+        const cp2x = p2.x - (p3.x - p1.x) * tension;
+        const cp2y = p2.y - (p3.y - p1.y) * tension;
+        
+        pathData += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2.x},${p2.y}`;
+      }
+      
+      const areaPath = pathData + (chartPoints.length > 0 ? ` L ${chartPoints[chartPoints.length - 1].x},${height - pb} L ${pl},${height - pb} Z` : "");
+
       const isDark = document.documentElement.classList.contains("dark");
-      const strokeColor = isDark ? "#0072F5" : "#0072F5";
-      const gridColor = isDark ? "rgba(255,255,255,0.08)" : "#E5E5E5";
+      const strokeColor = "#0072F5";
+      const gridColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
+      const dotBg = isDark ? "#1D1D1F" : "#FAFAFA";
+      const labelColor = isDark ? "#A1A1A6" : "#6E6E73";
+      
+      let gridHtml = "";
+      
+      for (let w = 0; w <= roundedMax; w += 20) {
+        const y = pt + plotH - ((w / roundedMax) * plotH);
+        gridHtml += `<line x1="${pl}" y1="${y}" x2="${width - pr}" y2="${y}" stroke="${gridColor}" stroke-dasharray="3 3" stroke-width="0.75" />`;
+        gridHtml += `<text x="${pl - 6}" y="${y}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end" dominant-baseline="central">${w}</text>`;
+      }
+      
+      const totalSecs = data.length;
+      let xStep = 1;
+      if (totalSecs > 120) xStep = 30;
+      else if (totalSecs > 60) xStep = 15;
+      else if (totalSecs > 30) xStep = 10;
+      else if (totalSecs > 15) xStep = 5;
+      else if (totalSecs > 12) xStep = 2;
+
+      let lastXEnd = 0;
+      for (let s = 1; s <= totalSecs; s += xStep) {
+        if (s - 1 < chartPoints.length) {
+          const ptData = chartPoints[s - 1];
+          // Prevent overlap with final label
+          if (s !== totalSecs && (totalSecs - s) < (xStep * 0.5)) continue;
+          gridHtml += `<text x="${ptData.x}" y="${height - pb + 14}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="middle">${s}</text>`;
+        }
+      }
+      
+      if ((totalSecs - 1) % xStep !== 0) {
+        const endPt = chartPoints[chartPoints.length - 1];
+        gridHtml += `<text x="${endPt.x}" y="${height - pb + 14}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="middle">${totalSecs}</text>`;
+      }
+
+      // Average Line
+      const avgY = pt + plotH - ((avgWpm / roundedMax) * plotH);
+      gridHtml += `<line x1="${pl}" y1="${avgY}" x2="${width - pr}" y2="${avgY}" stroke="${labelColor}" stroke-dasharray="4 4" stroke-width="1" opacity="0.4" />`;
+      gridHtml += `<text x="${width - pr}" y="${avgY - 4}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end">avg ${avgWpm}</text>`;
+
+      // Peak Marker
+      let peakPt = chartPoints[0];
+      for (let pt of chartPoints) {
+        if (pt.val > peakPt.val) peakPt = pt;
+      }
+      
+      let peakAnchor = "middle";
+      let peakX = peakPt.x;
+      if (peakX > width - pr - 30) {
+        peakAnchor = "end";
+        peakX = width - pr;
+      } else if (peakX < pl + 30) {
+        peakAnchor = "start";
+        peakX = pl;
+      }
+      
+      gridHtml += `<text x="${peakX}" y="${peakPt.y - 8}" fill="${strokeColor}" font-size="9" font-weight="bold" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="${peakAnchor}">peak ${Math.round(peakPt.val)}</text>`;
+      
+      const endPt = chartPoints[chartPoints.length - 1];
+      if (peakPt !== endPt) {
+        gridHtml += `<circle cx="${peakPt.x}" cy="${peakPt.y}" r="3" fill="${strokeColor}" />`;
+      }
+      
+      // Final luminous dot
+      gridHtml += `<circle cx="${endPt.x}" cy="${endPt.y}" r="3" fill="${strokeColor}" />`;
+      gridHtml += `<circle cx="${endPt.x}" cy="${endPt.y}" r="6" fill="${strokeColor}" opacity="0.3" />`;
+
       svg.innerHTML = `
-        <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" stroke="${gridColor}" stroke-dasharray="3 3" stroke-width="0.75" />
-        <line x1="${padding}" y1="${padding}" x2="${width - padding}" y2="${padding}" stroke="${gridColor}" stroke-dasharray="3 3" stroke-width="0.75" />
-        <path d="${pathData}" fill="none" stroke="${strokeColor}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-        <circle cx="${points[points.length - 1].split(",")[0]}" cy="${points[points.length - 1].split(",")[1]}" r="3" fill="${strokeColor}" />
+        <defs>
+          <linearGradient id="chart-area-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="${strokeColor}" stop-opacity="0.25" />
+            <stop offset="100%" stop-color="${strokeColor}" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        ${gridHtml}
+        <path d="${areaPath}" fill="url(#chart-area-grad)" />
+        <path d="${pathData}" fill="none" stroke="${strokeColor}" stroke-width="6" opacity="0.15" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="${pathData}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <g id="chart-interactive-layer" class="opacity-0 transition-opacity duration-75 motion-reduce:transition-none pointer-events-none">
+          <line id="chart-crosshair-line" y1="${pt}" y2="${height - pb}" stroke="${strokeColor}" stroke-dasharray="4 4" stroke-width="1.5" opacity="0.5" />
+          <circle id="chart-crosshair-dot" r="4.5" fill="${strokeColor}" stroke="${dotBg}" stroke-width="2" />
+        </g>
       `;
     }
 
     function focusTyping() {
       if (testCompleted) return;
-      ensureAudioContext();
+      try { ensureAudioContext(); } catch {}
+      // Re-query live elements: closure references can go stale after Astro
+      // dev HMR swaps DOM nodes. Always operate on the elements in the page.
+      const liveInput = document.getElementById("hidden-typing-input") as HTMLInputElement;
+      const liveCaret = document.getElementById("typing-caret") as HTMLElement;
+      const livePrompt = document.getElementById("focus-prompt") as HTMLElement;
+      const liveDisplay = document.getElementById("typing-display") as HTMLElement;
       const isMobile = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-      if (isMobile) {
-        hiddenInput.focus();
-      } else {
-        hiddenInput.focus({ preventScroll: true });
+      try {
+        if (isMobile) {
+          liveInput.focus();
+        } else {
+          liveInput.focus({ preventScroll: true });
+        }
+      } catch (e) {
+        try { liveInput.focus(); } catch {}
       }
-      focusPrompt.classList.add("opacity-0");
-      typingDisplay.classList.add("!border-[#0072F5]/30");
-      caretEl.style.display = "";
-      caretEl.style.opacity = "1";
+      livePrompt.classList.add("opacity-0");
+      liveDisplay.classList.add("!border-[#0072F5]/30");
+      liveCaret.style.display = "";
+      liveCaret.style.opacity = "1";
     }
 
     function blurTyping() {
@@ -1949,6 +2167,10 @@ const {
 
     typingDisplay.addEventListener("click", focusTyping);
     typingDisplay.addEventListener("touchstart", focusTyping, { passive: true });
+    // Prevent the display div (tabindex="0") from stealing focus on mouse
+    // click. Focus must go straight to the hidden input so keystrokes
+    // register and the caret stays visible. (Does not block click/touch.)
+    typingDisplay.addEventListener("mousedown", (e) => e.preventDefault());
     focusPrompt.addEventListener("click", focusTyping);
     focusPrompt.addEventListener("touchstart", focusTyping, { passive: true });
     hiddenInput.addEventListener("focus", focusTyping);
@@ -1975,16 +2197,16 @@ const {
           if (selectedStopOnError === "on") {
             incorrectKeystrokes++;
             playKeyStrokeSound(" ", true, true);
-            emitTyping('typing-key-result', { char: " ", correct: false });
+            queueMicrotask(() => emitTyping('typing-key-result', { char: " ", correct: false }));
             return;
           }
           missedWords.push(targetWord);
           playKeyStrokeSound(" ", true, true);
-          emitTyping('typing-key-result', { char: " ", correct: false });
+          queueMicrotask(() => emitTyping('typing-key-result', { char: " ", correct: false }));
         } else {
           playKeyStrokeSound(" ", true, false);
           correctKeystrokes += 1;
-          emitTyping('typing-key-result', { char: " ", correct: true });
+          queueMicrotask(() => emitTyping('typing-key-result', { char: " ", correct: true }));
         }
 
         // Complete previous word on cached node
@@ -2021,8 +2243,7 @@ const {
           }
         }
 
-        updateWordOffsets(currentWordIndex);
-        updateCaretPosition();
+        updateWordOffsets(currentWordIndex); updateCaretPosition();
         dispatchNextChar();
         return;
       }
@@ -2036,38 +2257,40 @@ const {
       const targetChar = targetWordChars[charIdx] || "";
       const isCorrectChar = char.normalize("NFC") === targetChar.normalize("NFC");
 
+      // VISUAL FIRST: update letter color immediately, before audio/events.
+      // This is the most time-critical update — the user must see feedback instantly.
+      const charsEarly = cachedCharNodes[currentWordIndex];
+      if (charIdx < targetWordChars.length && charsEarly && charsEarly[charIdx]) {
+        charsEarly[charIdx].className = isCorrectChar ? "char char-correct" : "char char-error";
+      }
+
       if (isCorrectChar) {
         correctKeystrokes++;
-        playKeyStrokeSound(char, false, false);
-        emitTyping('typing-key-result', { char, correct: true });
+        // Defer audio and events to avoid blocking visual update
+        queueMicrotask(() => playKeyStrokeSound(char, false, false));
+        queueMicrotask(() => emitTyping('typing-key-result', { char, correct: true }));
       } else {
         if (selectedStopOnError === "on") {
           incorrectKeystrokes++;
           if (!keyMistakes[char]) keyMistakes[char] = { errors: 0, total: 0 };
           keyMistakes[char].errors++;
-          playKeyStrokeSound(char, false, true);
-          emitTyping('typing-key-result', { char, correct: false });
-          
-          const chars = cachedCharNodes[currentWordIndex];
-          if (charIdx < targetWordChars.length && chars && chars[charIdx]) {
-            chars[charIdx].className = "char char-error";
-          }
+          queueMicrotask(() => playKeyStrokeSound(char, false, true));
+          queueMicrotask(() => emitTyping('typing-key-result', { char, correct: false }));
           return;
         }
 
         incorrectKeystrokes++;
         keyMistakes[char].errors++;
-        playKeyStrokeSound(char, false, true);
-        emitTyping('typing-key-result', { char, correct: false });
+        queueMicrotask(() => playKeyStrokeSound(char, false, true));
+        queueMicrotask(() => emitTyping('typing-key-result', { char, correct: false }));
       }
 
       currentInput += char;
 
-      // Update char class on cached node
+      // Update char class on cached node (already done above for the main case;
+      // this handles extra characters beyond word length)
       const chars = cachedCharNodes[currentWordIndex];
-      if (charIdx < targetWordChars.length && chars && chars[charIdx]) {
-        chars[charIdx].className = isCorrectChar ? "char char-correct" : "char char-error";
-      } else {
+      if (charIdx >= targetWordChars.length) {
         // Extra characters beyond target word length
         const activeWordEl = cachedWordNodes[currentWordIndex];
         if (activeWordEl) {
@@ -2078,12 +2301,12 @@ const {
           if (extraCharNodes[currentWordIndex]) {
             extraCharNodes[currentWordIndex].push(extraSpan);
           }
-          updateWordOffsets(currentWordIndex);
+          updateWordOffsets(currentWordIndex); updateCaretPosition();
         }
       }
 
       updateCaretPosition();
-      dispatchNextChar();
+      queueMicrotask(() => dispatchNextChar());
     }
 
     function handleBackspace() {
@@ -2104,7 +2327,7 @@ const {
           if (extras && extras.length > 0) {
             const extraSpan = extras.pop();
             extraSpan?.remove();
-            updateWordOffsets(currentWordIndex);
+            updateWordOffsets(currentWordIndex); updateCaretPosition();
           }
         } else {
           const chars = cachedCharNodes[currentWordIndex];
@@ -2149,8 +2372,7 @@ const {
 
         currentInput = wordInputs[currentWordIndex] || "";
         hiddenInput.value = currentInput;
-        updateWordOffsets(currentWordIndex);
-        updateCaretPosition();
+        updateWordOffsets(currentWordIndex); updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
       }
       
@@ -2178,7 +2400,7 @@ const {
         currentInput = "";
         hiddenInput.value = "";
         if (hadExtras) {
-          updateWordOffsets(currentWordIndex);
+          updateWordOffsets(currentWordIndex); updateCaretPosition();
         }
         updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
@@ -2224,8 +2446,7 @@ const {
         currentInput = "";
         wordInputs[currentWordIndex] = "";
         hiddenInput.value = "";
-        updateWordOffsets(currentWordIndex);
-        updateCaretPosition();
+        updateWordOffsets(currentWordIndex); updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
       }
       
@@ -2277,27 +2498,25 @@ const {
 
       // Handle Backspace
       if (e.key === "Backspace") {
+        e.preventDefault();
         if (e.ctrlKey || e.altKey || e.metaKey) {
-          e.preventDefault();
           handleCtrlBackspace();
           return;
         }
-        if (currentInput.length === 0) {
-          e.preventDefault();
-          handleBackspace();
-          return;
-        }
+        handleBackspace();
+        return;
       }
 
       if (
-        !testActive &&
         !testCompleted &&
         e.key.length === 1 &&
         !e.ctrlKey &&
         !e.metaKey &&
         !e.altKey
       ) {
-        focusTyping();
+        if (!testActive || document.activeElement !== hiddenInput || caretEl.style.opacity !== "1") {
+          focusTyping();
+        }
       }
 
       if (
@@ -2307,6 +2526,21 @@ const {
         if (e.key === " ") {
           e.preventDefault();
           handleCharacterInput(" ");
+        }
+        // Fast path: handle regular characters directly in keydown to bypass
+        // the slow hidden-input event path (which was causing 88-112ms lag).
+        if (
+          testActive &&
+          !testCompleted &&
+          e.key.length === 1 &&
+          !e.ctrlKey &&
+          !e.metaKey &&
+          !e.altKey &&
+          e.key !== " "
+        ) {
+          e.preventDefault();
+          handleCharacterInput(e.key);
+          return;
         }
         if (testActive && (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight")) {
           e.preventDefault();
@@ -2323,12 +2557,18 @@ const {
     }
 
     window.addEventListener("resize", onLayoutChange);
+    window.addEventListener("orientationchange", onLayoutChange);
 
     let resizeObserver: ResizeObserver | null = null;
     if (typeof ResizeObserver !== "undefined" && typingDisplay) {
       resizeObserver = new ResizeObserver(onLayoutChange);
       resizeObserver.observe(typingDisplay);
     }
+    
+    if (document.fonts) {
+      document.fonts.ready.then(onLayoutChange);
+    }
+    window.addEventListener("load", onLayoutChange);
 
     // Item 2: Gate measurement on document.fonts.ready with 350ms fallback timeout
     if (document.fonts && document.fonts.ready) {
@@ -2344,6 +2584,15 @@ const {
     function handleInput(e: Event) {
       const inputEv = e as InputEvent;
       const newValue = hiddenInput.value;
+
+      // Keep the caret visible whenever keystrokes arrive. The keydown ->
+      // focusTyping path can be silently lost (dropped listener, focus quirks)
+      // while input events still fire, so the caret must not depend on
+      // keydown alone to become visible.
+      if (!testCompleted && caretEl.style.opacity !== "1") {
+        caretEl.style.display = "";
+        caretEl.style.opacity = "1";
+      }
 
       if (
         inputEv.inputType === "deleteContentBackward" ||
@@ -2374,18 +2623,14 @@ const {
 
 
 
-    // Sliding tab indicator (Vercel-style)
     function moveTabSlider(activeBtn: HTMLElement) {
       const slider = document.getElementById("mode-tab-slider");
-      const container = document.getElementById("mode-tab-container");
-      if (!slider || !container) return;
-      const cRect = container.getBoundingClientRect();
-      const bRect = activeBtn.getBoundingClientRect();
-      const x = bRect.left - cRect.left;
-      slider.style.width = bRect.width + "px";
+      if (!slider) return;
+      const x = activeBtn.offsetLeft;
+      slider.style.width = activeBtn.offsetWidth + "px";
       slider.style.transform = `translateX(${x}px)`;
     }
-    const initTabBtn = document.querySelector('[data-mode-btn="time"]') as HTMLElement;
+    const initTabBtn = document.querySelector(`[data-mode-btn="${currentMode}"]`) as HTMLElement;
     if (initTabBtn) {
       requestAnimationFrame(() => moveTabSlider(initTabBtn));
     }
@@ -2399,25 +2644,26 @@ const {
     }) as EventListener);
 
     window.addEventListener("resize", () => {
-      const active = document.querySelector(".mode-tab-btn.bg-\\[\\#1D1D1F\\]") as HTMLElement
-        || document.querySelector('[data-mode-btn="time"]') as HTMLElement;
+      const active = document.querySelector(".mode-tab-btn.active-mode-btn") as HTMLElement
+        || document.querySelector(`[data-mode-btn="${currentMode}"]`) as HTMLElement;
       if (active) moveTabSlider(active);
     });
     modeBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
-        modeBtns.forEach((b) =>
+        moveTabSlider(btn);
+        modeBtns.forEach((b) => {
           b.classList.remove(
-            "!bg-[#1D1D1F]",
+            "active-mode-btn",
             "!text-white",
-            "dark:!bg-white",
             "dark:!text-black",
             "font-semibold",
-          ),
-        );
+          );
+          b.classList.add("font-medium", "text-[#6E6E73]", "dark:text-[#A1A1A6]");
+        });
+        btn.classList.remove("font-medium", "text-[#6E6E73]", "dark:text-[#A1A1A6]");
         btn.classList.add(
-          "!bg-[#1D1D1F]",
+          "active-mode-btn",
           "!text-white",
-          "dark:!bg-white",
           "dark:!text-black",
           "font-semibold",
         );
@@ -2559,14 +2805,41 @@ const {
           .filter((item) => item.errors > 0);
         weakKeysListEl.innerHTML = "";
         if (mistakesArr.length > 0) {
-          mistakesArr.slice(0, 8).forEach((item) => {
-            const badge = document.createElement("span");
-            badge.className =
-              "inline-flex items-center px-3 py-1.5 rounded-full bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-semibold border border-red-500/15 whitespace-nowrap";
-            const typoWord = item.errors > 1 ? t("results.typos") : t("results.typo");
-            badge.textContent = `'${item.key}' \u00b7 ${item.errors} ${typoWord}`;
-            weakKeysListEl.appendChild(badge);
-          });
+          const worstKey = mistakesArr[0];
+          const typoWord = worstKey.errors > 1 ? t("results.typos") : t("results.typo");
+          const remaining = mistakesArr.slice(1, 8);
+          
+          const worstDiv = document.createElement("div");
+          worstDiv.className = "mb-4 text-[#171717] dark:text-[#E5E5E5] text-[15px] font-medium tracking-tight flex items-center";
+          worstDiv.innerHTML = `
+            <span class="inline-flex items-center justify-center min-w-[28px] h-7 px-2 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border border-red-500/50 shadow-[0_0_12px_rgba(239,68,68,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_12px_rgba(239,68,68,0.4)] font-mono text-sm mr-2.5">${worstKey.key}</span>
+            <span>${t("results.weakest_key") || "is your weakest key"} &mdash; <span class="text-red-500 font-semibold">${worstKey.errors} ${typoWord}</span></span>
+          `;
+          weakKeysListEl.appendChild(worstDiv);
+
+          if (remaining.length > 0) {
+            const remContainer = document.createElement("div");
+            remContainer.className = "flex flex-wrap gap-2";
+            
+            const maxErrors = worstKey.errors;
+            remaining.forEach((item) => {
+              const intensity = item.errors / maxErrors;
+              const borderOpacity = 0.2 + (0.3 * intensity); 
+              const shadowOpacity = 0.1 + (0.3 * intensity);
+              const tWord = item.errors > 1 ? t("results.typos") : t("results.typo");
+              
+              const badge = document.createElement("div");
+              badge.className = "flex items-center gap-2 px-2.5 py-1.5 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]";
+              badge.style.borderColor = `rgba(239,68,68,${borderOpacity})`;
+              badge.style.boxShadow = `inset 0 1px 1px rgba(255,255,255,0.1), 0 0 ${4 + 6 * intensity}px rgba(239,68,68,${shadowOpacity})`;
+              badge.innerHTML = `
+                <span class="font-mono text-[13px] text-[#171717] dark:text-white">${item.key}</span>
+                <span class="text-[11px] text-[#86868B]">${item.errors} ${tWord}</span>
+              `;
+              remContainer.appendChild(badge);
+            });
+            weakKeysListEl.appendChild(remContainer);
+          }
         } else {
           weakKeysListEl.innerHTML =
             `<span class="text-sm font-medium text-emerald-600">${t("results.flawless")}</span>`;
@@ -2735,10 +3008,10 @@ const {
       `[data-mode-btn="${initialModeAttr}"]`,
     );
     if (defaultModeBtn) {
+      defaultModeBtn.classList.remove("font-medium", "text-[#6E6E73]", "dark:text-[#A1A1A6]");
       defaultModeBtn.classList.add(
-        "!bg-[#1D1D1F]",
+        "active-mode-btn",
         "!text-white",
-        "dark:!bg-white",
         "dark:!text-black",
         "font-semibold",
       );
@@ -2843,6 +3116,76 @@ const {
     (window as any).__typingEngineCleanup = cleanup;
     document.addEventListener("astro:before-swap", cleanup, { once: true });
   }
+
+    // Chart Interactivity
+    const chartSvg = document.getElementById("timeline-chart-svg");
+    const chartTooltip = document.getElementById("chart-tooltip");
+    
+    if (chartSvg && chartTooltip) {
+      function updateCrosshair(e: Event) {
+        const pointerEvent = e as PointerEvent;
+        const data = (chartSvg as any).__chartData;
+        if (!data || data.length < 2) return;
+        
+        const svgRect = chartSvg!.getBoundingClientRect();
+        const rawX = ((pointerEvent.clientX - svgRect.left) / svgRect.width) * 500;
+        
+        let nearest = data[0];
+        let minDist = Infinity;
+        for (const pt of data) {
+          const dist = Math.abs(pt.x - rawX);
+          if (dist < minDist) {
+            minDist = dist;
+            nearest = pt;
+          }
+        }
+        
+        const layer = document.getElementById("chart-interactive-layer");
+        const line = document.getElementById("chart-crosshair-line");
+        const dot = document.getElementById("chart-crosshair-dot");
+        
+        if (layer && line && dot) {
+          line.setAttribute("x1", nearest.x.toString());
+          line.setAttribute("x2", nearest.x.toString());
+          dot.setAttribute("cx", nearest.x.toString());
+          dot.setAttribute("cy", nearest.y.toString());
+          layer.classList.remove("opacity-0");
+        }
+        
+        const card = chartSvg!.closest('.premium-card') as HTMLElement;
+        if (!card) return;
+        const cardRect = card.getBoundingClientRect();
+        let domX = (nearest.x / 500) * svgRect.width + (svgRect.left - cardRect.left);
+        const domY = (nearest.y / 100) * svgRect.height + (svgRect.top - cardRect.top);
+        
+        const avg = (chartSvg as any).__avgWpm;
+        const delta = Math.round(nearest.val - avg);
+        const deltaStr = (delta >= 0 ? '+' : '') + delta;
+        chartTooltip!.textContent = `${Math.round(nearest.val)} WPM · ${nearest.sec}s · ${deltaStr} vs avg`;
+        
+        // Clamp tooltip so it doesn't overflow the card edges (accounting for -translate-x-1/2)
+        const tooltipRect = chartTooltip!.getBoundingClientRect();
+        const halfW = tooltipRect.width / 2;
+        const minX = halfW + 4;
+        const maxX = cardRect.width - halfW - 4;
+        domX = Math.max(minX, Math.min(domX, maxX));
+        
+        chartTooltip!.style.left = `${domX}px`;
+        chartTooltip!.style.top = `${domY}px`;
+        chartTooltip!.classList.remove("opacity-0");
+      }
+      
+      function hideCrosshair() {
+        const layer = document.getElementById("chart-interactive-layer");
+        if (layer) layer.classList.add("opacity-0");
+        if (chartTooltip) chartTooltip.classList.add("opacity-0");
+      }
+      
+      chartSvg.addEventListener("pointermove", updateCrosshair as EventListener);
+      chartSvg.addEventListener("pointerdown", updateCrosshair as EventListener);
+      chartSvg.addEventListener("pointerleave", hideCrosshair);
+      chartSvg.addEventListener("pointercancel", hideCrosshair);
+    }
 
     // Share card: Wordle-style viral loop
     (function() {

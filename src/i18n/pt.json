@@ -1,4 +1,4 @@
-﻿{
+{
   "index.row6_skill": "Iniciante / Novato",
   "footer.test_modes": "Modos de teste",
   "results.time": "Tempo",
@@ -192,8 +192,7 @@
   "results.total_keystrokes": "Total de teclas",
   "results.speed_progression": "Progressão de velocidade",
   "results.wpm_sampled": "PPM amostradas por segundo",
-  "results.weak_key_heading": "Diagnóstico de teclas fracas",
-  "results.weak_key_heatmap": "Mapa de calor das teclas com mais erros — foque sua próxima prática nestas.",
+  "results.weak_key_heading": "Teclas para corrigir",
   "results.flawless": "Zero erros — execução impecável!",
   "results.train_mistakes": "Treinar meus erros",
   "results.view_cert": "Ver certificado",
@@ -321,5 +320,14 @@
   "roast.low_acc_6": "A tecla backspace merece uma medalha por carregar este teste.",
   "roast.good_4": "Tá bom, exibido. Guarda um pouco de velocidade para o resto de nós.",
   "roast.good_5": "Nada mal. O mascote está levemente impressionado. Levemente.",
-  "roast.good_6": "Teste limpo. Nem eu consigo criticar isso."
+  "roast.good_6": "Teste limpo. Nem eu consigo criticar isso.",
+  "results.weakest_key": "é a sua tecla mais fraca",
+  "settings.stop_on_error": "Parar em Erro",
+  "options.on": "Ligado",
+  "options.off": "Desligado",
+  "nav.classics": "Clássicos",
+  "nav.quotes": "Citações",
+  "results.share": "Compartilhar",
+  "settings.roast_mode": "Modo Roast",
+  "test.mode_code": "Código"
 }

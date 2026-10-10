@@ -1,4 +1,4 @@
-﻿{
+{
   "page_3min.guide_intro": "여러 분 동안 높은 속도를 유지하려면 리듬 조절이 필요합니다.",
   "page_1min.tip1_title": "두 단어 앞을 내다보기",
   "index.row6_skill": "초보자 / 입문",
@@ -192,8 +192,7 @@
   "results.total_keystrokes": "총 타건 수",
   "results.speed_progression": "속도 진행",
   "results.wpm_sampled": "초당 샘플링된 WPM",
-  "results.weak_key_heading": "약한 키 진단",
-  "results.weak_key_heatmap": "오타가 가장 많은 키 히트맵 — 다음 연습에서 이 키에 집중하세요.",
+  "results.weak_key_heading": "수정할 키",
   "results.flawless": "오타 없음 — 완벽한 실행!",
   "results.train_mistakes": "실수 훈련하기",
   "results.view_cert": "인증서 보기",
@@ -321,5 +320,14 @@
   "roast.low_acc_6": "백스페이스 키는 이 테스트를 끌고 온 공로로 메달 받아야 해.",
   "roast.good_4": "그래그래, 잘난 척쟁이. 우리를 위해 속도 좀 남겨둬.",
   "roast.good_5": "나쁘지 않아. 마스코트도 살짝 감동했어. 살짝.",
-  "roast.good_6": "깨끗한 주행이야. 나도 이건 못 까겠어."
+  "roast.good_6": "깨끗한 주행이야. 나도 이건 못 까겠어.",
+  "results.weakest_key": "가장 약한 키입니다",
+  "settings.stop_on_error": "오류 시 정지",
+  "options.on": "켬",
+  "options.off": "끔",
+  "nav.classics": "고전",
+  "nav.quotes": "인용문",
+  "results.share": "공유",
+  "settings.roast_mode": "로스트 모드",
+  "test.mode_code": "코드"
 }

@@ -1,4 +1,4 @@
-﻿{
+{
   "settings.stop_on_error": "Stop on Error",
   "options.on": "On",
   "options.off": "Off",
@@ -195,8 +195,7 @@
   "results.total_keystrokes": "Total Keystrokes",
   "results.speed_progression": "Speed Progression",
   "results.wpm_sampled": "WPM sampled each second",
-  "results.weak_key_heading": "Weak-Key Diagnostic",
-  "results.weak_key_heatmap": "Heatmap of keys with the most typos — focus your next practice on these.",
+  "results.weak_key_heading": "Keys to fix",
   "results.flawless": "Zero typos — flawless run!",
   "results.train_mistakes": "Train My Mistakes",
   "results.view_cert": "View Certificate",
@@ -328,5 +327,7 @@
   "roast.low_acc_6": "The backspace key deserves a medal for carrying this test.",
   "roast.good_4": "Alright, show-off. Save some speed for the rest of us.",
   "roast.good_5": "Not bad. The mascot is mildly impressed. Mildly.",
-  "roast.good_6": "Clean run. Even I cannot roast that."
+  "roast.good_6": "Clean run. Even I cannot roast that.",
+  "results.weakest_key": "is your weakest key",
+  "test.mode_code": "Code"
 }

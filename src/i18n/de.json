@@ -1,4 +1,4 @@
-﻿{
+{
   "index.row1_roles": "Gerichtsreporter, Geschwindigkeitsschreiber, Datenverarbeiter mit hohem Volumen",
   "page_3min.tip1_title": "Metronom-Tempo aufbauen",
   "privacy.last_updated": "Zuletzt aktualisiert: September 2026",
@@ -192,8 +192,7 @@
   "results.total_keystrokes": "Gesamte Tastenanschläge",
   "results.speed_progression": "Geschwindigkeitsverlauf",
   "results.wpm_sampled": "WpM pro Sekunde abgetastet",
-  "results.weak_key_heading": "Schwache-Tasten-Diagnose",
-  "results.weak_key_heatmap": "Heatmap der Tasten mit den meisten Tippfehlern — konzentrieren Sie Ihre nächste Übung auf diese.",
+  "results.weak_key_heading": "Tasten zum Beheben",
   "results.flawless": "Null Tippfehler — fehlerfreier Durchlauf!",
   "results.train_mistakes": "Fehler trainieren",
   "results.view_cert": "Zertifikat anzeigen",
@@ -321,5 +320,14 @@
   "roast.low_acc_6": "Die Rücktaste verdient eine Medaille dafür, diesen Test getragen zu haben.",
   "roast.good_4": "Na gut, Angeber. Heb dir etwas Geschwindigkeit für uns andere auf.",
   "roast.good_5": "Nicht schlecht. Das Maskottchen ist leicht beeindruckt. Leicht.",
-  "roast.good_6": "Sauberer Durchlauf. Selbst ich kann das nicht kritisieren."
+  "roast.good_6": "Sauberer Durchlauf. Selbst ich kann das nicht kritisieren.",
+  "results.weakest_key": "ist Ihre schwächste Taste",
+  "nav.classics": "Klassiker",
+  "nav.quotes": "Zitate",
+  "settings.stop_on_error": "Bei Fehler stoppen",
+  "options.on": "An",
+  "options.off": "Aus",
+  "results.share": "Teilen",
+  "settings.roast_mode": "Roast-Modus",
+  "test.mode_code": "Code"
 }
