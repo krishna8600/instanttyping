@@ -1,22 +1,33 @@
-﻿---
+---
 import Layout from '../layouts/Layout.astro';
 import TypingEngine from '../components/TypingEngine.astro';
 import FAQ from '../components/FAQ.astro';
 import Icon from '../components/Icon.astro';
 
 const faqs = [
- {
- question: "What is touch typing and why is it essential?",
- answer: "Touch typing is typing solely through tactile muscle memory without looking down at the physical keyboard. By anchoring your fingers on the home row (ASDF JKL;), your brain maps the location of every key relative to your home position, allowing your typing speed to triple or quadruple compared to hunt-and-peck typing."
- , questionKey: "faq.typing.q1", answerKey: "faq.typing.a1"},
- {
- question: "What are the tactile bumps on the F and J keys for?",
- answer: "The small raised ridges on the 'F' and 'J' keys are tactile indicators designed to help you locate the home row without glancing down. Your left index finger rests on 'F' and your right index finger rests on 'J'."
- , questionKey: "faq.typing.q2", answerKey: "faq.typing.a2"},
- {
- question: "Is 20 WPM good for a complete beginner?",
- answer: "Yes! When transitioning to true touch typing, speeds initially drop as your fingers learn new geometric pathways. Reaching 20 to 25 WPM with correct finger placement is an excellent initial milestone. Within two weeks of daily 10-minute practice, speeds typically jump to 40+ WPM."
- , questionKey: "faq.typing.q3", answerKey: "faq.typing.a3"}
+  {
+    question: "What is touch typing and why is it essential?",
+    answer: "Touch typing is typing solely through tactile muscle memory without looking down at the physical keyboard. By anchoring your fingers on the home row (ASDF JKL;), your brain maps the location of every key relative to your home position, allowing your typing speed to triple or quadruple compared to hunt-and-peck typing.",
+    questionKey: "faq.typing.q1", answerKey: "faq.typing.a1"
+  },
+  {
+    question: "What are the tactile bumps on the F and J keys for?",
+    answer: "The small raised ridges on the 'F' and 'J' keys are tactile indicators designed to help you locate the home row without glancing down. Your left index finger rests on 'F' and your right index finger rests on 'J'.",
+    questionKey: "faq.typing.q2", answerKey: "faq.typing.a2"
+  },
+  {
+    question: "What is the home row and which fingers go where?",
+    answer: "The home row is the middle letter row. Place your left fingers on A (pinky), S (ring), D (middle), and F (index). Place your right fingers on J (index), K (middle), L (ring), and ; (pinky). Your thumbs rest gently on the spacebar."
+  },
+  {
+    question: "Is 20 to 25 WPM normal for a complete beginner?",
+    answer: "Yes! When transitioning to true touch typing, speeds initially drop as your fingers learn new geometric pathways. Reaching 20 to 25 WPM with correct finger placement is an excellent initial milestone. Within two weeks of daily 10-minute practice, speeds typically jump to 40+ WPM.",
+    questionKey: "faq.typing.q3", answerKey: "faq.typing.a3"
+  },
+  {
+    question: "Should I look down at the keyboard when I get stuck?",
+    answer: "Resist the urge to look down. If you cannot remember a key's location, pause and use an on-screen guide or feel for the F and J bumps. Looking at your fingers prevents muscle memory from forming, whereas touch-based trial and error cements key locations."
+  }
 ];
 ---
 

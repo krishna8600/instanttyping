@@ -1,0 +1,486 @@
+---
+import Layout from '../layouts/Layout.astro';
+import FAQ from '../components/FAQ.astro';
+import Icon from '../components/Icon.astro';
+
+const faqs = [
+  {
+    question: "How does an online keyboard tester work?",
+    answer: "The tester listens to browser keyboard events (keydown and keyup) and checks the exact physical code sent by your keyboard controller. When a key is detected, its virtual keycap lights up, confirming that the mechanical switch, membrane trace, and USB controller are functioning properly."
+  },
+  {
+    question: "What is a 'dead key' and why does it appear on the test?",
+    answer: "A dead key is a special modifier key on international keyboard layouts (such as accents like `´`, `^`, or `~`) that does not output a character immediately. Instead, it waits for the next keystroke to compose a combined accented character (like á or ê). Our tester detects dead key events and confirms your keyboard correctly sends the composition signal."
+  },
+  {
+    question: "What is keyboard ghosting and how do I test for it?",
+    answer: "Ghosting occurs when certain combinations of keys fail to register or cause unpressed keys to trigger simultaneously due to shared matrix wiring. You can test your keyboard's key rollover by pressing 3 or more keys at the same time (e.g. W, A, S, D, and Shift) and verifying they all illuminate together in the live inspector."
+  },
+  {
+    question: "Why do keys like Fn or Print Screen sometimes not light up in browsers?",
+    answer: "The Fn key is typically handled entirely at the hardware or BIOS firmware level on laptops and never sends a scan code to the operating system or browser. Keys like Print Screen or Sleep may also be intercepted directly by your operating system window manager before the browser receives the event."
+  },
+  {
+    question: "How can I fix a sticky or unresponsive keyboard key?",
+    answer: "If a key fails to light up, test it multiple times to check for intermittent chattering. For mechanical keyboards, remove the keycap and clean dust or debris with compressed air, or test the hot-swap switch. For membrane laptops, ensure the scissor clip beneath the key is clean and free of sticky residue."
+  }
+];
+---
+
+<Layout
+  title="Keyboard Tester Online | Free Key & Rollover Test"
+  description="Test every key on your keyboard online with our free keyboard tester. Instant key response, dead key detection, ghosting check, and rollover testing."
+  canonicalPath="/keyboard-tester"
+>
+  <div class="space-y-10 max-w-5xl mx-auto py-4">
+    <!-- Header -->
+    <div class="space-y-3 text-center sm:text-left">
+      <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-neutral-100 dark:bg-white/10 text-[var(--text-secondary)] border border-[var(--border)]">
+        <Icon name="keyboard" class="w-3.5 h-3.5" />
+        <span>Free Diagnostic Tool</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--text-primary)]">
+        Keyboard Tester
+      </h1>
+      <p class="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl leading-relaxed">
+        Press any key on your physical keyboard to verify switch response, test multi-key rollover, and detect dead combining keys. Instant, private, and runs entirely in your browser.
+      </p>
+    </div>
+
+    <!-- Live Telemetry Bar -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div class="p-3.5 rounded-xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">Keys Tested</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="stat-tested-count" class="text-2xl font-semibold text-[var(--text-primary)]">0</span>
+          <span id="stat-tested-total" class="text-xs text-[var(--text-secondary)] font-mono">/ 68</span>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">Keys Down</span>
+        <div class="flex items-baseline gap-2 mt-1">
+          <span id="stat-active-keys" class="text-2xl font-semibold text-[var(--text-primary)]">0</span>
+          <span id="stat-peak-keys" class="text-xs text-[var(--text-secondary)] font-mono">peak: 0</span>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">Last Key Code</span>
+        <div class="mt-1">
+          <span id="stat-last-code" class="text-sm sm:text-base font-mono font-medium text-[var(--text-primary)] truncate block">None</span>
+        </div>
+      </div>
+
+      <div class="p-3.5 rounded-xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm flex flex-col justify-between">
+        <span class="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">Actions</span>
+        <div class="flex items-center gap-2 mt-1">
+          <button
+            type="button"
+            id="btn-reset-tester"
+            class="px-3 py-1.5 rounded-lg border border-[var(--border)] bg-neutral-50 dark:bg-white/5 hover:bg-neutral-100 dark:hover:bg-white/10 text-xs font-medium text-[var(--text-primary)] transition-colors cursor-pointer w-full text-center"
+          >
+            Reset Test
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dead Key Warning Banner (Hidden by default) -->
+    <div id="dead-key-banner" class="hidden p-3.5 rounded-xl border border-amber-300 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 text-xs sm:text-sm flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <Icon name="info" class="w-4 h-4 shrink-0 text-amber-600 dark:text-amber-400" />
+        <span id="dead-key-text">Dead key detected: waiting for next keystroke to compose accented character.</span>
+      </div>
+      <button type="button" id="btn-dismiss-dead-key" class="text-xs opacity-70 hover:opacity-100 underline shrink-0 cursor-pointer">
+        Dismiss
+      </button>
+    </div>
+
+    <!-- On-Screen Keyboard Container -->
+    <div class="p-3 sm:p-5 rounded-2xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm space-y-4">
+      <div class="flex items-center justify-between text-xs text-[var(--text-secondary)] pb-2 border-b border-[var(--border)]">
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5 font-mono text-[11px]">
+            <span class="w-2.5 h-2.5 rounded-sm bg-neutral-100 dark:bg-white/10 border border-[var(--border)]"></span>
+            Untested
+          </span>
+          <span class="flex items-center gap-1.5 font-mono text-[11px]">
+            <span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 border border-emerald-600"></span>
+            Tested
+          </span>
+          <span class="flex items-center gap-1.5 font-mono text-[11px]">
+            <span class="w-2.5 h-2.5 rounded-sm bg-[#0072F5] border border-[#0072F5]"></span>
+            Active
+          </span>
+        </div>
+        <div class="hidden sm:flex items-center gap-2">
+          <label class="flex items-center gap-1.5 cursor-pointer select-none">
+            <input type="checkbox" id="chk-prevent-shortcuts" class="rounded border-[var(--border)] text-[#0072F5] focus:ring-[#0072F5]" checked />
+            <span class="text-[11px]">Prevent browser shortcuts (Tab, Space, Alt)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Virtual Keyboard Grid -->
+      <div class="overflow-x-auto select-none py-1">
+        <div class="flex flex-col gap-1.5 min-w-[720px] max-w-full mx-auto" id="virtual-keyboard">
+          <!-- Row 1: Esc + Function Keys -->
+          <div class="flex gap-1.5">
+            <div data-code="Escape" class="kt-key w-12 h-9 text-[11px] font-mono">Esc</div>
+            <div class="flex-1 flex gap-1.5">
+              <div data-code="F1" class="kt-key flex-1 h-9 text-[11px] font-mono">F1</div>
+              <div data-code="F2" class="kt-key flex-1 h-9 text-[11px] font-mono">F2</div>
+              <div data-code="F3" class="kt-key flex-1 h-9 text-[11px] font-mono">F3</div>
+              <div data-code="F4" class="kt-key flex-1 h-9 text-[11px] font-mono">F4</div>
+              <div class="w-2"></div>
+              <div data-code="F5" class="kt-key flex-1 h-9 text-[11px] font-mono">F5</div>
+              <div data-code="F6" class="kt-key flex-1 h-9 text-[11px] font-mono">F6</div>
+              <div data-code="F7" class="kt-key flex-1 h-9 text-[11px] font-mono">F7</div>
+              <div data-code="F8" class="kt-key flex-1 h-9 text-[11px] font-mono">F8</div>
+              <div class="w-2"></div>
+              <div data-code="F9" class="kt-key flex-1 h-9 text-[11px] font-mono">F9</div>
+              <div data-code="F10" class="kt-key flex-1 h-9 text-[11px] font-mono">F10</div>
+              <div data-code="F11" class="kt-key flex-1 h-9 text-[11px] font-mono">F11</div>
+              <div data-code="F12" class="kt-key flex-1 h-9 text-[11px] font-mono">F12</div>
+            </div>
+            <div data-code="Delete" class="kt-key w-12 h-9 text-[11px] font-mono">Del</div>
+          </div>
+
+          <!-- Row 2: Number Row -->
+          <div class="flex gap-1.5">
+            {[
+              { code: 'Backquote', p: '`', s: '~' },
+              { code: 'Digit1', p: '1', s: '!' },
+              { code: 'Digit2', p: '2', s: '@' },
+              { code: 'Digit3', p: '3', s: '#' },
+              { code: 'Digit4', p: '4', s: '$' },
+              { code: 'Digit5', p: '5', s: '%' },
+              { code: 'Digit6', p: '6', s: '^' },
+              { code: 'Digit7', p: '7', s: '&' },
+              { code: 'Digit8', p: '8', s: '*' },
+              { code: 'Digit9', p: '9', s: '(' },
+              { code: 'Digit0', p: '0', s: ')' },
+              { code: 'Minus', p: '-', s: '_' },
+              { code: 'Equal', p: '=', s: '+' }
+            ].map(k => (
+              <div data-code={k.code} class="kt-key relative flex-1 h-10 font-mono">
+                <span class="absolute top-1 left-1.5 text-[9px] opacity-60 leading-none">{k.s}</span>
+                <span class="text-[12px] mt-2.5">{k.p}</span>
+              </div>
+            ))}
+            <div data-code="Backspace" class="kt-key w-20 h-10 text-[11px] font-mono">Backspace</div>
+          </div>
+
+          <!-- Row 3: QWERTY Row -->
+          <div class="flex gap-1.5">
+            <div data-code="Tab" class="kt-key w-14 h-10 text-[11px] font-mono">Tab</div>
+            {[
+              { code: 'KeyQ', p: 'Q' },
+              { code: 'KeyW', p: 'W' },
+              { code: 'KeyE', p: 'E' },
+              { code: 'KeyR', p: 'R' },
+              { code: 'KeyT', p: 'T' },
+              { code: 'KeyY', p: 'Y' },
+              { code: 'KeyU', p: 'U' },
+              { code: 'KeyI', p: 'I' },
+              { code: 'KeyO', p: 'O' },
+              { code: 'KeyP', p: 'P' },
+              { code: 'BracketLeft', p: '[', s: '{' },
+              { code: 'BracketRight', p: ']', s: '}' },
+              { code: 'Backslash', p: '\\', s: '|' }
+            ].map(k => (
+              <div data-code={k.code} class="kt-key relative flex-1 h-10 font-mono">
+                {k.s && <span class="absolute top-1 left-1.5 text-[9px] opacity-60 leading-none">{k.s}</span>}
+                <span class={k.s ? 'text-[12px] mt-2.5' : 'text-[12px]'}>{k.p}</span>
+              </div>
+            ))}
+          </div>
+
+          <!-- Row 4: Home Row (ASDF...) -->
+          <div class="flex gap-1.5">
+            <div data-code="CapsLock" class="kt-key w-16 h-10 text-[11px] font-mono">Caps</div>
+            {[
+              { code: 'KeyA', p: 'A' },
+              { code: 'KeyS', p: 'S' },
+              { code: 'KeyD', p: 'D' },
+              { code: 'KeyF', p: 'F', home: true },
+              { code: 'KeyG', p: 'G' },
+              { code: 'KeyH', p: 'H' },
+              { code: 'KeyJ', p: 'J', home: true },
+              { code: 'KeyK', p: 'K' },
+              { code: 'KeyL', p: 'L' },
+              { code: 'Semicolon', p: ';', s: ':' },
+              { code: 'Quote', p: "'", s: '"' }
+            ].map(k => (
+              <div data-code={k.code} class="kt-key relative flex-1 h-10 font-mono">
+                {k.s && <span class="absolute top-1 left-1.5 text-[9px] opacity-60 leading-none">{k.s}</span>}
+                <span class={k.s ? 'text-[12px] mt-2.5' : 'text-[12px]'}>{k.p}</span>
+                {k.home && <span class="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-3.5 h-[2px] rounded-full bg-current opacity-40"></span>}
+              </div>
+            ))}
+            <div data-code="Enter" class="kt-key w-20 h-10 text-[11px] font-mono">Enter</div>
+          </div>
+
+          <!-- Row 5: Shift Row -->
+          <div class="flex gap-1.5">
+            <div data-code="ShiftLeft" class="kt-key w-20 h-10 text-[11px] font-mono">Shift</div>
+            {[
+              { code: 'KeyZ', p: 'Z' },
+              { code: 'KeyX', p: 'X' },
+              { code: 'KeyC', p: 'C' },
+              { code: 'KeyV', p: 'V' },
+              { code: 'KeyB', p: 'B' },
+              { code: 'KeyN', p: 'N' },
+              { code: 'KeyM', p: 'M' },
+              { code: 'Comma', p: ',', s: '<' },
+              { code: 'Period', p: '.', s: '>' },
+              { code: 'Slash', p: '/', s: '?' }
+            ].map(k => (
+              <div data-code={k.code} class="kt-key relative flex-1 h-10 font-mono">
+                {k.s && <span class="absolute top-1 left-1.5 text-[9px] opacity-60 leading-none">{k.s}</span>}
+                <span class={k.s ? 'text-[12px] mt-2.5' : 'text-[12px]'}>{k.p}</span>
+              </div>
+            ))}
+            <div data-code="ShiftRight" class="kt-key w-20 h-10 text-[11px] font-mono">Shift</div>
+            <div data-code="ArrowUp" class="kt-key w-10 h-10 text-[11px] font-mono">↑</div>
+          </div>
+
+          <!-- Row 6: Bottom / Modifiers Row -->
+          <div class="flex gap-1.5">
+            <div data-code="ControlLeft" class="kt-key w-12 h-10 text-[11px] font-mono">Ctrl</div>
+            <div data-code="MetaLeft" class="kt-key w-12 h-10 text-[11px] font-mono">Win</div>
+            <div data-code="AltLeft" class="kt-key w-12 h-10 text-[11px] font-mono">Alt</div>
+            <div data-code="Space" class="kt-key flex-1 h-10 text-[11px] font-mono">Space</div>
+            <div data-code="AltRight" class="kt-key w-12 h-10 text-[11px] font-mono">Alt</div>
+            <div data-code="MetaRight" class="kt-key w-12 h-10 text-[11px] font-mono">Win</div>
+            <div data-code="ControlRight" class="kt-key w-12 h-10 text-[11px] font-mono">Ctrl</div>
+            <div data-code="ArrowLeft" class="kt-key w-10 h-10 text-[11px] font-mono">←</div>
+            <div data-code="ArrowDown" class="kt-key w-10 h-10 text-[11px] font-mono">↓</div>
+            <div data-code="ArrowRight" class="kt-key w-10 h-10 text-[11px] font-mono">→</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Keystroke Inspector Detail -->
+      <div class="p-3 rounded-xl bg-neutral-50 dark:bg-black/40 border border-[var(--border)] grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
+        <div>
+          <span class="text-[var(--text-secondary)] block text-[10px] uppercase">Event.key</span>
+          <span id="inspect-key" class="font-semibold text-[var(--text-primary)] truncate block">-</span>
+        </div>
+        <div>
+          <span class="text-[var(--text-secondary)] block text-[10px] uppercase">Event.code</span>
+          <span id="inspect-code" class="font-semibold text-[var(--text-primary)] truncate block">-</span>
+        </div>
+        <div>
+          <span class="text-[var(--text-secondary)] block text-[10px] uppercase">Event.keyCode</span>
+          <span id="inspect-keycode" class="font-semibold text-[var(--text-primary)] truncate block">-</span>
+        </div>
+        <div>
+          <span class="text-[var(--text-secondary)] block text-[10px] uppercase">Location</span>
+          <span id="inspect-location" class="font-semibold text-[var(--text-primary)] truncate block">-</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Diagnostic Information Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+      <div class="p-5 rounded-xl border border-[var(--border)] bg-white dark:bg-[#111113] space-y-2">
+        <h2 class="text-sm font-semibold text-[var(--text-primary)] flex items-center gap-2">
+          <Icon name="check-circle" class="w-4 h-4 text-emerald-500" />
+          Key Chatter Detection
+        </h2>
+        <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+          Repeatedly tap a key to test switch bounce. If a single stroke produces multiple registrations or fails intermittently, the physical switch contact is chattering.
+        </p>
+      </div>
+
+      <div class="p-5 rounded-xl border border-[var(--border)] bg-white dark:bg-[#111113] space-y-2">
+        <h2 class="text-sm font-semibold text-[var(--text-primary)] flex items-center gap-2">
+          <Icon name="speed" class="w-4 h-4 text-[#0072F5]" />
+          N-Key Rollover (NKRO)
+        </h2>
+        <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+          Press 4 or 6 keys together. Quality mechanical keyboards register all simultaneous keys, while budget membrane boards block after 2 or 3 strokes.
+        </p>
+      </div>
+
+      <div class="p-5 rounded-xl border border-[var(--border)] bg-white dark:bg-[#111113] space-y-2">
+        <h2 class="text-sm font-semibold text-[var(--text-primary)] flex items-center gap-2">
+          <Icon name="info" class="w-4 h-4 text-amber-500" />
+          Dead Keys & Accents
+        </h2>
+        <p class="text-xs text-[var(--text-secondary)] leading-relaxed">
+          On international keyboards, keys like accent marks wait for a companion letter. Our tester detects these dead key signals without getting locked up.
+        </p>
+      </div>
+    </div>
+
+    <!-- FAQ Accordion -->
+    <FAQ items={faqs} title="Frequently Asked Questions About Keyboard Testing" />
+  </div>
+</Layout>
+
+<style>
+  .kt-key {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background-color: #ffffff;
+    color: var(--text-primary);
+    user-select: none;
+    transition: background-color 100ms, border-color 100ms, transform 80ms, color 100ms;
+  }
+
+  :global(.dark) .kt-key {
+    background-color: #1a1a1c;
+    border-color: rgba(255, 255, 255, 0.08);
+    color: #e5e5e5;
+  }
+
+  /* Tested state (light green) */
+  .kt-key.is-tested {
+    background-color: rgba(16, 185, 129, 0.12) !important;
+    border-color: rgba(16, 185, 129, 0.45) !important;
+    color: #059669 !important;
+  }
+
+  :global(.dark) .kt-key.is-tested {
+    background-color: rgba(16, 185, 129, 0.18) !important;
+    border-color: rgba(16, 185, 129, 0.5) !important;
+    color: #34d399 !important;
+  }
+
+  /* Currently Pressed state */
+  .kt-key.is-down {
+    background-color: #0072F5 !important;
+    border-color: #0072F5 !important;
+    color: #ffffff !important;
+    transform: scale(0.96);
+    box-shadow: 0 0 10px rgba(0, 114, 245, 0.4);
+    z-index: 10;
+  }
+
+  /* Dead key state */
+  .kt-key.is-dead {
+    background-color: rgba(245, 158, 11, 0.2) !important;
+    border-color: rgba(245, 158, 11, 0.6) !important;
+    color: #d97706 !important;
+  }
+</style>
+
+<script>
+  (function() {
+    const testedCodes = new Set<string>();
+    const heldCodes = new Set<string>();
+    let peakHeld = 0;
+
+    const statTestedCount = document.getElementById('stat-tested-count');
+    const statActiveKeys = document.getElementById('stat-active-keys');
+    const statPeakKeys = document.getElementById('stat-peak-keys');
+    const statLastCode = document.getElementById('stat-last-code');
+    const inspectKey = document.getElementById('inspect-key');
+    const inspectCode = document.getElementById('inspect-code');
+    const inspectKeycode = document.getElementById('inspect-keycode');
+    const inspectLocation = document.getElementById('inspect-location');
+    const deadKeyBanner = document.getElementById('dead-key-banner');
+    const deadKeyText = document.getElementById('dead-key-text');
+    const btnDismissDead = document.getElementById('btn-dismiss-dead-key');
+    const btnReset = document.getElementById('btn-reset-tester');
+    const chkPrevent = document.getElementById('chk-prevent-shortcuts') as HTMLInputElement | null;
+
+    function getLocationName(loc: number): string {
+      switch (loc) {
+        case 1: return 'Left';
+        case 2: return 'Right';
+        case 3: return 'Numpad';
+        default: return 'Standard';
+      }
+    }
+
+    function updateStats() {
+      if (statTestedCount) statTestedCount.textContent = String(testedCodes.size);
+      if (statActiveKeys) statActiveKeys.textContent = String(heldCodes.size);
+      if (statPeakKeys) statPeakKeys.textContent = `peak: ${peakHeld}`;
+    }
+
+    window.addEventListener('keydown', (e: KeyboardEvent) => {
+      // Prevent browser default on navigation keys when requested
+      if (chkPrevent?.checked) {
+        const preventKeys = ['Tab', 'Space', 'Backspace', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Alt', 'F1', 'F3', 'F5', 'F6', 'F7'];
+        if (preventKeys.includes(e.code) || preventKeys.includes(e.key)) {
+          e.preventDefault();
+        }
+      }
+
+      const code = e.code;
+      heldCodes.add(code);
+      testedCodes.add(code);
+      if (heldCodes.size > peakHeld) peakHeld = heldCodes.size;
+
+      // Check for dead key
+      const isDead = e.key === 'Dead' || e.code.startsWith('Dead');
+      if (isDead && deadKeyBanner && deadKeyText) {
+        deadKeyText.textContent = `Dead combining key detected (${code}): Ready to combine with following keystroke.`;
+        deadKeyBanner.classList.remove('hidden');
+      }
+
+      // Update inspector
+      if (statLastCode) statLastCode.textContent = code || e.key;
+      if (inspectKey) inspectKey.textContent = e.key === ' ' ? 'Space' : e.key;
+      if (inspectCode) inspectCode.textContent = code;
+      if (inspectKeycode) inspectKeycode.textContent = String(e.keyCode || e.which);
+      if (inspectLocation) inspectLocation.textContent = getLocationName(e.location);
+
+      // Light up corresponding keycap
+      const keyEl = document.querySelector<HTMLElement>(`.kt-key[data-code="${code}"]`);
+      if (keyEl) {
+        keyEl.classList.add('is-down');
+        keyEl.classList.add('is-tested');
+        if (isDead) keyEl.classList.add('is-dead');
+      }
+
+      updateStats();
+    });
+
+    window.addEventListener('keyup', (e: KeyboardEvent) => {
+      const code = e.code;
+      heldCodes.delete(code);
+
+      const keyEl = document.querySelector<HTMLElement>(`.kt-key[data-code="${code}"]`);
+      if (keyEl) {
+        keyEl.classList.remove('is-down');
+      }
+
+      updateStats();
+    });
+
+    window.addEventListener('blur', () => {
+      heldCodes.clear();
+      document.querySelectorAll('.kt-key.is-down').forEach(el => el.classList.remove('is-down'));
+      updateStats();
+    });
+
+    btnReset?.addEventListener('click', () => {
+      testedCodes.clear();
+      heldCodes.clear();
+      peakHeld = 0;
+      document.querySelectorAll('.kt-key').forEach(el => {
+        el.classList.remove('is-down', 'is-tested', 'is-dead');
+      });
+      if (statLastCode) statLastCode.textContent = 'None';
+      if (inspectKey) inspectKey.textContent = '-';
+      if (inspectCode) inspectCode.textContent = '-';
+      if (inspectKeycode) inspectKeycode.textContent = '-';
+      if (inspectLocation) inspectLocation.textContent = '-';
+      if (deadKeyBanner) deadKeyBanner.classList.add('hidden');
+      updateStats();
+    });
+
+    btnDismissDead?.addEventListener('click', () => {
+      deadKeyBanner?.classList.add('hidden');
+    });
+  })();
+</script>
