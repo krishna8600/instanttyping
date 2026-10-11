@@ -148,6 +148,13 @@ const {
       >
         120s
       </button>
+      <button
+        type="button"
+        data-time-val="180"
+        class="time-btn px-2.5 py-1.5 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] text-xs font-medium transition-all duration-200 ease-out"
+      >
+        180s
+      </button>
     </div>
 
     <div
@@ -788,20 +795,47 @@ const {
       <div id="chart-tooltip" class="absolute pointer-events-none opacity-0 bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black px-2 py-1 rounded-md text-[11px] font-bold shadow-lg whitespace-nowrap transform -translate-x-1/2 -translate-y-full mt-[-8px] transition-opacity duration-75 motion-reduce:transition-none z-10 font-mono tracking-tight" style="left: 0; top: 0;"></div>
     </div>
 
-    <!-- 5. Weak-Key Diagnostic Card -->
-    <div id="weak-keys-section" class="premium-card space-y-4">
-      <h3
-        class="text-sm font-bold tracking-tight flex items-center gap-2"
-        style="letter-spacing:-0.02em"
-      >
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-amber-500"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
-        <span data-i18n="results.weak_key_heading">Keys to fix</span>
-      </h3>
-      <div id="weak-keys-list" class="flex flex-col min-h-[28px]">
-        <span class="text-sm text-[#6E6E73] dark:text-[#A1A1A6]" data-i18n="results.flawless"
-          >Zero typos — flawless run!</span
+    <!-- 5. "What's slowing you down" Diagnostic Coaching Card -->
+    <div id="coaching-diagnosis-section" class="premium-card space-y-3">
+      <div class="flex items-center justify-between border-b border-[#E5E5E5]/60 dark:border-white/10 pb-2">
+        <h3
+          class="text-sm font-bold tracking-tight flex items-center gap-2 text-[#1D1D1F] dark:text-[#F5F5F7]"
+          style="letter-spacing:-0.02em"
         >
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-900 dark:text-neutral-100"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          <span>What's slowing you down</span>
+        </h3>
+        <span id="coach-accuracy-tax-badge" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-neutral-100 dark:bg-white/10 text-neutral-700 dark:text-neutral-300">
+          Accuracy tax: 0 WPM
+        </span>
       </div>
+
+      <!-- Exactly 3 lines max of plain-language diagnosis -->
+      <!-- Line 1: Named bottleneck in plain words -->
+      <p id="coach-bottleneck-line" class="text-sm font-medium text-neutral-900 dark:text-white leading-relaxed">
+        Analyzing keystroke pacing...
+      </p>
+
+      <!-- Line 2: Diagnostic summary (slowest keys, hesitations vs wrong keys, accuracy tax) -->
+      <p id="coach-breakdown-line" class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+        Slowest keys: None · Hesitations: 0 · Wrong keys: 0
+      </p>
+
+      <!-- Line 3: One action button that starts a drill on those keys -->
+      <div class="pt-1 flex items-center gap-3">
+        <button
+          id="btn-coach-drill"
+          type="button"
+          class="btn-secondary text-xs !py-1.5 !px-3 font-medium inline-flex items-center gap-1.5"
+        >
+          <Icon name="school" class="w-3.5 h-3.5" />
+          <span id="coach-drill-label">Practice problem keys</span>
+        </button>
+        <span id="coach-drill-hint" class="text-[11px] text-[#86868B]">Targeted drill on your slowest keystrokes</span>
+      </div>
+
+      <!-- Hidden container for existing weak-keys-list reference compatibility -->
+      <div id="weak-keys-list" class="hidden"></div>
     </div>
 
     <!-- 6. Personal Best Badge -->
@@ -848,12 +882,25 @@ const {
         <Icon name="verified-user" class="w-4 h-4" />
         <span data-i18n="results.view_cert">View Certificate</span>
       </button>
+
       <button
-        id="btn-share-result"
+        id="btn-download-card"
         type="button"
         class="btn-secondary w-full sm:w-auto"
+        title="Download 1200x630 Result Image"
       >
-        <span data-i18n="results.share">Share</span>
+        <Icon name="download" class="w-4 h-4" />
+        <span>Download PNG</span>
+      </button>
+
+      <button
+        id="btn-copy-result"
+        type="button"
+        class="btn-secondary w-full sm:w-auto"
+        title="Copy result summary to clipboard"
+      >
+        <Icon name="content-copy" class="w-4 h-4" />
+        <span id="copy-result-label">Copy Results</span>
       </button>
     </div>
   
@@ -1019,6 +1066,23 @@ const {
     setVolume
   } from "../utils/audio";
 
+  export interface CompletedTestSummary extends MetricSummary {
+    missedWords: string[];
+    keyMistakes: Record<string, { errors: number; total: number }>;
+    keystrokeLog: Array<{
+      char: string;
+      expectedChar: string;
+      isCorrect: boolean;
+      timestamp: number;
+      deltaMs: number;
+      prevChar: string;
+    }>;
+  }
+
+  // Script-scoped test summary so results screen, coaching card, and share handlers share identical data
+  let lastCompletedSummary: CompletedTestSummary | null = null;
+  (window as any).__lastTestSummary = null;
+
   const container = document.getElementById("typing-test-container");
   if (container) {
     const initialDurationAttr = parseInt(
@@ -1045,6 +1109,7 @@ const {
 
     // Idle pause: pause the test after 10s of no typing
     let lastKeystrokeTime = 0;
+    let lastCharInputTime = 0;
     let isIdlePaused = false;
     let idlePausedAt = 0;
     const IDLE_PAUSE_MS = 10000;
@@ -1059,6 +1124,14 @@ const {
     let lastSecondRecorded = 0;
     let missedWords: string[] = [];
     let keyMistakes: Record<string, { errors: number; total: number }> = {};
+    let keystrokeLog: Array<{
+      char: string;
+      expectedChar: string;
+      isCorrect: boolean;
+      timestamp: number;
+      deltaMs: number;
+      prevChar: string;
+    }> = [];
     let customMistakeWords: string[] | null = null;
     let selectedBackspaceMode: "full" | "current" = "full";
     try {
@@ -1110,6 +1183,7 @@ const {
     ) as HTMLInputElement;
     const focusPrompt = document.getElementById("focus-prompt")!;
     const capsLockWarning = document.getElementById("caps-lock-warning")!;
+    let isCapsLockActive: boolean | null = null;
     const idlePausePrompt = document.getElementById("idle-pause-prompt")!;
     const timerMetric = document.getElementById("metric-timer")!;
     const wpmMetric = document.getElementById("metric-wpm")!;
@@ -1173,8 +1247,6 @@ const {
     const roastVideo = document.getElementById("roast-video") as HTMLVideoElement | null;
     const roastImg = document.getElementById("roast-img") as HTMLImageElement | null;
     const roastText = document.getElementById("roast-text");
-
-    let lastCompletedSummary: MetricSummary | null = null;
 
     function emitTyping<K extends keyof TypingEventMap>(
       name: K,
@@ -1379,9 +1451,15 @@ const {
     let targetCaretY = 0;
     let targetScrollY = 0;
 
+    let cachedPrefersReduced = typeof window !== "undefined" && window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
+    if (typeof window !== "undefined" && window.matchMedia) {
+      window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener?.('change', (e) => {
+        cachedPrefersReduced = e.matches;
+      });
+    }
+
     function applyTransforms() {
-      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReduced) {
+      if (cachedPrefersReduced) {
         wordsWrapper.style.transition = 'none';
       } else {
         wordsWrapper.style.transition = '';
@@ -1512,11 +1590,10 @@ const {
         return;
       }
       const targetWord = wordsList[currentWordIndex] || "";
-      const targetWordChars = Array.from(targetWord);
-      const charIdx = Array.from(currentInput).length;
+      const charIdx = currentInput.length;
       let nextChar = "";
-      if (charIdx < targetWordChars.length) {
-        nextChar = targetWordChars[charIdx];
+      if (charIdx < targetWord.length) {
+        nextChar = targetWord[charIdx];
       } else {
         nextChar = " ";
       }
@@ -1544,15 +1621,18 @@ const {
       isIdlePaused = false;
       idlePausedAt = 0;
       lastKeystrokeTime = 0;
+      lastCharInputTime = 0;
       idlePausePrompt.classList.add("hidden");
       capsLockWarning.classList.add("hidden");
       typingDisplay.classList.remove("!border-[#FF9F0A]/60", "!shadow-[0_0_0_3px_rgba(255,159,10,0.15)]");
+      isCapsLockActive = false;
       correctKeystrokes = 0;
       incorrectKeystrokes = 0;
       secondBySecondWpm = [];
       lastSecondRecorded = 0;
       missedWords = [];
       keyMistakes = {};
+      keystrokeLog = [];
 
       // Restore flow layout: show passage, hide results, ensure tooltip visible
       typingSurfaceWrapper.classList.remove("hidden");
@@ -1611,6 +1691,7 @@ const {
       testCompleted = false;
       startTime = performance.now();
       lastKeystrokeTime = performance.now();
+      lastCharInputTime = performance.now();
       isIdlePaused = false;
       idlePausePrompt.classList.add("hidden");
       lastSecondRecorded = 0;
@@ -1708,6 +1789,7 @@ const {
       idlePausePrompt.classList.add("hidden");
       capsLockWarning.classList.add("hidden");
       typingDisplay.classList.remove("!border-[#FF9F0A]/60", "!shadow-[0_0_0_3px_rgba(255,159,10,0.15)]");
+      isCapsLockActive = false;
 
       // Item 10: Hide persistent caret on results screen
       caretEl.style.display = "none";
@@ -1743,7 +1825,15 @@ const {
         totalTime,
         secondBySecondWpm,
       );
-      lastCompletedSummary = summary;
+
+      const testSummary: CompletedTestSummary = {
+        ...summary,
+        missedWords: [...new Set(missedWords)],
+        keyMistakes: { ...keyMistakes },
+        keystrokeLog: [...keystrokeLog],
+      };
+      lastCompletedSummary = testSummary;
+      (window as any).__lastTestSummary = testSummary;
 
       saveTestResult({
         id: `ptt_${Date.now()}`,
@@ -1759,20 +1849,20 @@ const {
                   ? "Code Snippet"
                   : "Quote",
         durationSeconds: Math.round(totalTime),
-        netWpm: summary.netWpm,
-        rawWpm: summary.rawWpm,
-        accuracy: summary.accuracy,
+        netWpm: testSummary.netWpm,
+        rawWpm: testSummary.rawWpm,
+        accuracy: testSummary.accuracy,
         errors: incorrectKeystrokes,
         correctChars: correctKeystrokes,
         incorrectChars: incorrectKeystrokes,
-        missedWords: [...new Set(missedWords)],
+        missedWords: testSummary.missedWords,
       });
 
-      showResults(summary, recordTest(summary.netWpm, summary.accuracy, currentMode));
+      showResults(testSummary, recordTest(testSummary.netWpm, testSummary.accuracy, currentMode));
       dispatchNextChar(); // Emits char: null since testCompleted is true
     }
 
-    function showResults(summary: MetricSummary, psych?: import("../scripts/progress").TestResult) {
+    function showResults(summary: CompletedTestSummary, psych?: import("../scripts/progress").TestResult) {
       updateDOM();
       const bandEl = document.getElementById("res-band")!;
       const rankEl = document.getElementById("res-rank-title")!;
@@ -1844,7 +1934,8 @@ const {
 
       const weakKeysListEl = document.getElementById("weak-keys-list")!;
       weakKeysListEl.innerHTML = "";
-      const mistakesArr = Object.entries(keyMistakes)
+      const activeKeyMistakes = summary.keyMistakes || keyMistakes;
+      const mistakesArr = Object.entries(activeKeyMistakes)
         .map(([key, data]) => ({ key, errors: data.errors, total: data.total }))
         .sort((a, b) => b.errors - a.errors)
         .filter((item) => item.errors > 0);
@@ -1890,7 +1981,8 @@ const {
           `<span class="text-sm font-medium text-emerald-600">${t("results.flawless")}</span>`;
       }
 
-      const uniqueMistakes = [...new Set(missedWords)];
+      const activeMissedWords = summary.missedWords || missedWords;
+      const uniqueMistakes = [...new Set(activeMissedWords)];
       if (uniqueMistakes.length > 0) {
         btnTrainMistakes.classList.remove("hidden");
         btnTrainMistakes.classList.add("inline-flex");
@@ -1900,6 +1992,135 @@ const {
       } else {
         btnTrainMistakes.classList.add("hidden");
         btnTrainMistakes.classList.remove("inline-flex");
+      }
+
+      // ── "What's slowing you down" Diagnosis Panel (Task 1) ──
+      const coachTaxBadge = document.getElementById("coach-accuracy-tax-badge");
+      const coachBottleneckLine = document.getElementById("coach-bottleneck-line");
+      const coachBreakdownLine = document.getElementById("coach-breakdown-line");
+      const coachDrillBtn = document.getElementById("btn-coach-drill");
+      const coachDrillLabel = document.getElementById("coach-drill-label");
+
+      const accuracyTax = Math.max(0, summary.rawWpm - summary.netWpm);
+      if (coachTaxBadge) {
+        coachTaxBadge.textContent = accuracyTax > 0 
+          ? `Accuracy tax: ${accuracyTax} WPM` 
+          : `Accuracy tax: 0 WPM (Clean)`;
+      }
+
+      const activeKeystrokes = summary.keystrokeLog || keystrokeLog;
+      const validKeystrokes = activeKeystrokes.filter(k => k.deltaMs > 20 && k.deltaMs < 6000);
+      let medianLatency = 250;
+      if (validKeystrokes.length >= 4) {
+        const sortedDeltas = [...validKeystrokes].map(k => k.deltaMs).sort((a, b) => a - b);
+        medianLatency = sortedDeltas[Math.floor(sortedDeltas.length / 2)] || 250;
+      }
+      const hesitationThreshold = Math.max(350, Math.round(medianLatency * 1.8));
+
+      let wrongKeyCount = 0;
+      let hesitationCount = 0;
+      const keyStats: Record<string, { totalMs: number; count: number; errors: number }> = {};
+      const transitionStats: Record<string, { totalMs: number; count: number }> = {};
+
+      for (let i = 0; i < activeKeystrokes.length; i++) {
+        const k = activeKeystrokes[i];
+        if (!k.isCorrect) {
+          wrongKeyCount++;
+        } else if (k.deltaMs >= hesitationThreshold && k.deltaMs < 6000) {
+          hesitationCount++;
+        }
+
+        if (k.char !== " " && k.deltaMs > 20 && k.deltaMs < 5000) {
+          const ch = k.char.toLowerCase();
+          if (!keyStats[ch]) keyStats[ch] = { totalMs: 0, count: 0, errors: 0 };
+          keyStats[ch].totalMs += k.deltaMs;
+          keyStats[ch].count++;
+          if (!k.isCorrect) keyStats[ch].errors++;
+        }
+
+        if (k.prevChar && k.prevChar !== " " && k.char !== " " && k.deltaMs > 20 && k.deltaMs < 5000) {
+          const pair = `${k.prevChar.toUpperCase()}→${k.char.toUpperCase()}`;
+          if (!transitionStats[pair]) transitionStats[pair] = { totalMs: 0, count: 0 };
+          transitionStats[pair].totalMs += k.deltaMs;
+          transitionStats[pair].count++;
+        }
+      }
+
+      if (wrongKeyCount === 0 && summary.incorrectChars > 0) {
+        wrongKeyCount = summary.incorrectChars;
+      }
+
+      const slowestKeysArr = Object.entries(keyStats)
+        .map(([key, data]) => ({ key, avgMs: Math.round(data.totalMs / data.count), count: data.count, errors: data.errors }))
+        .filter(d => d.count >= 1)
+        .sort((a, b) => b.avgMs - a.avgMs);
+
+      const slowestTransitionsArr = Object.entries(transitionStats)
+        .map(([pair, data]) => ({ pair, avgMs: Math.round(data.totalMs / data.count), count: data.count }))
+        .filter(d => d.count >= 1)
+        .sort((a, b) => b.avgMs - a.avgMs);
+
+      const worstTransition = slowestTransitionsArr[0];
+      const slowestKeyList = slowestKeysArr.length > 0 
+        ? slowestKeysArr.slice(0, 3).map(k => k.key.toUpperCase())
+        : (mistakesArr.length > 0 ? mistakesArr.slice(0, 3).map(m => m.key.toUpperCase()) : []);
+
+      const drillKeys = Array.from(new Set([
+        ...(worstTransition ? worstTransition.pair.split("→").map(s => s.toLowerCase()) : []),
+        ...slowestKeysArr.slice(0, 2).map(k => k.key.toLowerCase()),
+        ...mistakesArr.slice(0, 2).map(m => m.key.toLowerCase())
+      ])).filter(Boolean);
+
+      let namedBottleneck = "";
+      if (mistakesArr.length > 0) {
+        const topErrorKey = mistakesArr[0];
+        const typoWord = topErrorKey.errors > 1 ? "typos" : "typo";
+        namedBottleneck = `your ${topErrorKey.key.toUpperCase()} key caused ${topErrorKey.errors} ${typoWord}${accuracyTax > 0 ? ` (accuracy tax: ${accuracyTax} WPM)` : ""}`;
+      } else if (worstTransition && worstTransition.avgMs > medianLatency * 1.3 && summary.netWpm > 0) {
+        const delayPerKeystroke = Math.max(70, worstTransition.avgMs - medianLatency);
+        const estCostWpm = Math.max(2, Math.min(20, Math.round((delayPerKeystroke / 1000) * (summary.rawWpm || 50) * 0.35 * worstTransition.count)));
+        namedBottleneck = `your ${worstTransition.pair} transition costs ~${estCostWpm} WPM (${worstTransition.avgMs}ms avg pacing)`;
+      } else if (hesitationCount > 2) {
+        const hesitationCost = Math.max(2, Math.round(hesitationCount * 1.2));
+        namedBottleneck = `hesitation pauses before finding keys cost ~${hesitationCost} WPM`;
+      } else if (slowestKeysArr.length > 0 && slowestKeysArr[0].avgMs > 300) {
+        namedBottleneck = `reaching for ${slowestKeysArr[0].key.toUpperCase()} is your slowest motion (${slowestKeysArr[0].avgMs}ms)`;
+      } else if (accuracyTax > 0) {
+        namedBottleneck = `typos and corrections cost you ${accuracyTax} WPM in accuracy tax`;
+      } else {
+        namedBottleneck = "steady pacing across all keystrokes with zero major bottlenecks";
+      }
+
+      if (coachBottleneckLine) {
+        coachBottleneckLine.innerHTML = `<span class="font-semibold text-neutral-900 dark:text-white">Bottleneck:</span> ${namedBottleneck}.`;
+      }
+
+      if (coachBreakdownLine) {
+        const slowKeysText = slowestKeyList.length > 0 ? slowestKeyList.join(", ") : "None";
+        coachBreakdownLine.textContent = `Slowest keys: ${slowKeysText} · Hesitations: ${hesitationCount} · Wrong keys: ${wrongKeyCount} · Accuracy tax: ${accuracyTax} WPM (Raw ${summary.rawWpm} → Net ${summary.netWpm})`;
+      }
+
+      if (coachDrillBtn && coachDrillLabel) {
+        if (uniqueMistakes.length > 0) {
+          coachDrillLabel.textContent = `Drill Mistakes (${uniqueMistakes.length} ${uniqueMistakes.length > 1 ? "words" : "word"})`;
+          coachDrillBtn.onclick = () => {
+            btnTrainMistakes.click();
+          };
+        } else if (drillKeys.length > 0) {
+          coachDrillLabel.textContent = `Drill Problem Keys (${drillKeys.slice(0, 3).join(", ").toUpperCase()})`;
+          coachDrillBtn.onclick = () => {
+            const corpus = getSelectedCorpus();
+            const targeted = corpus.filter(w => drillKeys.some(k => w.toLowerCase().includes(k)));
+            customMistakeWords = targeted.length >= 8 ? targeted.slice(0, 30) : corpus.slice(0, 30);
+            resultsPanel.classList.add("hidden");
+            resetTest();
+          };
+        } else {
+          coachDrillLabel.textContent = "Practice Accuracy Drill";
+          coachDrillBtn.onclick = () => {
+            resetTest();
+          };
+        }
       }
 
       // Personal best banner
@@ -2179,7 +2400,10 @@ const {
     function handleCharacterInput(char: string) {
       if (testCompleted) return;
       if (!testActive) startTest();
-      lastKeystrokeTime = performance.now();
+      const nowInput = performance.now();
+      const deltaMs = lastCharInputTime > 0 ? (nowInput - lastCharInputTime) : 0;
+      lastCharInputTime = nowInput;
+      lastKeystrokeTime = nowInput;
       if (isIdlePaused) resumeFromIdlePause();
 
       const targetWord = wordsList[currentWordIndex] || "";
@@ -2192,6 +2416,18 @@ const {
 
         const isWordCorrect = currentInput === targetWord;
         wordInputs[currentWordIndex] = currentInput;
+
+        if (deltaMs > 20 && deltaMs < 8000) {
+          const prevEntry = keystrokeLog[keystrokeLog.length - 1];
+          keystrokeLog.push({
+            char: " ",
+            expectedChar: " ",
+            isCorrect: isWordCorrect,
+            timestamp: nowInput,
+            deltaMs,
+            prevChar: prevEntry ? prevEntry.char : ""
+          });
+        }
 
         if (!isWordCorrect) {
           if (selectedStopOnError === "on") {
@@ -2243,7 +2479,10 @@ const {
           }
         }
 
-        updateWordOffsets(currentWordIndex); updateCaretPosition();
+        if (extraCharNodes[currentWordIndex]?.length > 0 || (currentWordIndex > 0 && extraCharNodes[currentWordIndex - 1]?.length > 0)) {
+          updateWordOffsets(currentWordIndex);
+        }
+        updateCaretPosition();
         dispatchNextChar();
         return;
       }
@@ -2251,16 +2490,27 @@ const {
       if (!keyMistakes[char]) keyMistakes[char] = { errors: 0, total: 0 };
       keyMistakes[char].total++;
 
-      const currentInputChars = Array.from(currentInput);
-      const targetWordChars = Array.from(targetWord);
-      const charIdx = currentInputChars.length;
-      const targetChar = targetWordChars[charIdx] || "";
-      const isCorrectChar = char.normalize("NFC") === targetChar.normalize("NFC");
+      const charIdx = currentInput.length;
+      const targetWordLen = targetWord.length;
+      const targetChar = charIdx < targetWordLen ? targetWord[charIdx] : "";
+      const isCorrectChar = char === targetChar || (char.charCodeAt(0) > 127 && char.normalize("NFC") === targetChar.normalize("NFC"));
+
+      if (deltaMs > 20 && deltaMs < 8000) {
+        const prevEntry = keystrokeLog[keystrokeLog.length - 1];
+        keystrokeLog.push({
+          char,
+          expectedChar: targetChar,
+          isCorrect: isCorrectChar,
+          timestamp: nowInput,
+          deltaMs,
+          prevChar: prevEntry ? prevEntry.char : ""
+        });
+      }
 
       // VISUAL FIRST: update letter color immediately, before audio/events.
       // This is the most time-critical update — the user must see feedback instantly.
       const charsEarly = cachedCharNodes[currentWordIndex];
-      if (charIdx < targetWordChars.length && charsEarly && charsEarly[charIdx]) {
+      if (charIdx < targetWordLen && charsEarly && charsEarly[charIdx]) {
         charsEarly[charIdx].className = isCorrectChar ? "char char-correct" : "char char-error";
       }
 
@@ -2290,7 +2540,7 @@ const {
       // Update char class on cached node (already done above for the main case;
       // this handles extra characters beyond word length)
       const chars = cachedCharNodes[currentWordIndex];
-      if (charIdx >= targetWordChars.length) {
+      if (charIdx >= targetWordLen) {
         // Extra characters beyond target word length
         const activeWordEl = cachedWordNodes[currentWordIndex];
         if (activeWordEl) {
@@ -2301,7 +2551,7 @@ const {
           if (extraCharNodes[currentWordIndex]) {
             extraCharNodes[currentWordIndex].push(extraSpan);
           }
-          updateWordOffsets(currentWordIndex); updateCaretPosition();
+          updateWordOffsets(currentWordIndex);
         }
       }
 
@@ -2314,20 +2564,18 @@ const {
       if (testActive) lastKeystrokeTime = performance.now();
       if (isIdlePaused) resumeFromIdlePause();
 
-      const inputChars = Array.from(currentInput);
-      if (inputChars.length > 0) {
+      if (currentInput.length > 0) {
         emitTyping('typing-backspace');
-        const lastIdx = inputChars.length - 1;
+        const lastIdx = currentInput.length - 1;
         const targetWord = wordsList[currentWordIndex] || "";
-        const targetWordChars = Array.from(targetWord);
 
-        if (lastIdx >= targetWordChars.length) {
+        if (lastIdx >= targetWord.length) {
           // Remove extra character
           const extras = extraCharNodes[currentWordIndex];
           if (extras && extras.length > 0) {
             const extraSpan = extras.pop();
             extraSpan?.remove();
-            updateWordOffsets(currentWordIndex); updateCaretPosition();
+            updateWordOffsets(currentWordIndex);
           }
         } else {
           const chars = cachedCharNodes[currentWordIndex];
@@ -2336,8 +2584,7 @@ const {
           }
         }
 
-        inputChars.pop();
-        currentInput = inputChars.join("");
+        currentInput = currentInput.slice(0, -1);
         hiddenInput.value = currentInput;
         updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
@@ -2457,23 +2704,23 @@ const {
       ensureAudioContext();
       // Caps Lock warning: show pill + amber ring on typing area when on
       try {
-        const capsOn = e.getModifierState && e.getModifierState("CapsLock");
-        capsLockWarning.classList.toggle("hidden", !capsOn);
-        typingDisplay.classList.toggle("!border-[#FF9F0A]/60", !!capsOn);
-        typingDisplay.classList.toggle("!shadow-[0_0_0_3px_rgba(255,159,10,0.15)]", !!capsOn);
+        const capsOn = !!(e.getModifierState && e.getModifierState("CapsLock"));
+        if (capsOn !== isCapsLockActive) {
+          isCapsLockActive = capsOn;
+          capsLockWarning.classList.toggle("hidden", !capsOn);
+          typingDisplay.classList.toggle("!border-[#FF9F0A]/60", capsOn);
+          typingDisplay.classList.toggle("!shadow-[0_0_0_3px_rgba(255,159,10,0.15)]", capsOn);
+        }
       } catch {}
 
       // Idle resume: if paused due to inactivity, resume on any keystroke
       if (isIdlePaused && testActive && !testCompleted && e.key.length === 1) {
         resumeFromIdlePause();
       }
-      // Track last keystroke time for idle detection
-      if (testActive && !testCompleted && e.key.length === 1) {
-        lastKeystrokeTime = performance.now();
-      }
 
-      // Tab or Tab+Enter to restart
-      if (e.key === "Tab") {
+      // Tab to instantly restart: only hijack when a test is active or on the results screen
+      const isResultsVisible = !resultsPanel.classList.contains("hidden");
+      if (e.key === "Tab" && (testActive || isResultsVisible)) {
         e.preventDefault();
         resetTest();
         focusTyping();
@@ -3187,38 +3434,74 @@ const {
       chartSvg.addEventListener("pointercancel", hideCrosshair);
     }
 
-    // Share card: Wordle-style viral loop
+    // Shareable results: downloadable PNG result card + one-click copy summary (Task 2)
     (function() {
-      var shareBtn = document.getElementById('btn-share-result');
-      if (!shareBtn) return;
-      shareBtn.addEventListener('click', async function() {
-        try {
-          // Import dynamically
-          var mod = await import('../scripts/share-card.ts');
-          // Get current results (from DOM)
-          var wpmEl = document.getElementById('res-net-wpm');
-          var accEl = document.getElementById('res-accuracy');
-          var rankEl = document.getElementById('res-rank-title');
-          var wpm = wpmEl ? parseInt(wpmEl.textContent || '0', 10) : 0;
-          var acc = accEl ? parseInt(accEl.textContent || '0', 10) : 0;
-          var rank = rankEl ? (rankEl.textContent || 'Typist').trim() : 'Typist';
-          var data = {
-            wpm: wpm,
-            accuracy: acc,
-            rank: rank,
-            date: new Date().toLocaleDateString(),
-          };
-          // Try image download, fallback to text copy
+      async function buildShareData(): Promise<import('../scripts/share-card').ShareData> {
+        var summary = lastCompletedSummary || (window as any).__lastTestSummary;
+        var wpmEl = document.getElementById('res-net-wpm');
+        var accEl = document.getElementById('res-accuracy');
+        var consEl = document.getElementById('res-consistency');
+        var rankEl = document.getElementById('res-rank-title');
+        var wpm = summary ? summary.netWpm : (wpmEl ? parseInt(wpmEl.textContent || '0', 10) : 0);
+        var acc = summary ? summary.accuracy : (accEl ? parseFloat(accEl.textContent || '100') : 100);
+        var consistency = summary ? summary.consistency : (consEl ? parseInt(consEl.textContent || '100', 10) : 100);
+        var rank = summary ? summary.rankTitle : (rankEl ? (rankEl.textContent || 'Typist').trim() : 'Typist');
+        return {
+          wpm: wpm,
+          accuracy: acc,
+          consistency: consistency,
+          rank: rank,
+          date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        };
+      }
+      (window as any).__buildShareData = buildShareData;
+
+      var downloadBtn = document.getElementById('btn-download-card');
+      if (downloadBtn) {
+        downloadBtn.addEventListener('click', async function() {
           try {
+            var mod = await import('../scripts/share-card');
+            var data = await buildShareData();
             await mod.downloadShareImage(data);
-          } catch {
-            await mod.copyShareText(data);
-            alert('Result copied! Paste it anywhere to share.');
+          } catch (err) {
+            console.error('Download card failed:', err);
           }
-        } catch (err) {
-          console.error('Share failed:', err);
-        }
-      });
+        });
+      }
+
+      var copyBtn = document.getElementById('btn-copy-result');
+      var copyLabel = document.getElementById('copy-result-label');
+      if (copyBtn) {
+        copyBtn.addEventListener('click', async function() {
+          try {
+            var mod = await import('../scripts/share-card');
+            var data = await buildShareData();
+            var success = await mod.copyShareText(data);
+            if (copyLabel) {
+              var originalText = copyLabel.textContent;
+              copyLabel.textContent = success ? 'Copied!' : 'Copied!';
+              setTimeout(function() {
+                if (copyLabel) copyLabel.textContent = originalText;
+              }, 2000);
+            }
+          } catch (err) {
+            console.error('Copy result failed:', err);
+          }
+        });
+      }
+
+      var shareBtn = document.getElementById('btn-share-result');
+      if (shareBtn) {
+        shareBtn.addEventListener('click', async function() {
+          try {
+            var mod = await import('../scripts/share-card');
+            var data = await buildShareData();
+            await mod.downloadShareImage(data);
+          } catch (err) {
+            console.error('Share failed:', err);
+          }
+        });
+      }
     })();
 </script>
 

@@ -1,71 +1,121 @@
-// src/scripts/share-card.ts — Wordle-style shareable result cards
-// Generates branded PNG + copy-paste text, no backend, no account
+// src/scripts/share-card.ts — Monochrome shareable result card & copy text
+// Generates 1200x630 monochrome PNG + clipboard text summary.
 
 export interface ShareData {
   wpm: number;
   accuracy: number;
-  rank: string;
+  consistency: number;
   date: string;
+  rank?: string;
 }
 
 const BRAND = {
-  bg: '#000000',
+  bg: '#09090B',
+  cardBg: '#121215',
+  border: '#27272A',
   text: '#FFFFFF',
   muted: '#A1A1AA',
-  accent: '#0072F5',
-  font: 'system-ui, -apple-system, sans-serif',
+  subtle: '#71717A',
+  font: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
 };
 
 export function generateShareText(data: ShareData): string {
-  return `⚡ ${data.wpm} WPM 🎯 ${data.accuracy}% · ${data.rank}\ninstanttyping.com`;
+  return `⚡ ${data.wpm} WPM · 🎯 ${data.accuracy}% Accuracy · 📊 ${data.consistency}% Consistency\nTested on ${data.date} at instanttyping.com`;
 }
 
 export async function generateShareImage(data: ShareData): Promise<Blob> {
-  const W = 1200, H = 630;
+  const W = 1200;
+  const H = 630;
   const canvas = document.createElement('canvas');
-  canvas.width = W; canvas.height = H;
+  canvas.width = W;
+  canvas.height = H;
   const ctx = canvas.getContext('2d')!;
 
   // Background
   ctx.fillStyle = BRAND.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Subtle accent line at top
-  ctx.fillStyle = BRAND.accent;
-  ctx.fillRect(0, 0, W, 6);
+  // Border frame
+  ctx.strokeStyle = BRAND.border;
+  ctx.lineWidth = 2;
+  const pad = 28;
+  const r = 16;
+  ctx.beginPath();
+  ctx.roundRect(pad, pad, W - pad * 2, H - pad * 2, r);
+  ctx.stroke();
 
-  // Brand
+  // Top Accent Bar (Monochrome subtle line)
+  ctx.fillStyle = '#3F3F46';
+  ctx.fillRect(W / 2 - 40, pad + 16, 80, 3);
+
+  // Header Brand
   ctx.fillStyle = BRAND.muted;
-  ctx.font = `600 28px ${BRAND.font}`;
+  ctx.font = `600 24px ${BRAND.font}`;
   ctx.textAlign = 'center';
-  ctx.fillText('instanttyping.com', W / 2, 80);
+  ctx.fillText('INSTANTTYPING.COM', W / 2, 100);
 
-  // WPM — hero number
+  // Hero WPM Number
   ctx.fillStyle = BRAND.text;
   ctx.font = `700 160px ${BRAND.font}`;
-  ctx.fillText(`${data.wpm}`, W / 2, 280);
+  ctx.fillText(String(data.wpm), W / 2, 280);
 
   ctx.fillStyle = BRAND.muted;
-  ctx.font = `500 32px ${BRAND.font}`;
+  ctx.font = `600 22px ${BRAND.font}`;
   ctx.fillText('WORDS PER MINUTE', W / 2, 330);
 
-  // Stats row
-  ctx.font = `600 48px ${BRAND.font}`;
+  // Horizontal divider
+  ctx.strokeStyle = '#1F1F23';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(120, 375);
+  ctx.lineTo(W - 120, 375);
+  ctx.stroke();
+
+  // 3 Stats Columns: Accuracy, Consistency, Date
+  const colY = 445;
+  const subY = 485;
+
+  // Column 1: Accuracy
+  ctx.textAlign = 'center';
   ctx.fillStyle = BRAND.text;
-  const y = 450;
-  ctx.fillText(`${data.accuracy}%`, W / 2 - 180, y);
-  ctx.fillStyle = BRAND.accent;
-  ctx.fillText(data.rank, W / 2 + 180, y);
+  ctx.font = `700 46px ${BRAND.font}`;
+  ctx.fillText(`${data.accuracy}%`, 300, colY);
+  ctx.fillStyle = BRAND.subtle;
+  ctx.font = `600 18px ${BRAND.font}`;
+  ctx.fillText('ACCURACY', 300, subY);
 
-  ctx.fillStyle = BRAND.muted;
-  ctx.font = `400 24px ${BRAND.font}`;
-  ctx.fillText('ACCURACY', W / 2 - 180, y + 40);
-  ctx.fillText('RANK', W / 2 + 180, y + 40);
+  // Vertical divider 1
+  ctx.beginPath();
+  ctx.moveTo(450, 410);
+  ctx.lineTo(450, 500);
+  ctx.stroke();
 
-  // Date
-  ctx.fillStyle = BRAND.muted;
-  ctx.font = `400 22px ${BRAND.font}`;
-  ctx.fillText(data.date, W / 2, H - 50);
+  // Column 2: Consistency
+  ctx.fillStyle = BRAND.text;
+  ctx.font = `700 46px ${BRAND.font}`;
+  ctx.fillText(`${data.consistency}%`, 600, colY);
+  ctx.fillStyle = BRAND.subtle;
+  ctx.font = `600 18px ${BRAND.font}`;
+  ctx.fillText('CONSISTENCY', 600, subY);
+
+  // Vertical divider 2
+  ctx.beginPath();
+  ctx.moveTo(750, 410);
+  ctx.lineTo(750, 500);
+  ctx.stroke();
+
+  // Column 3: Date
+  ctx.fillStyle = BRAND.text;
+  ctx.font = `600 32px ${BRAND.font}`;
+  ctx.fillText(data.date, 900, colY - 5);
+  ctx.fillStyle = BRAND.subtle;
+  ctx.font = `600 18px ${BRAND.font}`;
+  ctx.fillText('DATE', 900, subY);
+
+  // Footer Tagline
+  ctx.fillStyle = BRAND.subtle;
+  ctx.font = `400 18px ${BRAND.font}`;
+  ctx.fillText('Standard 5-keystroke international metric · Verified in browser', W / 2, H - 55);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
@@ -75,9 +125,28 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
   });
 }
 
-export async function copyShareText(data: ShareData): Promise<void> {
+export async function copyShareText(data: ShareData): Promise<boolean> {
   const text = generateShareText(data);
-  await navigator.clipboard.writeText(text);
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+  } catch {}
+  try {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    const success = document.execCommand('copy');
+    document.body.removeChild(textarea);
+    return success;
+  } catch {
+    return false;
+  }
 }
 
 export async function downloadShareImage(data: ShareData): Promise<void> {
@@ -86,6 +155,8 @@ export async function downloadShareImage(data: ShareData): Promise<void> {
   const a = document.createElement('a');
   a.href = url;
   a.download = `instanttyping-${data.wpm}wpm.png`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }

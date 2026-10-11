@@ -1,0 +1,238 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import FAQ from '../components/FAQ.astro';
+
+const faqs = [
+  {
+    question: "Why is a word defined as five keystrokes instead of actual dictionary words?",
+    answer: "English words range from single characters ('a', 'I') to multi-syllable terms ('unbelievable'). If typing tests counted literal whitespace-separated words, someone typing simple sentences would appear twice as fast as someone typing scientific literature. Standardizing one word to exactly five keystrokes (including letters, punctuation, and spaces) creates an objective, mathematically uniform metric comparable across any language or passage."
+  },
+  {
+    question: "What is the difference between Raw WPM and Net WPM?",
+    answer: "Raw WPM (Gross WPM) measures your total mechanical keystroke speed divided by five per minute, regardless of typos. Net WPM only counts characters that were typed accurately. Net WPM is the universally accepted standard for employment and civil service examinations because erroneous keystrokes do not produce useful work."
+  },
+  {
+    question: "How does Instant Typing measure consistency?",
+    answer: "During your test, our engine takes an instantaneous Net WPM snapshot every single second. At the end of the test, we calculate the standard deviation and coefficient of variation (CV) across all snapshots. Consistency equals 100 minus CV. A score of 90%+ means you maintain a smooth metronomic rhythm, while lower scores reflect sprint-and-stall typing."
+  },
+  {
+    question: "Does pressing Backspace decrease my final score?",
+    answer: "Backspace keystrokes do not count toward your correct character total, and correcting errors consumes valuable elapsed seconds. The 'accuracy tax' means fixing a single mistake typically costs 3 to 5 keystrokes (the typo, backspacing, and retyping). Maintaining 98%+ accuracy is almost always faster than typing fast with errors."
+  },
+  {
+    question: "How does the 'What's slowing you down' diagnosis work?",
+    answer: "Our client-side engine records timestamped keystroke latencies and bigram transitions (such as H→E or T→H). After every completed test, it computes your slowest individual reach, your slowest two-key transition, and categorizes delays between wrong keys and hesitation pauses, giving you an exact bottleneck in plain English."
+  }
+];
+---
+
+<Layout
+  title="Typing Test Methodology & Calculation Formulas | Instant Typing"
+  description="Learn how Instant Typing calculates WPM, accuracy, consistency, and diagnostic bottlenecks using the international 5-keystroke standard."
+  canonicalPath="/how-we-measure"
+>
+  <article class="max-w-3xl mx-auto space-y-12 text-ds-text-primary py-4">
+    <!-- Header -->
+    <header class="border-b border-[#E5E5E5] dark:border-white/10 pb-6">
+      <div class="flex items-center gap-2 text-xs font-mono font-medium text-[#71717A] uppercase tracking-wider mb-2">
+        <Icon name="analytics" class="w-4 h-4 text-[#1D1D1F] dark:text-[#F5F5F7]" />
+        <span>Measurement Standard</span>
+      </div>
+      <h1 class="text-4xl sm:text-5xl font-bold tracking-[-0.03em] leading-[1.1] text-balance text-[#1D1D1F] dark:text-[#F5F5F7]">
+        How We Measure Typing Speed
+      </h1>
+      <p class="font-normal text-pretty text-base text-[#6E6E73] dark:text-[#A1A1A6] mt-3 leading-relaxed">
+        Objective, standardized keyboard measurement. No fabricated percentiles, no arbitrary rules — here are the exact mathematical formulas running inside our browser engine.
+      </p>
+    </header>
+
+    <!-- 1. The 5-Keystroke Standard -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold tracking-[-0.02em] text-[#1D1D1F] dark:text-[#F5F5F7] flex items-center gap-2">
+        <Icon name="verified-user" class="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
+        <span>1. The International 5-Keystroke Standard</span>
+      </h2>
+      <p class="text-sm leading-relaxed text-[#6E6E73] dark:text-[#A1A1A6]">
+        Following global typing benchmarks established in corporate and civil service testing, <strong class="text-neutral-900 dark:text-white">one standard word is defined as exactly 5 keystrokes</strong>. This includes letters, punctuation, symbols, and spaces.
+      </p>
+      <div class="p-4 rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-[#FAFAFA] dark:bg-white/[0.03] space-y-2 text-xs font-mono">
+        <div class="text-[#71717A] uppercase tracking-wide font-semibold text-[11px]">Standardized Word Unit</div>
+        <div class="text-neutral-900 dark:text-neutral-100 font-medium">1 Word = 5 Keystrokes (any characters)</div>
+        <p class="text-[#86868B] text-[11px] pt-1 border-t border-neutral-200/60 dark:border-white/5 font-sans">
+          Example: The phrase "quick fox jumps" consists of 15 keystrokes (including 2 spaces) and equals exactly 3.0 standardized words.
+        </p>
+      </div>
+    </section>
+
+    <!-- 2. WPM Formulas -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold tracking-[-0.02em] text-[#1D1D1F] dark:text-[#F5F5F7] flex items-center gap-2">
+        <Icon name="bolt" class="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
+        <span>2. Raw WPM vs. Net WPM</span>
+      </h2>
+      <p class="text-sm leading-relaxed text-[#6E6E73] dark:text-[#A1A1A6]">
+        Speed is calculated based on time elapsed in minutes: <code class="font-mono text-xs px-1.5 py-0.5 rounded bg-neutral-100 dark:bg-white/10 text-neutral-900 dark:text-white">Time (min) = Elapsed Seconds / 60</code>.
+      </p>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Raw WPM Card -->
+        <div class="p-5 rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-[#FAFAFA] dark:bg-white/[0.03] space-y-2">
+          <div class="text-xs font-bold uppercase tracking-wider text-[#71717A]">Gross Speed (Raw WPM)</div>
+          <code class="text-sm font-mono font-semibold block text-neutral-900 dark:text-white">
+            (Total Keystrokes / 5) / Time
+          </code>
+          <p class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+            Measures raw finger motor velocity, counting both correct and incorrect keystrokes.
+          </p>
+        </div>
+
+        <!-- Net WPM Card -->
+        <div class="p-5 rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-[#FAFAFA] dark:bg-white/[0.03] space-y-2">
+          <div class="text-xs font-bold uppercase tracking-wider text-[#71717A]">Official Speed (Net WPM)</div>
+          <code class="text-sm font-mono font-semibold block text-neutral-900 dark:text-white">
+            (Correct Keystrokes / 5) / Time
+          </code>
+          <p class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+            Counts only correctly typed keystrokes. This is the official score shown on certificates.
+          </p>
+        </div>
+      </div>
+
+      <div class="p-4 rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-[#FAFAFA] dark:bg-white/[0.03] text-xs space-y-1">
+        <span class="font-semibold text-neutral-900 dark:text-white">The Accuracy Tax:</span>
+        <p class="text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+          <code class="font-mono text-neutral-900 dark:text-white font-medium">Accuracy Tax = Raw WPM - Net WPM</code>. If you type 75 Raw WPM with typos, and your Net WPM drops to 67, your accuracy tax is 8 WPM.
+        </p>
+      </div>
+    </section>
+
+    <!-- 3. Accuracy Calculation -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold tracking-[-0.02em] text-[#1D1D1F] dark:text-[#F5F5F7] flex items-center gap-2">
+        <Icon name="target" class="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
+        <span>3. Keystroke Accuracy</span>
+      </h2>
+      <p class="text-sm leading-relaxed text-[#6E6E73] dark:text-[#A1A1A6]">
+        Accuracy reflects your true keystroke precision across the entire test session:
+      </p>
+      <div class="p-4 rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-[#FAFAFA] dark:bg-white/[0.03] font-mono text-sm font-semibold text-neutral-900 dark:text-white">
+        Accuracy (%) = (Correct Keystrokes / Total Keystrokes) × 100
+      </div>
+      <p class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+        Scores are rounded to one decimal place. If no keystrokes have been typed, accuracy defaults to 100%.
+      </p>
+    </section>
+
+    <!-- 4. Consistency Calculation -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold tracking-[-0.02em] text-[#1D1D1F] dark:text-[#F5F5F7] flex items-center gap-2">
+        <Icon name="timer" class="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
+        <span>4. Rhythm Consistency</span>
+      </h2>
+      <p class="text-sm leading-relaxed text-[#6E6E73] dark:text-[#A1A1A6]">
+        Elite typists do not burst and pause; they maintain a metronome rhythm. To calculate consistency, our engine records your instantaneous Net WPM once every second into a history array:
+      </p>
+      <div class="p-4 rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-[#FAFAFA] dark:bg-white/[0.03] space-y-2 text-xs font-mono">
+        <div class="text-[#71717A] uppercase tracking-wide font-semibold text-[11px]">Statistical Coefficient of Variation</div>
+        <div class="text-neutral-900 dark:text-white">1. Mean = Sum(WPM_samples) / N</div>
+        <div class="text-neutral-900 dark:text-white">2. Variance = Sum((Sample - Mean)²) / N</div>
+        <div class="text-neutral-900 dark:text-white">3. StdDev = √Variance</div>
+        <div class="text-neutral-900 dark:text-white">4. CV = (StdDev / Mean) × 100</div>
+        <div class="text-neutral-900 dark:text-white font-bold pt-1 border-t border-neutral-200 dark:border-white/10">Consistency = Math.max(0, 100 - CV)</div>
+      </div>
+      <p class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+        A score of 90%+ reflects highly stable, effortless cadence. Lower scores indicate intermittent micro-pauses or hesitation before unfamiliar words.
+      </p>
+    </section>
+
+    <!-- 5. How Errors Are Handled -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold tracking-[-0.02em] text-[#1D1D1F] dark:text-[#F5F5F7] flex items-center gap-2">
+        <Icon name="keyboard" class="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
+        <span>5. How Errors Are Handled</span>
+      </h2>
+      <div class="space-y-3 text-sm text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+        <p>
+          <strong class="text-neutral-900 dark:text-white">Visual Feedback:</strong> As soon as a key is pressed, character feedback is instantaneous. Correct letters turn crisp text color, while errors highlight immediately in red.
+        </p>
+        <p>
+          <strong class="text-neutral-900 dark:text-white">Word Submission:</strong> Pressing the spacebar commits the current word. If any character was typed incorrectly, the word is flagged as missed and stored for targeted drills.
+        </p>
+        <p>
+          <strong class="text-neutral-900 dark:text-white">Backspace Behavior:</strong> Typists can press Backspace to fix mistakes in the active word. Ctrl+Backspace (or Option+Backspace on Mac) deletes the current word for rapid correction.
+        </p>
+      </div>
+    </section>
+
+    <!-- 6. Official Skill Bands -->
+    <section class="space-y-4">
+      <h2 class="text-2xl font-bold tracking-[-0.02em] text-[#1D1D1F] dark:text-[#F5F5F7] flex items-center gap-2">
+        <Icon name="flag" class="w-5 h-5 text-neutral-800 dark:text-neutral-200" />
+        <span>6. Skill Bands &amp; What Your Score Means</span>
+      </h2>
+      <p class="text-sm text-[#6E6E73] dark:text-[#A1A1A6]">
+        Instant Typing categorizes speeds into honest skill bands grounded in professional benchmarks:
+      </p>
+
+      <div class="border border-[#E5E5E5] dark:border-white/10 rounded-xl overflow-hidden divide-y divide-[#E5E5E5] dark:divide-white/10 text-xs">
+        <div class="grid grid-cols-3 p-3 bg-neutral-100/60 dark:bg-white/[0.04] font-bold text-neutral-900 dark:text-white uppercase tracking-wider">
+          <span>Skill Band</span>
+          <span>Speed Range</span>
+          <span>Benchmark Context</span>
+        </div>
+        <div class="grid grid-cols-3 p-3 text-[#6E6E73] dark:text-[#A1A1A6]">
+          <span class="font-semibold text-neutral-900 dark:text-white">Elite</span>
+          <span class="font-mono font-medium">100+ WPM</span>
+          <span>Top 1–2% of typists. Court reporters, software engineers, and competition typists.</span>
+        </div>
+        <div class="grid grid-cols-3 p-3 text-[#6E6E73] dark:text-[#A1A1A6]">
+          <span class="font-semibold text-neutral-900 dark:text-white">Advanced</span>
+          <span class="font-mono font-medium">80–99 WPM</span>
+          <span>High-velocity touch typists. Far exceeds standard corporate requirements.</span>
+        </div>
+        <div class="grid grid-cols-3 p-3 text-[#6E6E73] dark:text-[#A1A1A6]">
+          <span class="font-semibold text-neutral-900 dark:text-white">Upper-Intermediate</span>
+          <span class="font-mono font-medium">60–79 WPM</span>
+          <span>Fluent touch typists. Standard threshold for executive assistants and paralegals.</span>
+        </div>
+        <div class="grid grid-cols-3 p-3 text-[#6E6E73] dark:text-[#A1A1A6]">
+          <span class="font-semibold text-neutral-900 dark:text-white">Intermediate</span>
+          <span class="font-mono font-medium">40–59 WPM</span>
+          <span>Global average speed (~40 WPM). Adequate for day-to-day email and office work.</span>
+        </div>
+        <div class="grid grid-cols-3 p-3 text-[#6E6E73] dark:text-[#A1A1A6]">
+          <span class="font-semibold text-neutral-900 dark:text-white">Developing</span>
+          <span class="font-mono font-medium">25–39 WPM</span>
+          <span>Typists transitioning from sight typing to touch typing muscle memory.</span>
+        </div>
+        <div class="grid grid-cols-3 p-3 text-[#6E6E73] dark:text-[#A1A1A6]">
+          <span class="font-semibold text-neutral-900 dark:text-white">Starting</span>
+          <span class="font-mono font-medium">Below 25 WPM</span>
+          <span>Beginners learning home row finger placement and keyboard geometry.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Block -->
+    <FAQ items={faqs} title="Methodology & Measurement FAQ" />
+
+    <!-- CTA Section -->
+    <div class="p-8 rounded-2xl border border-[#E5E5E5] dark:border-white/10 bg-[#FAFAFA] dark:bg-white/[0.03] text-center space-y-4">
+      <h3 class="text-xl font-bold text-neutral-900 dark:text-white tracking-tight">
+        Put Your Speed to the Test
+      </h3>
+      <p class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] max-w-md mx-auto">
+        Test your typing speed with real-time feedback, detailed keystroke latency diagnosis, and zero ads.
+      </p>
+      <div class="flex items-center justify-center gap-3 pt-2">
+        <a href="/" class="btn-primary !px-5 !py-2.5 text-xs font-semibold">
+          Take 60-Second Test
+        </a>
+        <a href="/3-minute-typing-test" class="btn-secondary !px-5 !py-2.5 text-xs font-semibold">
+          Take 3-Minute Test
+        </a>
+      </div>
+    </div>
+  </article>
+</Layout>
