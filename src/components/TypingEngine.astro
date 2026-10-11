@@ -1436,6 +1436,12 @@ const {
       }
     }
 
+    let isWordOffsetsCacheStale = false;
+
+    function invalidateWordOffsets() {
+      isWordOffsetsCacheStale = true;
+    }
+
     function updateWordOffsets(fromIndex: number = 0) {
       const start = Math.max(0, fromIndex);
       for (let i = start; i < cachedWordNodes.length; i++) {
@@ -1505,6 +1511,11 @@ const {
     }
 
     function updateCaretPosition() {
+      if (isWordOffsetsCacheStale) {
+        measureLayout();
+        isWordOffsetsCacheStale = false;
+      }
+
       const wOffset = wordOffsets[currentWordIndex];
       if (!wOffset) return;
 
@@ -1617,6 +1628,7 @@ const {
       wordsWrapper.appendChild(fragment);
 
       measureLayout();
+      isWordOffsetsCacheStale = false;
       updateCaretPosition();
     }
 
@@ -2569,8 +2581,23 @@ const {
           }
         }
 
-        if (extraCharNodes[currentWordIndex]?.length > 0 || (currentWordIndex > 0 && extraCharNodes[currentWordIndex - 1]?.length > 0)) {
+        const hadExtras = extraCharNodes[currentWordIndex]?.length > 0 || (currentWordIndex > 0 && extraCharNodes[currentWordIndex - 1]?.length > 0);
+        if (hadExtras) {
           updateWordOffsets(currentWordIndex);
+        } else {
+          // Cheap staleness guard on the space path: single read of live offsetLeft/offsetTop.
+          // If diverged by more than 1px, recalculate instead of reusing.
+          const liveWordEl = cachedWordNodes[currentWordIndex];
+          const cached = wordOffsets[currentWordIndex];
+          if (liveWordEl && cached) {
+            const dx = Math.abs(liveWordEl.offsetLeft - cached.x);
+            const dy = Math.abs(liveWordEl.offsetTop - cached.y);
+            if (dx > 1 || dy > 1) {
+              updateWordOffsets(currentWordIndex);
+            }
+          } else if (liveWordEl && !cached) {
+            updateWordOffsets(currentWordIndex);
+          }
         }
         updateCaretPosition();
         dispatchNextChar();
@@ -2709,7 +2736,8 @@ const {
 
         currentInput = wordInputs[currentWordIndex] || "";
         hiddenInput.value = currentInput;
-        updateWordOffsets(currentWordIndex); updateCaretPosition();
+        updateWordOffsets(currentWordIndex);
+        updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
       }
       
@@ -2737,7 +2765,7 @@ const {
         currentInput = "";
         hiddenInput.value = "";
         if (hadExtras) {
-          updateWordOffsets(currentWordIndex); updateCaretPosition();
+          updateWordOffsets(currentWordIndex);
         }
         updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
@@ -2783,7 +2811,8 @@ const {
         currentInput = "";
         wordInputs[currentWordIndex] = "";
         hiddenInput.value = "";
-        updateWordOffsets(currentWordIndex); updateCaretPosition();
+        updateWordOffsets(currentWordIndex);
+        updateCaretPosition();
         playKeyStrokeSound("Backspace", false, false);
       }
       
@@ -2889,7 +2918,9 @@ const {
     // Item 1: Window resize & ResizeObserver for zoom / container changes
     function onLayoutChange() {
       if (cachedWordNodes.length === 0) return;
+      invalidateWordOffsets();
       measureLayout();
+      isWordOffsetsCacheStale = false;
       updateCaretPosition();
     }
 
@@ -2903,7 +2934,10 @@ const {
     }
     
     if (document.fonts) {
-      document.fonts.ready.then(onLayoutChange);
+      document.fonts.ready.then(() => {
+        invalidateWordOffsets();
+        onLayoutChange();
+      });
     }
     window.addEventListener("load", onLayoutChange);
 
@@ -2911,9 +2945,7 @@ const {
     if (document.fonts && document.fonts.ready) {
       const timeoutPromise = new Promise<void>((resolve) => safeSetTimeout(resolve as TimerHandler, 350));
       Promise.race([document.fonts.ready, timeoutPromise]).then(() => {
-        onLayoutChange();
-      });
-      document.fonts.ready.then(() => {
+        invalidateWordOffsets();
         onLayoutChange();
       });
     }
