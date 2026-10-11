@@ -838,6 +838,31 @@ const {
       <div id="weak-keys-list" class="hidden"></div>
     </div>
 
+    <!-- 5b. XP Receipt Section -->
+    <div id="results-xp-receipt" class="hidden premium-card !p-4 sm:!p-5 space-y-3">
+      <div class="flex items-baseline justify-between">
+        <div class="flex items-baseline gap-2">
+          <span id="xp-receipt-total" class="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[var(--text-primary)]">+0 XP</span>
+          <span class="text-xs font-mono text-[var(--text-secondary)] uppercase">Earned</span>
+        </div>
+        <div id="xp-receipt-level-tag" class="text-xs font-mono font-medium px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-white/10 text-[var(--text-primary)]">
+          Level 1
+        </div>
+      </div>
+      <div id="xp-receipt-breakdown" class="text-xs text-[var(--text-secondary)] font-mono leading-relaxed">
+        <!-- Base 52 · Personal best +50 · Streak +10 · Warmup +5 -->
+      </div>
+      <div class="space-y-1.5 pt-1">
+        <div class="flex items-center justify-between text-[11px] font-mono text-[var(--text-secondary)]">
+          <span id="xp-receipt-progress-label">Level 1 · 100 XP to Level 2</span>
+          <span id="xp-receipt-progress-percent">0%</span>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-neutral-200 dark:bg-white/10 overflow-hidden">
+          <div id="xp-receipt-progress-bar" class="h-full bg-[var(--text-primary)] rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- 6. Personal Best Badge -->
     <div id="personal-best-banner" class="hidden premium-card flex items-center justify-center gap-2 text-sm">
       <span id="personal-best-label" class="font-semibold text-[#0072F5]"></span>
@@ -924,6 +949,10 @@ const {
           if (k && (k.startsWith('ptt_') || k.startsWith('it_') || k.startsWith('gk'))) keys.push(k);
         }
         keys.forEach(k => localStorage.removeItem(k));
+        localStorage.removeItem('it_profile_v1');
+        try {
+          window.dispatchEvent(new CustomEvent('it-profile-updated'));
+        } catch {}
         alert('All data deleted. Reloading...');
         location.reload();
       });
@@ -1021,6 +1050,9 @@ const {
   </div>
 </div>
 
+<!-- Achievement Toast Container -->
+<div id="achievement-toast-container" class="fixed bottom-6 right-6 z-[300] flex flex-col gap-2 pointer-events-none" aria-live="polite"></div>
+
 <script>
   if ((window as any).__typingEngineCleanup) {
     (window as any).__typingEngineCleanup();
@@ -1035,6 +1067,8 @@ const {
   import { animate as motionAnimate } from "motion";
   import { getLanguage, updateDOM, t } from "../i18n";
   import { recordTest, getLevel, getDailyProgress, loadProgress } from "../scripts/progress";
+  import { updateProfileAfterTest, getXpProgressForLevel } from "../scripts/profile";
+  import type { ProfileUpdateResult } from "../scripts/profile";
   import {
     TOP_200_WORDS,
     TOP_1000_WORDS,
@@ -1247,6 +1281,8 @@ const {
     const roastVideo = document.getElementById("roast-video") as HTMLVideoElement | null;
     const roastImg = document.getElementById("roast-img") as HTMLImageElement | null;
     const roastText = document.getElementById("roast-text");
+
+    let lastProfileResult: ProfileUpdateResult | null = null;
 
     function emitTyping<K extends keyof TypingEventMap>(
       name: K,
@@ -1835,6 +1871,19 @@ const {
       lastCompletedSummary = testSummary;
       (window as any).__lastTestSummary = testSummary;
 
+      // P1 Profile Update: XP, Streak, Achievements
+      try {
+        lastProfileResult = updateProfileAfterTest({
+          netWpm: testSummary.netWpm,
+          rawWpm: testSummary.rawWpm,
+          accuracy: testSummary.accuracy,
+          durationSeconds: Math.round(totalTime),
+          isDrill: !!(customMistakeWords && customMistakeWords.length > 0)
+        });
+      } catch (e) {
+        console.error("Failed to update profile after test:", e);
+      }
+
       saveTestResult({
         id: `ptt_${Date.now()}`,
         timestamp: Date.now(),
@@ -2191,6 +2240,47 @@ const {
         }
       } else if (roastCard) {
         roastCard.classList.add("hidden");
+      }
+
+      // Render P1 XP Receipt
+      const xpReceipt = document.getElementById("results-xp-receipt");
+      const xpTotalEl = document.getElementById("xp-receipt-total");
+      const xpLevelTag = document.getElementById("xp-receipt-level-tag");
+      const xpBreakdownEl = document.getElementById("xp-receipt-breakdown");
+      const xpProgressLabel = document.getElementById("xp-receipt-progress-label");
+      const xpProgressPercent = document.getElementById("xp-receipt-progress-percent");
+      const xpProgressBar = document.getElementById("xp-receipt-progress-bar");
+
+      if (xpReceipt && lastProfileResult && lastProfileResult.xpAwarded.eligible) {
+        xpReceipt.classList.remove("hidden");
+        if (xpTotalEl) xpTotalEl.textContent = `+${lastProfileResult.xpAwarded.total} XP`;
+        if (xpLevelTag) xpLevelTag.textContent = `Level ${lastProfileResult.levelAfter}`;
+
+        const parts = [`Base ${lastProfileResult.xpAwarded.base}`];
+        lastProfileResult.xpAwarded.bonuses.forEach(b => {
+          parts.push(`${b.label} +${b.amount}`);
+        });
+        if (xpBreakdownEl) xpBreakdownEl.textContent = parts.join(" · ");
+
+        const progress = getXpProgressForLevel(lastProfileResult.profile.xp);
+        if (xpProgressLabel) {
+          xpProgressLabel.textContent = `Level ${progress.level} · ${progress.xpNeededForNext} XP to Level ${progress.level + 1}`;
+        }
+        if (xpProgressPercent) {
+          xpProgressPercent.textContent = `${Math.round(progress.progressPercent)}%`;
+        }
+        if (xpProgressBar) {
+          xpProgressBar.style.width = `${progress.progressPercent}%`;
+        }
+      } else if (xpReceipt) {
+        xpReceipt.classList.add("hidden");
+      }
+
+      // Achievement toasts (fire exactly once on unlock)
+      if (lastProfileResult && lastProfileResult.newAchievements.length > 0) {
+        lastProfileResult.newAchievements.forEach(ach => {
+          showAchievementToast(ach);
+        });
       }
 
       resultsPanel.classList.remove("hidden");
@@ -3340,6 +3430,44 @@ const {
     if (["es", "fr", "de", "pt", "it"].includes(currentLang) && ["top1000", "top200"].includes(currentWordbankName)) {
       currentWordbankName = currentLang;
       wordbankSelect.value = currentLang;
+    }
+
+    function showAchievementToast(ach: { name: string; tier: string; icon: string }) {
+      const container = document.getElementById("achievement-toast-container");
+      if (!container) return;
+
+      const toast = document.createElement("div");
+      toast.className = "pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-[#1A1A1C] shadow-xl text-xs font-mono text-[#1D1D1F] dark:text-[#F5F5F7] transition-all duration-300 transform translate-y-2 opacity-0";
+      toast.innerHTML = `
+        <span class="text-xl shrink-0">${ach.icon || "🏆"}</span>
+        <div class="space-y-0.5">
+          <div class="font-semibold text-xs text-[#1D1D1F] dark:text-white">🏆 Achievement unlocked: ${ach.name}</div>
+          <div class="text-[11px] text-[#86868B]">${ach.name} · <span class="uppercase font-semibold">${ach.tier}</span></div>
+        </div>
+      `;
+
+      container.appendChild(toast);
+
+      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      if (prefersReduced) {
+        toast.style.opacity = "1";
+        toast.style.transform = "none";
+      } else {
+        requestAnimationFrame(() => {
+          toast.style.opacity = "1";
+          toast.style.transform = "translateY(0)";
+        });
+      }
+
+      safeSetTimeout(() => {
+        if (prefersReduced) {
+          toast.remove();
+        } else {
+          toast.style.opacity = "0";
+          toast.style.transform = "translateY(4px)";
+          setTimeout(() => toast.remove(), 300);
+        }
+      }, 4000);
     }
 
     resetTest();

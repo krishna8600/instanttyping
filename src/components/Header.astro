@@ -166,6 +166,109 @@ const navItems = [
   </div>
 </header>
 
+<!-- Nav Profile Chip & Popover -->
+<div class="profile-chip-container relative" id="profile-chip-container">
+  <button
+    id="btn-profile-chip"
+    class="profile-chip-btn"
+    type="button"
+    aria-expanded="false"
+    aria-haspopup="dialog"
+    aria-label="Profile and stats"
+    title="View your level, streak, and achievements"
+  >
+    <span id="nav-profile-level">Lv 1</span>
+    <span class="opacity-40">·</span>
+    <span class="inline-flex items-center gap-1">
+      <span class="text-orange-400 text-xs">🔥</span>
+      <span id="nav-profile-streak">0</span>
+    </span>
+  </button>
+
+  <!-- Profile Popover -->
+  <div
+    id="profile-popover"
+    class="profile-popover hidden"
+    role="dialog"
+    aria-label="Profile stats and achievements"
+  >
+    <div class="popover-inner space-y-3">
+      <!-- Header: Level & Lifetime XP -->
+      <div class="flex items-baseline justify-between border-b border-white/10 pb-2.5">
+        <div class="flex items-baseline gap-2">
+          <span id="popover-level" class="text-base font-bold text-white font-mono">Level 1</span>
+          <span id="popover-total-xp" class="text-xs text-[#A1A1A6] font-mono">0 XP</span>
+        </div>
+        <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-white/10 text-white/80">Local Only</span>
+      </div>
+
+      <!-- XP Progress to Next Level -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between text-[11px] font-mono text-[#A1A1A6]">
+          <span id="popover-xp-label">100 XP to Level 2</span>
+          <span id="popover-xp-percent">0%</span>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <div id="popover-xp-bar" class="h-full bg-[#0072F5] rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Streak & Freezes -->
+      <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+        <div class="p-2 rounded-lg bg-white/5 border border-white/10 space-y-0.5">
+          <span class="text-[10px] uppercase text-[#A1A1A6] block">Streak</span>
+          <div class="flex items-center gap-1.5">
+            <span class="text-orange-400">🔥</span>
+            <span id="popover-streak-current" class="font-bold text-white">0 days</span>
+          </div>
+          <span id="popover-streak-longest" class="text-[10px] text-[#A1A1A6] block">Longest: 0</span>
+        </div>
+
+        <div class="p-2 rounded-lg bg-white/5 border border-white/10 space-y-0.5">
+          <span class="text-[10px] uppercase text-[#A1A1A6] block">Freeze</span>
+          <div class="flex items-center gap-1.5">
+            <span class="text-sky-400">❄️</span>
+            <span id="popover-freeze-status" class="font-bold text-white">1 ready</span>
+          </div>
+          <span class="text-[10px] text-[#A1A1A6] block">Auto-protects</span>
+        </div>
+      </div>
+
+      <!-- Lifetime Records -->
+      <div class="p-2 rounded-lg bg-white/5 border border-white/10 grid grid-cols-3 gap-1 text-center font-mono text-xs">
+        <div>
+          <span class="text-[10px] text-[#A1A1A6] block">Tests</span>
+          <span id="popover-stat-tests" class="font-semibold text-white">0</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-[#A1A1A6] block">Best WPM</span>
+          <span id="popover-stat-wpm" class="font-semibold text-white">0</span>
+        </div>
+        <div>
+          <span class="text-[10px] text-[#A1A1A6] block">Best Acc</span>
+          <span id="popover-stat-acc" class="font-semibold text-white">0%</span>
+        </div>
+      </div>
+
+      <!-- Achievements Row -->
+      <div class="space-y-1.5 pt-1 border-t border-white/10">
+        <div class="flex items-center justify-between text-[11px] font-mono text-[#A1A1A6]">
+          <span>Launch Achievements</span>
+          <span id="popover-achievements-count">0 / 8</span>
+        </div>
+        <div id="popover-achievements-list" class="grid grid-cols-4 gap-1.5 py-1">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- Footnote -->
+      <div class="pt-0.5 text-[10px] text-center text-[#86868B] font-mono">
+        Your data never leaves this browser
+      </div>
+    </div>
+  </div>
+</div>
+
 <LanguageSwitcher />
 
 <button
@@ -337,6 +440,64 @@ const navItems = [
   .icon-btn:focus-visible {
     outline: 2px solid #0070f3;
     outline-offset: 2px;
+  }
+
+  /* Profile Popover Styling */
+  .profile-chip-container {
+    position: relative;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+  .profile-chip-btn {
+    height: 36px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(12, 12, 14, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    color: #fff;
+    padding: 0 12px;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .profile-chip-btn:hover {
+    background: rgba(40, 40, 44, 0.65);
+    color: #fff;
+  }
+  .profile-popover {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 290px;
+    background: rgba(16, 16, 18, 0.96);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 14px;
+    box-shadow:
+      0 16px 40px rgba(0, 0, 0, 0.65),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 250;
+    animation: popoverFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  @media (max-width: 640px) {
+    .profile-chip-btn {
+      padding: 0 8px;
+      font-size: 11px;
+    }
+    .profile-popover {
+      right: -30px;
+      width: 270px;
+    }
   }
 
   /* Popover Styling */
@@ -707,6 +868,111 @@ const navItems = [
       }
     }
   });
+
+  // ── Profile Popover Logic ────────────────────────────────────────────────
+  (function() {
+    const btnChip = document.getElementById('btn-profile-chip');
+    const popover = document.getElementById('profile-popover');
+    const levelLabel = document.getElementById('nav-profile-level');
+    const streakLabel = document.getElementById('nav-profile-streak');
+
+    const popoverLevel = document.getElementById('popover-level');
+    const popoverTotalXp = document.getElementById('popover-total-xp');
+    const popoverXpLabel = document.getElementById('popover-xp-label');
+    const popoverXpPercent = document.getElementById('popover-xp-percent');
+    const popoverXpBar = document.getElementById('popover-xp-bar');
+    const popoverStreakCurrent = document.getElementById('popover-streak-current');
+    const popoverStreakLongest = document.getElementById('popover-streak-longest');
+    const popoverFreezeStatus = document.getElementById('popover-freeze-status');
+    const popoverStatTests = document.getElementById('popover-stat-tests');
+    const popoverStatWpm = document.getElementById('popover-stat-wpm');
+    const popoverStatAcc = document.getElementById('popover-stat-acc');
+    const popoverAchCount = document.getElementById('popover-achievements-count');
+    const popoverAchList = document.getElementById('popover-achievements-list');
+
+    async function syncProfileUI() {
+      try {
+        const { loadProfile, getXpProgressForLevel, ACHIEVEMENTS } = await import('../scripts/profile');
+        const profile = loadProfile();
+        const progress = getXpProgressForLevel(profile.xp);
+
+        if (levelLabel) levelLabel.textContent = `Lv ${progress.level}`;
+        if (streakLabel) streakLabel.textContent = String(profile.streak.current);
+
+        if (popoverLevel) popoverLevel.textContent = `Level ${progress.level}`;
+        if (popoverTotalXp) popoverTotalXp.textContent = `${profile.xp.toLocaleString()} XP`;
+        if (popoverXpLabel) popoverXpLabel.textContent = `${progress.xpNeededForNext} XP to Level ${progress.level + 1}`;
+        if (popoverXpPercent) popoverXpPercent.textContent = `${Math.round(progress.progressPercent)}%`;
+        if (popoverXpBar) popoverXpBar.style.width = `${progress.progressPercent}%`;
+
+        if (popoverStreakCurrent) popoverStreakCurrent.textContent = `${profile.streak.current} ${profile.streak.current === 1 ? 'day' : 'days'}`;
+        if (popoverStreakLongest) popoverStreakLongest.textContent = `Longest: ${profile.streak.longest}`;
+        if (popoverFreezeStatus) popoverFreezeStatus.textContent = profile.streak.freezesAvailable > 0 ? '1 ready' : '0/1 used';
+
+        if (popoverStatTests) popoverStatTests.textContent = String(profile.stats.testsCompleted);
+        if (popoverStatWpm) popoverStatWpm.textContent = String(profile.stats.bestWpm);
+        if (popoverStatAcc) popoverStatAcc.textContent = `${profile.stats.bestAccuracy}%`;
+
+        const unlockedIds = Object.keys(profile.achievements);
+        if (popoverAchCount) popoverAchCount.textContent = `${unlockedIds.length} / ${ACHIEVEMENTS.length}`;
+
+        if (popoverAchList) {
+          popoverAchList.innerHTML = ACHIEVEMENTS.map(ach => {
+            const isUnlocked = !!profile.achievements[ach.id];
+            return `
+              <div class="flex flex-col items-center p-1.5 rounded-lg border text-center transition-all ${
+                isUnlocked
+                  ? 'bg-white/10 border-white/20 text-white'
+                  : 'bg-white/5 border-white/5 text-[#6E6E73] opacity-40'
+              }" title="${ach.name}: ${ach.description} (${ach.tier})">
+                <span class="text-base leading-none">${ach.icon}</span>
+                <span class="text-[9px] font-mono truncate w-full mt-1">${ach.name}</span>
+              </div>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        console.error('Error syncing profile UI in header:', err);
+      }
+    }
+
+    btnChip?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isHidden = popover?.classList.contains('hidden');
+      if (isHidden) {
+        popover?.classList.remove('hidden');
+        btnChip?.setAttribute('aria-expanded', 'true');
+        syncProfileUI();
+      } else {
+        popover?.classList.add('hidden');
+        btnChip?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (popover && !popover.classList.contains('hidden')) {
+        const target = e.target as HTMLElement;
+        if (!popover.contains(target) && !btnChip?.contains(target)) {
+          popover.classList.add('hidden');
+          btnChip?.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && popover && !popover.classList.contains('hidden')) {
+        popover.classList.add('hidden');
+        btnChip?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    window.addEventListener('it-profile-updated', () => {
+      syncProfileUI();
+    });
+
+    // Initial sync
+    syncProfileUI();
+  })();
 </script>
 
 

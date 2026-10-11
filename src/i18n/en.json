@@ -327,7 +327,17 @@
   "roast.low_acc_6": "The backspace key deserves a medal for carrying this test.",
   "roast.good_4": "Alright, show-off. Save some speed for the rest of us.",
   "roast.good_5": "Not bad. The mascot is mildly impressed. Mildly.",
-  "roast.good_6": "Clean run. Even I cannot roast that.",
   "results.weakest_key": "is your weakest key",
-  "test.mode_code": "Code"
+  "test.mode_code": "Code",
+  "profile.title": "Profile & Progress",
+  "profile.level": "Level",
+  "profile.streak": "Streak",
+  "profile.longest_streak": "Longest",
+  "profile.freezes": "Weekly Freezes",
+  "profile.freeze_ready": "1/1 ready",
+  "profile.freeze_used": "0/1 used",
+  "profile.achievements": "Achievements",
+  "profile.privacy_note": "Your data never leaves this browser",
+  "profile.xp_earned": "Earned",
+  "profile.xp_to_next": "XP to Level"
 }
