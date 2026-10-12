@@ -33,7 +33,7 @@ export function animateXPProgress(
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const clampPct = (p: number): number => Math.max(0, Math.min(100, p));
-  const fmtXP = (x: number): string => Math.round(x).toLocaleString('en-US');
+  const fmtXP = (x: number): string => Math.round(x).toLocaleString();
 
   function apply(pct: number, xp: number): void {
     if (fill) fill.style.width = `${clampPct(pct)}%`;

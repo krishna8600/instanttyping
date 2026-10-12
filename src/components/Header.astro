@@ -253,7 +253,7 @@ const navItems = [
       <!-- Achievements Row -->
       <div class="space-y-1.5 pt-1 border-t border-white/10">
         <div class="flex items-center justify-between text-[11px] font-mono text-[#A1A1A6]">
-          <span>Launch Achievements</span>
+          <span data-i18n="header.launch_achievements">Launch Achievements</span>
           <span id="popover-achievements-count">0 / 8</span>
         </div>
         <div id="popover-achievements-list" class="grid grid-cols-4 gap-1.5 py-1">
@@ -262,7 +262,7 @@ const navItems = [
       </div>
 
       <!-- Footnote -->
-      <div class="pt-0.5 text-[10px] text-center text-[#86868B] font-mono">
+      <div class="pt-0.5 text-[10px] text-center text-[#86868B] font-mono" data-i18n="profile.privacy_note">
         Your data never leaves this browser
       </div>
       <div id="popover-wipe-slot" class="pt-2 border-t border-white/10 flex justify-center w-full"></div>
@@ -1010,33 +1010,41 @@ const navItems = [
 
     // Mount confirm-morph for Delete my data in popover
     const wipeSlot = document.getElementById('popover-wipe-slot');
-    if (wipeSlot && !wipeSlot.querySelector('.cmorph')) {
-      wipeSlot.innerHTML = '';
+    if (wipeSlot) {
       (async () => {
         try {
           const { createConfirmMorph } = await import('../scripts/confirm-morph');
           const { deleteProfileData } = await import('../scripts/profile');
           const { notify } = await import('../scripts/notify');
-          const morph = createConfirmMorph({
-            idleLabel: 'Delete my data',
-            confirmText: 'Delete everything? Cannot be undone.',
-            yesLabel: 'Yes, delete',
-            noLabel: 'Keep',
-            doneLabel: 'Deleted',
-            className: 'text-xs',
-            onConfirm: () => {
-              const keys = [];
-              for (let i = 0; i < localStorage.length; i++) {
-                const k = localStorage.key(i);
-                if (k && (k.startsWith('ptt_') || k.startsWith('it_') || k.startsWith('gk'))) keys.push(k);
-              }
-              keys.forEach(k => localStorage.removeItem(k));
-              deleteProfileData();
-              notify({ title: 'Data Deleted', description: 'All local typing data has been wiped.', icon: 'check' });
-              setTimeout(() => location.reload(), 600);
-            },
-          });
-          wipeSlot.appendChild(morph);
+          const { t } = await import('../i18n');
+
+          function renderPopoverWipe() {
+            if (!wipeSlot) return;
+            wipeSlot.innerHTML = '';
+            const morph = createConfirmMorph({
+              idleLabel: t('privacy.delete_data'),
+              confirmText: t('privacy.confirm_prompt'),
+              yesLabel: t('privacy.confirm_yes'),
+              noLabel: t('privacy.confirm_no'),
+              doneLabel: t('privacy.confirm_done'),
+              className: 'text-xs',
+              onConfirm: () => {
+                const keys = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                  const k = localStorage.key(i);
+                  if (k && (k.startsWith('ptt_') || k.startsWith('it_') || k.startsWith('gk'))) keys.push(k);
+                }
+                keys.forEach(k => localStorage.removeItem(k));
+                deleteProfileData();
+                notify({ title: t('privacy.deleted_title'), description: t('privacy.deleted_desc'), icon: 'check' });
+                setTimeout(() => location.reload(), 600);
+              },
+            });
+            wipeSlot.appendChild(morph);
+          }
+
+          renderPopoverWipe();
+          window.addEventListener('instanttyping:languagechange', renderPopoverWipe);
         } catch (e) {
           console.error('Failed to initialize confirm morph:', e);
         }

@@ -14,6 +14,8 @@
  * the grid exposes a summary label for screen readers.
  */
 
+import { t, type SupportedLanguage } from '../i18n';
+
 export interface HeatmapDay {
   /** ISO date 'YYYY-MM-DD'. */
   date: string;
@@ -26,10 +28,11 @@ export interface HeatmapOptions {
   weeks?: number;
   /** Count that maps to the darkest step; defaults to the peak in the data. */
   max?: number;
+  lang?: SupportedLanguage;
 }
 
 export function renderHeatmap(el: HTMLElement, days: HeatmapDay[], opts: HeatmapOptions = {}): void {
-  const { weeks = 26, max } = opts;
+  const { weeks = 26, max, lang = 'en' } = opts;
   const slice = days.slice(-weeks * 7);
 
   const peak = max ?? Math.max(1, ...slice.map((d) => d.count));
@@ -38,7 +41,7 @@ export function renderHeatmap(el: HTMLElement, days: HeatmapDay[], opts: Heatmap
   el.classList.add('hmap');
   el.textContent = '';
   el.setAttribute('role', 'img');
-  el.setAttribute('aria-label', `${active} active days in the last ${weeks} weeks`);
+  el.setAttribute('aria-label', t('profile.heatmap_aria', lang, { active, weeks }) || `${active} active days in the last ${weeks} weeks`);
 
   slice.forEach((d, i) => {
     const c = document.createElement('span');
@@ -49,8 +52,10 @@ export function renderHeatmap(el: HTMLElement, days: HeatmapDay[], opts: Heatmap
     const date = new Date(`${d.date}T00:00:00`);
     const dateStr = Number.isNaN(date.getTime())
       ? d.date
-      : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-    c.title = `${d.count} test${d.count === 1 ? '' : 's'} on ${dateStr}`;
+      : date.toLocaleDateString(lang, { month: 'short', day: 'numeric', year: 'numeric' });
+    const tooltipKey = d.count === 1 ? 'profile.heatmap_tooltip_single' : 'profile.heatmap_tooltip';
+    c.title = t(tooltipKey, lang, { count: d.count, date: dateStr }) || `${d.count} test${d.count === 1 ? '' : 's'} on ${dateStr}`;
     el.appendChild(c);
   });
 }
+

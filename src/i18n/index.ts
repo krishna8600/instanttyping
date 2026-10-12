@@ -53,16 +53,32 @@ export function getLanguage(): SupportedLanguage {
   return currentLanguage;
 }
 
-export function t(key: string, lang: SupportedLanguage = getLanguage()): string {
+export function t(
+  key: string,
+  langOrParams?: SupportedLanguage | Record<string, string | number>,
+  maybeParams?: Record<string, string | number>
+): string {
+  let lang: SupportedLanguage;
+  let params: Record<string, string | number> | undefined;
+
+  if (typeof langOrParams === "string") {
+    lang = langOrParams;
+    params = maybeParams;
+  } else {
+    lang = getLanguage();
+    params = langOrParams;
+  }
+
   const dict = DICTIONARIES[lang] || DICTIONARIES[DEFAULT_LANGUAGE];
-  if (dict && dict[key]) {
-    return dict[key];
+  let text = (dict && dict[key]) ?? (DICTIONARIES.en && DICTIONARIES.en[key]) ?? key;
+
+  if (params && typeof text === "string") {
+    for (const [k, v] of Object.entries(params)) {
+      text = text.replaceAll(`{${k}}`, String(v));
+    }
   }
-  // Fallback to English, never blank
-  if (DICTIONARIES.en && DICTIONARIES.en[key]) {
-    return DICTIONARIES.en[key];
-  }
-  return key;
+
+  return text;
 }
 
 export function updateDOM(lang: SupportedLanguage = getLanguage()) {

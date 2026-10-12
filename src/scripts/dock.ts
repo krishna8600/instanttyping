@@ -75,14 +75,20 @@ const CSS = `
 .it-dock-icon.cpb-button .cpb-icon svg { width: 22px; height: 22px; }
 .it-dock-icon::after {
   content: attr(data-label);
-  position: absolute; bottom: calc(100% + 12px); left: 50%; transform: translateX(-50%) translateY(4px);
+  position: absolute; bottom: calc(100% + 8px); left: 50%;
+  transform: translateX(-50%) translateY(4px) scale(calc(1 / var(--dock-scale, 1)));
+  transform-origin: bottom center;
   white-space: nowrap; font-size: 12px; font-weight: 600;
-  padding: 6px 10px; border-radius: 999px;
+  padding: 5px 10px; border-radius: 999px;
   background: #1d1d1f; color: #f5f5f7;
   opacity: 0; pointer-events: none; transition: opacity .15s ease, transform .15s ease;
+  z-index: 50;
 }
 .dark .it-dock-icon::after, [data-theme="dark"] .it-dock-icon::after { background: #f5f5f7; color: #1d1d1f; }
-.it-dock-icon:hover::after, .it-dock-icon:focus-visible::after { opacity: 1; transform: translateX(-50%) translateY(0); }
+.it-dock-icon:hover::after, .it-dock-icon:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(calc(1 / var(--dock-scale, 1)));
+}
 @media (prefers-reduced-motion: reduce) {
   .it-dock-icon { transition: none; }
 }
@@ -122,7 +128,6 @@ export function createDock(container: HTMLElement, items: DockItem[]): () => voi
       b.classList.add('it-dock-icon');
       b.dataset.label = item.label;
       if (!b.getAttribute('aria-label')) b.setAttribute('aria-label', item.label);
-      if (!b.getAttribute('title')) b.setAttribute('title', item.label);
       if (item.id) b.id = item.id;
       if (item.onClick) b.addEventListener('click', item.onClick);
     } else {
@@ -131,7 +136,6 @@ export function createDock(container: HTMLElement, items: DockItem[]): () => voi
       b.className = 'it-dock-icon';
       b.dataset.label = item.label;
       b.setAttribute('aria-label', item.label);
-      b.setAttribute('title', item.label);
       if (item.id) b.id = item.id;
       b.innerHTML = `<svg viewBox="0 0 24 24" aria-hidden="true">${ICON_SVGS[item.icon || 'restart']}</svg>`;
       if (item.onClick) b.addEventListener('click', item.onClick);
@@ -154,6 +158,7 @@ export function createDock(container: HTMLElement, items: DockItem[]): () => voi
     for (const el of iconEls) {
       if (lastX < 0) {
         el.style.transform = '';
+        el.style.removeProperty('--dock-scale');
         continue;
       }
       const r = el.getBoundingClientRect();
@@ -162,7 +167,13 @@ export function createDock(container: HTMLElement, items: DockItem[]): () => voi
       const t = Math.max(0, 1 - d / RANGE);
       // Cosine falloff: 1 at cursor, easing to 0 at RANGE — the macOS curve.
       const s = 1 + (MAX_SCALE - 1) * Math.cos((1 - t) * Math.PI / 2);
-      el.style.transform = s > 1.01 ? `scale(${s.toFixed(3)}) translateY(${(-(s - 1) * 14).toFixed(1)}px)` : '';
+      if (s > 1.01) {
+        el.style.transform = `scale(${s.toFixed(3)}) translateY(${(-(s - 1) * 14).toFixed(1)}px)`;
+        el.style.setProperty('--dock-scale', s.toFixed(3));
+      } else {
+        el.style.transform = '';
+        el.style.removeProperty('--dock-scale');
+      }
     }
   };
 

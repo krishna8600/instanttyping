@@ -8,14 +8,14 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
 <Layout title={title} description={description} canonicalPath="/profile">
   <main class="max-w-3xl mx-auto px-4 py-10">
     <div id="profile-empty" class="hidden text-center py-16">
-      <h1 class="text-3xl font-bold mb-3">Your Typing Profile</h1>
-      <p class="text-neutral-500 dark:text-neutral-400 mb-6">Complete a typing test to start earning XP, building your streak and unlocking achievements.</p>
-      <a href="/" class="inline-block px-6 py-3 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-sm font-semibold">Take your first test</a>
+      <h1 class="text-3xl font-bold mb-3" data-i18n="profile.empty_title">Your Typing Profile</h1>
+      <p class="text-neutral-500 dark:text-neutral-400 mb-6" data-i18n="profile.empty_desc">Complete a typing test to start earning XP, building your streak and unlocking achievements.</p>
+      <a href="/" class="inline-block px-6 py-3 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-sm font-semibold" data-i18n="profile.empty_cta">Take your first test</a>
     </div>
 
     <div id="profile-content" class="hidden">
       <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-bold">Your Profile</h1>
+        <h1 class="text-3xl font-bold" data-i18n="profile.heading">Your Profile</h1>
         <div id="profile-level-badge" class="px-4 py-2 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-xs font-semibold"></div>
       </div>
 
@@ -26,7 +26,7 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
           <span id="profile-xp-next" class="text-neutral-500"></span>
         </div>
         <div class="xpwrap">
-          <div class="xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress to next level">
+          <div class="xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progress to next level" data-i18n-aria-label="profile.aria_xp_progress">
             <div id="profile-xp-bar" class="xpbar-fill"></div>
           </div>
           <div class="xpmeta mt-2"><span class="xpbar-num">0</span> XP</div>
@@ -37,38 +37,38 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
       <section class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
         <div class="rounded-2xl border border-neutral-200 dark:border-neutral-800 p-4 text-center">
           <div id="stat-tests" class="text-2xl font-bold">–</div>
-          <div class="text-xs text-neutral-500 mt-1">Tests</div>
+          <div class="text-xs text-neutral-500 mt-1" data-i18n="profile.stat_tests">Tests</div>
         </div>
         <div class="rounded-2xl border border-neutral-200 dark:border-neutral-800 p-4 text-center">
           <div id="stat-wpm" class="text-2xl font-bold">–</div>
-          <div class="text-xs text-neutral-500 mt-1">Best WPM</div>
+          <div class="text-xs text-neutral-500 mt-1" data-i18n="profile.stat_best_wpm">Best WPM</div>
         </div>
         <div class="rounded-2xl border border-neutral-200 dark:border-neutral-800 p-4 text-center">
           <div id="stat-acc" class="text-2xl font-bold">–</div>
-          <div class="text-xs text-neutral-500 mt-1">Best accuracy</div>
+          <div class="text-xs text-neutral-500 mt-1" data-i18n="profile.stat_best_accuracy">Best accuracy</div>
         </div>
         <div class="rounded-2xl border border-neutral-200 dark:border-neutral-800 p-4 text-center">
           <div id="stat-time" class="text-2xl font-bold">–</div>
-          <div class="text-xs text-neutral-500 mt-1">Time typed</div>
+          <div class="text-xs text-neutral-500 mt-1" data-i18n="profile.stat_time_typed">Time typed</div>
         </div>
       </section>
 
       <!-- Streak -->
       <section class="rounded-2xl border border-neutral-200 dark:border-neutral-800 p-5 mb-4">
-        <h2 class="font-semibold mb-3">🔥 Streak</h2>
+        <h2 class="font-semibold mb-3">🔥 <span data-i18n="profile.streak_heading">Streak</span></h2>
         <div class="flex gap-6 text-sm">
-          <div><span id="streak-current" class="text-xl font-bold">–</span> <span class="text-neutral-500">day streak</span></div>
-          <div><span id="streak-longest" class="text-xl font-bold">–</span> <span class="text-neutral-500">longest</span></div>
-          <div><span id="streak-freeze" class="text-xl font-bold">–</span> <span class="text-neutral-500">freeze left</span></div>
+          <div><span id="streak-current" class="text-xl font-bold">–</span> <span class="text-neutral-500" data-i18n="results.day_streak">day streak</span></div>
+          <div><span id="streak-longest" class="text-xl font-bold">–</span> <span class="text-neutral-500" data-i18n="profile.streak_longest">longest</span></div>
+          <div><span id="streak-freeze" class="text-xl font-bold">–</span> <span class="text-neutral-500" data-i18n="profile.streak_freeze_left">freeze left</span></div>
         </div>
-        <p class="text-xs text-neutral-500 mt-3">Streaks that survive real life — one freeze per week saves a missed day automatically.</p>
+        <p class="text-xs text-neutral-500 mt-3" data-i18n="profile.streak_helper">Streaks that survive real life — one freeze per week saves a missed day automatically.</p>
       </section>
 
       <!-- Calendar Heatmap -->
       <section class="rounded-2xl border border-neutral-200 dark:border-neutral-800 p-5 mb-4">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="font-semibold">Practice Calendar</h2>
-          <span class="text-xs text-neutral-500">Last 26 weeks</span>
+          <h2 class="font-semibold" data-i18n="profile.cal_heading">Practice Calendar</h2>
+          <span class="text-xs text-neutral-500" data-i18n="profile.cal_weeks">Last 26 weeks</span>
         </div>
         <div class="overflow-x-auto pb-1">
           <div id="practice-map"></div>
@@ -77,17 +77,17 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
 
       <!-- Achievements -->
       <section class="rounded-2xl border border-neutral-200 dark:border-neutral-800 p-5 mb-4">
-        <h2 class="font-semibold mb-3">🏆 Achievements <span id="ach-count" class="text-neutral-500 font-normal text-sm"></span></h2>
+        <h2 class="font-semibold mb-3">🏆 <span data-i18n="profile.ach_heading">Achievements</span> <span id="ach-count" class="text-neutral-500 font-normal text-sm"></span></h2>
         <div id="ach-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
       </section>
 
       <!-- XP history -->
       <section class="rounded-2xl border border-neutral-200 dark:border-neutral-800 p-5 mb-4">
-        <h2 class="font-semibold mb-3">Recent XP</h2>
+        <h2 class="font-semibold mb-3" data-i18n="profile.recent_xp">Recent XP</h2>
         <div id="xp-history" class="text-sm space-y-2"></div>
       </section>
 
-      <p class="text-xs text-neutral-500 text-center">Your data never leaves this browser. Use “Delete my data” on the homepage to wipe it.</p>
+      <p class="text-xs text-neutral-500 text-center" data-i18n="profile.footer_wipe_note">Your data never leaves this browser. Use “Delete my data” on the homepage to wipe it.</p>
     </div>
   </main>
 
@@ -95,6 +95,7 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
     import { animateXPProgress } from '../scripts/xp-progress';
     import { renderHeatmap } from '../scripts/heatmap';
     import { getProfileHeatmapDays } from '../scripts/profile';
+    import { t, getLanguage, updateDOM, type SupportedLanguage } from '../i18n';
 
     (function () {
       var ACHIEVEMENTS = [
@@ -129,93 +130,150 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
         return sec + 's';
       }
 
-      function fmtDate(iso) {
-        try { return new Date(iso).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }); }
+      function fmtDate(iso, lang) {
+        try { return new Date(iso).toLocaleDateString(lang || undefined, { month: 'short', day: 'numeric', year: 'numeric' }); }
         catch (e) { return ''; }
       }
 
-      var p = loadProfile();
-      var emptyEl = document.getElementById('profile-empty');
-      var contentEl = document.getElementById('profile-content');
+      function render(lang?: SupportedLanguage) {
+        var currentLang = lang || getLanguage();
+        updateDOM(currentLang);
 
-      if (!p || !(p.stats && p.stats.testsCompleted > 0)) {
-        emptyEl.classList.remove('hidden');
-        return;
+        var p = loadProfile();
+        var emptyEl = document.getElementById('profile-empty');
+        var contentEl = document.getElementById('profile-content');
+
+        if (!p || !(p.stats && p.stats.testsCompleted > 0)) {
+          emptyEl?.classList.remove('hidden');
+          return;
+        }
+        contentEl?.classList.remove('hidden');
+
+        var xp = p.xp || 0;
+        var level = levelForXp(xp);
+        var base = xpForLevel(level);
+        var next = xpForLevel(level + 1);
+        var pct = next > base ? Math.min(100, Math.round(((xp - base) / (next - base)) * 100)) : 100;
+
+        var lvlBadge = document.getElementById('profile-level-badge');
+        if (lvlBadge) lvlBadge.textContent = t('results.xp_level', currentLang, { level: level });
+        
+        var xpTotalEl = document.getElementById('profile-xp-total');
+        if (xpTotalEl) xpTotalEl.textContent = xp.toLocaleString(currentLang) + ' XP';
+        
+        var xpNextEl = document.getElementById('profile-xp-next');
+        if (xpNextEl) xpNextEl.textContent = t('profile.xp_needed', currentLang, { xp: (next - xp).toLocaleString(currentLang), level: (level + 1) });
+        
+        var xpWrap = document.querySelector<HTMLElement>('.xpwrap');
+        if (xpWrap) {
+          animateXPProgress(xpWrap, { pct: 0, xp: 0 }, { pct: pct, xp: xp });
+        } else {
+          var xpBar = document.getElementById('profile-xp-bar');
+          if (xpBar) xpBar.style.width = pct + '%';
+        }
+
+        var statTests = document.getElementById('stat-tests');
+        if (statTests) statTests.textContent = (p.stats.testsCompleted || 0).toLocaleString(currentLang);
+        
+        var statWpm = document.getElementById('stat-wpm');
+        if (statWpm) statWpm.textContent = String(p.stats.bestWpm || '–');
+        
+        var statAcc = document.getElementById('stat-acc');
+        if (statAcc) statAcc.textContent = p.stats.bestAccuracy != null ? Math.round(p.stats.bestAccuracy) + '%' : '–';
+        
+        var statTime = document.getElementById('stat-time');
+        if (statTime) statTime.textContent = fmtTime(p.stats.totalSecondsTyped);
+
+        var st = p.streak || {};
+        var streakCurrent = document.getElementById('streak-current');
+        if (streakCurrent) streakCurrent.textContent = String(st.current || 0);
+        
+        var streakLongest = document.getElementById('streak-longest');
+        if (streakLongest) streakLongest.textContent = String(st.longest || 0);
+        
+        var streakFreeze = document.getElementById('streak-freeze');
+        if (streakFreeze) streakFreeze.textContent = String(st.freezesAvailable != null ? st.freezesAvailable : 1);
+
+        var mapEl = document.getElementById('practice-map');
+        if (mapEl) {
+          mapEl.textContent = '';
+          var days = getProfileHeatmapDays(p, 26);
+          renderHeatmap(mapEl, days, { weeks: 26, lang: currentLang });
+        }
+
+        var unlocked = p.achievements || {};
+        var unlockedCount = 0;
+        var grid = document.getElementById('ach-grid');
+        if (grid) {
+          grid.innerHTML = '';
+          ACHIEVEMENTS.forEach(function (a) {
+            var ts = unlocked[a.id];
+            var isU = !!ts;
+            if (isU) unlockedCount++;
+            var tierColor = a.tier === 'Epic' ? 'text-violet-500' : a.tier === 'Rare' ? 'text-[#0072F5]' : 'text-neutral-500';
+            var keyId = a.id.replace(/-/g, '_');
+            var localizedName = t('achievement.' + keyId + '.name', currentLang) || a.name;
+            var localizedDesc = t('achievement.' + keyId + '.desc', currentLang) || a.desc;
+            var localizedTier = t('tier.' + a.tier.toLowerCase(), currentLang) || a.tier;
+
+            var card = document.createElement('div');
+            card.className = 'rounded-xl border p-3 ' + (isU
+              ? 'border-neutral-300 dark:border-neutral-700'
+              : 'border-neutral-200 dark:border-neutral-800 opacity-50');
+            var unlockedHtml = isU ? '<div class="text-[11px] text-neutral-400 mt-1">' + t('achievement.unlocked', currentLang, { date: fmtDate(ts, currentLang) }) + '</div>' : '';
+            card.innerHTML =
+              '<div class="flex justify-between items-start">' +
+                '<div class="font-medium text-sm">' + (isU ? '🏆 ' : '') + localizedName + '</div>' +
+                '<div class="text-[10px] uppercase tracking-wide ' + tierColor + '">' + localizedTier + '</div>' +
+              '</div>' +
+              '<div class="text-xs text-neutral-500 mt-1">' + localizedDesc + '</div>' +
+              unlockedHtml;
+            grid.appendChild(card);
+          });
+        }
+        var achCountEl = document.getElementById('ach-count');
+        if (achCountEl) achCountEl.textContent = unlockedCount + ' / ' + ACHIEVEMENTS.length;
+
+        var hist = document.getElementById('xp-history');
+        if (hist) {
+          var ledger = (p.xpLedger || []).slice(-10).reverse();
+          if (!ledger.length) {
+            hist.innerHTML = '<p class="text-neutral-500">' + t('profile.no_xp', currentLang) + '</p>';
+          } else {
+            hist.innerHTML = '';
+            ledger.forEach(function (e) {
+              var parts = (e.bonuses || []).map(function (b) {
+                if (b.label === "Personal best!") {
+                  return t("results.xp_bonus_pb", currentLang, { amount: b.amount });
+                } else if (b.label === "Cleaner than your average") {
+                  return t("results.xp_bonus_cleaner", currentLang, { amount: b.amount });
+                } else if (b.label === "Daily warmup") {
+                  return t("results.xp_bonus_warmup", currentLang, { amount: b.amount });
+                } else if (b.label.includes("streak")) {
+                  var days = b.label.match(/\d+/)?.[0] || "1";
+                  return t("results.xp_bonus_streak", currentLang, { days: days, amount: b.amount });
+                }
+                return b.label + ' +' + b.amount;
+              });
+              var bonusTxt = parts.join(' · ');
+              var row = document.createElement('div');
+              row.className = 'flex justify-between border-b border-neutral-100 dark:border-neutral-800 pb-2';
+              row.innerHTML =
+                '<div><span class="font-medium">+' + (e.total || 0) + ' XP</span>' +
+                (bonusTxt ? '<span class="text-neutral-500"> — ' + bonusTxt + '</span>' : '') + '</div>' +
+                '<div class="text-neutral-400 text-xs">' + fmtDate(e.at, currentLang) + '</div>';
+              hist.appendChild(row);
+            });
+          }
+        }
       }
-      contentEl.classList.remove('hidden');
 
-      var xp = p.xp || 0;
-      var level = levelForXp(xp);
-      var base = xpForLevel(level);
-      var next = xpForLevel(level + 1);
-      var pct = next > base ? Math.min(100, Math.round(((xp - base) / (next - base)) * 100)) : 100;
+      render();
 
-      document.getElementById('profile-level-badge').textContent = 'Level ' + level;
-      document.getElementById('profile-xp-total').textContent = xp.toLocaleString() + ' XP';
-      document.getElementById('profile-xp-next').textContent = (next - xp).toLocaleString() + ' XP to Level ' + (level + 1);
-      
-      var xpWrap = document.querySelector<HTMLElement>('.xpwrap');
-      if (xpWrap) {
-        animateXPProgress(xpWrap, { pct: 0, xp: 0 }, { pct: pct, xp: xp });
-      } else {
-        document.getElementById('profile-xp-bar').style.width = pct + '%';
-      }
-
-      document.getElementById('stat-tests').textContent = (p.stats.testsCompleted || 0).toLocaleString();
-      document.getElementById('stat-wpm').textContent = p.stats.bestWpm || '–';
-      document.getElementById('stat-acc').textContent = p.stats.bestAccuracy != null ? Math.round(p.stats.bestAccuracy) + '%' : '–';
-      document.getElementById('stat-time').textContent = fmtTime(p.stats.totalSecondsTyped);
-
-      var st = p.streak || {};
-      document.getElementById('streak-current').textContent = st.current || 0;
-      document.getElementById('streak-longest').textContent = st.longest || 0;
-      document.getElementById('streak-freeze').textContent = st.freezesAvailable != null ? st.freezesAvailable : 1;
-
-      var mapEl = document.getElementById('practice-map');
-      if (mapEl) {
-        var days = getProfileHeatmapDays(p, 26);
-        renderHeatmap(mapEl, days, { weeks: 26 });
-      }
-
-      var unlocked = p.achievements || {};
-      var unlockedCount = 0;
-      var grid = document.getElementById('ach-grid');
-      ACHIEVEMENTS.forEach(function (a) {
-        var ts = unlocked[a.id];
-        var isU = !!ts;
-        if (isU) unlockedCount++;
-        var tierColor = a.tier === 'Epic' ? 'text-violet-500' : a.tier === 'Rare' ? 'text-[#0072F5]' : 'text-neutral-500';
-        var card = document.createElement('div');
-        card.className = 'rounded-xl border p-3 ' + (isU
-          ? 'border-neutral-300 dark:border-neutral-700'
-          : 'border-neutral-200 dark:border-neutral-800 opacity-50');
-        card.innerHTML =
-          '<div class="flex justify-between items-start">' +
-            '<div class="font-medium text-sm">' + (isU ? '🏆 ' : '') + a.name + '</div>' +
-            '<div class="text-[10px] uppercase tracking-wide ' + tierColor + '">' + a.tier + '</div>' +
-          '</div>' +
-          '<div class="text-xs text-neutral-500 mt-1">' + a.desc + '</div>' +
-          (isU ? '<div class="text-[11px] text-neutral-400 mt-1">Unlocked ' + fmtDate(ts) + '</div>' : '');
-        grid.appendChild(card);
+      window.addEventListener('instanttyping:languagechange', function (e: any) {
+        var lang = e.detail && e.detail.language;
+        render(lang);
       });
-      document.getElementById('ach-count').textContent = unlockedCount + ' / ' + ACHIEVEMENTS.length;
-
-      var hist = document.getElementById('xp-history');
-      var ledger = (p.xpLedger || []).slice(-10).reverse();
-      if (!ledger.length) {
-        hist.innerHTML = '<p class="text-neutral-500">No XP earned yet.</p>';
-      } else {
-        ledger.forEach(function (e) {
-          var bonusTxt = (e.bonuses || []).map(function (b) { return b.label + ' +' + b.amount; }).join(' · ');
-          var row = document.createElement('div');
-          row.className = 'flex justify-between border-b border-neutral-100 dark:border-neutral-800 pb-2';
-          row.innerHTML =
-            '<div><span class="font-medium">+' + (e.total || 0) + ' XP</span>' +
-            (bonusTxt ? '<span class="text-neutral-500"> — ' + bonusTxt + '</span>' : '') + '</div>' +
-            '<div class="text-neutral-400 text-xs">' + fmtDate(e.at) + '</div>';
-          hist.appendChild(row);
-        });
-      }
     })();
   </script>
 </Layout>

@@ -585,7 +585,7 @@ const {
         <div class="flex items-center gap-2">
           <span class="text-base" aria-hidden="true">🔥</span>
           <span class="font-semibold" id="res-streak">0</span>
-          <span class="text-xs uppercase tracking-wide font-medium">day streak</span>
+          <span class="text-xs uppercase tracking-wide font-medium" data-i18n="results.day_streak">day streak</span>
         </div>
         <div class="flex items-center gap-2">
           <span class="font-semibold" id="res-level-title">Novice</span>
@@ -595,7 +595,7 @@ const {
           <span class="text-xs font-mono" id="res-xp-text">+0 XP</span>
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-xs uppercase tracking-wide font-medium">Today</span>
+          <span class="text-xs uppercase tracking-wide font-medium" data-i18n="results.today">Today</span>
           <span class="font-semibold font-mono" id="res-daily">0/3</span>
         </div>
       </div>
@@ -608,7 +608,7 @@ const {
         <img id="roast-img" class="absolute inset-0 w-full h-full object-cover hidden" src="/images/mascot-roast.webp" alt="Roast Mascot" />
       </div>
       <div class="flex-1 space-y-2 text-center sm:text-left">
-        <h3 class="text-sm font-semibold uppercase tracking-wider text-[#FF453A]">Roast Mode</h3>
+        <h3 class="text-sm font-semibold uppercase tracking-wider text-[#FF453A]" data-i18n="results.roast_title">Roast Mode</h3>
         <p id="roast-text" class="text-lg sm:text-xl font-medium italic text-ds-text-primary leading-snug">"Are you typing with your elbows?"</p>
       </div>
     </div>
@@ -776,21 +776,21 @@ const {
           style="letter-spacing:-0.02em"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="text-neutral-900 dark:text-neutral-100"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
-          <span>What's slowing you down</span>
+          <span data-i18n="results.coach_title">What's slowing you down</span>
         </h3>
-        <span id="coach-accuracy-tax-badge" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-neutral-100 dark:bg-white/10 text-neutral-700 dark:text-neutral-300">
+        <span id="coach-accuracy-tax-badge" class="text-xs font-mono font-medium px-2 py-0.5 rounded bg-neutral-100 dark:bg-white/10 text-neutral-700 dark:text-neutral-300" data-i18n="results.coach_tax_clean">
           Accuracy tax: 0 WPM
         </span>
       </div>
 
       <!-- Exactly 3 lines max of plain-language diagnosis -->
       <!-- Line 1: Named bottleneck in plain words -->
-      <p id="coach-bottleneck-line" class="text-sm font-medium text-neutral-900 dark:text-white leading-relaxed">
+      <p id="coach-bottleneck-line" class="text-sm font-medium text-neutral-900 dark:text-white leading-relaxed" data-i18n="results.coach_analyzing">
         Analyzing keystroke pacing...
       </p>
 
       <!-- Line 2: Diagnostic summary (slowest keys, hesitations vs wrong keys, accuracy tax) -->
-      <p id="coach-breakdown-line" class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed">
+      <p id="coach-breakdown-line" class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] leading-relaxed" data-i18n="results.coach_breakdown_clean">
         Slowest keys: None · Hesitations: 0 · Wrong keys: 0
       </p>
 
@@ -802,9 +802,9 @@ const {
           class="btn-secondary text-xs !py-1.5 !px-3 font-medium inline-flex items-center gap-1.5"
         >
           <Icon name="school" class="w-3.5 h-3.5" />
-          <span id="coach-drill-label">Practice problem keys</span>
+          <span id="coach-drill-label" data-i18n="results.coach_drill_practice">Practice problem keys</span>
         </button>
-        <span id="coach-drill-hint" class="text-[11px] text-[#86868B]">Targeted drill on your slowest keystrokes</span>
+        <span id="coach-drill-hint" class="text-[11px] text-[#86868B]" data-i18n="results.coach_drill_hint">Targeted drill on your slowest keystrokes</span>
       </div>
 
       <!-- Hidden container for existing weak-keys-list reference compatibility -->
@@ -816,9 +816,9 @@ const {
       <div class="flex items-baseline justify-between">
         <div class="flex items-baseline gap-2">
           <span id="xp-receipt-total" class="text-2xl sm:text-3xl font-bold font-mono tracking-tight text-[var(--text-primary)]">+0 XP</span>
-          <span class="text-xs font-mono text-[var(--text-secondary)] uppercase">Earned</span>
+          <span class="text-xs font-mono text-[var(--text-secondary)] uppercase" data-i18n="results.xp_earned">Earned</span>
         </div>
-        <div id="xp-receipt-level-tag" class="text-xs font-mono font-medium px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-white/10 text-[var(--text-primary)]">
+        <div id="xp-receipt-level-tag" class="text-xs font-mono font-medium px-2.5 py-0.5 rounded-full bg-neutral-100 dark:bg-white/10 text-[var(--text-primary)]" data-i18n="results.xp_level_default">
           Level 1
         </div>
       </div>
@@ -827,7 +827,7 @@ const {
       </div>
       <div class="space-y-1.5 pt-1">
         <div class="flex items-center justify-between text-[11px] font-mono text-[var(--text-secondary)]">
-          <span id="xp-receipt-progress-label">Level 1 · 100 XP to Level 2</span>
+          <span id="xp-receipt-progress-label" data-i18n="results.xp_progress_default">Level 1 · 100 XP to Level 2</span>
           <span id="xp-receipt-progress-percent">0%</span>
         </div>
         <div class="w-full h-1.5 rounded-full bg-neutral-200 dark:bg-white/10 overflow-hidden">
@@ -837,12 +837,12 @@ const {
     </div>
 
     <!-- 6. Personal Best Badge -->
-    <div id="personal-best-banner" class="hidden premium-card flex items-center justify-center gap-2 text-sm">
+    <div id="personal-best-banner" class="hidden premium-card flex items-center justify-center gap-2 text-sm mb-6 sm:mb-8">
       <span id="personal-best-label" class="font-semibold text-[#0072F5]"></span>
     </div>
 
-    <!-- 7. Actions Card: Dock replacing button row -->
-    <div id="results-dock" class="flex items-center justify-center py-2"></div>
+    <!-- 7. Actions Card: Dock replacing button row with generous top clearance -->
+    <div id="results-dock" class="flex items-center justify-center pt-14 pb-4 sm:pt-16 sm:pb-6"></div>
     <div
       class="hidden premium-card flex flex-col sm:flex-row items-center justify-center gap-3"
       aria-hidden="true"
@@ -906,9 +906,9 @@ const {
   
     <!-- Privacy: Delete my data -->
     <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-white/10 flex items-center justify-between">
-      <p class="text-xs text-neutral-500 dark:text-neutral-400">Your data never leaves this browser.</p>
+      <p class="text-xs text-neutral-500 dark:text-neutral-400" data-i18n="profile.privacy_note">Your data never leaves this browser.</p>
       <div id="results-wipe-slot">
-        <button id="delete-my-data" type="button" class="text-xs text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 underline underline-offset-2">
+        <button id="delete-my-data" type="button" class="text-xs text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 underline underline-offset-2" data-i18n="privacy.delete_data">
           Delete my data
         </button>
       </div>
@@ -917,14 +917,18 @@ const {
     (function() {
       const wipeSlot = document.getElementById('results-wipe-slot');
       if (wipeSlot) {
-        import('../scripts/confirm-morph').then(({ createConfirmMorph }) => {
-          import('../scripts/notify').then(({ notify }) => {
+        Promise.all([
+          import('../scripts/confirm-morph'),
+          import('../scripts/notify'),
+          import('../i18n')
+        ]).then(([{ createConfirmMorph }, { notify }, { t }]) => {
+          function renderWipeMorph() {
             const morph = createConfirmMorph({
-              idleLabel: 'Delete my data',
-              confirmText: 'Delete everything? Cannot be undone.',
-              yesLabel: 'Yes, delete',
-              noLabel: 'Keep',
-              doneLabel: 'Deleted',
+              idleLabel: t('privacy.delete_data'),
+              confirmText: t('privacy.confirm_prompt'),
+              yesLabel: t('privacy.confirm_yes'),
+              noLabel: t('privacy.confirm_no'),
+              doneLabel: t('privacy.confirm_done'),
               className: 'text-xs',
               onConfirm: () => {
                 const keys = [];
@@ -937,13 +941,15 @@ const {
                 try {
                   window.dispatchEvent(new CustomEvent('it-profile-updated'));
                 } catch {}
-                notify({ title: 'Data Deleted', description: 'All local typing data has been wiped.', icon: 'check' });
+                notify({ title: t('privacy.deleted_title'), description: t('privacy.deleted_desc'), icon: 'check' });
                 setTimeout(() => location.reload(), 600);
               },
             });
             wipeSlot.innerHTML = '';
             wipeSlot.appendChild(morph);
-          });
+          }
+          renderWipeMorph();
+          window.addEventListener('instanttyping:languagechange', renderWipeMorph);
         });
       }
     
@@ -1903,6 +1909,7 @@ const {
           durationSeconds: Math.round(totalTime),
           isDrill: !!(customMistakeWords && customMistakeWords.length > 0)
         });
+        (window as any).__lastProfileResult = lastProfileResult;
       } catch (e) {
         console.error("Failed to update profile after test:", e);
       }
@@ -1934,127 +1941,117 @@ const {
       dispatchNextChar(); // Emits char: null since testCompleted is true
     }
 
-    function showResults(summary: CompletedTestSummary, psych?: import("../scripts/progress").TestResult) {
-      updateDOM();
-      const bandEl = document.getElementById("res-band")!;
-      const rankEl = document.getElementById("res-rank-title")!;
-      bandEl.textContent = summary.rankTitle;
-      rankEl.textContent = summary.rankTitle;
-
-      const resNetWpmEl = document.getElementById("res-net-wpm")!;
-      animateCounter(resNetWpmEl, summary.netWpm, { duration: 1100 });
-      const resAccuracyEl = document.getElementById("res-accuracy")!;
-      animateCounter(resAccuracyEl, summary.accuracy, { duration: 1100 });
-      document.getElementById("res-raw-wpm")!.textContent = String(
-        summary.rawWpm,
-      );
-      document.getElementById("res-consistency")!.textContent =
-        `${summary.consistency}%`;
-      document.getElementById("res-correct-chars")!.textContent = String(
-        summary.correctChars,
-      );
-      document.getElementById("res-error-chars")!.textContent = String(
-        summary.incorrectChars,
-      );
-      document.getElementById("res-total-keystrokes")!.textContent = String(
-        summary.totalKeystrokes,
-      );
-      document.getElementById("res-time-elapsed")!.textContent =
-        `${Math.round(summary.elapsedSeconds)}s`;
-
-
-      // â”€â”€ Psychology engine UI â”€â”€
-      if (psych) {
-        const strip = document.getElementById("res-progress-strip");
-        if (strip) strip.classList.remove("hidden");
-        const prog = loadProgress();
-        const lvl = getLevel(prog.xp);
-        const daily = getDailyProgress();
-        document.getElementById("res-streak")!.textContent = String(psych.streak);
-        document.getElementById("res-level-title")!.textContent = lvl.title;
-        (document.getElementById("res-xp-bar")! as HTMLElement).style.width = `${Math.round(lvl.progress * 100)}%`;
-        document.getElementById("res-xp-text")!.textContent = `+${psych.xpGained} XP`;
-        document.getElementById("res-daily")!.textContent = `${daily.done}/${daily.goal}`;
-        const nudge = document.getElementById("res-psych-nudge");
-        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (psych.isNewPb) {
-          if (nudge) nudge.classList.remove("hidden");
-          if (nudge) nudge.innerHTML = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#0072F5]/10 text-[#0072F5] text-xs font-bold">New personal best</span>`;
-          if (!reduceMotion) {
-            resNetWpmEl.animate(
-              [{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }],
-              { duration: 300, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }
-            );
-          }
-        } else if (psych.nearMiss !== null) {
-          if (nudge) nudge.classList.remove("hidden");
-          if (nudge) nudge.innerHTML = `<span class="text-[#6E6E73] dark:text-[#A1A1A6]">${psych.nearMiss} WPM from your best â€” one more?</span>`;
-        } else {
-          if (nudge) nudge.classList.add("hidden");
+    function updateDockLabels(lang?: SupportedLanguage) {
+      const dockMap: Record<string, string> = {
+        "btn-dock-restart": "dock.try_again",
+        "btn-dock-next": "dock.next_test",
+        "btn-dock-target": "dock.train_mistakes",
+        "btn-dock-award": "dock.certificate",
+        "btn-dock-download": "dock.download_png",
+        "btn-dock-copy": "dock.copy_results",
+      };
+      for (const [id, key] of Object.entries(dockMap)) {
+        const el = document.getElementById(id);
+        if (el) {
+          const translated = t(key, lang);
+          el.dataset.label = translated;
+          el.setAttribute("aria-label", translated);
         }
       }
-      renderTimelineChart(secondBySecondWpm);
+    }
 
-      const weakKeysListEl = document.getElementById("weak-keys-list")!;
-      weakKeysListEl.innerHTML = "";
-      const activeKeyMistakes = summary.keyMistakes || keyMistakes;
-      const mistakesArr = Object.entries(activeKeyMistakes)
-        .map(([key, data]) => ({ key, errors: data.errors, total: data.total }))
-        .sort((a, b) => b.errors - a.errors)
-        .filter((item) => item.errors > 0);
+    function updateResultsDynamicContent(lang?: SupportedLanguage) {
+      if (lang) {
+        updateDOM(lang);
+      }
+      const activeSummary = lastCompletedSummary || (window as any).__lastTestSummary;
+      if (!activeSummary) {
+        const coachTaxBadge = document.getElementById("coach-accuracy-tax-badge");
+        const coachBottleneckLine = document.getElementById("coach-bottleneck-line");
+        const coachBreakdownLine = document.getElementById("coach-breakdown-line");
+        const coachDrillLabel = document.getElementById("coach-drill-label");
+        const coachDrillHint = document.getElementById("coach-drill-hint");
+        if (coachTaxBadge) coachTaxBadge.textContent = t("results.coach_tax_clean", lang);
+        if (coachBottleneckLine) coachBottleneckLine.textContent = t("results.coach_analyzing", lang);
+        if (coachBreakdownLine) coachBreakdownLine.textContent = t("results.coach_breakdown_clean", lang);
+        if (coachDrillLabel) coachDrillLabel.textContent = t("results.coach_drill_practice", lang);
+        if (coachDrillHint) coachDrillHint.textContent = t("results.coach_drill_hint", lang);
+        updateDockLabels(lang);
+        return;
+      }
 
-      if (mistakesArr.length > 0) {
-        const worstKey = mistakesArr[0];
-        const typoWord = worstKey.errors > 1 ? t("results.typos") : t("results.typo");
-        const remaining = mistakesArr.slice(1, 8);
-        
-        const worstDiv = document.createElement("div");
-        worstDiv.className = "mb-4 text-[#171717] dark:text-[#E5E5E5] text-[15px] font-medium tracking-tight flex items-center";
-        worstDiv.innerHTML = `
-          <span class="inline-flex items-center justify-center min-w-[28px] h-7 px-2 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border border-red-500/50 shadow-[0_0_12px_rgba(239,68,68,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_12px_rgba(239,68,68,0.4)] font-mono text-sm mr-2.5">${worstKey.key}</span>
-          <span>${t("results.weakest_key") || "is your weakest key"} &mdash; <span class="text-red-500 font-semibold">${worstKey.errors} ${typoWord}</span></span>
-        `;
-        weakKeysListEl.appendChild(worstDiv);
+      const bandEl = document.getElementById("res-band");
+      const rankEl = document.getElementById("res-rank-title");
+      if (bandEl && activeSummary.rankTitle) {
+        const locRank = t("rank." + activeSummary.rankTitle.toLowerCase().replace(/[^a-z0-9]/g, '_'), lang) || activeSummary.rankTitle;
+        bandEl.textContent = locRank;
+        if (rankEl) rankEl.textContent = locRank;
+      }
 
-        if (remaining.length > 0) {
-          const remContainer = document.createElement("div");
-          remContainer.className = "flex flex-wrap gap-2";
+      const weakKeysListEl = document.getElementById("weak-keys-list");
+      if (weakKeysListEl) {
+        weakKeysListEl.innerHTML = "";
+        const activeKeyMistakes = activeSummary.keyMistakes || keyMistakes;
+        const mistakesArr = Object.entries(activeKeyMistakes)
+          .map(([key, data]) => ({ key, errors: data.errors, total: data.total }))
+          .sort((a, b) => b.errors - a.errors)
+          .filter((item) => item.errors > 0);
+
+        if (mistakesArr.length > 0) {
+          const worstKey = mistakesArr[0];
+          const typoWord = worstKey.errors > 1 ? t("results.typos", lang) : t("results.typo", lang);
+          const remaining = mistakesArr.slice(1, 8);
           
-          const maxErrors = worstKey.errors;
-          remaining.forEach((item) => {
-            const intensity = item.errors / maxErrors;
-            const borderOpacity = 0.2 + (0.3 * intensity); 
-            const shadowOpacity = 0.1 + (0.3 * intensity);
-            const tWord = item.errors > 1 ? t("results.typos") : t("results.typo");
+          const worstDiv = document.createElement("div");
+          worstDiv.className = "mb-4 text-[#171717] dark:text-[#E5E5E5] text-[15px] font-medium tracking-tight flex items-center";
+          worstDiv.innerHTML = `
+            <span class="inline-flex items-center justify-center min-w-[28px] h-7 px-2 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border border-red-500/50 shadow-[0_0_12px_rgba(239,68,68,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_12px_rgba(239,68,68,0.4)] font-mono text-sm mr-2.5">${worstKey.key}</span>
+            <span>${t("results.weakest_key", lang) || "is your weakest key"} &mdash; <span class="text-red-500 font-semibold">${worstKey.errors} ${typoWord}</span></span>
+          `;
+          weakKeysListEl.appendChild(worstDiv);
+
+          if (remaining.length > 0) {
+            const remContainer = document.createElement("div");
+            remContainer.className = "flex flex-wrap gap-2";
             
-            const badge = document.createElement("div");
-            badge.className = "flex items-center gap-2 px-2.5 py-1.5 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]";
-            badge.style.borderColor = `rgba(239,68,68,${borderOpacity})`;
-            badge.style.boxShadow = `inset 0 1px 1px rgba(255,255,255,0.1), 0 0 ${4 + 6 * intensity}px rgba(239,68,68,${shadowOpacity})`;
-            badge.innerHTML = `
-              <span class="font-mono text-[13px] text-[#171717] dark:text-white">${item.key}</span>
-              <span class="text-[11px] text-[#86868B]">${item.errors} ${tWord}</span>
-            `;
-            remContainer.appendChild(badge);
-          });
-          weakKeysListEl.appendChild(remContainer);
+            const maxErrors = worstKey.errors;
+            remaining.forEach((item) => {
+              const intensity = item.errors / maxErrors;
+              const borderOpacity = 0.2 + (0.3 * intensity); 
+              const shadowOpacity = 0.1 + (0.3 * intensity);
+              const tWord = item.errors > 1 ? t("results.typos", lang) : t("results.typo", lang);
+              
+              const badge = document.createElement("div");
+              badge.className = "flex items-center gap-2 px-2.5 py-1.5 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]";
+              badge.style.borderColor = `rgba(239,68,68,${borderOpacity})`;
+              badge.style.boxShadow = `inset 0 1px 1px rgba(255,255,255,0.1), 0 0 ${4 + 6 * intensity}px rgba(239,68,68,${shadowOpacity})`;
+              badge.innerHTML = `
+                <span class="font-mono text-[13px] text-[#171717] dark:text-white">${item.key}</span>
+                <span class="text-[11px] text-[#86868B]">${item.errors} ${tWord}</span>
+              `;
+              remContainer.appendChild(badge);
+            });
+            weakKeysListEl.appendChild(remContainer);
+          }
+        } else {
+          weakKeysListEl.innerHTML =
+            `<span class="text-sm font-medium text-emerald-600">${t("results.flawless", lang)}</span>`;
         }
-      } else {
-        weakKeysListEl.innerHTML =
-          `<span class="text-sm font-medium text-emerald-600">${t("results.flawless")}</span>`;
       }
 
-      const activeMissedWords = summary.missedWords || missedWords;
+      const activeMissedWords = activeSummary.missedWords || missedWords;
       const uniqueMistakes = [...new Set(activeMissedWords)];
-      if (uniqueMistakes.length > 0) {
-        btnTrainMistakes.classList.remove("hidden");
-        btnTrainMistakes.classList.add("inline-flex");
-        const label = document.getElementById("train-label");
-        if (label)
-          label.textContent = `${t("results.train_mistakes")} (${uniqueMistakes.length})`;
-      } else {
-        btnTrainMistakes.classList.add("hidden");
-        btnTrainMistakes.classList.remove("inline-flex");
+      if (btnTrainMistakes) {
+        if (uniqueMistakes.length > 0) {
+          btnTrainMistakes.classList.remove("hidden");
+          btnTrainMistakes.classList.add("inline-flex");
+          const label = document.getElementById("train-label");
+          if (label)
+            label.textContent = `${t("results.train_mistakes", lang)} (${uniqueMistakes.length})`;
+        } else {
+          btnTrainMistakes.classList.add("hidden");
+          btnTrainMistakes.classList.remove("inline-flex");
+        }
       }
 
       // ── "What's slowing you down" Diagnosis Panel (Task 1) ──
@@ -2063,15 +2060,19 @@ const {
       const coachBreakdownLine = document.getElementById("coach-breakdown-line");
       const coachDrillBtn = document.getElementById("btn-coach-drill");
       const coachDrillLabel = document.getElementById("coach-drill-label");
-
-      const accuracyTax = Math.max(0, summary.rawWpm - summary.netWpm);
-      if (coachTaxBadge) {
-        coachTaxBadge.textContent = accuracyTax > 0 
-          ? `Accuracy tax: ${accuracyTax} WPM` 
-          : `Accuracy tax: 0 WPM (Clean)`;
+      const coachDrillHint = document.getElementById("coach-drill-hint");
+      if (coachDrillHint) {
+        coachDrillHint.textContent = t("results.coach_drill_hint", lang);
       }
 
-      const activeKeystrokes = summary.keystrokeLog || keystrokeLog;
+      const accuracyTax = Math.max(0, activeSummary.rawWpm - activeSummary.netWpm);
+      if (coachTaxBadge) {
+        coachTaxBadge.textContent = accuracyTax > 0 
+          ? t("results.coach_tax_wpm", lang, { tax: accuracyTax })
+          : t("results.coach_tax_clean", lang);
+      }
+
+      const activeKeystrokes = activeSummary.keystrokeLog || keystrokeLog;
       const validKeystrokes = activeKeystrokes.filter(k => k.deltaMs > 20 && k.deltaMs < 6000);
       let medianLatency = 250;
       if (validKeystrokes.length >= 4) {
@@ -2109,8 +2110,8 @@ const {
         }
       }
 
-      if (wrongKeyCount === 0 && summary.incorrectChars > 0) {
-        wrongKeyCount = summary.incorrectChars;
+      if (wrongKeyCount === 0 && activeSummary.incorrectChars > 0) {
+        wrongKeyCount = activeSummary.incorrectChars;
       }
 
       const slowestKeysArr = Object.entries(keyStats)
@@ -2124,6 +2125,12 @@ const {
         .sort((a, b) => b.avgMs - a.avgMs);
 
       const worstTransition = slowestTransitionsArr[0];
+      const activeKeyMistakes = activeSummary.keyMistakes || keyMistakes;
+      const mistakesArr = Object.entries(activeKeyMistakes)
+        .map(([key, data]) => ({ key, errors: data.errors, total: data.total }))
+        .sort((a, b) => b.errors - a.errors)
+        .filter((item) => item.errors > 0);
+
       const slowestKeyList = slowestKeysArr.length > 0 
         ? slowestKeysArr.slice(0, 3).map(k => k.key.toUpperCase())
         : (mistakesArr.length > 0 ? mistakesArr.slice(0, 3).map(m => m.key.toUpperCase()) : []);
@@ -2137,40 +2144,56 @@ const {
       let namedBottleneck = "";
       if (mistakesArr.length > 0) {
         const topErrorKey = mistakesArr[0];
-        const typoWord = topErrorKey.errors > 1 ? "typos" : "typo";
-        namedBottleneck = `your ${topErrorKey.key.toUpperCase()} key caused ${topErrorKey.errors} ${typoWord}${accuracyTax > 0 ? ` (accuracy tax: ${accuracyTax} WPM)` : ""}`;
-      } else if (worstTransition && worstTransition.avgMs > medianLatency * 1.3 && summary.netWpm > 0) {
+        if (topErrorKey.errors > 1) {
+          namedBottleneck = accuracyTax > 0
+            ? t("results.coach_bottleneck_typos_tax", lang, { key: topErrorKey.key.toUpperCase(), count: topErrorKey.errors, tax: accuracyTax })
+            : t("results.coach_bottleneck_typos", lang, { key: topErrorKey.key.toUpperCase(), count: topErrorKey.errors });
+        } else {
+          namedBottleneck = accuracyTax > 0
+            ? t("results.coach_bottleneck_typo_tax", lang, { key: topErrorKey.key.toUpperCase(), tax: accuracyTax })
+            : t("results.coach_bottleneck_typo", lang, { key: topErrorKey.key.toUpperCase() });
+        }
+      } else if (worstTransition && worstTransition.avgMs > medianLatency * 1.3 && activeSummary.netWpm > 0) {
         const delayPerKeystroke = Math.max(70, worstTransition.avgMs - medianLatency);
-        const estCostWpm = Math.max(2, Math.min(20, Math.round((delayPerKeystroke / 1000) * (summary.rawWpm || 50) * 0.35 * worstTransition.count)));
-        namedBottleneck = `your ${worstTransition.pair} transition costs ~${estCostWpm} WPM (${worstTransition.avgMs}ms avg pacing)`;
+        const estCostWpm = Math.max(2, Math.min(20, Math.round((delayPerKeystroke / 1000) * (activeSummary.rawWpm || 50) * 0.35 * worstTransition.count)));
+        namedBottleneck = t("results.coach_bottleneck_transition", lang, { pair: worstTransition.pair, wpm: estCostWpm, ms: worstTransition.avgMs });
       } else if (hesitationCount > 2) {
         const hesitationCost = Math.max(2, Math.round(hesitationCount * 1.2));
-        namedBottleneck = `hesitation pauses before finding keys cost ~${hesitationCost} WPM`;
+        namedBottleneck = t("results.coach_bottleneck_hesitations", lang, { wpm: hesitationCost });
       } else if (slowestKeysArr.length > 0 && slowestKeysArr[0].avgMs > 300) {
-        namedBottleneck = `reaching for ${slowestKeysArr[0].key.toUpperCase()} is your slowest motion (${slowestKeysArr[0].avgMs}ms)`;
+        namedBottleneck = t("results.coach_bottleneck_slow_key", lang, { key: slowestKeysArr[0].key.toUpperCase(), ms: slowestKeysArr[0].avgMs });
       } else if (accuracyTax > 0) {
-        namedBottleneck = `typos and corrections cost you ${accuracyTax} WPM in accuracy tax`;
+        namedBottleneck = t("results.coach_bottleneck_accuracy_tax", lang, { tax: accuracyTax });
       } else {
-        namedBottleneck = "steady pacing across all keystrokes with zero major bottlenecks";
+        namedBottleneck = t("results.coach_bottleneck_clean", lang);
       }
 
       if (coachBottleneckLine) {
-        coachBottleneckLine.innerHTML = `<span class="font-semibold text-neutral-900 dark:text-white">Bottleneck:</span> ${namedBottleneck}.`;
+        coachBottleneckLine.innerHTML = `<span class="font-semibold text-neutral-900 dark:text-white">${t("results.coach_bottleneck_prefix", lang)}</span> ${namedBottleneck}.`;
       }
 
       if (coachBreakdownLine) {
-        const slowKeysText = slowestKeyList.length > 0 ? slowestKeyList.join(", ") : "None";
-        coachBreakdownLine.textContent = `Slowest keys: ${slowKeysText} · Hesitations: ${hesitationCount} · Wrong keys: ${wrongKeyCount} · Accuracy tax: ${accuracyTax} WPM (Raw ${summary.rawWpm} → Net ${summary.netWpm})`;
+        const slowKeysText = slowestKeyList.length > 0 ? slowestKeyList.join(", ") : t("results.coach_none", lang);
+        coachBreakdownLine.textContent = t("results.coach_breakdown", lang, {
+          keys: slowKeysText,
+          hesitations: hesitationCount,
+          wrong: wrongKeyCount,
+          tax: accuracyTax,
+          raw: activeSummary.rawWpm,
+          net: activeSummary.netWpm
+        });
       }
 
       if (coachDrillBtn && coachDrillLabel) {
         if (uniqueMistakes.length > 0) {
-          coachDrillLabel.textContent = `Drill Mistakes (${uniqueMistakes.length} ${uniqueMistakes.length > 1 ? "words" : "word"})`;
+          coachDrillLabel.textContent = uniqueMistakes.length > 1
+            ? t("results.coach_drill_mistakes", lang, { count: uniqueMistakes.length })
+            : t("results.coach_drill_mistakes_singular", lang);
           coachDrillBtn.onclick = () => {
             btnTrainMistakes.click();
           };
         } else if (drillKeys.length > 0) {
-          coachDrillLabel.textContent = `Drill Problem Keys (${drillKeys.slice(0, 3).join(", ").toUpperCase()})`;
+          coachDrillLabel.textContent = t("results.coach_drill_problem_keys", lang, { keys: drillKeys.slice(0, 3).join(", ").toUpperCase() });
           coachDrillBtn.onclick = () => {
             const corpus = getSelectedCorpus();
             const targeted = corpus.filter(w => drillKeys.some(k => w.toLowerCase().includes(k)));
@@ -2179,7 +2202,7 @@ const {
             resetTest();
           };
         } else {
-          coachDrillLabel.textContent = "Practice Accuracy Drill";
+          coachDrillLabel.textContent = t("results.coach_drill_practice", lang);
           coachDrillBtn.onclick = () => {
             resetTest();
           };
@@ -2188,72 +2211,17 @@ const {
 
       // Personal best banner
       const pb = getPersonalBest();
-      const isNewBest = pb.totalTests <= 1 || summary.netWpm >= pb.highestWpm;
+      const isNewBest = pb.totalTests <= 1 || activeSummary.netWpm >= pb.highestWpm;
       if (personalBestBanner && personalBestLabel) {
         personalBestBanner.classList.remove("hidden");
         if (isNewBest && pb.totalTests > 1) {
-          personalBestLabel.textContent = `🏆 ${t("results.new_best")} — ${summary.netWpm} ${t("results.wpm_short")}`;
+          personalBestLabel.textContent = `🏆 ${t("results.new_best", lang)} — ${activeSummary.netWpm} ${t("results.wpm_short", lang)}`;
         } else if (pb.highestWpm > 0) {
-          personalBestLabel.textContent = `${t("results.best")}: ${pb.highestWpm} ${t("results.wpm_short")}`;
+          personalBestLabel.textContent = `${t("results.best", lang)}: ${pb.highestWpm} ${t("results.wpm_short", lang)}`;
           personalBestBanner.classList.remove("aurora-border");
         } else {
           personalBestBanner.classList.add("hidden");
         }
-      }
-
-      // Roast Mode Logic
-      if (roastModeEnabled && roastCard && roastText && roastVideo && roastImg) {
-        const roastQuotesLowWpm = [
-          t("roast.low_wpm_1"),
-          t("roast.low_wpm_2"),
-          t("roast.low_wpm_3"),
-          t("roast.low_wpm_4"),
-          t("roast.low_wpm_5"),
-          t("roast.low_wpm_6"),
-        ];
-        const roastQuotesLowAcc = [
-          t("roast.low_acc_1"),
-          t("roast.low_acc_2"),
-          t("roast.low_acc_3"),
-          t("roast.low_acc_4"),
-          t("roast.low_acc_5"),
-          t("roast.low_acc_6"),
-        ];
-        const roastQuotesGood = [
-          t("roast.good_1"),
-          t("roast.good_2"),
-          t("roast.good_3"),
-          t("roast.good_4"),
-          t("roast.good_5"),
-          t("roast.good_6"),
-        ];
-        
-        let roast = "";
-        if (summary.accuracy < 85) {
-          roast = roastQuotesLowAcc[Math.floor(Math.random() * roastQuotesLowAcc.length)];
-        } else if (summary.netWpm < 40) {
-          roast = roastQuotesLowWpm[Math.floor(Math.random() * roastQuotesLowWpm.length)];
-        } else if (summary.netWpm > 80) {
-          roast = roastQuotesGood[Math.floor(Math.random() * roastQuotesGood.length)];
-        }
-        
-        if (roast) {
-          roastText.innerText = `"${roast}"`;
-          roastCard.classList.remove("hidden");
-          const prefersReduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-          if (prefersReduced) {
-            roastVideo.classList.add("hidden");
-            roastImg.classList.remove("hidden");
-          } else {
-            roastVideo.classList.remove("hidden");
-            roastImg.classList.add("hidden");
-            roastVideo.play().catch(()=>{});
-          }
-        } else {
-          roastCard.classList.add("hidden");
-        }
-      } else if (roastCard) {
-        roastCard.classList.add("hidden");
       }
 
       // Render P1 XP Receipt
@@ -2265,20 +2233,36 @@ const {
       const xpProgressPercent = document.getElementById("xp-receipt-progress-percent");
       const xpProgressBar = document.getElementById("xp-receipt-progress-bar");
 
-      if (xpReceipt && lastProfileResult && lastProfileResult.xpAwarded.eligible) {
+      const profileResult = lastProfileResult || (window as any).__lastProfileResult;
+      if (xpReceipt && profileResult && profileResult.xpAwarded.eligible) {
         xpReceipt.classList.remove("hidden");
-        if (xpTotalEl) xpTotalEl.textContent = `+${lastProfileResult.xpAwarded.total} XP`;
-        if (xpLevelTag) xpLevelTag.textContent = `Level ${lastProfileResult.levelAfter}`;
+        if (xpTotalEl) xpTotalEl.textContent = `+${profileResult.xpAwarded.total} XP`;
+        if (xpLevelTag) xpLevelTag.textContent = t("results.xp_level", lang, { level: profileResult.levelAfter });
 
-        const parts = [`Base ${lastProfileResult.xpAwarded.base}`];
-        lastProfileResult.xpAwarded.bonuses.forEach(b => {
-          parts.push(`${b.label} +${b.amount}`);
+        const parts = [t("results.xp_base", lang, { amount: profileResult.xpAwarded.base })];
+        profileResult.xpAwarded.bonuses.forEach(b => {
+          let label = b.label;
+          if (b.label === "Personal best!") {
+            label = t("results.xp_bonus_pb", lang, { amount: b.amount });
+          } else if (b.label === "Cleaner than your average") {
+            label = t("results.xp_bonus_cleaner", lang, { amount: b.amount });
+          } else if (b.label === "Daily warmup") {
+            label = t("results.xp_bonus_warmup", lang, { amount: b.amount });
+          } else if (b.label.includes("streak")) {
+            const days = b.label.match(/\d+/)?.[0] || "1";
+            label = t("results.xp_bonus_streak", lang, { days, amount: b.amount });
+          }
+          parts.push(label);
         });
         if (xpBreakdownEl) xpBreakdownEl.textContent = parts.join(" · ");
 
-        const progress = getXpProgressForLevel(lastProfileResult.profile.xp);
+        const progress = getXpProgressForLevel(profileResult.profile.xp);
         if (xpProgressLabel) {
-          xpProgressLabel.textContent = `Level ${progress.level} · ${progress.xpNeededForNext} XP to Level ${progress.level + 1}`;
+          xpProgressLabel.textContent = t("results.xp_progress", lang, {
+            level: progress.level,
+            xp: progress.xpNeededForNext,
+            nextLevel: progress.level + 1
+          });
         }
         if (xpProgressPercent) {
           xpProgressPercent.textContent = `${Math.round(progress.progressPercent)}%`;
@@ -2290,6 +2274,72 @@ const {
         xpReceipt.classList.add("hidden");
       }
 
+      updateDockLabels(lang);
+    }
+
+    function showResults(summary: CompletedTestSummary, psych?: import("../scripts/progress").TestResult) {
+      updateDOM();
+      const bandEl = document.getElementById("res-band")!;
+      const rankEl = document.getElementById("res-rank-title")!;
+      const locRank = t("rank." + summary.rankTitle.toLowerCase().replace(/[^a-z0-9]/g, '_')) || summary.rankTitle;
+      bandEl.textContent = locRank;
+      rankEl.textContent = locRank;
+
+      const resNetWpmEl = document.getElementById("res-net-wpm")!;
+      animateCounter(resNetWpmEl, summary.netWpm, { duration: 1100 });
+      const resAccuracyEl = document.getElementById("res-accuracy")!;
+      animateCounter(resAccuracyEl, summary.accuracy, { duration: 1100 });
+      document.getElementById("res-raw-wpm")!.textContent = String(
+        summary.rawWpm,
+      );
+      document.getElementById("res-consistency")!.textContent =
+        `${summary.consistency}%`;
+      document.getElementById("res-correct-chars")!.textContent = String(
+        summary.correctChars,
+      );
+      document.getElementById("res-error-chars")!.textContent = String(
+        summary.incorrectChars,
+      );
+      document.getElementById("res-total-keystrokes")!.textContent = String(
+        summary.totalKeystrokes,
+      );
+      document.getElementById("res-time-elapsed")!.textContent =
+        `${Math.round(summary.elapsedSeconds)}s`;
+
+
+      // ── Psychology engine UI ──
+      if (psych) {
+        const strip = document.getElementById("res-progress-strip");
+        if (strip) strip.classList.remove("hidden");
+        const prog = loadProgress();
+        const lvl = getLevel(prog.xp);
+        const daily = getDailyProgress();
+        document.getElementById("res-streak")!.textContent = String(psych.streak);
+        document.getElementById("res-level-title")!.textContent = t("level." + lvl.title.toLowerCase()) || lvl.title;
+        (document.getElementById("res-xp-bar")! as HTMLElement).style.width = `${Math.round(lvl.progress * 100)}%`;
+        document.getElementById("res-xp-text")!.textContent = `+${psych.xpGained} XP`;
+        document.getElementById("res-daily")!.textContent = `${daily.done}/${daily.goal}`;
+        const nudge = document.getElementById("res-psych-nudge");
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (psych.isNewPb) {
+          if (nudge) nudge.classList.remove("hidden");
+          if (nudge) nudge.innerHTML = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#0072F5]/10 text-[#0072F5] text-xs font-bold">${t("results.new_best")}</span>`;
+          if (!reduceMotion) {
+            resNetWpmEl.animate(
+              [{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }],
+              { duration: 300, easing: 'cubic-bezier(0.34, 1.56, 0.64, 1)' }
+            );
+          }
+        } else if (psych.nearMiss !== null) {
+          if (nudge) nudge.classList.remove("hidden");
+          if (nudge) nudge.innerHTML = `<span class="text-[#6E6E73] dark:text-[#A1A1A6]">${t("results.near_miss", undefined, { wpm: psych.nearMiss })}</span>`;
+        } else {
+          if (nudge) nudge.classList.add("hidden");
+        }
+      }
+      renderTimelineChart(secondBySecondWpm);
+      updateResultsDynamicContent();
+
       // Achievement toasts (fire exactly once on unlock) + level up + streak freeze
       if (lastProfileResult) {
         if (lastProfileResult.newAchievements && lastProfileResult.newAchievements.length > 0) {
@@ -2299,15 +2349,15 @@ const {
         }
         if (lastProfileResult.levelAfter > lastProfileResult.levelBefore) {
           notify({
-            title: `Level ${lastProfileResult.levelAfter}!`,
-            description: `You reached Level ${lastProfileResult.levelAfter}`,
+            title: t("toast.level_title", { level: lastProfileResult.levelAfter }),
+            description: t("toast.level_desc", { level: lastProfileResult.levelAfter }),
             icon: 'trophy',
           });
         }
         if (lastProfileResult.streakSurvivedByFreeze) {
           notify({
-            title: 'Streak Saved!',
-            description: 'Weekly streak freeze protected your streak',
+            title: t("toast.streak_saved_title"),
+            description: t("toast.streak_saved_desc"),
             icon: 'flame',
           });
         }
@@ -2427,7 +2477,7 @@ const {
       // Average Line
       const avgY = pt + plotH - ((avgWpm / roundedMax) * plotH);
       gridHtml += `<line x1="${pl}" y1="${avgY}" x2="${width - pr}" y2="${avgY}" stroke="${labelColor}" stroke-dasharray="4 4" stroke-width="1" opacity="0.4" />`;
-      gridHtml += `<text x="${width - pr}" y="${avgY - 4}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end">avg ${avgWpm}</text>`;
+      gridHtml += `<text x="${width - pr}" y="${avgY - 4}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end">${t("results.chart_avg", undefined, { wpm: avgWpm })}</text>`;
 
       // Peak Marker
       let peakPt = chartPoints[0];
@@ -2445,7 +2495,7 @@ const {
         peakX = pl;
       }
       
-      gridHtml += `<text x="${peakX}" y="${peakPt.y - 8}" fill="${strokeColor}" font-size="9" font-weight="bold" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="${peakAnchor}">peak ${Math.round(peakPt.val)}</text>`;
+      gridHtml += `<text x="${peakX}" y="${peakPt.y - 8}" fill="${strokeColor}" font-size="9" font-weight="bold" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="${peakAnchor}">${t("results.chart_peak", undefined, { wpm: Math.round(peakPt.val) })}</text>`;
       
       const endPt = chartPoints[chartPoints.length - 1];
       if (peakPt !== endPt) {
@@ -3202,6 +3252,12 @@ const {
 
     function handleLanguageChange(e: any) {
       const lang = e.detail?.language;
+      // If results panel is visible, re-render JS-injected strings with updated translations without resetting back to typing mode
+      if (!resultsPanel.classList.contains("hidden")) {
+        updateResultsDynamicContent(lang);
+        return;
+      }
+
       if (!testActive) {
         if (["top1000", "top200", "es", "fr", "de", "pt", "it"].includes(currentWordbankName)) {
           if (["es", "fr", "de", "pt", "it"].includes(lang)) {
@@ -3213,72 +3269,6 @@ const {
           }
         }
         resetTest();
-      }
-
-      // If results panel is visible, re-render JS-injected strings with updated translations
-      if (testCompleted && !resultsPanel.classList.contains("hidden")) {
-        // Re-render weak-keys badges
-        const weakKeysListEl = document.getElementById("weak-keys-list")!;
-        const mistakesArr = Object.entries(keyMistakes)
-          .map(([key, data]) => ({ key, errors: data.errors, total: data.total }))
-          .sort((a, b) => b.errors - a.errors)
-          .filter((item) => item.errors > 0);
-        weakKeysListEl.innerHTML = "";
-        if (mistakesArr.length > 0) {
-          const worstKey = mistakesArr[0];
-          const typoWord = worstKey.errors > 1 ? t("results.typos") : t("results.typo");
-          const remaining = mistakesArr.slice(1, 8);
-          
-          const worstDiv = document.createElement("div");
-          worstDiv.className = "mb-4 text-[#171717] dark:text-[#E5E5E5] text-[15px] font-medium tracking-tight flex items-center";
-          worstDiv.innerHTML = `
-            <span class="inline-flex items-center justify-center min-w-[28px] h-7 px-2 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border border-red-500/50 shadow-[0_0_12px_rgba(239,68,68,0.4)] dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1),0_0_12px_rgba(239,68,68,0.4)] font-mono text-sm mr-2.5">${worstKey.key}</span>
-            <span>${t("results.weakest_key") || "is your weakest key"} &mdash; <span class="text-red-500 font-semibold">${worstKey.errors} ${typoWord}</span></span>
-          `;
-          weakKeysListEl.appendChild(worstDiv);
-
-          if (remaining.length > 0) {
-            const remContainer = document.createElement("div");
-            remContainer.className = "flex flex-wrap gap-2";
-            
-            const maxErrors = worstKey.errors;
-            remaining.forEach((item) => {
-              const intensity = item.errors / maxErrors;
-              const borderOpacity = 0.2 + (0.3 * intensity); 
-              const shadowOpacity = 0.1 + (0.3 * intensity);
-              const tWord = item.errors > 1 ? t("results.typos") : t("results.typo");
-              
-              const badge = document.createElement("div");
-              badge.className = "flex items-center gap-2 px-2.5 py-1.5 rounded bg-[#FAFAFA] dark:bg-[#1D1D1F] border dark:shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]";
-              badge.style.borderColor = `rgba(239,68,68,${borderOpacity})`;
-              badge.style.boxShadow = `inset 0 1px 1px rgba(255,255,255,0.1), 0 0 ${4 + 6 * intensity}px rgba(239,68,68,${shadowOpacity})`;
-              badge.innerHTML = `
-                <span class="font-mono text-[13px] text-[#171717] dark:text-white">${item.key}</span>
-                <span class="text-[11px] text-[#86868B]">${item.errors} ${tWord}</span>
-              `;
-              remContainer.appendChild(badge);
-            });
-            weakKeysListEl.appendChild(remContainer);
-          }
-        } else {
-          weakKeysListEl.innerHTML =
-            `<span class="text-sm font-medium text-emerald-600">${t("results.flawless")}</span>`;
-        }
-        // Re-render train-label
-        const uniqueMistakes = [...new Set(missedWords)];
-        const trainLabelEl = document.getElementById("train-label");
-        if (trainLabelEl && uniqueMistakes.length > 0) {
-          trainLabelEl.textContent = `${t("results.train_mistakes")} (${uniqueMistakes.length})`;
-        }
-        // Re-render personal best label
-        if (personalBestBanner && personalBestLabel && !personalBestBanner.classList.contains("hidden")) {
-          const pb2 = getPersonalBest();
-          if (lastCompletedSummary && (pb2.totalTests <= 1 || lastCompletedSummary.netWpm >= pb2.highestWpm) && pb2.totalTests > 1) {
-            personalBestLabel.textContent = `🏆 ${t("results.new_best")} — ${lastCompletedSummary.netWpm} ${t("results.wpm_short")}`;
-          } else if (pb2.highestWpm > 0) {
-            personalBestLabel.textContent = `${t("results.best")}: ${pb2.highestWpm} ${t("results.wpm_short")}`;
-          }
-        }
       }
     }
     window.addEventListener("instanttyping:languagechange", handleLanguageChange);
@@ -3515,10 +3505,13 @@ const {
       wordbankSelect.value = currentLang;
     }
 
-    function showAchievementToast(ach: { name: string; tier: string; icon: string; description?: string }) {
+    function showAchievementToast(ach: { id?: string; name: string; tier: string; icon: string; description?: string }) {
+      const name = ach.id ? t(`achievement.${ach.id.replace(/-/g, '_')}.name`) : ach.name;
+      const desc = ach.id ? t(`achievement.${ach.id.replace(/-/g, '_')}.desc`) : (ach.description || ach.name);
+      const tier = t(`tier.${ach.tier.toLowerCase()}`);
       notify({
-        title: `Achievement unlocked: ${ach.name}`,
-        description: `${ach.tier} · ${ach.description || ach.name}`,
+        title: t("toast.achievement_unlocked", { name }),
+        description: `${tier} · ${desc}`,
         icon: 'trophy',
       });
     }
@@ -3527,8 +3520,8 @@ const {
     if (resultsDockContainer) {
       resultsDockContainer.innerHTML = "";
       const copyBtnEl = createCopyButton({
-        idleLabel: "Copy results",
-        doneLabel: "Copied!",
+        idleLabel: t("dock.copy_results"),
+        doneLabel: t("dock.copied"),
         getValue: async () => {
           const mod = await import("../scripts/share-card");
           const data = (window as any).__buildShareData ? await (window as any).__buildShareData() : {
@@ -3540,19 +3533,21 @@ const {
           return mod.generateShareText(data);
         },
         onStateChange: (state) => {
-          copyBtnEl.dataset.label = state === "copied" ? "Copied!" : "Copy results";
+          copyBtnEl.dataset.label = state === "copied" ? t("dock.copied") : t("dock.copy_results");
           if (state === "copied") {
-            notify({ title: "Copied!", description: "Results copied to clipboard", icon: "copy" });
+            notify({ title: t("dock.copied"), description: t("dock.copied_desc"), icon: "copy" });
           }
         },
       });
+      copyBtnEl.id = "btn-dock-copy";
 
       createDock(resultsDockContainer, [
-        { icon: "restart", label: "Try again", onClick: resetTest },
-        { icon: "next", label: "Next test", onClick: resetTest },
+        { id: "btn-dock-restart", icon: "restart", label: t("dock.try_again"), onClick: resetTest },
+        { id: "btn-dock-next", icon: "next", label: t("dock.next_test"), onClick: resetTest },
         {
+          id: "btn-dock-target",
           icon: "target",
-          label: "Train mistakes",
+          label: t("dock.train_mistakes"),
           onClick: () => {
             const uniqueMistakes = [...new Set(missedWords)];
             if (uniqueMistakes.length > 0) {
@@ -3560,13 +3555,14 @@ const {
               resultsPanel.classList.add("hidden");
               resetTest();
             } else {
-              notify({ title: "Flawless!", description: "No mistakes to train on this run.", icon: "check" });
+              notify({ title: t("dock.flawless_title"), description: t("dock.flawless_desc"), icon: "check" });
             }
           },
         },
         {
+          id: "btn-dock-award",
           icon: "award",
-          label: "Certificate",
+          label: t("dock.certificate"),
           onClick: () => {
             const summary = lastCompletedSummary || (window as any).__lastTestSummary;
             if (summary) {
@@ -3576,8 +3572,9 @@ const {
           },
         },
         {
+          id: "btn-dock-download",
           icon: "download",
-          label: "Download PNG",
+          label: t("dock.download_png"),
           onClick: async () => {
             try {
               const mod = await import("../scripts/share-card");
@@ -3594,7 +3591,8 @@ const {
           },
         },
         {
-          label: "Copy results",
+          id: "btn-dock-copy",
+          label: t("dock.copy_results"),
           element: copyBtnEl,
         },
       ]);
