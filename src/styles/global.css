@@ -1,5 +1,12 @@
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/jetbrains-mono";
+@import "./copy-button.css";
+@import "./halo-input.css";
+@import "./segmented-control.css";
+@import "./animated-counter.css";
+@import "./xp-progress.css";
+@import "./confirm-morph.css";
+@import "./heatmap.css";
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));

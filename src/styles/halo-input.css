@@ -1,0 +1,160 @@
+/* src/styles/halo-input.css
+ * Frosted-glass text inputs. Pure CSS, zero JS, zero dependencies.
+ * Intended for: contact form (name / email / message), support forms,
+ * and any future single-line or multiline input.
+ *
+ * Import from src/styles/global.css:
+ *   @import './halo-input.css';
+ *
+ * Usage:
+ *   <input class="halo-input" type="text" placeholder="Display name" />
+ *   <textarea class="halo-textarea" placeholder="Notes"></textarea>
+ *   <select class="halo-select">…</select>
+ *
+ * Focus ring uses the brand interaction blue (#0072F5) — the only
+ * non-monochrome color in the system, reserved for focus/interaction.
+ */
+
+.halo-input,
+.halo-textarea,
+.halo-select {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 15px;
+  line-height: 1.5;
+  font-family: inherit;
+  color: #1d1d1f;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.halo-select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 40px;
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%231d1d1f' stroke-opacity='.5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+.halo-textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.halo-input::placeholder,
+.halo-textarea::placeholder {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+.halo-input:hover,
+.halo-textarea:hover,
+.halo-select:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.halo-input:focus,
+.halo-textarea:focus,
+.halo-select:focus {
+  outline: none;
+  border-color: #0072f5;
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 3px rgba(0, 114, 245, 0.15);
+}
+
+/* Dark mode */
+.dark .halo-input,
+.dark .halo-textarea,
+.dark .halo-select,
+[data-theme="dark"] .halo-input,
+[data-theme="dark"] .halo-textarea,
+[data-theme="dark"] .halo-select {
+  color: #f5f5f7;
+  background: rgba(28, 28, 30, 0.6);
+  border-color: rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+.dark .halo-select,
+[data-theme="dark"] .halo-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f7' stroke-opacity='.5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+.dark .halo-input::placeholder,
+.dark .halo-textarea::placeholder,
+[data-theme="dark"] .halo-input::placeholder,
+[data-theme="dark"] .halo-textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.dark .halo-input:hover,
+.dark .halo-textarea:hover,
+.dark .halo-select:hover,
+[data-theme="dark"] .halo-input:hover,
+[data-theme="dark"] .halo-textarea:hover,
+[data-theme="dark"] .halo-select:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.dark .halo-input:focus,
+.dark .halo-textarea:focus,
+.dark .halo-select:focus,
+[data-theme="dark"] .halo-input:focus,
+[data-theme="dark"] .halo-textarea:focus,
+[data-theme="dark"] .halo-select:focus {
+  border-color: #0072f5;
+  background: rgba(28, 28, 30, 0.85);
+  box-shadow: 0 0 0 3px rgba(0, 114, 245, 0.25);
+}
+
+/* Disabled state */
+.halo-input:disabled,
+.halo-textarea:disabled,
+.halo-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Invalid state (for form validation) */
+.halo-input[aria-invalid="true"],
+.halo-textarea[aria-invalid="true"],
+.halo-select[aria-invalid="true"] {
+  border-color: #e03131;
+}
+.halo-input[aria-invalid="true"]:focus,
+.halo-textarea[aria-invalid="true"]:focus,
+.halo-select[aria-invalid="true"]:focus {
+  border-color: #e03131;
+  box-shadow: 0 0 0 3px rgba(224, 49, 49, 0.15);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halo-input,
+  .halo-textarea,
+  .halo-select {
+    transition: none;
+  }
+}
+
+/* Fallback for browsers without backdrop-filter: solid backgrounds. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .halo-input,
+  .halo-textarea,
+  .halo-select {
+    background: rgba(255, 255, 255, 0.94);
+  }
+  .dark .halo-input,
+  .dark .halo-textarea,
+  .dark .halo-select,
+  [data-theme="dark"] .halo-input,
+  [data-theme="dark"] .halo-textarea,
+  [data-theme="dark"] .halo-select {
+    background: rgba(28, 28, 30, 0.94);
+  }
+}

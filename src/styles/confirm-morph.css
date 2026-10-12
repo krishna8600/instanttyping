@@ -1,0 +1,131 @@
+/* src/styles/confirm-morph.css
+ * In-place destructive confirmation for "Delete my data".
+ * Companion: src/scripts/confirm-morph.ts
+ *
+ * The button morphs in place: idle -> inline question (Yes / Keep) ->
+ * result. No modal, no page jump. Faces share one grid cell so the
+ * container reserves the widest face up front — nothing shifts.
+ * Focus moves to the safe ("Keep") action when the question appears.
+ */
+
+.cmorph {
+  display: inline-grid;
+  max-width: 100%;
+}
+
+.cmorph-face {
+  grid-area: 1 / 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(4px);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+  white-space: nowrap;
+}
+
+.cmorph-confirm {
+  flex-wrap: wrap;
+  white-space: normal;
+  text-align: center;
+}
+
+.cmorph-confirm .cmorph-text {
+  flex-basis: 100%;
+}
+
+.cmorph.text-xs .cmorph-btn {
+  padding: 6px 14px;
+  font-size: 11px;
+  border-radius: 8px;
+}
+
+.cmorph.text-xs .cmorph-text {
+  font-size: 11px;
+}
+
+.cmorph.text-xs .cmorph-done {
+  font-size: 11px;
+}
+
+.cmorph[data-state="idle"] .cmorph-idle,
+.cmorph[data-state="confirm"] .cmorph-confirm,
+.cmorph[data-state="done"] .cmorph-done {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  pointer-events: auto;
+}
+
+.cmorph-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  color: #1d1d1f;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.cmorph-btn:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.cmorph-btn:focus-visible {
+  outline: none;
+  border-color: #0072f5;
+  box-shadow: 0 0 0 3px rgba(0, 114, 245, 0.15);
+}
+
+.cmorph-yes {
+  color: #e03131;
+  border-color: rgba(224, 49, 49, 0.35);
+}
+
+.cmorph-yes:hover {
+  background: rgba(224, 49, 49, 0.08);
+  border-color: rgba(224, 49, 49, 0.5);
+}
+
+.cmorph-text {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.7);
+}
+
+.cmorph-done {
+  font-size: 14px;
+  font-weight: 500;
+  color: #16a34a;
+}
+
+.dark .cmorph-btn,
+[data-theme="dark"] .cmorph-btn {
+  color: #f5f5f7;
+  background: rgba(28, 28, 30, 0.7);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .cmorph-btn:hover,
+[data-theme="dark"] .cmorph-btn:hover {
+  background: rgba(28, 28, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.dark .cmorph-text,
+[data-theme="dark"] .cmorph-text {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cmorph-face,
+  .cmorph-btn {
+    transition: none;
+  }
+}

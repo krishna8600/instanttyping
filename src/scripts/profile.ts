@@ -26,6 +26,7 @@ export interface InstantTypingProfile {
     freezesAvailable: number; // resets to 1 every Monday
     freezeWeekStart: string | null; // YYYY-MM-DD of Monday
   };
+  dailyCounts?: Record<string, number>; // YYYY-MM-DD -> tests completed that day
   achievements: Record<string, string>; // id -> ISO unlock timestamp
   xpLedger: Array<{           // last 50 entries, for the receipt UI
     at: string;
@@ -139,6 +140,7 @@ export function getInitialProfile(): InstantTypingProfile {
       freezesAvailable: 1,
       freezeWeekStart: getMondayOfWeekString(now),
     },
+    dailyCounts: {},
     achievements: {},
     xpLedger: [],
   };
@@ -165,6 +167,7 @@ export function loadProfile(): InstantTypingProfile {
       if (typeof parsed.streak.longest !== 'number') parsed.streak.longest = 0;
       if (typeof parsed.streak.freezesAvailable !== 'number') parsed.streak.freezesAvailable = 1;
 
+      parsed.dailyCounts = parsed.dailyCounts && typeof parsed.dailyCounts === 'object' ? parsed.dailyCounts : {};
       parsed.achievements = parsed.achievements || {};
       parsed.xpLedger = Array.isArray(parsed.xpLedger) ? parsed.xpLedger : [];
       return parsed as InstantTypingProfile;
@@ -278,6 +281,8 @@ export function updateProfileAfterTest(input: CompletedTestInput): ProfileUpdate
   const previousBestWpm = profile.stats.bestWpm;
   profile.stats.testsCompleted += 1;
   profile.stats.totalSecondsTyped += Math.round(input.durationSeconds);
+  profile.dailyCounts = profile.dailyCounts || {};
+  profile.dailyCounts[today] = (profile.dailyCounts[today] || 0) + 1;
   const isNewPersonalBest = input.netWpm > previousBestWpm;
   if (isNewPersonalBest) {
     profile.stats.bestWpm = input.netWpm;
@@ -397,4 +402,28 @@ export function updateProfileAfterTest(input: CompletedTestInput): ProfileUpdate
     streakUpdated,
     streakSurvivedByFreeze,
   };
+}
+
+/**
+ * Convert profile daily test counts into a chronological array of HeatmapDay
+ * covering the last `weeks` weeks up to today.
+ */
+export function getProfileHeatmapDays(
+  profile: InstantTypingProfile,
+  weeks: number = 26
+): Array<{ date: string; count: number }> {
+  const days: Array<{ date: string; count: number }> = [];
+  const totalDays = weeks * 7;
+  const today = new Date();
+  const counts = profile.dailyCounts || {};
+  for (let i = totalDays - 1; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const dateStr = getLocalTodayDateString(d);
+    days.push({
+      date: dateStr,
+      count: counts[dateStr] || 0,
+    });
+  }
+  return days;
 }

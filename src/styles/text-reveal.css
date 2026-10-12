@@ -1,0 +1,56 @@
+/* src/styles/text-reveal.css
+ * Restrained headline reveal for marketing/SEO page heroes.
+ * Pure CSS keyframes — zero JavaScript. Runs on first paint.
+ *
+ * Each word rises out of its own clip and sharpens from a soft blur,
+ * staggered. Total stagger is capped by keeping delays small.
+ * Full text goes in aria-label; animated words are aria-hidden.
+ *
+ * Markup contract (Antigravity: split the headline into words):
+ *   <h1 class="rv" aria-label="The typing test for people who hate typing tests">
+ *     <span class="rv-w" aria-hidden="true"><span style="--i:0">The</span></span>
+ *     <span class="rv-w" aria-hidden="true"><span style="--i:1">typing</span></span>
+ *     <span class="rv-w" aria-hidden="true"><span style="--i:2">test</span></span>
+ *     ...
+ *   </h1>
+ */
+
+.rv-w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.08em; /* keeps descenders unclipped */
+  margin-bottom: -0.08em;
+}
+
+.rv-w + .rv-w {
+  margin-left: 0.26em;
+}
+
+.rv-w > span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(110%);
+  filter: blur(4px);
+  animation: rv-in 0.7s cubic-bezier(0.22, 0.68, 0, 1.05) forwards;
+  animation-delay: calc(var(--i, 0) * 65ms);
+  will-change: transform, filter;
+}
+
+@keyframes rv-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-w > span {
+    animation-duration: 0.01ms;
+    animation-delay: 0ms;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}

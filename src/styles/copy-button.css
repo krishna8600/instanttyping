@@ -1,0 +1,217 @@
+/* src/styles/copy-button.css
+ * Animated copy button. Pure CSS, zero dependencies.
+ * Companion: src/scripts/copy-button.ts (createCopyButton).
+ *
+ * What it does: idle shows a copy icon + label; on success the icon
+ * crossfades into a hand-drawn checkmark (SVG stroke draws itself) and
+ * the label fades to the "done" text. The label cell reserves the width
+ * of the longest label up front, so the button never jumps.
+ *
+ * Skin is monochrome; brand blue (#0072F5) appears only on focus.
+ */
+
+.cpb-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: inherit;
+  line-height: 1.4;
+  cursor: pointer;
+  color: #1d1d1f;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cpb-button:hover {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.cpb-button:active {
+  transform: scale(0.97);
+}
+
+.cpb-button:focus-visible {
+  outline: none;
+  border-color: #0072f5;
+  box-shadow: 0 0 0 3px rgba(0, 114, 245, 0.15);
+}
+
+.cpb-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---- icon: copy <-> drawn check crossfade ---- */
+.cpb-icon {
+  position: relative;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.cpb-icon svg {
+  position: absolute;
+  inset: 0;
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+
+.cpb-icon .cpb-glyph-copy {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+.cpb-icon .cpb-glyph-check,
+.cpb-icon .cpb-glyph-alert {
+  opacity: 0;
+  transform: scale(0.6);
+  filter: blur(4px);
+}
+
+.cpb-icon .cpb-glyph-check {
+  color: #16a34a;
+}
+
+.cpb-icon .cpb-glyph-alert {
+  color: #e03131;
+}
+
+.cpb-button[data-state="copied"] .cpb-glyph-copy,
+.cpb-button[data-state="error"] .cpb-glyph-copy {
+  opacity: 0;
+  transform: scale(0.6);
+  filter: blur(4px);
+}
+
+.cpb-button[data-state="copied"] .cpb-glyph-check {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+.cpb-button[data-state="error"] .cpb-glyph-alert {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+}
+
+/* the tick draws itself */
+.cpb-glyph-check path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.cpb-button[data-state="copied"] .cpb-glyph-check path {
+  animation: cpb-draw 0.45s ease 0.05s forwards;
+}
+
+@keyframes cpb-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- label: stacked, widest reserved, soft swap ---- */
+.cpb-label {
+  display: grid;
+}
+
+.cpb-label > span {
+  grid-area: 1 / 1;
+  white-space: nowrap;
+  transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
+}
+
+.cpb-sizer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.cpb-text-idle {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.cpb-text-done,
+.cpb-text-error {
+  opacity: 0;
+  transform: translateY(4px);
+  filter: blur(4px);
+}
+
+.cpb-button[data-state="copied"] .cpb-text-idle,
+.cpb-button[data-state="error"] .cpb-text-idle {
+  opacity: 0;
+  transform: translateY(-4px);
+  filter: blur(4px);
+}
+
+.cpb-button[data-state="copied"] .cpb-text-done {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.cpb-button[data-state="error"] .cpb-text-error {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+/* screen-reader announcements */
+.cpb-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---- dark mode ---- */
+.dark .cpb-button,
+[data-theme="dark"] .cpb-button {
+  color: #f5f5f7;
+  background: rgba(28, 28, 30, 0.7);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+.dark .cpb-button:hover,
+[data-theme="dark"] .cpb-button:hover {
+  background: rgba(28, 28, 30, 0.95);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.dark .cpb-button:focus-visible,
+[data-theme="dark"] .cpb-button:focus-visible {
+  border-color: #0072f5;
+  box-shadow: 0 0 0 3px rgba(0, 114, 245, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cpb-button,
+  .cpb-icon svg,
+  .cpb-label > span {
+    transition: none;
+  }
+  .cpb-button:active {
+    transform: none;
+  }
+  .cpb-button[data-state="copied"] .cpb-glyph-check path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

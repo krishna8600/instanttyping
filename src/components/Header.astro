@@ -265,6 +265,7 @@ const navItems = [
       <div class="pt-0.5 text-[10px] text-center text-[#86868B] font-mono">
         Your data never leaves this browser
       </div>
+      <div id="popover-wipe-slot" class="pt-2 border-t border-white/10 flex justify-center w-full"></div>
     </div>
   </div>
 </div>
@@ -476,7 +477,7 @@ const navItems = [
     position: absolute;
     top: calc(100% + 10px);
     right: 0;
-    width: 290px;
+    width: 300px;
     background: rgba(16, 16, 18, 0.96);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -489,6 +490,34 @@ const navItems = [
     z-index: 250;
     animation: popoverFadeIn 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   }
+  #popover-wipe-slot {
+    width: 100%;
+  }
+  #popover-wipe-slot .cmorph {
+    width: 100%;
+  }
+  #popover-wipe-slot .cmorph-face {
+    width: 100%;
+    justify-content: center;
+  }
+  #popover-wipe-slot .cmorph-confirm {
+    flex-wrap: wrap;
+    gap: 8px;
+    white-space: normal;
+    text-align: center;
+  }
+  #popover-wipe-slot .cmorph-confirm .cmorph-text {
+    width: 100%;
+    font-size: 11px;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.75);
+    white-space: normal;
+  }
+  #popover-wipe-slot .cmorph-btn {
+    padding: 6px 12px;
+    font-size: 11px;
+    border-radius: 8px;
+  }
   @media (max-width: 640px) {
     .profile-chip-btn {
       padding: 0 8px;
@@ -496,7 +525,7 @@ const navItems = [
     }
     .profile-popover {
       right: -30px;
-      width: 270px;
+      width: 280px;
     }
   }
 
@@ -969,6 +998,41 @@ const navItems = [
     window.addEventListener('it-profile-updated', () => {
       syncProfileUI();
     });
+
+    // Mount confirm-morph for Delete my data in popover
+    const wipeSlot = document.getElementById('popover-wipe-slot');
+    if (wipeSlot && !wipeSlot.querySelector('.cmorph')) {
+      wipeSlot.innerHTML = '';
+      (async () => {
+        try {
+          const { createConfirmMorph } = await import('../scripts/confirm-morph');
+          const { deleteProfileData } = await import('../scripts/profile');
+          const { notify } = await import('../scripts/notify');
+          const morph = createConfirmMorph({
+            idleLabel: 'Delete my data',
+            confirmText: 'Delete everything? Cannot be undone.',
+            yesLabel: 'Yes, delete',
+            noLabel: 'Keep',
+            doneLabel: 'Deleted',
+            className: 'text-xs',
+            onConfirm: () => {
+              const keys = [];
+              for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k && (k.startsWith('ptt_') || k.startsWith('it_') || k.startsWith('gk'))) keys.push(k);
+              }
+              keys.forEach(k => localStorage.removeItem(k));
+              deleteProfileData();
+              notify({ title: 'Data Deleted', description: 'All local typing data has been wiped.', icon: 'check' });
+              setTimeout(() => location.reload(), 600);
+            },
+          });
+          wipeSlot.appendChild(morph);
+        } catch (e) {
+          console.error('Failed to initialize confirm morph:', e);
+        }
+      })();
+    }
 
     // Initial sync
     syncProfileUI();

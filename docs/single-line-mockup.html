@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Single-line typing strip — interactive mockup</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, sans-serif;
+    background: #fafafa; color: #111;
+    min-height: 100vh; display: flex; flex-direction: column; align-items: center;
+    padding: 28px 16px 48px;
+  }
+  .wrap { width: 100%; max-width: 920px; }
+  .modes {
+    display: flex; gap: 2px; background: #fff; border: 1px solid #e5e5e5;
+    border-radius: 999px; padding: 4px; width: max-content; margin-bottom: 18px;
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+  .modes span { padding: 6px 14px; border-radius: 999px; font-size: 13px; color: #525252; }
+  .modes .on { background: #111; color: #fff; font-weight: 600; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+  .stat {
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 12px;
+    padding: 8px 16px; box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+  .stat .k { font-size: 10px; letter-spacing: .1em; color: #737373; font-weight: 600; }
+  .stat .v { font-size: 22px; font-weight: 650; font-variant-numeric: tabular-nums; }
+  .stat .v.blue { color: #0072f5; }
+  .strip-card {
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 16px;
+    padding: 30px 34px; box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    cursor: text; position: relative; margin-bottom: 8px;
+  }
+  .strip {
+    overflow: hidden; white-space: nowrap;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 30px; line-height: 1.6;
+  }
+  .track { display: inline-block; will-change: transform; transition: transform 110ms ease-out; }
+  @media (prefers-reduced-motion: reduce) { .track { transition: none; } .caret { animation: none; } }
+  .ch { color: #d4d4d4; }
+  .ch.ok { color: #111; }
+  .ch.bad { color: #ef4444; }
+  .caret {
+    display: inline-block; width: 3px; height: 1.15em; background: #0072f5;
+    border-radius: 2px; vertical-align: -0.18em; margin: 0 -1px;
+    animation: blink 1.06s steps(1) infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  .attr { text-align: right; font-size: 13px; color: #737373; font-style: italic; margin: 10px 4px 22px; }
+  .kbd-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .kbd-label .t { font-size: 11px; letter-spacing: .1em; color: #737373; font-weight: 600; }
+  .kbd {
+    background: #fff; border: 1px solid #e5e5e5; border-radius: 16px;
+    padding: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.04);
+    display: flex; flex-direction: column; gap: 6px; user-select: none;
+  }
+  .row { display: flex; gap: 6px; }
+  .key {
+    flex: 1 1 0; min-width: 0; text-align: center; font-size: 12px; color: #404040;
+    border: 1px solid #e5e5e5; border-radius: 8px; padding: 9px 0;
+    background: #fafafa; font-family: ui-monospace, Menlo, monospace;
+    transition: background .12s, border-color .12s, color .12s;
+    white-space: nowrap; overflow: hidden;
+  }
+  .key.wide { flex: 1.6 1 0; }
+  .key.wider { flex: 2.2 1 0; }
+  .key.space { flex: 7 1 0; }
+  .key.next { background: #e8f2ff; border-color: #0072f5; color: #0072f5; font-weight: 700; }
+  .key.hit { background: #111; border-color: #111; color: #fff; }
+  .hint { text-align: center; color: #737373; font-size: 13px; margin-top: 18px; }
+  .hint b { color: #111; }
+  .caption {
+    margin-top: 26px; border-top: 1px solid #e5e5e5; padding-top: 16px;
+    font-size: 13px; color: #525252; line-height: 1.7;
+  }
+  .caption b { color: #111; }
+  #ghost { position: absolute; opacity: 0; pointer-events: none; top: 0; left: 0; width: 10px; height: 10px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="modes"><span>Time</span><span>Words</span><span class="on">Quote</span><span>Classics</span><span>Custom</span><span>Code</span></div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">TIME</div><div class="v" id="s-time">60s</div></div>
+    <div class="stat"><div class="k">WPM</div><div class="v blue" id="s-wpm">0</div></div>
+    <div class="stat"><div class="k">ACCURACY</div><div class="v" id="s-acc">100%</div></div>
+    <div class="stat"><div class="k">ERRORS</div><div class="v" id="s-err">0</div></div>
+  </div>
+
+  <div class="strip-card" id="card">
+    <div class="strip" id="strip"><div class="track" id="track"></div></div>
+    <input id="ghost" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="typing input">
+  </div>
+  <div class="attr">— Stephen Chbosky, The Perks of Being a Wallflower</div>
+
+  <div class="kbd-label"><span class="t">GUIDED KEYBOARD — FULLY VISIBLE</span><span class="t">next key glows blue</span></div>
+  <div class="kbd" id="kbd"></div>
+
+  <p class="hint">Click the sentence and <b>start typing</b> — the line scrolls as you type. <b>Backspace</b> to fix. <b>Tab</b> resets.</p>
+
+  <div class="caption">
+    <b>What you're looking at:</b> the proposed single-line strip. One line of text, the strip glides left as you type,
+    the keyboard sits fully on screen below. Compare with the live site's 3-line block.<br>
+    <b>Feel-check:</b> notice whether missing the upcoming words (no read-ahead) bothers you at speed — that's the real decision.
+  </div>
+</div>
+
+<script>
+const TEXT = "We accept the love we think we deserve. And in that acceptance, we find the quiet courage to become who we were meant to be.";
+const track = document.getElementById('track');
+const strip = document.getElementById('strip');
+const ghost = document.getElementById('ghost');
+const card = document.getElementById('card');
+
+const chars = [...TEXT].map(c => {
+  const s = document.createElement('span');
+  s.className = 'ch';
+  s.textContent = c;
+  track.appendChild(s);
+  return s;
+});
+const caret = document.createElement('span');
+caret.className = 'caret';
+track.insertBefore(caret, chars[0]);
+
+let idx = 0, errors = 0, typed = 0, startT = 0;
+
+// --- guided keyboard ---
+const ROWS = [
+  [["`",1],["1",1],["2",1],["3",1],["4",1],["5",1],["6",1],["7",1],["8",1],["9",1],["0",1],["-",1],["=",1],["del",1.6]],
+  [["tab",1.6],["Q",1],["W",1],["E",1],["R",1],["T",1],["Y",1],["U",1],["I",1],["O",1],["P",1],["[",1],["]",1],["\\",1]],
+  [["caps",1.8],["A",1],["S",1],["D",1],["F",1],["G",1],["H",1],["J",1],["K",1],["L",1],[";",1],["'",1],["enter",2.2]],
+  [["shift",2.2],["Z",1],["X",1],["C",1],["V",1],["B",1],["N",1],["M",1],[",",1],[".",1],["/",1],["shift",2.2]],
+  [["ctrl",1],["opt",1],["cmd",1],[" ",7],["cmd",1],["opt",1],["ctrl",1]]
+];
+const kbd = document.getElementById('kbd');
+const keyEls = {};
+ROWS.forEach(r => {
+  const row = document.createElement('div');
+  row.className = 'row';
+  r.forEach(([label, w]) => {
+    const k = document.createElement('div');
+    k.className = 'key';
+    k.textContent = label === " " ? "space" : label;
+    if (w > 2) k.classList.add(w > 5 ? 'space' : 'wider');
+    else if (w > 1) k.classList.add('wide');
+    row.appendChild(k);
+    const norm = label.toLowerCase();
+    (keyEls[norm] = keyEls[norm] || []).push(k);
+  });
+  kbd.appendChild(row);
+});
+function markNext() {
+  document.querySelectorAll('.key.next').forEach(k => k.classList.remove('next'));
+  if (idx >= chars.length) return;
+  const c = TEXT[idx].toLowerCase();
+  (keyEls[c] || []).forEach(k => k.classList.add('next'));
+}
+function flashKey(c) {
+  (keyEls[c.toLowerCase()] || []).forEach(k => {
+    k.classList.add('hit');
+    setTimeout(() => k.classList.remove('hit'), 130);
+  });
+}
+
+// --- typing engine (mock) ---
+function scrollToCaret() {
+  const target = caret.offsetLeft - strip.clientWidth * 0.35;
+  const max = Math.max(0, track.scrollWidth - strip.clientWidth);
+  const x = Math.min(Math.max(0, target), max);
+  track.style.transform = `translateX(${-x}px)`;
+}
+function stats() {
+  const mins = (Date.now() - startT) / 60000;
+  const wpm = mins > 0.005 ? Math.round((typed / 5) / mins) : 0;
+  const acc = typed ? Math.round(((typed - errors) / typed) * 1000) / 10 : 100;
+  document.getElementById('s-wpm').textContent = wpm;
+  document.getElementById('s-acc').textContent = acc + '%';
+  document.getElementById('s-err').textContent = errors;
+}
+function reset() {
+  chars.forEach(s => s.className = 'ch');
+  idx = 0; errors = 0; typed = 0; startT = 0;
+  track.insertBefore(caret, chars[0]);
+  track.style.transform = 'translateX(0)';
+  document.getElementById('s-wpm').textContent = '0';
+  document.getElementById('s-acc').textContent = '100%';
+  document.getElementById('s-err').textContent = '0';
+  markNext();
+}
+card.addEventListener('click', () => ghost.focus());
+ghost.addEventListener('keydown', e => {
+  if (e.key === 'Tab') { e.preventDefault(); reset(); ghost.focus(); return; }
+  if (e.key === 'Backspace') {
+    e.preventDefault();
+    if (idx > 0) {
+      idx--;
+      const s = chars[idx];
+      if (s.classList.contains('bad')) errors = Math.max(0, errors - 1);
+      s.className = 'ch';
+      typed = Math.max(0, typed - 1);
+      track.insertBefore(caret, s);
+      scrollToCaret(); stats(); markNext();
+    }
+    return;
+  }
+  if (e.key.length !== 1 || idx >= chars.length) return;
+  e.preventDefault();
+  if (!startT) startT = Date.now();
+  const expected = TEXT[idx];
+  const s = chars[idx];
+  if (e.key === expected) { s.classList.add('ok'); }
+  else { s.classList.add('bad'); errors++; }
+  typed++;
+  idx++;
+  if (idx < chars.length) track.insertBefore(caret, chars[idx]);
+  else track.appendChild(caret);
+  flashKey(e.key);
+  scrollToCaret(); stats(); markNext();
+});
+markNext();
+setTimeout(() => ghost.focus(), 400);
+</script>
+</body>
+</html>

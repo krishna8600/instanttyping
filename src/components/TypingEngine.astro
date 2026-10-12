@@ -120,41 +120,14 @@ const {
         data-i18n="test.time"
         >Duration:</span
       >
-      <button
-        type="button"
-        data-time-val="15"
-        class="time-btn px-2.5 py-1.5 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] text-xs font-medium transition-all duration-200 ease-out"
-      >
-        15s
-      </button>
-      <button
-        type="button"
-        data-time-val="30"
-        class="time-btn px-2.5 py-1.5 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] text-xs font-medium transition-all duration-200 ease-out"
-      >
-        30s
-      </button>
-      <button
-        type="button"
-        data-time-val="60"
-        class="time-btn px-2.5 py-1.5 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] text-xs font-medium transition-all duration-200 ease-out"
-      >
-        60s
-      </button>
-      <button
-        type="button"
-        data-time-val="120"
-        class="time-btn px-2.5 py-1.5 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] text-xs font-medium transition-all duration-200 ease-out"
-      >
-        120s
-      </button>
-      <button
-        type="button"
-        data-time-val="180"
-        class="time-btn px-2.5 py-1.5 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] text-xs font-medium transition-all duration-200 ease-out"
-      >
-        180s
-      </button>
+      <div class="seg" style="--n:5" role="radiogroup" aria-label="Test duration">
+        <span class="seg-pill" aria-hidden="true"></span>
+        <label class="seg-opt"><input type="radio" name="dur" value="15" checked={initialDuration === 15}><span>15s</span></label>
+        <label class="seg-opt"><input type="radio" name="dur" value="30" checked={initialDuration === 30}><span>30s</span></label>
+        <label class="seg-opt"><input type="radio" name="dur" value="60" checked={initialDuration === 60}><span>60s</span></label>
+        <label class="seg-opt"><input type="radio" name="dur" value="120" checked={initialDuration === 120}><span>120s</span></label>
+        <label class="seg-opt"><input type="radio" name="dur" value="180" checked={initialDuration === 180}><span>180s</span></label>
+      </div>
     </div>
 
     <div
@@ -645,7 +618,7 @@ const {
         <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.net_speed">Net Speed</div>
         <div
           id="res-net-wpm"
-          class="text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary text-[#0072F5] mt-2 font-mono"
+          class="acounter text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary text-[#0072F5] mt-2 font-mono"
         >
           0
         </div>
@@ -660,7 +633,7 @@ const {
         <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.accuracy">Accuracy</div>
         <div
           id="res-accuracy"
-          class="text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary mt-2 font-mono text-[#1D1D1F] dark:text-[#F5F5F7]"
+          class="acounter text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary mt-2 font-mono text-[#1D1D1F] dark:text-[#F5F5F7]"
         >
           100%
         </div>
@@ -868,9 +841,11 @@ const {
       <span id="personal-best-label" class="font-semibold text-[#0072F5]"></span>
     </div>
 
-    <!-- 7. Actions Card -->
+    <!-- 7. Actions Card: Dock replacing button row -->
+    <div id="results-dock" class="flex items-center justify-center py-2"></div>
     <div
-      class="premium-card flex flex-col sm:flex-row items-center justify-center gap-3"
+      class="hidden premium-card flex flex-col sm:flex-row items-center justify-center gap-3"
+      aria-hidden="true"
     >
       <button
         id="btn-modal-restart"
@@ -932,30 +907,45 @@ const {
     <!-- Privacy: Delete my data -->
     <div class="mt-6 pt-4 border-t border-neutral-200 dark:border-white/10 flex items-center justify-between">
       <p class="text-xs text-neutral-500 dark:text-neutral-400">Your data never leaves this browser.</p>
-      <button id="delete-my-data" type="button" class="text-xs text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 underline underline-offset-2">
-        Delete my data
-      </button>
+      <div id="results-wipe-slot">
+        <button id="delete-my-data" type="button" class="text-xs text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 underline underline-offset-2">
+          Delete my data
+        </button>
+      </div>
     </div>
     <script>
     (function() {
-      const btn = document.getElementById('delete-my-data');
-      if (!btn) return;
-      btn.addEventListener('click', () => {
-        if (!confirm('Delete all your typing data? This cannot be undone.')) return;
-        // Clear all site data
-        const keys = [];
-        for (let i = 0; i < localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (k && (k.startsWith('ptt_') || k.startsWith('it_') || k.startsWith('gk'))) keys.push(k);
-        }
-        keys.forEach(k => localStorage.removeItem(k));
-        localStorage.removeItem('it_profile_v1');
-        try {
-          window.dispatchEvent(new CustomEvent('it-profile-updated'));
-        } catch {}
-        alert('All data deleted. Reloading...');
-        location.reload();
-      });
+      const wipeSlot = document.getElementById('results-wipe-slot');
+      if (wipeSlot) {
+        import('../scripts/confirm-morph').then(({ createConfirmMorph }) => {
+          import('../scripts/notify').then(({ notify }) => {
+            const morph = createConfirmMorph({
+              idleLabel: 'Delete my data',
+              confirmText: 'Delete everything? Cannot be undone.',
+              yesLabel: 'Yes, delete',
+              noLabel: 'Keep',
+              doneLabel: 'Deleted',
+              className: 'text-xs',
+              onConfirm: () => {
+                const keys = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                  const k = localStorage.key(i);
+                  if (k && (k.startsWith('ptt_') || k.startsWith('it_') || k.startsWith('gk'))) keys.push(k);
+                }
+                keys.forEach(k => localStorage.removeItem(k));
+                localStorage.removeItem('it_profile_v1');
+                try {
+                  window.dispatchEvent(new CustomEvent('it-profile-updated'));
+                } catch {}
+                notify({ title: 'Data Deleted', description: 'All local typing data has been wiped.', icon: 'check' });
+                setTimeout(() => location.reload(), 600);
+              },
+            });
+            wipeSlot.innerHTML = '';
+            wipeSlot.appendChild(morph);
+          });
+        });
+      }
     
     // Settings Panel Logic
     const settingsBtn = document.getElementById('settings-toggle-btn');
@@ -1069,6 +1059,10 @@ const {
   import { recordTest, getLevel, getDailyProgress, loadProgress } from "../scripts/progress";
   import { updateProfileAfterTest, getXpProgressForLevel } from "../scripts/profile";
   import type { ProfileUpdateResult } from "../scripts/profile";
+  import { notify } from "../scripts/notify";
+  import { createDock } from "../scripts/dock";
+  import { createCopyButton } from "../scripts/copy-button";
+  import { animateCounter } from "../scripts/animated-counter";
   import {
     TOP_200_WORDS,
     TOP_1000_WORDS,
@@ -1931,18 +1925,9 @@ const {
       rankEl.textContent = summary.rankTitle;
 
       const resNetWpmEl = document.getElementById("res-net-wpm")!;
-      resNetWpmEl.textContent = "0";
-
-      // Animate WPM count up
-      animate(resNetWpmEl, {
-
-        innerHTML: [0, summary.netWpm],
-        round: 1,
-        easing: 'easeOutExpo',
-        duration: 1500
-      });
-      document.getElementById("res-accuracy")!.textContent =
-        `${summary.accuracy}%`;
+      animateCounter(resNetWpmEl, summary.netWpm, { duration: 1100 });
+      const resAccuracyEl = document.getElementById("res-accuracy")!;
+      animateCounter(resAccuracyEl, summary.accuracy, { duration: 1100 });
       document.getElementById("res-raw-wpm")!.textContent = String(
         summary.rawWpm,
       );
@@ -2288,11 +2273,27 @@ const {
         xpReceipt.classList.add("hidden");
       }
 
-      // Achievement toasts (fire exactly once on unlock)
-      if (lastProfileResult && lastProfileResult.newAchievements.length > 0) {
-        lastProfileResult.newAchievements.forEach(ach => {
-          showAchievementToast(ach);
-        });
+      // Achievement toasts (fire exactly once on unlock) + level up + streak freeze
+      if (lastProfileResult) {
+        if (lastProfileResult.newAchievements && lastProfileResult.newAchievements.length > 0) {
+          lastProfileResult.newAchievements.forEach(ach => {
+            showAchievementToast(ach);
+          });
+        }
+        if (lastProfileResult.levelAfter > lastProfileResult.levelBefore) {
+          notify({
+            title: `Level ${lastProfileResult.levelAfter}!`,
+            description: `You reached Level ${lastProfileResult.levelAfter}`,
+            icon: 'trophy',
+          });
+        }
+        if (lastProfileResult.streakSurvivedByFreeze) {
+          notify({
+            title: 'Streak Saved!',
+            description: 'Weekly streak freeze protected your streak',
+            icon: 'flame',
+          });
+        }
       }
 
       resultsPanel.classList.remove("hidden");
@@ -3089,6 +3090,19 @@ const {
       resetTest();
     });
 
+    const segControl = timeOptions.querySelector(".seg");
+    if (segControl) {
+      const initialRadio = segControl.querySelector<HTMLInputElement>(`input[value="${targetDuration}"]`);
+      if (initialRadio) initialRadio.checked = true;
+      segControl.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement;
+        if (target && target.value) {
+          targetDuration = parseInt(target.value, 10);
+          resetTest();
+        }
+      });
+    }
+
     timeBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
         timeBtns.forEach((b) =>
@@ -3464,42 +3478,89 @@ const {
       wordbankSelect.value = currentLang;
     }
 
-    function showAchievementToast(ach: { name: string; tier: string; icon: string }) {
-      const container = document.getElementById("achievement-toast-container");
-      if (!container) return;
+    function showAchievementToast(ach: { name: string; tier: string; icon: string; description?: string }) {
+      notify({
+        title: `Achievement unlocked: ${ach.name}`,
+        description: `${ach.tier} · ${ach.description || ach.name}`,
+        icon: 'trophy',
+      });
+    }
 
-      const toast = document.createElement("div");
-      toast.className = "pointer-events-auto flex items-center gap-3 px-4 py-3 rounded-xl border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-[#1A1A1C] shadow-xl text-xs font-mono text-[#1D1D1F] dark:text-[#F5F5F7] transition-all duration-300 transform translate-y-2 opacity-0";
-      toast.innerHTML = `
-        <span class="text-xl shrink-0">${ach.icon || "🏆"}</span>
-        <div class="space-y-0.5">
-          <div class="font-semibold text-xs text-[#1D1D1F] dark:text-white">🏆 Achievement unlocked: ${ach.name}</div>
-          <div class="text-[11px] text-[#86868B]">${ach.name} · <span class="uppercase font-semibold">${ach.tier}</span></div>
-        </div>
-      `;
+    const resultsDockContainer = document.getElementById("results-dock");
+    if (resultsDockContainer) {
+      resultsDockContainer.innerHTML = "";
+      const copyBtnEl = createCopyButton({
+        idleLabel: "Copy results",
+        doneLabel: "Copied!",
+        getValue: async () => {
+          const mod = await import("../scripts/share-card");
+          const data = (window as any).__buildShareData ? await (window as any).__buildShareData() : {
+            wpm: lastCompletedSummary ? lastCompletedSummary.netWpm : 0,
+            accuracy: lastCompletedSummary ? lastCompletedSummary.accuracy : 100,
+            consistency: lastCompletedSummary ? lastCompletedSummary.consistency : 100,
+            date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+          };
+          return mod.generateShareText(data);
+        },
+        onStateChange: (state) => {
+          copyBtnEl.dataset.label = state === "copied" ? "Copied!" : "Copy results";
+          if (state === "copied") {
+            notify({ title: "Copied!", description: "Results copied to clipboard", icon: "copy" });
+          }
+        },
+      });
 
-      container.appendChild(toast);
-
-      const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      if (prefersReduced) {
-        toast.style.opacity = "1";
-        toast.style.transform = "none";
-      } else {
-        requestAnimationFrame(() => {
-          toast.style.opacity = "1";
-          toast.style.transform = "translateY(0)";
-        });
-      }
-
-      safeSetTimeout(() => {
-        if (prefersReduced) {
-          toast.remove();
-        } else {
-          toast.style.opacity = "0";
-          toast.style.transform = "translateY(4px)";
-          setTimeout(() => toast.remove(), 300);
-        }
-      }, 4000);
+      createDock(resultsDockContainer, [
+        { icon: "restart", label: "Try again", onClick: resetTest },
+        { icon: "next", label: "Next test", onClick: resetTest },
+        {
+          icon: "target",
+          label: "Train mistakes",
+          onClick: () => {
+            const uniqueMistakes = [...new Set(missedWords)];
+            if (uniqueMistakes.length > 0) {
+              customMistakeWords = uniqueMistakes;
+              resultsPanel.classList.add("hidden");
+              resetTest();
+            } else {
+              notify({ title: "Flawless!", description: "No mistakes to train on this run.", icon: "check" });
+            }
+          },
+        },
+        {
+          icon: "award",
+          label: "Certificate",
+          onClick: () => {
+            const summary = lastCompletedSummary || (window as any).__lastTestSummary;
+            if (summary) {
+              generateCertificateCanvas(summary);
+              certModal.classList.remove("hidden");
+            }
+          },
+        },
+        {
+          icon: "download",
+          label: "Download PNG",
+          onClick: async () => {
+            try {
+              const mod = await import("../scripts/share-card");
+              const data = (window as any).__buildShareData ? await (window as any).__buildShareData() : {
+                wpm: lastCompletedSummary ? lastCompletedSummary.netWpm : 0,
+                accuracy: lastCompletedSummary ? lastCompletedSummary.accuracy : 100,
+                consistency: lastCompletedSummary ? lastCompletedSummary.consistency : 100,
+                date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+              };
+              await mod.downloadShareImage(data);
+            } catch (err) {
+              console.error("Download failed:", err);
+            }
+          },
+        },
+        {
+          label: "Copy results",
+          element: copyBtnEl,
+        },
+      ]);
     }
 
     resetTest();
@@ -3637,6 +3698,13 @@ const {
             var mod = await import('../scripts/share-card');
             var data = await buildShareData();
             var success = await mod.copyShareText(data);
+            if (success) {
+              notify({
+                title: 'Copied to clipboard',
+                icon: 'copy',
+                duration: 2500,
+              });
+            }
             if (copyLabel) {
               var originalText = copyLabel.textContent;
               copyLabel.textContent = success ? 'Copied!' : 'Copied!';

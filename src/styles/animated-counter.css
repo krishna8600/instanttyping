@@ -1,0 +1,51 @@
+/* src/styles/animated-counter.css
+ * Odometer-style animated counter for the results screen (WPM, accuracy).
+ * Companion: src/scripts/animated-counter.ts
+ *
+ * Each digit is a clipped wheel of 0-9 moved with translateY only.
+ * Rolling digits are aria-hidden; the true value lives in a
+ * visually-hidden span. Respects prefers-reduced-motion (in JS).
+ */
+
+.acounter {
+  display: inline-flex;
+  align-items: flex-start;
+  font-variant-numeric: tabular-nums;
+}
+
+.ac-col {
+  display: inline-block;
+  height: 1em;
+  overflow: hidden;
+  line-height: 1;
+}
+
+.ac-strip {
+  display: flex;
+  flex-direction: column;
+  will-change: transform;
+}
+
+.ac-strip > span {
+  display: block;
+  height: 1em;
+  line-height: 1;
+}
+
+.ac-static {
+  display: inline-block;
+  height: 1em;
+  line-height: 1;
+}
+
+.ac-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

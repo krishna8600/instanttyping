@@ -38,7 +38,7 @@ import Icon from '../components/Icon.astro';
  id="contact-name"
  name="name"
  required
- class="w-full h-9 px-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500"
+ class="halo-input"
  placeholder="e.g. Alex Morgan" data-i18n-placeholder="contact.placeholder_name"
  />
  <div id="error-name" class="text-[11px] text-red-500 hidden"><span data-i18n="contact.error_name">Please enter your name.</span></div>
@@ -55,7 +55,7 @@ import Icon from '../components/Icon.astro';
  id="contact-email"
  name="email"
  required
- class="w-full h-9 px-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500"
+ class="halo-input"
  placeholder="e.g. alex@example.com" data-i18n-placeholder="contact.placeholder_email"
  />
  <div id="error-email" class="text-[11px] text-red-500 hidden"><span data-i18n="contact.error_email">Please provide a valid email address.</span></div>
@@ -70,7 +70,7 @@ import Icon from '../components/Icon.astro';
  <select
  id="contact-subject"
  name="subject"
- class="w-full h-9 px-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500 cursor-pointer"
+ class="halo-select"
  >
  <option value="feature" data-i18n="contact.option_feature">Feature Request or Idea</option>
  <option value="bug" data-i18n="contact.option_bug">Report a Bug / Engine Issue</option>
@@ -90,7 +90,7 @@ import Icon from '../components/Icon.astro';
   name="message"
   rows="4"
   required
-  class="w-full p-3 text-xs rounded-md border border-neutral-300 bg-ds-bg-100 text-ds-text-primary focus:outline-none focus:border-sky-500 resize-y"
+  class="halo-textarea"
   placeholder="Type your message here..."
   data-i18n-placeholder="contact.placeholder_message"
   ></textarea>

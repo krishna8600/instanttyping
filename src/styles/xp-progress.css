@@ -1,0 +1,57 @@
+/* src/styles/xp-progress.css
+ * XP / level progress bar for the /profile page.
+ * Companion: src/scripts/xp-progress.ts
+ *
+ * The key detail (from the research): ONE animation driver moves both the
+ * fill and the counted number, so they never disagree — that's what makes
+ * XP feel earned instead of arbitrary.
+ *
+ * Markup contract:
+ *   <div class="xpwrap">
+ *     <div class="xpbar" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+ *          aria-valuenow="0" aria-label="Progress to next level">
+ *       <div class="xpbar-fill"></div>
+ *     </div>
+ *     <div class="xpmeta"><span class="xpbar-num">0</span> XP</div>
+ *   </div>
+ */
+
+.xpbar {
+  position: relative;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.xpbar-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: 999px;
+  background: #1d1d1f;
+}
+
+.xpbar-num {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+}
+
+.xpmeta {
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.dark .xpbar,
+[data-theme="dark"] .xpbar {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.dark .xpbar-fill,
+[data-theme="dark"] .xpbar-fill {
+  background: #f5f5f7;
+}
+
+.dark .xpmeta,
+[data-theme="dark"] .xpmeta {
+  color: rgba(255, 255, 255, 0.55);
+}
