@@ -95,7 +95,7 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
     import { animateXPProgress } from '../scripts/xp-progress';
     import { renderHeatmap } from '../scripts/heatmap';
     import { getProfileHeatmapDays } from '../scripts/profile';
-    import { t, getLanguage, updateDOM, type SupportedLanguage } from '../i18n';
+    import { t, getLanguage, updateDOM, loadLanguage, type SupportedLanguage } from '../i18n';
 
     (function () {
       var ACHIEVEMENTS = [
@@ -135,8 +135,9 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
         catch (e) { return ''; }
       }
 
-      function render(lang?: SupportedLanguage) {
+      async function render(lang?: SupportedLanguage) {
         var currentLang = lang || getLanguage();
+        await loadLanguage(currentLang);
         updateDOM(currentLang);
 
         var p = loadProfile();

@@ -88,18 +88,26 @@ const ogImage = `${siteUrl}/og-image.png`;
  }
  ])} />
 
- <!-- Theme Initializer Script (prevents theme flicker) -->
+ <!-- Theme and Language Initializer Script (prevents theme and language flicker) -->
  <script is:inline>
  (function() {
- try {
- const stored = localStorage.getItem('ptt_theme');
- const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
- if (stored === 'dark' || (!stored && prefersDark)) {
- document.documentElement.classList.add('dark');
- } else {
- document.documentElement.classList.remove('dark');
- }
- } catch (_) {}
+   try {
+     const storedTheme = localStorage.getItem('ptt_theme');
+     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+     if (storedTheme === 'dark' || (!storedTheme && prefersDark)) {
+       document.documentElement.classList.add('dark');
+     } else {
+       document.documentElement.classList.remove('dark');
+     }
+     const storedLang = localStorage.getItem('instanttyping_lang');
+     if (storedLang && storedLang !== 'en') {
+       document.documentElement.lang = storedLang;
+       document.documentElement.classList.add('i18n-loading');
+       setTimeout(function() {
+         document.documentElement.classList.remove('i18n-loading');
+       }, 500);
+     }
+   } catch (_) {}
  })();
  </script>
 

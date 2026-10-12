@@ -898,3 +898,10 @@ html.dark #typing-test-container.theme-3d button.word-count-btn:not(.font-semibo
   color: #f5f5f7 !important;
   box-shadow: none;
 }
+
+/* Prevent flash of untranslated text before active non-English locale is applied */
+html.i18n-loading [data-i18n],
+html.i18n-loading [data-i18n-placeholder],
+html.i18n-loading .lang-switcher-current-label {
+  visibility: hidden;
+}

@@ -1,12 +1,3 @@
-import en from "./en.json";
-import es from "./es.json";
-import ja from "./ja.json";
-import fr from "./fr.json";
-import de from "./de.json";
-import pt from "./pt.json";
-import ko from "./ko.json";
-import it from "./it.json";
-
 export type SupportedLanguage = "en" | "es" | "ja" | "fr" | "de" | "pt" | "ko" | "it";
 
 export interface LanguageOption {
@@ -25,16 +16,34 @@ export const LANGUAGES: LanguageOption[] = [
   { code: "it", name: "Italiano" },
 ];
 
-export const DICTIONARIES: Record<SupportedLanguage, Record<string, string>> = {
-  en,
-  es,
-  ja,
-  fr,
-  de,
-  pt,
-  ko,
-  it,
+export const SUPPORTED_LANGUAGES: SupportedLanguage[] = [
+  "en",
+  "es",
+  "ja",
+  "fr",
+  "de",
+  "pt",
+  "ko",
+  "it",
+];
+
+export function isSupportedLanguage(lang: unknown): lang is SupportedLanguage {
+  return typeof lang === "string" && SUPPORTED_LANGUAGES.includes(lang as SupportedLanguage);
+}
+
+const LOADERS: Record<SupportedLanguage, () => Promise<{ default: Record<string, string> }>> = {
+  en: () => import("./en.json"),
+  es: () => import("./es.json"),
+  ja: () => import("./ja.json"),
+  fr: () => import("./fr.json"),
+  de: () => import("./de.json"),
+  pt: () => import("./pt.json"),
+  ko: () => import("./ko.json"),
+  it: () => import("./it.json"),
 };
+
+export const DICTIONARIES: Partial<Record<SupportedLanguage, Record<string, string>>> = {};
+const loadingPromises: Partial<Record<SupportedLanguage, Promise<Record<string, string>>>> = {};
 
 export const STORAGE_KEY = "instanttyping_lang";
 export const DEFAULT_LANGUAGE: SupportedLanguage = "en";
@@ -44,13 +53,41 @@ let currentLanguage: SupportedLanguage = DEFAULT_LANGUAGE;
 export function getLanguage(): SupportedLanguage {
   if (typeof window !== "undefined") {
     try {
-      const saved = localStorage.getItem(STORAGE_KEY) as SupportedLanguage | null;
-      if (saved && DICTIONARIES[saved]) {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (isSupportedLanguage(saved)) {
         currentLanguage = saved;
       }
     } catch {}
   }
   return currentLanguage;
+}
+
+export function loadLanguage(lang: SupportedLanguage): Promise<Record<string, string>> {
+  if (DICTIONARIES[lang]) {
+    return Promise.resolve(DICTIONARIES[lang]!);
+  }
+  if (!loadingPromises[lang]) {
+    const loader = LOADERS[lang] || LOADERS[DEFAULT_LANGUAGE];
+    loadingPromises[lang] = loader()
+      .then((mod) => {
+        const dict = (mod && mod.default) || (mod as unknown as Record<string, string>);
+        DICTIONARIES[lang] = dict;
+        delete loadingPromises[lang];
+        return dict;
+      })
+      .catch((err) => {
+        delete loadingPromises[lang];
+        console.error(`[i18n] Failed to load locale "${lang}":`, err);
+        return {};
+      });
+  }
+  return loadingPromises[lang]!;
+}
+
+// Kick off active language chunk fetch immediately when module loads
+if (typeof window !== "undefined") {
+  const initial = getLanguage();
+  loadLanguage(initial);
 }
 
 export function t(
@@ -86,6 +123,15 @@ export function updateDOM(lang: SupportedLanguage = getLanguage()) {
 
   document.documentElement.lang = lang;
 
+  if (!DICTIONARIES[lang]) {
+    loadLanguage(lang).then(() => {
+      updateDOM(lang);
+    });
+    return;
+  }
+
+  document.documentElement.classList.remove("i18n-loading");
+
   const elements = document.querySelectorAll<HTMLElement>("[data-i18n]");
   elements.forEach((el) => {
     const key = el.getAttribute("data-i18n");
@@ -105,7 +151,7 @@ export function updateDOM(lang: SupportedLanguage = getLanguage()) {
     (el as HTMLInputElement).placeholder = t(key, lang);
   });
 
-    const titles = document.querySelectorAll<HTMLElement>("[data-i18n-title]");
+  const titles = document.querySelectorAll<HTMLElement>("[data-i18n-title]");
   titles.forEach((el) => {
     const key = el.getAttribute("data-i18n-title");
     if (!key) return;
@@ -119,7 +165,7 @@ export function updateDOM(lang: SupportedLanguage = getLanguage()) {
     el.setAttribute("alt", t(key, lang));
   });
 
-    const contents = document.querySelectorAll<HTMLElement>("[data-i18n-content]");
+  const contents = document.querySelectorAll<HTMLElement>("[data-i18n-content]");
   contents.forEach((el) => {
     const key = el.getAttribute("data-i18n-content");
     if (!key) return;
@@ -154,13 +200,14 @@ export function updateDOM(lang: SupportedLanguage = getLanguage()) {
   });
 }
 
-export function setLanguage(lang: SupportedLanguage) {
-  if (!DICTIONARIES[lang]) return;
+export async function setLanguage(lang: SupportedLanguage): Promise<void> {
+  if (!isSupportedLanguage(lang)) return;
   currentLanguage = lang;
   try {
     localStorage.setItem(STORAGE_KEY, lang);
   } catch {}
 
+  await loadLanguage(lang);
   updateDOM(lang);
 
   if (typeof window !== "undefined") {
@@ -170,13 +217,16 @@ export function setLanguage(lang: SupportedLanguage) {
   }
 }
 
-export function initI18n() {
+export async function initI18n(): Promise<void> {
   if (typeof window === "undefined") return;
 
   const initialLang = getLanguage();
+  await loadLanguage(initialLang);
   updateDOM(initialLang);
 
-  document.addEventListener("astro:page-load", () => {
-    updateDOM(getLanguage());
+  document.addEventListener("astro:page-load", async () => {
+    const lang = getLanguage();
+    await loadLanguage(lang);
+    updateDOM(lang);
   });
 }
