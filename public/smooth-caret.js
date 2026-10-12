@@ -75,14 +75,9 @@
   }
 
   function caretState(c) {
-    var cs = window.getComputedStyle(c);
     return {
-      // display:none = results screen: intentional, leave alone.
-      gone: cs.display === 'none',
-      // opacity 0 while displayed = focus-restore bug: engine hid it on blur
-      // but never brought it back. Since we're being called, the user is
-      // typing, so the caret must be visible — heal it.
-      faded: cs.display !== 'none' && parseFloat(cs.opacity || '1') === 0
+      gone: c.style.display === 'none',
+      faded: c.style.display !== 'none' && c.style.opacity === '0'
     };
   }
 

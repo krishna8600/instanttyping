@@ -7,7 +7,7 @@
 
 <div
   id="gk-root"
-  class="hidden md:block w-full max-w-3xl mx-auto mt-2 select-none"
+  class="hidden md:block w-full max-w-3xl mx-auto mt-1 sm:mt-1.5 select-none"
   aria-label="Finger guide keyboard"
   role="region"
 >
@@ -15,7 +15,7 @@
   <div class="flex items-center justify-between mb-0 px-1">
     <div
       id="gk-instruction"
-      class="flex items-center gap-2.5 min-h-[2rem] opacity-0 transition-opacity duration-150"
+      class="flex items-center gap-2.5 min-h-[1.75rem] opacity-0 transition-opacity duration-150"
       aria-live="polite"
       aria-atomic="true"
     >
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Off-switch -->
-    <label class="flex items-center gap-2 cursor-pointer" id="gk-toggle-label">
+    <div class="flex items-center gap-2 cursor-pointer" id="gk-toggle-label">
       <span class="text-[11px] font-mono text-ds-text-secondary uppercase tracking-wider">Keyboard</span>
       <button
         id="gk-toggle"
@@ -42,11 +42,11 @@
           class="pointer-events-none inline-block h-3 w-3 mt-[1px] ml-[1px] rounded-full bg-ds-border shadow transition-transform duration-200"
         ></span>
       </button>
-    </label>
+    </div>
   </div>
 
   <!-- ② KEYBOARD CARD -->
-  <div id="gk-keyboard" class="premium-card !p-1 sm:!p-2 overflow-x-auto">
+  <div id="gk-keyboard" class="premium-card !p-1 sm:!p-2 overflow-x-auto !mb-0">
     <!-- Keyboard rows -->
     <div class="flex flex-col gap-0.5 min-w-[600px]">
 
@@ -323,10 +323,25 @@
   const fingerZones = document.getElementById('gk-finger-zones');
   const toggle      = document.getElementById('gk-toggle') as HTMLButtonElement;
   const toggleThumb = document.getElementById('gk-toggle-thumb');
+  const keyboardEl  = document.getElementById('gk-keyboard');
 
-  let activeKeyEl:   HTMLElement | null = null;
-  let activeShiftEl: HTMLElement | null = null;
-  let activeZoneEl:  HTMLElement | null = null;
+  // DOM caches — populated once at mount to eliminate per-keystroke queries
+  const keyMap = new Map<string, HTMLElement>();
+  document.querySelectorAll<HTMLElement>('#gk-keyboard .gk-key[data-code]').forEach((el) => {
+    const code = el.getAttribute('data-code');
+    if (code) keyMap.set(code, el);
+  });
+
+  const zoneMap = new Map<string, HTMLElement>();
+  document.querySelectorAll<HTMLElement>('[id^="gk-zone-"]').forEach((el) => {
+    zoneMap.set(el.id, el);
+  });
+
+  let activeKeyEl:      HTMLElement | null = null;
+  let activeShiftEl:    HTMLElement | null = null;
+  let activeZoneEl:     HTMLElement | null = null;
+  let activeFlashKeyEl: HTMLElement | null = null;
+  let flashTimeoutId:   any = null;
 
   // ── Concise finger labels ──────────────────────────────────────────────────
   const fingerLabel: Record<string, string> = {
@@ -353,19 +368,18 @@
   }
 
   function applyToggleUI() {
-    const root = document.getElementById('gk-root');
     if (!toggle || !toggleThumb || !fingerZones) return;
     toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
     // User toggle controls visibility; language only affects guides
     if (enabled) {
-      document.getElementById('gk-keyboard')?.classList.remove('hidden');
+      keyboardEl?.classList.remove('hidden');
       if (isEnglish()) {
         fingerZones.classList.remove('opacity-0');
       } else {
         fingerZones.classList.add('opacity-0');
       }
     } else {
-      document.getElementById('gk-keyboard')?.classList.add('hidden');
+      keyboardEl?.classList.add('hidden');
       fingerZones.classList.add('opacity-0');
       clearAll();
     }
@@ -375,14 +389,12 @@
     if (activeKeyEl)   { activeKeyEl.classList.remove('gk-next', 'gk-correct', 'gk-wrong'); activeKeyEl = null; }
     if (activeShiftEl) { activeShiftEl.classList.remove('gk-next'); activeShiftEl = null; }
     if (activeZoneEl)  { activeZoneEl.classList.remove('gk-active-zone'); activeZoneEl = null; }
+    if (activeFlashKeyEl) {
+      activeFlashKeyEl.classList.remove('gk-correct', 'gk-wrong', 'gk-next');
+      activeFlashKeyEl = null;
+      if (flashTimeoutId) { clearTimeout(flashTimeoutId); flashTimeoutId = null; }
+    }
     if (instruction)   instruction.style.opacity = '0';
-    // Sweep any stuck highlights (e.g. from interrupted timeouts between tests)
-    document.querySelectorAll('.gk-key.gk-correct, .gk-key.gk-wrong, .gk-key.gk-next').forEach(el => {
-      el.classList.remove('gk-correct', 'gk-wrong', 'gk-next');
-    });
-    document.querySelectorAll('.gk-active-zone').forEach(el => {
-      el.classList.remove('gk-active-zone');
-    });
   }
 
   function highlightNext(char: string) {
@@ -392,20 +404,20 @@
     const res = getKeyForChar(char);
     if (!res) return; // null → no highlight, no crash
 
-    // Target key
-    activeKeyEl = document.querySelector(`.gk-key[data-code="${res.code}"]`);
+    // Target key (O(1) Map lookup)
+    activeKeyEl = keyMap.get(res.code) || null;
     activeKeyEl?.classList.add('gk-next');
 
     // Shift key (opposite hand)
     if (res.shift) {
       const shiftCode = getShiftKeyFor(res.hand);
-      activeShiftEl = document.querySelector(`.gk-key[data-code="${shiftCode}"]`);
+      activeShiftEl = keyMap.get(shiftCode) || null;
       activeShiftEl?.classList.add('gk-next');
     }
 
-    // Finger zone
+    // Finger zone (O(1) Map lookup)
     const zoneId = res.finger === 'thumb' ? 'right_thumb' : res.finger;
-    activeZoneEl = document.getElementById(`gk-zone-${zoneId}`);
+    activeZoneEl = zoneMap.get(`gk-zone-${zoneId}`) || null;
     activeZoneEl?.classList.add('gk-active-zone');
 
     // Instruction line: "R. index → J"
@@ -418,8 +430,7 @@
 
   // ── Event listeners ────────────────────────────────────────────────────────
   window.addEventListener('typing-next-char', (e: Event) => {
-    // Skip ALL work if keyboard is hidden — this runs on every keystroke,
-    // so even the clearAll() DOM queries were adding lag.
+    // Skip ALL work if keyboard is hidden
     if (!shouldShow()) return;
     const detail = (e as CustomEvent).detail;
     if (!detail?.char) { clearAll(); return; }
@@ -431,18 +442,29 @@
     const { char, correct } = (e as CustomEvent).detail;
     const res = getKeyForChar(char);
     if (!res) return;
-    const el = document.querySelector<HTMLElement>(`.gk-key[data-code="${res.code}"]`);
+    const el = keyMap.get(res.code);
     if (!el) return;
 
+    if (activeFlashKeyEl && activeFlashKeyEl !== el) {
+      activeFlashKeyEl.classList.remove('gk-correct', 'gk-wrong');
+      if (flashTimeoutId) { clearTimeout(flashTimeoutId); flashTimeoutId = null; }
+    }
+
     el.classList.remove('gk-correct', 'gk-wrong', 'gk-next');
-    void el.offsetWidth; // force reflow for re-trigger
+    activeFlashKeyEl = el;
 
     if (correct) {
       el.classList.add('gk-correct');
-      setTimeout(() => el.classList.remove('gk-correct'), 200);
+      flashTimeoutId = setTimeout(() => {
+        el.classList.remove('gk-correct');
+        if (activeFlashKeyEl === el) activeFlashKeyEl = null;
+      }, 200);
     } else {
       el.classList.add('gk-wrong');
-      setTimeout(() => el.classList.remove('gk-wrong'), 320);
+      flashTimeoutId = setTimeout(() => {
+        el.classList.remove('gk-wrong');
+        if (activeFlashKeyEl === el) activeFlashKeyEl = null;
+      }, 320);
     }
   });
 
@@ -451,11 +473,19 @@
     applyToggleUI();
   });
 
-  // Toggle button
-  toggle?.addEventListener('click', () => {
+  // Toggle button — stop propagation to avoid parent container click bubbling
+  toggle?.addEventListener('click', (e) => {
+    e.stopPropagation();
     enabled = !enabled;
     try { localStorage.setItem('gk-enabled', String(enabled)); } catch {}
     applyToggleUI();
+  });
+
+  const toggleLabel = document.getElementById('gk-toggle-label');
+  toggleLabel?.addEventListener('click', (e) => {
+    if (e.target !== toggle && !toggle?.contains(e.target as Node)) {
+      toggle?.click();
+    }
   });
 
   // Wordbank change

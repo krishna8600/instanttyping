@@ -30,16 +30,16 @@ const {
   data-initial-wordbank={initialWordbank}
 >
   <!-- Heading Section -->
-  <div class="pb-2 border-b border-[#E5E5E5] dark:border-white/10">
+  <div class="pb-1 sm:pb-1.5 border-b border-[#E5E5E5] dark:border-white/10">
     <h2
-      class="text-4xl sm:text-5xl font-bold tracking-tight leading-[1.1] text-balance mb-1"
+      class="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight leading-[1.1] text-balance mb-0.5"
       style="letter-spacing:-0.02em"
       data-i18n={pageHeadingKey}
     >
       {pageHeading}
     </h2>
     <p
-      class="text-[1.125rem] leading-[1.6] text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl"
+      class="text-xs sm:text-sm leading-normal text-[#6E6E73] dark:text-[#A1A1A6] max-w-2xl"
       data-i18n={pageSubheadingKey}
     >
       {pageSubheading}
@@ -48,7 +48,7 @@ const {
 
   <!-- Mode & Configuration Bar -->
   <div
-    class="relative z-30 premium-card flex flex-wrap items-center justify-between gap-2 !py-2 !px-3 text-sm"
+    class="relative z-30 premium-card !mb-0 flex flex-wrap items-center justify-between gap-1.5 !py-1.5 !px-3 text-xs sm:text-sm"
   >
     <!-- Test Type Selector -->
     <div
@@ -355,73 +355,73 @@ const {
   </div>
 
   <!-- Real-Time Metrics Strip -->
-  <div id="metrics-strip" class="grid grid-cols-2 lg:grid-cols-4 gap-2 relative z-10">
-    <div class="premium-card flex items-start gap-2 !p-2">
-      <span
-        class="flex items-center justify-center w-6 h-6 shrink-0 text-ds-text-secondary"
-        aria-hidden="true"
-      >
-        <Icon name="timer" class="w-4 h-4" />
-      </span>
-      <div class="min-w-0">
-        <div class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.time">Timer</div>
-        <div
-          id="metric-timer"
-          class="text-2xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
+  <div id="metrics-strip" class="grid grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2 relative z-10 !mb-0">
+    <div class="premium-card !mb-0 flex items-center justify-between gap-2 !py-1.5 !px-3">
+      <div class="flex items-center gap-1.5 min-w-0">
+        <span
+          class="flex items-center justify-center w-5 h-5 shrink-0 text-ds-text-secondary"
+          aria-hidden="true"
         >
-          60s
-        </div>
+          <Icon name="timer" class="w-3.5 h-3.5" />
+        </span>
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.time">Timer</span>
+      </div>
+      <div
+        id="metric-timer"
+        class="text-lg sm:text-xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
+      >
+        60s
       </div>
     </div>
-    <div class="premium-card flex items-start gap-2 !p-2">
-      <span
-        class="flex items-center justify-center w-6 h-6 shrink-0 text-ds-text-secondary"
-        aria-hidden="true"
-      >
-        <Icon name="bolt" class="w-4 h-4" />
-      </span>
-      <div class="min-w-0">
-        <div class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.wpm_short">Net WPM</div>
-        <div
-          id="metric-wpm"
-          class="text-2xl font-mono font-bold tracking-tight text-ds-text-primary text-[#0072F5]"
+    <div class="premium-card !mb-0 flex items-center justify-between gap-2 !py-1.5 !px-3">
+      <div class="flex items-center gap-1.5 min-w-0">
+        <span
+          class="flex items-center justify-center w-5 h-5 shrink-0 text-ds-text-secondary"
+          aria-hidden="true"
         >
-          0
-        </div>
+          <Icon name="bolt" class="w-3.5 h-3.5" />
+        </span>
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.wpm_short">Net WPM</span>
+      </div>
+      <div
+        id="metric-wpm"
+        class="text-lg sm:text-xl font-mono font-bold tracking-tight text-ds-text-primary text-[#0072F5]"
+      >
+        0
       </div>
     </div>
-    <div class="premium-card flex items-start gap-2 !p-2">
-      <span
-        class="flex items-center justify-center w-6 h-6 shrink-0 text-ds-text-secondary"
-        aria-hidden="true"
-      >
-        <Icon name="target" class="w-4 h-4" />
-      </span>
-      <div class="min-w-0">
-        <div class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.accuracy">Accuracy</div>
-        <div
-          id="metric-accuracy"
-          class="text-2xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
+    <div class="premium-card !mb-0 flex items-center justify-between gap-2 !py-1.5 !px-3">
+      <div class="flex items-center gap-1.5 min-w-0">
+        <span
+          class="flex items-center justify-center w-5 h-5 shrink-0 text-ds-text-secondary"
+          aria-hidden="true"
         >
-          100%
-        </div>
+          <Icon name="target" class="w-3.5 h-3.5" />
+        </span>
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.accuracy">Accuracy</span>
+      </div>
+      <div
+        id="metric-accuracy"
+        class="text-lg sm:text-xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
+      >
+        100%
       </div>
     </div>
-    <div class="premium-card flex items-start gap-2 !p-2">
-      <span
-        class="flex items-center justify-center w-6 h-6 shrink-0 text-ds-text-secondary"
-        aria-hidden="true"
-      >
-        <Icon name="cancel" class="w-4 h-4" />
-      </span>
-      <div class="min-w-0">
-        <div class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.errors_metric">Errors</div>
-        <div
-          id="metric-errors"
-          class="text-2xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
+    <div class="premium-card !mb-0 flex items-center justify-between gap-2 !py-1.5 !px-3">
+      <div class="flex items-center gap-1.5 min-w-0">
+        <span
+          class="flex items-center justify-center w-5 h-5 shrink-0 text-ds-text-secondary"
+          aria-hidden="true"
         >
-          0
-        </div>
+          <Icon name="cancel" class="w-3.5 h-3.5" />
+        </span>
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.errors_metric">Errors</span>
+      </div>
+      <div
+        id="metric-errors"
+        class="text-lg sm:text-xl font-mono font-bold tracking-tight text-ds-text-primary text-[#1D1D1F] dark:text-[#F5F5F7]"
+      >
+        0
       </div>
     </div>
   </div>
@@ -433,18 +433,18 @@ const {
       tabindex="-1"
       role="textbox"
       aria-label="Typing test text area" data-i18n-aria-label="engine.aria_textarea"
-      class="relative w-full max-w-[1100px] mx-auto p-2 sm:p-4 font-mono text-[22px] md:text-[28px] lg:text-[32px] leading-[2.5] tracking-[0.02em] select-none cursor-text transition-all duration-200"
+      class="relative w-full max-w-[1100px] mx-auto !py-2.5 sm:!py-3 !px-4 sm:!px-6 font-mono text-[22px] md:text-[28px] lg:text-[32px] leading-normal tracking-[0.02em] select-none cursor-text transition-all duration-200 overflow-hidden !mb-0"
     >
-      <div id="words-viewport" class="relative overflow-hidden">
+      <div id="words-viewport" class="relative overflow-hidden w-full select-none">
+        <div
+          id="typing-caret"
+          class="typing-caret absolute top-0 left-0 pointer-events-none z-10 will-change-transform"
+          style="transform: translate3d(0, 0, 0);"
+        ></div>
         <div
           id="words-wrapper"
-          class="relative flex flex-wrap gap-x-3 lg:gap-x-4 items-center will-change-transform transition-transform duration-[400ms] ease-[cubic-bezier(0.32,0.72,0,1)]"
+          class="relative flex flex-nowrap items-center whitespace-nowrap gap-x-3 lg:gap-x-4 shrink-0 will-change-transform transition-transform duration-[150ms] ease-out"
         >
-          <div
-            id="typing-caret"
-            class="typing-caret absolute top-0 left-0 pointer-events-none z-10 will-change-transform"
-            style="transform: translate3d(0, 0, 0);"
-          ></div>
           <!-- Words rendered dynamically here -->
         </div>
       </div>
@@ -518,13 +518,13 @@ const {
   <!-- Bottom Action Bar & Shortcuts -->
   <div
     id="action-bar"
-    class="flex flex-wrap items-center justify-between gap-3 text-sm"
+    class="flex flex-wrap items-center justify-between gap-2 text-xs !py-0.5 !mb-0"
   >
     <div class="flex items-center gap-2">
       <button
         id="btn-restart-test"
         type="button"
-        class="btn-secondary h-9 px-4 text-xs"
+        class="btn-secondary h-8 px-3 text-xs"
       >
         <Icon name="replay" class="w-4 h-4" />
         <span data-i18n="test.restart">Restart</span>
@@ -969,7 +969,7 @@ const {
       });
 
       document.addEventListener('click', (e) => {
-        if (!settingsPanel.contains(e.target as Node) && e.target !== settingsBtn) {
+        if (!settingsPanel.classList.contains('hidden') && !settingsPanel.contains(e.target as Node) && e.target !== settingsBtn) {
           settingsPanel.classList.add('hidden');
           settingsPanel.classList.remove('flex', 'animate-spring-enter');
         }
@@ -1186,6 +1186,7 @@ const {
       }
     } catch {}
 
+    const wordsViewport = document.getElementById("words-viewport")!;
     const wordsWrapper = document.getElementById("words-wrapper")!;
     const typingDisplay = document.getElementById("typing-display")!;
     const caretEl = (document.getElementById("typing-caret") || document.createElement("div")) as HTMLElement;
@@ -1199,8 +1200,9 @@ const {
     let charWidth = 14.4;
     let lineHeight = 48;
     let caretYOffset = 15;
-    let line0Y = 0;
-    let line1Y = -1;
+    let cachedViewportWidth = 900;
+    let trackTotalWidth = 0;
+    let targetScrollX = 0;
     const typingSurfaceWrapper = document.getElementById(
       "typing-surface-wrapper",
     )!;
@@ -1403,30 +1405,26 @@ const {
       }
 
       wordOffsets = [];
-      line0Y = cachedWordNodes[0]?.offsetTop ?? 0;
-      line1Y = -1;
-
       for (let i = 0; i < cachedWordNodes.length; i++) {
         const el = cachedWordNodes[i];
         const x = el.offsetLeft;
-        const y = el.offsetTop;
-        wordOffsets.push({ x, y });
-
-        if (line1Y === -1 && y > line0Y) {
-          line1Y = y;
-        }
+        wordOffsets.push({ x, y: 0 });
       }
 
-      if (line1Y === -1) {
-        line1Y = line0Y + 48;
+      if (cachedWordNodes.length > 0) {
+        const lastEl = cachedWordNodes[cachedWordNodes.length - 1];
+        trackTotalWidth = lastEl.offsetLeft + lastEl.offsetWidth;
+      } else {
+        trackTotalWidth = 0;
       }
-      lineHeight = Math.max(20, line1Y - line0Y);
-      const wordH = cachedWordNodes[0]?.offsetHeight || 48;
-      caretYOffset = Math.round((wordH - caretH) / 2);
-      
-      const viewportEl = document.getElementById("words-viewport");
-      if (viewportEl) {
-        viewportEl.style.height = `${lineHeight * 3}px`;
+
+      const wordH = cachedWordNodes[0]?.offsetHeight || 44;
+      lineHeight = wordH;
+      caretYOffset = Math.max(0, Math.round((wordH - caretH) / 2));
+
+      if (wordsViewport) {
+        cachedViewportWidth = wordsViewport.clientWidth || 900;
+        wordsViewport.style.height = `${wordH}px`;
       }
     }
 
@@ -1442,50 +1440,40 @@ const {
         const el = cachedWordNodes[i];
         if (!el) continue;
         const x = el.offsetLeft;
-        const y = el.offsetTop;
         if (i < wordOffsets.length) {
           wordOffsets[i].x = x;
-          wordOffsets[i].y = y;
+          wordOffsets[i].y = 0;
         } else {
-          wordOffsets.push({ x, y });
+          wordOffsets.push({ x, y: 0 });
         }
       }
 
-      // Dynamic line-height check on the fly (e.g., during active typing)
-      if (wordOffsets.length > 0) {
-        const currentLine0Y = wordOffsets[0].y;
-        let currentLine1Y = -1;
-        for (let i = 1; i < wordOffsets.length; i++) {
-          if (wordOffsets[i].y > currentLine0Y) {
-            currentLine1Y = wordOffsets[i].y;
-            break;
-          }
-        }
-        
-        if (currentLine1Y !== -1) {
-          const newLH = Math.max(20, currentLine1Y - currentLine0Y);
-          if (newLH !== lineHeight) {
-            lineHeight = newLH;
-            const wordH = cachedWordNodes[0]?.offsetHeight || 48;
-            let caretH = 18;
-            if (caretEl) {
-              const cRect = caretEl.getBoundingClientRect();
-              if (cRect.height > 0) caretH = cRect.height;
-            }
-            caretYOffset = Math.round((wordH - caretH) / 2);
-            const viewportEl = document.getElementById("words-viewport");
-            if (viewportEl) {
-              viewportEl.style.height = `${lineHeight * 3}px`;
-            }
-          }
-        }
+      if (cachedWordNodes.length > 0) {
+        const lastEl = cachedWordNodes[cachedWordNodes.length - 1];
+        trackTotalWidth = lastEl.offsetLeft + lastEl.offsetWidth;
       }
     }
 
     let transformRafId: number | null = null;
+    let appliedScrollX = -1;
     let targetCaretX = 0;
     let targetCaretY = 0;
-    let targetScrollY = 0;
+
+    let pendingKeystrokeEffects: (() => void)[] = [];
+    let keystrokeRafId: number | null = null;
+    function scheduleKeystrokeEffect(fn: () => void) {
+      pendingKeystrokeEffects.push(fn);
+      if (!keystrokeRafId) {
+        keystrokeRafId = requestAnimationFrame(() => {
+          keystrokeRafId = null;
+          const batch = pendingKeystrokeEffects;
+          pendingKeystrokeEffects = [];
+          for (let i = 0; i < batch.length; i++) {
+            batch[i]();
+          }
+        });
+      }
+    }
 
     let cachedPrefersReduced = typeof window !== "undefined" && window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)').matches : false;
     if (typeof window !== "undefined" && window.matchMedia) {
@@ -1495,13 +1483,15 @@ const {
     }
 
     function applyTransforms() {
+      transformRafId = null;
+      if (appliedScrollX === targetScrollX) return;
+      appliedScrollX = targetScrollX;
       if (cachedPrefersReduced) {
         wordsWrapper.style.transition = 'none';
       } else {
-        wordsWrapper.style.transition = '';
+        wordsWrapper.style.transition = 'transform 150ms ease-out';
       }
-      wordsWrapper.style.transform = `translate3d(0, -${targetScrollY}px, 0)`;
-      transformRafId = null;
+      wordsWrapper.style.transform = `translate3d(-${targetScrollX}px, 0, 0)`;
     }
 
     function updateCaretPosition() {
@@ -1514,32 +1504,35 @@ const {
       if (!wOffset) return;
 
       // Fast path: use cached math instead of DOM measurements.
-      // getBoundingClientRect() forces synchronous layout recalculation (~16ms),
-      // which caused the typing lag. The monospace font means charWidth is
-      // consistent, so the math is accurate without measuring.
-      let cx = wOffset.x + currentInput.length * charWidth - 1.25;
-      let cy = wOffset.y + caretYOffset;
+      // Zero getBoundingClientRect() in the hot path.
+      const charX = wOffset.x + currentInput.length * charWidth - 1.25;
 
-      targetCaretX = Math.max(0, cx);
-      targetCaretY = Math.max(0, cy);
+      // Current caret position relative to the visible strip
+      const caretX = charX - targetScrollX;
 
-      // Note: prefers-reduced-motion is checked once at init (cachedPrefersReduced),
-      // not on every keystroke, to avoid the matchMedia overhead.
-      if ((window as any).__smoothCaretTo) (window as any).__smoothCaretTo(targetCaretX, targetCaretY); else caretEl.style.transform = `translate3d(${targetCaretX}px, ${targetCaretY}px, 0)`;
+      const thresholdX = cachedViewportWidth * 0.70;
+      const resetX = cachedViewportWidth * 0.25;
+      const maxScrollX = Math.max(0, trackTotalWidth - cachedViewportWidth + 48);
 
-      const lastWordOffset = wordOffsets[wordOffsets.length - 1];
-      const totalLines = lastWordOffset ? Math.max(1, Math.round((lastWordOffset.y - line0Y) / lineHeight) + 1) : 1;
+      if (caretX > thresholdX) {
+        // Shift once when caret exceeds 70% of strip width: one quick hop (~150ms ease-out)
+        targetScrollX = Math.min(Math.max(0, charX - resetX), maxScrollX);
+      } else if (caretX < resetX && targetScrollX > 0) {
+        // Backspace guard: if caretX falls below resetX, shift back so caret never leaves the strip
+        targetScrollX = Math.max(0, charX - resetX);
+      }
 
-      // Exact N * lineHeight scroll with zero drift (Monkeytype style)
-      const lineIdx = Math.max(0, Math.round((wOffset.y - line0Y) / lineHeight));
-      let desiredScrollLines = lineIdx - 1;
-      
-      const maxScrollLines = Math.max(0, totalLines - 3);
-      desiredScrollLines = Math.max(0, Math.min(desiredScrollLines, maxScrollLines));
-      
-      targetScrollY = desiredScrollLines * lineHeight;
+      // Caret walks: caretX = charX - scrollX
+      targetCaretX = Math.max(0, charX - targetScrollX);
+      targetCaretY = caretYOffset;
 
-      if (!transformRafId) {
+      if ((window as any).__smoothCaretTo) {
+        (window as any).__smoothCaretTo(targetCaretX, targetCaretY);
+      } else {
+        caretEl.style.transform = `translate3d(${targetCaretX}px, ${targetCaretY}px, 0)`;
+      }
+
+      if (appliedScrollX !== targetScrollX && !transformRafId) {
         transformRafId = requestAnimationFrame(applyTransforms);
       }
     }
@@ -1554,7 +1547,7 @@ const {
         const wIdx = startIdx + i;
         const word = newWords[i];
         const wordEl = document.createElement("span");
-        wordEl.className = "word inline-flex items-center transition-opacity";
+        wordEl.className = "word inline-flex items-center transition-opacity shrink-0";
         wordEl.dataset.wordIndex = String(wIdx);
 
         const charSpans: HTMLElement[] = [];
@@ -1578,14 +1571,20 @@ const {
 
       for (let i = startIdx; i < cachedWordNodes.length; i++) {
         const el = cachedWordNodes[i];
-        wordOffsets.push({ x: el.offsetLeft, y: el.offsetTop });
+        wordOffsets.push({ x: el.offsetLeft, y: 0 });
+      }
+      if (cachedWordNodes.length > 0) {
+        const lastEl = cachedWordNodes[cachedWordNodes.length - 1];
+        trackTotalWidth = lastEl.offsetLeft + lastEl.offsetWidth;
       }
     }
 
     function renderWords() {
       wordsWrapper.innerHTML = "";
       wordsWrapper.style.transform = "translate3d(0, 0, 0)";
-      wordsWrapper.appendChild(caretEl);
+      if (wordsViewport && caretEl.parentElement !== wordsViewport) {
+        wordsViewport.appendChild(caretEl);
+      }
 
       cachedWordNodes = [];
       cachedCharNodes = [];
@@ -1599,7 +1598,7 @@ const {
         const word = wordsList[wIdx];
         const wordEl = document.createElement("span");
         const isActive = wIdx === currentWordIndex;
-        wordEl.className = `word inline-flex items-center transition-opacity ${isActive ? "active-word" : ""}`;
+        wordEl.className = `word inline-flex items-center transition-opacity shrink-0 ${isActive ? "active-word" : ""}`;
         wordEl.dataset.wordIndex = String(wIdx);
 
         const charSpans: HTMLElement[] = [];
@@ -1623,6 +1622,7 @@ const {
 
       measureLayout();
       isWordOffsetsCacheStale = false;
+      targetScrollX = 0;
       updateCaretPosition();
     }
 
@@ -1642,7 +1642,8 @@ const {
       emitTyping('typing-next-char', { char: nextChar });
     }
 
-    function resetTest() {
+    function resetTest(userInitiated: boolean = false) {
+      const wasActiveOrCompleted = testActive || testCompleted;
       if (testActive) {
         emitTyping('typing-stop');
       }
@@ -1656,6 +1657,12 @@ const {
         cancelAnimationFrame(transformRafId);
         transformRafId = null;
       }
+      if (keystrokeRafId) {
+        cancelAnimationFrame(keystrokeRafId);
+        keystrokeRafId = null;
+      }
+      pendingKeystrokeEffects = [];
+      appliedScrollX = 0;
       testActive = false;
       testCompleted = false;
       startTime = 0;
@@ -1706,16 +1713,21 @@ const {
       // Item 10 & 3: Reset caret, scroll, and word inputs
       caretEl.style.display = "";
       caretEl.style.opacity = "0";
-      targetScrollY = 0;
+      targetScrollX = 0;
       wordsWrapper.style.transform = "translate3d(0, 0, 0)";
       wordInputs = [];
       generateWords();
 
-      // Scroll passage into view
-      typingSurfaceWrapper.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+      // Scroll passage into view only if explicitly user-initiated or test was in progress
+      if (userInitiated || wasActiveOrCompleted) {
+        const surfaceRect = typingSurfaceWrapper.getBoundingClientRect();
+        if (surfaceRect.top < 0 || surfaceRect.bottom > window.innerHeight) {
+          typingSurfaceWrapper.scrollIntoView({
+            behavior: "smooth",
+            block: "nearest",
+          });
+        }
+      }
 
       if (testActive || testCompleted) {
         focusTyping();
@@ -1784,22 +1796,27 @@ const {
         lastSecondRecorded = currentSecInt;
       }
 
+      let nextTimerText = "";
       if (currentMode === "time") {
         const remaining = Math.max(
           0,
           Math.ceil(targetDuration - elapsedSeconds),
         );
-        timerMetric.textContent = `${remaining}s`;
+        nextTimerText = `${remaining}s`;
 
         if (elapsedSeconds >= targetDuration) {
+          if (timerMetric.textContent !== nextTimerText) timerMetric.textContent = nextTimerText;
           finishTest();
           return;
         }
       } else if (currentMode === "words" || currentMode === "custom") {
         const wordsLeft = Math.max(0, wordsList.length - currentWordIndex);
-        timerMetric.textContent = `${wordsLeft}`;
+        nextTimerText = `${wordsLeft}`;
       } else {
-        timerMetric.textContent = `${Math.floor(elapsedSeconds)}s`;
+        nextTimerText = `${Math.floor(elapsedSeconds)}s`;
+      }
+      if (timerMetric.textContent !== nextTimerText) {
+        timerMetric.textContent = nextTimerText;
       }
       const nowTs = performance.now();
       if (nowTs - lastStatUpdate > 250 || elapsedSeconds === 0) {
@@ -2457,29 +2474,30 @@ const {
       `;
     }
 
+    let cachedIsMobile = typeof window !== "undefined" && window.matchMedia ? window.matchMedia('(pointer: coarse)').matches : false;
+
     function focusTyping() {
       if (testCompleted) return;
       try { ensureAudioContext(); } catch {}
-      // Re-query live elements: closure references can go stale after Astro
-      // dev HMR swaps DOM nodes. Always operate on the elements in the page.
-      const liveInput = document.getElementById("hidden-typing-input") as HTMLInputElement;
-      const liveCaret = document.getElementById("typing-caret") as HTMLElement;
-      const livePrompt = document.getElementById("focus-prompt") as HTMLElement;
-      const liveDisplay = document.getElementById("typing-display") as HTMLElement;
-      const isMobile = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+      const targetInput = hiddenInput || (document.getElementById("hidden-typing-input") as HTMLInputElement);
+      const targetCaret = caretEl || (document.getElementById("typing-caret") as HTMLElement);
+      const targetPrompt = focusPrompt || (document.getElementById("focus-prompt") as HTMLElement);
+      const targetDisplay = typingDisplay || (document.getElementById("typing-display") as HTMLElement);
       try {
-        if (isMobile) {
-          liveInput.focus();
+        if (cachedIsMobile) {
+          targetInput?.focus();
         } else {
-          liveInput.focus({ preventScroll: true });
+          targetInput?.focus({ preventScroll: true });
         }
       } catch (e) {
-        try { liveInput.focus(); } catch {}
+        try { targetInput?.focus(); } catch {}
       }
-      livePrompt.classList.add("opacity-0");
-      liveDisplay.classList.add("!border-[#0072F5]/30");
-      liveCaret.style.display = "";
-      liveCaret.style.opacity = "1";
+      targetPrompt?.classList.add("opacity-0");
+      targetDisplay?.classList.add("!border-[#0072F5]/30");
+      if (targetCaret) {
+        targetCaret.style.display = "";
+        targetCaret.style.opacity = "1";
+      }
     }
 
     function blurTyping() {
@@ -2535,17 +2553,23 @@ const {
         if (!isWordCorrect) {
           if (selectedStopOnError === "on") {
             incorrectKeystrokes++;
-            playKeyStrokeSound(" ", true, true);
-            queueMicrotask(() => emitTyping('typing-key-result', { char: " ", correct: false }));
+            scheduleKeystrokeEffect(() => {
+              playKeyStrokeSound(" ", true, true);
+              emitTyping('typing-key-result', { char: " ", correct: false });
+            });
             return;
           }
           missedWords.push(targetWord);
-          playKeyStrokeSound(" ", true, true);
-          queueMicrotask(() => emitTyping('typing-key-result', { char: " ", correct: false }));
+          scheduleKeystrokeEffect(() => {
+            playKeyStrokeSound(" ", true, true);
+            emitTyping('typing-key-result', { char: " ", correct: false });
+          });
         } else {
-          playKeyStrokeSound(" ", true, false);
           correctKeystrokes += 1;
-          queueMicrotask(() => emitTyping('typing-key-result', { char: " ", correct: true }));
+          scheduleKeystrokeEffect(() => {
+            playKeyStrokeSound(" ", true, false);
+            emitTyping('typing-key-result', { char: " ", correct: true });
+          });
         }
 
         // Complete previous word on cached node
@@ -2592,8 +2616,7 @@ const {
           const cached = wordOffsets[currentWordIndex];
           if (liveWordEl && cached) {
             const dx = Math.abs(liveWordEl.offsetLeft - cached.x);
-            const dy = Math.abs(liveWordEl.offsetTop - cached.y);
-            if (dx > 1 || dy > 1) {
+            if (dx > 1) {
               updateWordOffsets(currentWordIndex);
             }
           } else if (liveWordEl && !cached) {
@@ -2601,7 +2624,7 @@ const {
           }
         }
         updateCaretPosition();
-        dispatchNextChar();
+        scheduleKeystrokeEffect(() => dispatchNextChar());
         return;
       }
 
@@ -2634,23 +2657,28 @@ const {
 
       if (isCorrectChar) {
         correctKeystrokes++;
-        // Defer audio and events to avoid blocking visual update
-        queueMicrotask(() => playKeyStrokeSound(char, false, false));
-        queueMicrotask(() => emitTyping('typing-key-result', { char, correct: true }));
+        scheduleKeystrokeEffect(() => {
+          playKeyStrokeSound(char, false, false);
+          emitTyping('typing-key-result', { char, correct: true });
+        });
       } else {
         if (selectedStopOnError === "on") {
           incorrectKeystrokes++;
           if (!keyMistakes[char]) keyMistakes[char] = { errors: 0, total: 0 };
           keyMistakes[char].errors++;
-          queueMicrotask(() => playKeyStrokeSound(char, false, true));
-          queueMicrotask(() => emitTyping('typing-key-result', { char, correct: false }));
+          scheduleKeystrokeEffect(() => {
+            playKeyStrokeSound(char, false, true);
+            emitTyping('typing-key-result', { char, correct: false });
+          });
           return;
         }
 
         incorrectKeystrokes++;
         keyMistakes[char].errors++;
-        queueMicrotask(() => playKeyStrokeSound(char, false, true));
-        queueMicrotask(() => emitTyping('typing-key-result', { char, correct: false }));
+        scheduleKeystrokeEffect(() => {
+          playKeyStrokeSound(char, false, true);
+          emitTyping('typing-key-result', { char, correct: false });
+        });
       }
 
       currentInput += char;
@@ -2674,7 +2702,7 @@ const {
       }
 
       updateCaretPosition();
-      queueMicrotask(() => dispatchNextChar());
+      scheduleKeystrokeEffect(() => dispatchNextChar());
     }
 
     function handleBackspace() {
@@ -2683,7 +2711,6 @@ const {
       if (isIdlePaused) resumeFromIdlePause();
 
       if (currentInput.length > 0) {
-        emitTyping('typing-backspace');
         const lastIdx = currentInput.length - 1;
         const targetWord = wordsList[currentWordIndex] || "";
 
@@ -2705,12 +2732,15 @@ const {
         currentInput = currentInput.slice(0, -1);
         hiddenInput.value = currentInput;
         updateCaretPosition();
-        playKeyStrokeSound("Backspace", false, false);
+        scheduleKeystrokeEffect(() => {
+          playKeyStrokeSound("Backspace", false, false);
+          emitTyping('typing-backspace');
+          dispatchNextChar();
+        });
       } else if (currentWordIndex > 0) {
         if (activeBackspaceMode === "current") {
           return;
         }
-        emitTyping('typing-backspace');
         // Backspacing across word boundary into previous word
         const currentWordEl = cachedWordNodes[currentWordIndex];
         if (currentWordEl) {
@@ -2739,17 +2769,18 @@ const {
         hiddenInput.value = currentInput;
         updateWordOffsets(currentWordIndex);
         updateCaretPosition();
-        playKeyStrokeSound("Backspace", false, false);
+        scheduleKeystrokeEffect(() => {
+          playKeyStrokeSound("Backspace", false, false);
+          emitTyping('typing-backspace');
+          dispatchNextChar();
+        });
       }
-      
-      dispatchNextChar();
     }
 
     function handleCtrlBackspace() {
       if (testCompleted) return;
 
       if (currentInput.length > 0) {
-        emitTyping('typing-backspace');
         // Clear current word mid-word
         const extras = extraCharNodes[currentWordIndex];
         let hadExtras = false;
@@ -2769,12 +2800,15 @@ const {
           updateWordOffsets(currentWordIndex);
         }
         updateCaretPosition();
-        playKeyStrokeSound("Backspace", false, false);
+        scheduleKeystrokeEffect(() => {
+          playKeyStrokeSound("Backspace", false, false);
+          emitTyping('typing-backspace');
+          dispatchNextChar();
+        });
       } else if (currentWordIndex > 0) {
         if (activeBackspaceMode === "current") {
           return;
         }
-        emitTyping('typing-backspace');
         // Clear previous word when at start of word
         const currentWordEl = cachedWordNodes[currentWordIndex];
         if (currentWordEl) {
@@ -2814,10 +2848,12 @@ const {
         hiddenInput.value = "";
         updateWordOffsets(currentWordIndex);
         updateCaretPosition();
-        playKeyStrokeSound("Backspace", false, false);
+        scheduleKeystrokeEffect(() => {
+          playKeyStrokeSound("Backspace", false, false);
+          emitTyping('typing-backspace');
+          dispatchNextChar();
+        });
       }
-      
-      dispatchNextChar();
     }
 
     function handleKeydown(e: KeyboardEvent) {
@@ -3020,6 +3056,9 @@ const {
     });
     modeBtns.forEach((btn) => {
       btn.addEventListener("click", () => {
+        const mode = (btn as HTMLElement).dataset.modeBtn as
+          "time" | "words" | "quote" | "custom" | "classics";
+        if (mode === currentMode && !testActive && !testCompleted) return;
         moveTabSlider(btn);
         modeBtns.forEach((b) => {
           b.classList.remove(
@@ -3038,8 +3077,6 @@ const {
           "font-semibold",
         );
 
-        const mode = (btn as HTMLElement).dataset.modeBtn as
-          "time" | "words" | "quote" | "custom" | "classics";
         currentMode = mode;
         customMistakeWords = null;
 
@@ -3246,9 +3283,9 @@ const {
     }
     window.addEventListener("instanttyping:languagechange", handleLanguageChange);
 
-    restartBtn.addEventListener("click", resetTest);
-    btnModalRestart.addEventListener("click", resetTest);
-    btnNextTest.addEventListener("click", resetTest);
+    restartBtn.addEventListener("click", () => resetTest(true));
+    btnModalRestart.addEventListener("click", () => resetTest(true));
+    btnNextTest.addEventListener("click", () => resetTest(true));
 
     btnTrainMistakes.addEventListener("click", () => {
       const uniqueMistakes = [...new Set(missedWords)];
