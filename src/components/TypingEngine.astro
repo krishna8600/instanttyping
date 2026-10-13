@@ -1498,6 +1498,9 @@ const {
         wordsWrapper.style.transition = 'transform 150ms ease-out';
       }
       wordsWrapper.style.transform = `translate3d(-${targetScrollX}px, 0, 0)`;
+      if (wordsViewport) {
+        wordsViewport.classList.toggle('has-scroll-left', targetScrollX > 0);
+      }
     }
 
     function updateCaretPosition() {
@@ -1588,8 +1591,11 @@ const {
     function renderWords() {
       wordsWrapper.innerHTML = "";
       wordsWrapper.style.transform = "translate3d(0, 0, 0)";
-      if (wordsViewport && caretEl.parentElement !== wordsViewport) {
-        wordsViewport.appendChild(caretEl);
+      if (wordsViewport) {
+        wordsViewport.classList.remove("has-scroll-left");
+        if (caretEl.parentElement !== wordsViewport) {
+          wordsViewport.appendChild(caretEl);
+        }
       }
 
       cachedWordNodes = [];

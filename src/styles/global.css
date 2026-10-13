@@ -171,6 +171,8 @@ html.dark .btn-secondary:hover {
 /* Typing Display */
 #typing-display {
   font-family: var(--font-mono);
+  font-weight: 500;
+  font-variation-settings: 'wght' 500;
   background: var(--surface);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-border), var(--shadow-card);
@@ -191,11 +193,15 @@ html.dark .btn-secondary:hover {
 .char-untyped,
 .char-pending {
   color: var(--text-primary);
-  opacity: 0.55;
+  font-weight: 500;
+  font-variation-settings: 'wght' 500;
+  opacity: 0.68;
 }
 
 .char-correct {
   color: var(--text-primary);
+  font-weight: 500;
+  font-variation-settings: 'wght' 500;
   opacity: 1;
 }
 
@@ -250,6 +256,25 @@ html.dark .btn-secondary:hover {
 #words-viewport {
   overflow: hidden;
   white-space: nowrap;
+  -webkit-mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+  mask-image: linear-gradient(to right, black calc(100% - 48px), transparent 100%);
+}
+
+#words-viewport.has-scroll-left {
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 48px, black calc(100% - 48px), transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, black 48px, black calc(100% - 48px), transparent 100%);
+}
+
+@media (max-width: 640px) {
+  #words-viewport {
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 28px), transparent 100%);
+  }
+
+  #words-viewport.has-scroll-left {
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 28px, black calc(100% - 28px), transparent 100%);
+  }
 }
 
 #words-wrapper {
