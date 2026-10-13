@@ -5,6 +5,7 @@ interface Props {
   initialDuration?: number;
   initialMode?: "time" | "words" | "quote" | "custom" | "classics" | "code";
   initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote" | "classics";
+  initialTier?: "auto" | "beginner" | "intermediate" | "advanced";
   pageHeading?: string;
   pageSubheading?: string;
   pageHeadingKey?: string;
@@ -15,6 +16,7 @@ const {
   initialDuration = 60,
   initialMode = "time",
   initialWordbank = "top1000",
+  initialTier = "auto",
   pageHeading = "Typing Speed & Accuracy Test",
   pageSubheading = "Test your typing speed with real-time Words Per Minute (WPM), accuracy, and detailed error analysis.",
   pageHeadingKey,
@@ -28,6 +30,7 @@ const {
   data-initial-duration={initialDuration}
   data-initial-mode={initialMode}
   data-initial-wordbank={initialWordbank}
+  data-initial-tier={initialTier}
 >
   <!-- Heading Section -->
   <div class="pb-1 sm:pb-1.5 border-b border-[#E5E5E5] dark:border-white/10">
@@ -194,11 +197,32 @@ const {
         <option class="dark:bg-[#1D1D1F]" value="numbers" data-i18n="options.corpus_numbers"
           >Numbers & Symbols</option
         >
-        <option class="dark:bg-[#1D1D1F]" value="beginner" data-i18n="options.corpus_beginner"
-          >Beginner Friendly</option
-        >
         <option class="dark:bg-[#1D1D1F]" value="quote" data-i18n="options.corpus_quote">Famous Quotes</option>
         <option class="dark:bg-[#1D1D1F]" value="classics" data-i18n="options.corpus_classics">Classic Passages</option>
+      </select>
+    </div>
+
+    <!-- Difficulty Tier Selector (Separate axis from languages) -->
+    <div
+      id="tier-select-container"
+      class="flex items-center gap-1.5 font-mono shrink-0 transition-opacity duration-200"
+    >
+      <label
+        for="tier-select"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] hidden sm:inline uppercase tracking-wide font-semibold"
+        data-i18n="settings.tier"
+        >Tier:</label
+      >
+      <select
+        id="tier-select"
+        class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
+        aria-label="Difficulty tier"
+        data-i18n-aria-label="settings.tier_aria"
+      >
+        <option class="dark:bg-[#1D1D1F]" value="auto" data-i18n="options.tier_auto">Auto (Match Skill)</option>
+        <option class="dark:bg-[#1D1D1F]" value="beginner" data-i18n="options.tier_beginner">Beginner</option>
+        <option class="dark:bg-[#1D1D1F]" value="intermediate" data-i18n="options.tier_intermediate">Intermediate</option>
+        <option class="dark:bg-[#1D1D1F]" value="advanced" data-i18n="options.tier_advanced">Advanced</option>
       </select>
     </div>
 
@@ -1075,6 +1099,8 @@ const {
     TOP_1000_WORDS,
     NUMBERS_PUNCTUATION_WORDS,
     BEGINNER_WORDS,
+    ADVANCED_WORDS,
+    type WordPoolTier,
     FAMOUS_QUOTES,
     QUOTES_BANK,
     CLASSIC_PASSAGES,
@@ -1091,6 +1117,7 @@ const {
     calculateMetrics,
     saveTestResult,
     getPersonalBest,
+    getRecommendedTier,
     type MetricSummary,
   } from "../utils/metrics";
   import { 
@@ -1130,8 +1157,12 @@ const {
     const initialModeAttr = (container.dataset.initialMode || "time") as
       "time" | "words" | "quote" | "custom" | "classics";
     const initialWordbankAttr = container.dataset.initialWordbank || "top1000";
-
-    // State Variables
+    const initialTierAttr = (container.dataset.initialTier || (initialWordbankAttr === "beginner" ? "beginner" : "auto")) as "auto" | WordPoolTier;
+    let savedTier: string | null = null;
+    try {
+      savedTier = localStorage.getItem("it_tier");
+    } catch {}
+    let currentTier: "auto" | WordPoolTier = (initialTierAttr !== "auto" ? initialTierAttr : (savedTier as any) || "auto");
     let currentMode: "time" | "words" | "quote" | "custom" | "classics" | "code" = initialModeAttr;
     currentQuoteObj = null;
     (window as any).__currentQuoteObj = null;
@@ -1261,6 +1292,15 @@ const {
     const wordbankSelect = document.getElementById(
       "wordbank-select",
     ) as HTMLSelectElement;
+    const tierSelect = document.getElementById(
+      "tier-select",
+    ) as HTMLSelectElement | null;
+    const tierSelectContainer = document.getElementById(
+      "tier-select-container",
+    ) as HTMLElement | null;
+    if (tierSelect) {
+      tierSelect.value = currentTier;
+    }
     const themeSelect = document.getElementById(
       "theme-select",
     ) as HTMLSelectElement;
@@ -1324,13 +1364,31 @@ const {
       window.dispatchEvent(new CustomEvent(name, { detail }));
     }
 
+    function getActiveTier(): WordPoolTier {
+      if (currentTier === "auto") {
+        return getRecommendedTier();
+      }
+      return currentTier;
+    }
+
+    function updateTierControlAvailability() {
+      if (!tierSelect || !tierSelectContainer) return;
+      const isNonTiered = ["es", "fr", "de", "pt", "it", "numbers"].includes(currentWordbankName) || 
+                          ["quote", "classics", "code", "custom"].includes(currentMode);
+      if (isNonTiered) {
+        tierSelect.disabled = true;
+        tierSelectContainer.classList.add("opacity-40", "pointer-events-none");
+      } else {
+        tierSelect.disabled = false;
+        tierSelectContainer.classList.remove("opacity-40", "pointer-events-none");
+      }
+    }
+
     function getSelectedCorpus(): string[] {
       if (customMistakeWords && customMistakeWords.length > 0) {
         return customMistakeWords;
       }
       switch (currentWordbankName) {
-        case "top1000":
-          return TOP_1000_WORDS;
         case "numbers":
           return NUMBERS_PUNCTUATION_WORDS;
         case "beginner":
@@ -1352,7 +1410,16 @@ const {
           if (currentLang === "de") return GERMAN_WORDS;
           if (currentLang === "pt") return PORTUGUESE_WORDS;
           if (currentLang === "it") return ITALIAN_WORDS;
-          return TOP_200_WORDS;
+
+          // Standard English: apply difficulty tier (Auto, Beginner, Intermediate, Advanced)
+          const activeTier = getActiveTier();
+          if (activeTier === "beginner") {
+            return BEGINNER_WORDS;
+          }
+          if (activeTier === "advanced") {
+            return ADVANCED_WORDS;
+          }
+          return currentWordbankName === "top1000" ? TOP_1000_WORDS : TOP_200_WORDS;
         }
       }
     }
@@ -1771,6 +1838,7 @@ const {
       const resQuoteAttrEl = document.getElementById("res-quote-attribution");
       if (resQuoteAttrEl) resQuoteAttrEl.classList.add("hidden");
       wordInputs = [];
+      updateTierControlAvailability();
       generateWords();
 
       // Scroll passage into view only if explicitly user-initiated or test was in progress
@@ -3361,8 +3429,22 @@ const {
     wordbankSelect.addEventListener("change", () => {
       currentWordbankName = wordbankSelect.value;
       customMistakeWords = null;
+      updateTierControlAvailability();
       resetTest();
     });
+
+    if (tierSelect) {
+      tierSelect.addEventListener("change", () => {
+        currentTier = tierSelect.value as any;
+        try {
+          localStorage.setItem("it_tier", currentTier);
+        } catch {}
+        customMistakeWords = null;
+        resetTest();
+      });
+    }
+
+    updateTierControlAvailability();
 
     function handleLanguageChange(e: any) {
       const lang = e.detail?.language;

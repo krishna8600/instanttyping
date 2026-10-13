@@ -132,3 +132,41 @@ export function getPersonalBest(): { highestWpm: number; highestAccuracy: number
   });
   return { highestWpm, highestAccuracy, totalTests: history.length };
 }
+
+export type WordPoolTier = "beginner" | "intermediate" | "advanced";
+
+/**
+ * Determines the recommended word pool difficulty tier based on the user's test history.
+ * Reads the user's average net WPM from completed tests in localStorage.
+ *
+ * Cutoff rationale:
+ * - < 40 WPM: 'beginner'
+ *   Targets typists in 'Starting' (<25 WPM) and 'Developing' (25–39 WPM) skill bands.
+ *   Focuses on building basic muscle memory and finger positioning on common, forgiving words.
+ * - 40–70 WPM: 'intermediate'
+ *   Targets solid 'Intermediate' (40–59 WPM) and early 'Upper-Intermediate' (60–70 WPM) typists.
+ *   Standard balanced everyday English vocabulary.
+ * - > 70 WPM: 'advanced'
+ *   Targets fast typists in late 'Upper-Intermediate' (70–79 WPM), 'Advanced' (80–99 WPM),
+ *   and 'Elite' (100+ WPM). Challenges high-speed typists with polysyllabic, academic,
+ *   and complex orthographical rhythm.
+ *
+ * New users with no completed tests default to 'beginner'.
+ */
+export function getRecommendedTier(history?: TestHistoryEntry[]): WordPoolTier {
+  const entries = history ?? getTestHistory();
+  if (!entries || entries.length === 0) {
+    return "beginner";
+  }
+  const totalNet = entries.reduce((acc, t) => acc + (t.netWpm || 0), 0);
+  const avgWpm = totalNet / entries.length;
+
+  if (avgWpm < 40) {
+    return "beginner";
+  } else if (avgWpm <= 70) {
+    return "intermediate";
+  } else {
+    return "advanced";
+  }
+}
+

@@ -217,29 +217,113 @@ export const NUMBERS_PUNCTUATION_WORDS: string[] = [
   "Dept.", "Blvd.", "Ave.", "St.", "Apt.", "No.",
 ];
 
+export type WordPoolTier = "beginner" | "intermediate" | "advanced";
+
 // ─────────────────────────────────────────────────────────────────────────────
-// BEGINNER — short, phonetically clean, non-repetitive words for touch-typing
-// beginners who need to build muscle memory for standard QWERTY positions.
+// BEGINNER — short, phonetically clean, common words for touch-typing beginners
+// building muscle memory for standard QWERTY positions. Obscure words removed.
 // ─────────────────────────────────────────────────────────────────────────────
 export const BEGINNER_WORDS: string[] = [
-  // Home row focus (a s d f j k l)
+  // Home row anchors (a s d f g h j k l)
   "ask", "all", "add", "sad", "fall", "flag", "glad", "hall", "lad", "flask",
-  "dash", "half", "last", "jag", "skal", "flak", "lag", "fad", "gal", "lash",
-  // Simple 3-5 letter words
-  "the", "and", "for", "are", "but", "not", "you", "all", "can", "her",
-  "was", "one", "our", "out", "day", "get", "has", "him", "his", "how",
-  "man", "new", "now", "old", "see", "two", "way", "who", "boy", "did",
-  "its", "let", "put", "say", "she", "too", "use", "big", "cat", "dog",
-  "fun", "got", "hat", "joy", "kit", "lot", "map", "nod", "off", "pen",
-  "ran", "sat", "tan", "up", "van", "wet", "yes", "zip", "bit", "cup",
-  // Slightly longer common words
-  "fast", "gold", "hard", "just", "keep", "like", "made", "name", "over",
-  "part", "read", "send", "talk", "turn", "used", "very", "walk", "your",
-  "able", "blue", "care", "done", "each", "face", "give", "hand", "into",
-  "kind", "live", "make", "next", "only", "real", "same", "take", "upon",
-  "wide", "year", "also", "back", "call", "dark", "else", "fall", "good",
-  "help", "idea", "join", "know", "long", "move", "need", "open", "plan",
-  "once", "rest", "show", "stay", "them", "time", "want", "well", "zone",
+  "dash", "half", "last", "lag", "lash", "gas",
+  // Common 3-letter words
+  "the", "and", "for", "are", "but", "not", "you", "can", "her", "was",
+  "one", "our", "out", "day", "get", "has", "him", "his", "how", "man",
+  "new", "now", "old", "see", "two", "way", "who", "boy", "did", "its",
+  "let", "put", "say", "she", "too", "use", "big", "cat", "dog", "fun",
+  "got", "hat", "joy", "kit", "lot", "map", "nod", "off", "pen", "ran",
+  "sat", "sun", "tan", "top", "van", "wet", "yes", "zip", "bit", "cup",
+  "box", "fly", "bed", "red", "run", "car",
+  // Common 4-letter words
+  "fast", "gold", "hard", "just", "keep", "like", "made", "name", "over", "part",
+  "read", "send", "talk", "turn", "used", "very", "walk", "your", "able", "blue",
+  "care", "done", "each", "face", "give", "hand", "into", "kind", "live", "make",
+  "next", "only", "real", "same", "take", "upon", "wide", "year", "also", "back",
+  "call", "dark", "else", "good", "help", "idea", "join", "know", "long", "move",
+  "need", "open", "plan", "once", "rest", "show", "stay", "them", "time", "want",
+  "well", "home", "life", "line", "look", "page", "play", "side", "stop", "tree",
+  "work", "star", "room", "road", "wind", "warm", "bird", "boat", "book", "door",
+  "fish", "food", "game", "hill", "lake", "moon", "rain", "snow", "town",
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ADVANCED — challenging, polysyllabic, academic and literature vocabulary.
+// Dictionary-verified, lowercase ASCII, designed to test rhythm and vocabulary.
+// ─────────────────────────────────────────────────────────────────────────────
+export const ADVANCED_WORDS: string[] = [
+  "accelerate", "accommodate", "accumulation", "acknowledgment", "acquisition",
+  "advantageous", "aesthetic", "aggregate", "algorithm", "allegation",
+  "ambiguous", "ameliorate", "anachronism", "analogous", "anticipation",
+  "apprehension", "arbitrary", "archetype", "articulate", "ascertain",
+  "assimilate", "asynchronous", "attenuate", "augment", "authentic",
+  "autonomous", "benevolent", "bureaucracy", "cadence", "calibration",
+  "capricious", "catalyst", "categorize", "circumstantial", "clandestine",
+  "coalesce", "cognitive", "collaborate", "commensurate", "compensate",
+  "complacency", "comprehensive", "concatenate", "concurrence", "configuration",
+  "conjecture", "connotation", "conscientious", "consensus", "consolidate",
+  "conspicuous", "contemporaneous", "contingency", "corroborate", "cumulative",
+  "deciduous", "delineate", "deliberate", "demarcation", "demonstrable",
+  "denotation", "deprecation", "derivative", "deteriorate", "diagnostic",
+  "dichotomy", "differentiate", "dilapidated", "diminutive", "discernible",
+  "discretionary", "discrepancy", "disparate", "dissemination", "distinction",
+  "eccentric", "eclectic", "efficacious", "egalitarian", "elaborate",
+  "elucidate", "emblematic", "empirical", "encapsulate", "encompass",
+  "endeavor", "enigmatic", "enumeration", "ephemeral", "equilibrium",
+  "equivocal", "eradicate", "erudite", "esoteric", "evaluation",
+  "evanescent", "exacerbate", "exaggeration", "exemplary", "exhaustion",
+  "exhilarate", "existential", "extrapolate", "facilitate", "fallacious",
+  "fastidious", "feasibility", "fluctuation", "formulate", "fortuitous",
+  "fundamental", "galvanize", "generalization", "gravitate", "harbinger",
+  "hierarchy", "homogeneous", "hypothetical", "idiosyncratic", "illumination",
+  "illustrative", "immutable", "imperative", "impervious", "implementation",
+  "implication", "improvise", "inadvertent", "incidental", "inconclusive",
+  "incorporate", "indigenous", "indiscriminate", "indispensable", "inevitable",
+  "inferential", "infrastructure", "inherently", "initiation", "innovation",
+  "inordinate", "inquisitive", "insignificant", "insidious", "instantiation",
+  "integration", "intelligible", "intermediate", "intermittent", "interpolation",
+  "intrinsic", "introspective", "intuitive", "invariable", "inviolable",
+  "iterative", "juxtaposition", "labyrinthine", "lamentable", "legitimate",
+  "leverage", "liquidation", "longevity", "longitudinal", "lucidity",
+  "luminous", "magnitude", "maladaptive", "malleable", "manifestation",
+  "manipulation", "melancholy", "meticulous", "mitigation", "modulation",
+  "momentous", "monotonous", "monumental", "multifaceted", "navigable",
+  "nebulous", "negligible", "nomenclature", "noncommittal", "nonpartisan",
+  "nostalgic", "nuance", "numerical", "obsolescence", "omnipresent",
+  "omniscient", "operational", "opportune", "optimization", "orchestrate",
+  "oscillate", "ostensible", "palatable", "panacea", "paradigm",
+  "paradoxical", "parameter", "pedagogical", "peerless", "perfunctory",
+  "peripheral", "pernicious", "perpetuate", "persistence", "perspective",
+  "pervasive", "phenomenon", "philanthropic", "philosophical", "pivotal",
+  "plausibility", "poignant", "polyphony", "pragmatic", "precipitate",
+  "precursor", "predecessor", "predominant", "preliminary", "premeditated",
+  "prerequisite", "preservation", "prevalence", "primordial", "pristine",
+  "probabilistic", "procedural", "prolific", "promulgate", "proponent",
+  "proportional", "prototype", "provisional", "provocative", "prudence",
+  "pseudonym", "qualitative", "quantitative", "quarantine", "quintessential",
+  "ramification", "randomization", "ratification", "rationalize", "recalcitrant",
+  "reciprocal", "reconciliation", "redundant", "regeneration", "regulatory",
+  "reiterate", "rejuvenate", "relevance", "relinquish", "reminiscent",
+  "renovation", "repertoire", "replenish", "reprehensible", "replication",
+  "representative", "residual", "resilience", "retrospective", "reverberate",
+  "rhetorical", "rudimentary", "salient", "salutary", "sanction",
+  "saturation", "schematic", "scrutiny", "sedentary", "semantic",
+  "sensational", "sensitivity", "sequential", "serendipity", "simulation",
+  "simultaneous", "skepticism", "solidarity", "sovereignty", "specification",
+  "speculation", "spontaneous", "sporadic", "standardization", "steadfast",
+  "stereotypical", "stipulation", "strategic", "substantiate", "subversive",
+  "superfluous", "supersede", "supplementary", "suppression", "surveillance",
+  "susceptible", "symbiosis", "symmetry", "synchronous", "syndication",
+  "synthesis", "systematic", "taciturn", "tangible", "taxonomy",
+  "temperament", "temporal", "tenuous", "terminology", "theoretical",
+  "trajectory", "transcendental", "transformation", "transitive", "translucent",
+  "transparent", "trepidation", "ubiquitous", "unanimous", "underlying",
+  "undermine", "underpin", "uniformity", "universal", "utilitarian",
+  "validation", "variability", "velocity", "veneration", "ventilation",
+  "verification", "versatile", "viability", "vibration", "vicarious",
+  "vigilance", "vindicate", "virulent", "viscosity", "visionary",
+  "volatility", "vulnerability", "watershed", "whimsical", "yearning",
+  "zealous", "zenith"
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────
