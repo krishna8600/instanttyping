@@ -461,5 +461,13 @@
   "header.launch_achievements": "Obiettivi di lancio",
   "profile.heatmap_aria": "{active} giorni attivi nelle ultime {weeks} settimane",
   "profile.heatmap_tooltip": "{count} test il {date}",
-  "profile.heatmap_tooltip_single": "1 test il {date}"
+  "profile.heatmap_tooltip_single": "1 test il {date}",
+  "mode.quotes": "Citazioni",
+  "daily.title": "Citazione del giorno",
+  "daily.cta": "Digita la citazione di oggi",
+  "daily.done": "Completato",
+  "daily.xp": "Citazione del giorno +25",
+  "daily.bonus_badge": "+25 XP",
+  "results.quote_by": "— {author}, {source}",
+  "results.xp_bonus_daily_quote": "Citazione del giorno +{amount}"
 }

@@ -1,0 +1,106 @@
+---
+import quotesData from '../data/quotes.json';
+
+// Deterministic SSR quote based on build time (client script refines for user local midnight)
+const now = new Date();
+const start = new Date(now.getFullYear(), 0, 0);
+const diff = now.getTime() - start.getTime() + ((start.getTimezoneOffset() - now.getTimezoneOffset()) * 60 * 1000);
+const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
+const initialQuote = quotesData[Math.abs(dayOfYear) % quotesData.length];
+---
+
+<section id="daily-quote-card" class="premium-card p-5 sm:p-7 transition-all duration-200" aria-labelledby="daily-quote-heading">
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+    <div class="flex items-center gap-2">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#0072F5]/10 text-[#0072F5] dark:bg-[#0072F5]/20 font-mono tracking-wide">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span id="daily-quote-heading" data-i18n="daily.title">Quote of the Day</span>
+      </span>
+      <span class="text-[11px] font-mono text-[#6E6E73] dark:text-[#A1A1A6] hidden sm:inline" id="daily-date-label">
+        Daily Practice
+      </span>
+    </div>
+
+    <!-- Completed vs +25 XP Badge -->
+    <div id="daily-status-badge" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold font-mono bg-neutral-100 dark:bg-white/10 text-neutral-700 dark:text-neutral-300">
+      <span id="daily-status-text" data-i18n="daily.bonus_badge">+25 XP</span>
+    </div>
+  </div>
+
+  <!-- Quote text -->
+  <blockquote class="text-base sm:text-lg font-medium text-ds-text-primary leading-relaxed my-3 font-sans italic">
+    “<span id="daily-card-quote-text">{initialQuote.text}</span>”
+  </blockquote>
+
+  <!-- Author & Source Attribution -->
+  <div id="daily-card-quote-attr" class="text-xs sm:text-sm text-[#6E6E73] dark:text-[#A1A1A6] font-mono">
+    — <span id="daily-card-author">{initialQuote.author}</span>, <span id="daily-card-source">{initialQuote.source}</span>
+  </div>
+
+  <!-- CTA Action -->
+  <div class="mt-5 flex items-center gap-3">
+    <button
+      id="btn-start-daily-quote"
+      type="button"
+      class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-xs sm:text-sm font-semibold bg-[#1D1D1F] hover:bg-black text-white dark:bg-white dark:hover:bg-neutral-100 dark:text-black transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-[#0072F5]/50 active:scale-95 cursor-pointer"
+    >
+      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+      <span data-i18n="daily.cta">Type today's quote</span>
+    </button>
+  </div>
+</section>
+
+<script>
+  import { getDailyQuote, isDailyQuoteCompletedToday, loadProfile } from '../scripts/profile';
+  import { t } from '../i18n';
+  import quotesData from '../data/quotes.json';
+
+  function updateDailyCard() {
+    const todayQuote = getDailyQuote(quotesData, new Date());
+    const quoteTextEl = document.getElementById('daily-card-quote-text');
+    const authorEl = document.getElementById('daily-card-author');
+    const sourceEl = document.getElementById('daily-card-source');
+    const statusBadge = document.getElementById('daily-status-badge');
+
+    if (quoteTextEl && todayQuote) quoteTextEl.textContent = todayQuote.text;
+    if (authorEl && todayQuote) authorEl.textContent = todayQuote.author;
+    if (sourceEl && todayQuote) sourceEl.textContent = todayQuote.source;
+
+    const isCompleted = isDailyQuoteCompletedToday();
+    if (statusBadge) {
+      if (isCompleted) {
+        statusBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
+        statusBadge.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg><span data-i18n="daily.done">${t('daily.done')}</span>`;
+      } else {
+        statusBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold font-mono bg-[#0072F5]/10 text-[#0072F5] dark:bg-[#0072F5]/20';
+        statusBadge.innerHTML = `<span id="daily-status-text" data-i18n="daily.bonus_badge">+25 XP</span>`;
+      }
+    }
+  }
+
+  // Initial update
+  updateDailyCard();
+
+  // Listen for completion and profile updates
+  window.addEventListener('it-profile-updated', updateDailyCard);
+  window.addEventListener('daily-quote-completed', updateDailyCard);
+  window.addEventListener('instanttyping:languagechange', updateDailyCard);
+
+  // Click CTA to start
+  const startBtn = document.getElementById('btn-start-daily-quote');
+  if (startBtn) {
+    startBtn.addEventListener('click', () => {
+      const todayQuote = getDailyQuote(quotesData, new Date());
+      window.dispatchEvent(new CustomEvent('start-daily-quote', { detail: todayQuote }));
+      const test = document.getElementById('typing-test-container') || document.getElementById('typing-display');
+      if (test) {
+        test.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+</script>

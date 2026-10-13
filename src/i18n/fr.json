@@ -461,5 +461,13 @@
   "header.launch_achievements": "Succès de lancement",
   "profile.heatmap_aria": "{active} jours actifs au cours des {weeks} dernières semaines",
   "profile.heatmap_tooltip": "{count} tests le {date}",
-  "profile.heatmap_tooltip_single": "1 test le {date}"
+  "profile.heatmap_tooltip_single": "1 test le {date}",
+  "mode.quotes": "Citations",
+  "daily.title": "Citation du jour",
+  "daily.cta": "Taper la citation du jour",
+  "daily.done": "Terminé",
+  "daily.xp": "Citation du jour +25",
+  "daily.bonus_badge": "+25 XP",
+  "results.quote_by": "— {author}, {source}",
+  "results.xp_bonus_daily_quote": "Citation du jour +{amount}"
 }

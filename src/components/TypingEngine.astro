@@ -576,6 +576,7 @@ const {
       <p class="text-[0.9375rem] text-[#6E6E73] dark:text-[#A1A1A6]" data-i18n="results.skill_band_desc">
         Honest skill band based on Net WPM — no inflated percentiles.
       </p>
+      <div id="res-quote-attribution" class="hidden text-sm italic font-medium text-[#6E6E73] dark:text-[#A1A1A6] font-mono pt-1"></div>
     </div>
 
     
@@ -1063,7 +1064,7 @@ const {
   import { animate as motionAnimate } from "motion";
   import { getLanguage, updateDOM, t } from "../i18n";
   import { recordTest, getLevel, getDailyProgress, loadProgress } from "../scripts/progress";
-  import { updateProfileAfterTest, getXpProgressForLevel } from "../scripts/profile";
+  import { updateProfileAfterTest, getXpProgressForLevel, getDailyQuote } from "../scripts/profile";
   import type { ProfileUpdateResult } from "../scripts/profile";
   import { notify } from "../scripts/notify";
   import { createDock } from "../scripts/dock";
@@ -1075,6 +1076,7 @@ const {
     NUMBERS_PUNCTUATION_WORDS,
     BEGINNER_WORDS,
     FAMOUS_QUOTES,
+    QUOTES_BANK,
     CLASSIC_PASSAGES,
     CODE_SNIPPETS,
     SPANISH_WORDS,
@@ -1116,6 +1118,8 @@ const {
   // Script-scoped test summary so results screen, coaching card, and share handlers share identical data
   let lastCompletedSummary: CompletedTestSummary | null = null;
   (window as any).__lastTestSummary = null;
+  let currentQuoteObj: { id?: string; text: string; author?: string; source: string } | null = null;
+  (window as any).__currentQuoteObj = null;
 
   const container = document.getElementById("typing-test-container");
   if (container) {
@@ -1129,6 +1133,33 @@ const {
 
     // State Variables
     let currentMode: "time" | "words" | "quote" | "custom" | "classics" | "code" = initialModeAttr;
+    currentQuoteObj = null;
+    (window as any).__currentQuoteObj = null;
+    let isDailyQuoteActive = false;
+
+    function getNextQuoteFromCycle(): any {
+      let seen: string[] = [];
+      try {
+        const raw = localStorage.getItem('it_quotes_seen');
+        if (raw) seen = JSON.parse(raw);
+        if (!Array.isArray(seen)) seen = [];
+      } catch {}
+
+      let available = QUOTES_BANK.filter(q => !q.id || !seen.includes(q.id));
+      if (available.length === 0) {
+        seen = [];
+        available = QUOTES_BANK;
+      }
+
+      const chosen = available[Math.floor(Math.random() * available.length)];
+      if (chosen.id) {
+        seen.push(chosen.id);
+        try {
+          localStorage.setItem('it_quotes_seen', JSON.stringify(seen));
+        } catch {}
+      }
+      return chosen;
+    }
     let targetDuration = initialDurationAttr;
     let targetWordCount = 25;
     let currentWordbankName = initialWordbankAttr;
@@ -1359,10 +1390,16 @@ const {
         quoteCitation.textContent = "— " + passageObj.source + " · Public domain";
         quoteCitation.classList.remove("hidden");
       } else if (currentMode === "quote" || currentWordbankName === "quote") {
-        const quoteObj =
-          FAMOUS_QUOTES[Math.floor(Math.random() * FAMOUS_QUOTES.length)];
-        wordsList = quoteObj.text.split(" ");
-        quoteCitation.textContent = `— ${quoteObj.source}`;
+        let quoteObj: any;
+        if (isDailyQuoteActive) {
+          quoteObj = getDailyQuote(QUOTES_BANK, new Date());
+        } else {
+          quoteObj = getNextQuoteFromCycle();
+        }
+        currentQuoteObj = quoteObj;
+        (window as any).__currentQuoteObj = quoteObj;
+        wordsList = quoteObj.text.trim().split(/\s+/);
+        quoteCitation.textContent = `— ${quoteObj.author}, ${quoteObj.source}`;
         quoteCitation.classList.remove("hidden");
       } else if (currentMode === "code" || currentWordbankName === "code") {
         const snippetObj =
@@ -1727,6 +1764,12 @@ const {
       caretEl.style.opacity = "0";
       targetScrollX = 0;
       wordsWrapper.style.transform = "translate3d(0, 0, 0)";
+      if (currentMode !== "quote" && currentWordbankName !== "quote") {
+        currentQuoteObj = null;
+        (window as any).__currentQuoteObj = null;
+      }
+      const resQuoteAttrEl = document.getElementById("res-quote-attribution");
+      if (resQuoteAttrEl) resQuoteAttrEl.classList.add("hidden");
       wordInputs = [];
       generateWords();
 
@@ -1913,8 +1956,13 @@ const {
           rawWpm: testSummary.rawWpm,
           accuracy: testSummary.accuracy,
           durationSeconds: Math.round(totalTime),
-          isDrill: !!(customMistakeWords && customMistakeWords.length > 0)
+          isDrill: !!(customMistakeWords && customMistakeWords.length > 0),
+          isDailyQuote: isDailyQuoteActive,
+          dailyQuoteId: currentQuoteObj ? currentQuoteObj.id : undefined,
         });
+        if (isDailyQuoteActive) {
+          window.dispatchEvent(new CustomEvent('daily-quote-completed', { detail: currentQuoteObj }));
+        }
         (window as any).__lastProfileResult = lastProfileResult;
       } catch (e) {
         console.error("Failed to update profile after test:", e);
@@ -2230,6 +2278,16 @@ const {
         }
       }
 
+      const resQuoteAttr = document.getElementById("res-quote-attribution");
+      if (resQuoteAttr) {
+        if (currentQuoteObj) {
+          resQuoteAttr.textContent = `— ${currentQuoteObj.author}, ${currentQuoteObj.source}`;
+          resQuoteAttr.classList.remove("hidden");
+        } else {
+          resQuoteAttr.classList.add("hidden");
+        }
+      }
+
       // Render P1 XP Receipt
       const xpReceipt = document.getElementById("results-xp-receipt");
       const xpTotalEl = document.getElementById("xp-receipt-total");
@@ -2257,6 +2315,8 @@ const {
           } else if (b.label.includes("streak")) {
             const days = b.label.match(/\d+/)?.[0] || "1";
             label = t("results.xp_bonus_streak", lang, { days, amount: b.amount });
+          } else if (b.label === "Quote of the Day") {
+            label = t("results.xp_bonus_daily_quote", lang, { amount: b.amount });
           }
           parts.push(label);
         });
@@ -2759,6 +2819,11 @@ const {
 
       updateCaretPosition();
       scheduleKeystrokeEffect(() => dispatchNextChar());
+
+      if ((currentMode === "quote" || currentMode === "classics") && currentWordIndex === wordsList.length - 1 && currentInput === targetWord) {
+        wordInputs[currentWordIndex] = currentInput;
+        finishTest();
+      }
     }
 
     function handleBackspace() {
@@ -3105,6 +3170,36 @@ const {
       if (btn) (btn as HTMLElement).click();
     }) as EventListener);
 
+    window.addEventListener('start-daily-quote', ((ev: CustomEvent) => {
+      const quote = ev.detail || getDailyQuote(QUOTES_BANK, new Date());
+      isDailyQuoteActive = true;
+      currentQuoteObj = quote;
+      (window as any).__currentQuoteObj = quote;
+
+      const quoteBtn = document.querySelector('[data-mode-btn="quote"]') as HTMLElement;
+      if (quoteBtn) {
+        moveTabSlider(quoteBtn);
+        modeBtns.forEach((b) => {
+          b.classList.remove("active-mode-btn", "!text-white", "dark:!text-black", "font-semibold");
+          b.classList.add("font-medium", "text-[#6E6E73]", "dark:text-[#A1A1A6]");
+        });
+        quoteBtn.classList.remove("font-medium", "text-[#6E6E73]", "dark:text-[#A1A1A6]");
+        quoteBtn.classList.add("active-mode-btn", "!text-white", "dark:!text-black", "font-semibold");
+      }
+
+      currentMode = "quote";
+      timeOptions.classList.add("hidden");
+      timeOptions.classList.remove("flex");
+      wordsOptions.classList.add("hidden");
+      wordsOptions.classList.remove("flex");
+      customTextContainer.classList.add("hidden");
+      customTextContainer.classList.remove("flex");
+      typingSurfaceWrapper.classList.remove("hidden");
+
+      resetTest();
+      hiddenInput.focus();
+    }) as EventListener);
+
     window.addEventListener("resize", () => {
       const active = document.querySelector(".mode-tab-btn.active-mode-btn") as HTMLElement
         || document.querySelector(`[data-mode-btn="${currentMode}"]`) as HTMLElement;
@@ -3114,7 +3209,13 @@ const {
       btn.addEventListener("click", () => {
         const mode = (btn as HTMLElement).dataset.modeBtn as
           "time" | "words" | "quote" | "custom" | "classics";
-        if (mode === currentMode && !testActive && !testCompleted) return;
+        if (mode === currentMode && !testActive && !testCompleted) {
+          if (mode === "quote") {
+            isDailyQuoteActive = false;
+            resetTest();
+          }
+          return;
+        }
         moveTabSlider(btn);
         modeBtns.forEach((b) => {
           b.classList.remove(
@@ -3135,6 +3236,13 @@ const {
 
         currentMode = mode;
         customMistakeWords = null;
+        if (mode !== "quote") {
+          isDailyQuoteActive = false;
+          currentQuoteObj = null;
+          (window as any).__currentQuoteObj = null;
+        } else {
+          isDailyQuoteActive = false;
+        }
 
         if (mode === "time") {
           timeOptions.classList.remove("hidden");
@@ -3530,11 +3638,13 @@ const {
         doneLabel: t("dock.copied"),
         getValue: async () => {
           const mod = await import("../scripts/share-card");
+          const quote = currentQuoteObj || (window as any).__currentQuoteObj;
           const data = (window as any).__buildShareData ? await (window as any).__buildShareData() : {
             wpm: lastCompletedSummary ? lastCompletedSummary.netWpm : 0,
             accuracy: lastCompletedSummary ? lastCompletedSummary.accuracy : 100,
             consistency: lastCompletedSummary ? lastCompletedSummary.consistency : 100,
             date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+            quoteAttribution: quote ? `— ${quote.author}, ${quote.source}` : undefined,
           };
           return mod.generateShareText(data);
         },
@@ -3584,11 +3694,13 @@ const {
           onClick: async () => {
             try {
               const mod = await import("../scripts/share-card");
+              const quote = currentQuoteObj || (window as any).__currentQuoteObj;
               const data = (window as any).__buildShareData ? await (window as any).__buildShareData() : {
                 wpm: lastCompletedSummary ? lastCompletedSummary.netWpm : 0,
                 accuracy: lastCompletedSummary ? lastCompletedSummary.accuracy : 100,
                 consistency: lastCompletedSummary ? lastCompletedSummary.consistency : 100,
                 date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }),
+                quoteAttribution: quote ? `— ${quote.author}, ${quote.source}` : undefined,
               };
               await mod.downloadShareImage(data);
             } catch (err) {
@@ -3700,6 +3812,7 @@ const {
     (function() {
       async function buildShareData(): Promise<import('../scripts/share-card').ShareData> {
         var summary = lastCompletedSummary || (window as any).__lastTestSummary;
+        var quote = currentQuoteObj || (window as any).__currentQuoteObj;
         var wpmEl = document.getElementById('res-net-wpm');
         var accEl = document.getElementById('res-accuracy');
         var consEl = document.getElementById('res-consistency');
@@ -3714,6 +3827,7 @@ const {
           consistency: consistency,
           rank: rank,
           date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+          quoteAttribution: quote ? `— ${quote.author}, ${quote.source}` : undefined,
         };
       }
       (window as any).__buildShareData = buildShareData;

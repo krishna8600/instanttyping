@@ -86,8 +86,12 @@ function svgIcon(kind: 'copy' | 'check' | 'alert'): SVGSVGElement {
 
 async function writeClipboard(text: string): Promise<void> {
   if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
-    await navigator.clipboard.writeText(text);
-    return;
+    try {
+      await navigator.clipboard.writeText(text);
+      return;
+    } catch {
+      // Fall through to textarea execCommand fallback
+    }
   }
   // Fallback for older browsers / non-secure contexts.
   const ta = document.createElement('textarea');

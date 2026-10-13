@@ -471,5 +471,13 @@
   "header.launch_achievements": "Launch Achievements",
   "profile.heatmap_aria": "{active} active days in the last {weeks} weeks",
   "profile.heatmap_tooltip": "{count} tests on {date}",
-  "profile.heatmap_tooltip_single": "1 test on {date}"
+  "profile.heatmap_tooltip_single": "1 test on {date}",
+  "mode.quotes": "Quotes",
+  "daily.title": "Quote of the Day",
+  "daily.cta": "Type today's quote",
+  "daily.done": "Completed",
+  "daily.xp": "Daily quote +25",
+  "daily.bonus_badge": "+25 XP",
+  "results.quote_by": "— {author}, {source}",
+  "results.xp_bonus_daily_quote": "Daily quote +{amount}"
 }

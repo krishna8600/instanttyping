@@ -1,0 +1,779 @@
+[
+  {
+    "id": "twain-001",
+    "text": "Travel is fatal to prejudice, bigotry, and narrow-mindedness, and many of our people need it sorely on these accounts.",
+    "author": "Mark Twain",
+    "source": "The Innocents Abroad",
+    "len": "short"
+  },
+  {
+    "id": "twain-002",
+    "text": "The report of my death was an exaggeration.",
+    "author": "Mark Twain",
+    "source": "Note to a reporter, 1897",
+    "len": "short"
+  },
+  {
+    "id": "twain-003",
+    "text": "Courage is resistance to fear, mastery of fear, not absence of fear.",
+    "author": "Mark Twain",
+    "source": "Pudd'nhead Wilson",
+    "len": "short"
+  },
+  {
+    "id": "twain-004",
+    "text": "The difference between the almost right word and the right word is really a large matter — 'tis the difference between the lightning-bug and the lightning.",
+    "author": "Mark Twain",
+    "source": "Letter to George Bainton, 1888",
+    "len": "medium"
+  },
+  {
+    "id": "twain-005",
+    "text": "If you tell the truth, you don't have to remember anything.",
+    "author": "Mark Twain",
+    "source": "Notebook",
+    "len": "short"
+  },
+  {
+    "id": "twain-006",
+    "text": "The best way to cheer yourself up is to try to cheer somebody else up.",
+    "author": "Mark Twain",
+    "source": "Notebook",
+    "len": "short"
+  },
+  {
+    "id": "austen-001",
+    "text": "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
+    "author": "Jane Austen",
+    "source": "Pride and Prejudice",
+    "len": "short"
+  },
+  {
+    "id": "austen-002",
+    "text": "I declare after all there is no enjoyment like reading! How much sooner one tires of any thing than of a book!",
+    "author": "Jane Austen",
+    "source": "Pride and Prejudice",
+    "len": "short"
+  },
+  {
+    "id": "austen-003",
+    "text": "There is no charm equal to tenderness of heart.",
+    "author": "Jane Austen",
+    "source": "Emma",
+    "len": "short"
+  },
+  {
+    "id": "austen-004",
+    "text": "Silly things do cease to be silly if they are done by sensible people in an impudent way.",
+    "author": "Jane Austen",
+    "source": "Emma",
+    "len": "short"
+  },
+  {
+    "id": "austen-005",
+    "text": "The more I know of the world, the more I am convinced that I shall never see a man whom I can really love.",
+    "author": "Jane Austen",
+    "source": "Sense and Sensibility",
+    "len": "short"
+  },
+  {
+    "id": "austen-006",
+    "text": "Ah! there is nothing like staying at home for real comfort.",
+    "author": "Jane Austen",
+    "source": "Emma",
+    "len": "short"
+  },
+  {
+    "id": "austen-007",
+    "text": "For what do we live, but to make sport for our neighbours, and laugh at them in our turn?",
+    "author": "Jane Austen",
+    "source": "Pride and Prejudice",
+    "len": "short"
+  },
+  {
+    "id": "dickens-001",
+    "text": "It was the best of times, it was the worst of times.",
+    "author": "Charles Dickens",
+    "source": "A Tale of Two Cities",
+    "len": "short"
+  },
+  {
+    "id": "dickens-002",
+    "text": "I will honour Christmas in my heart, and try to keep it all the year.",
+    "author": "Charles Dickens",
+    "source": "A Christmas Carol",
+    "len": "short"
+  },
+  {
+    "id": "dickens-003",
+    "text": "There is nothing in the world so irresistibly contagious as laughter and good-humour.",
+    "author": "Charles Dickens",
+    "source": "A Christmas Carol",
+    "len": "short"
+  },
+  {
+    "id": "dickens-004",
+    "text": "Have a heart that never hardens, and a temper that never tires, and a touch that never hurts.",
+    "author": "Charles Dickens",
+    "source": "Our Mutual Friend",
+    "len": "short"
+  },
+  {
+    "id": "dickens-005",
+    "text": "No one is useless in this world who lightens the burdens of another.",
+    "author": "Charles Dickens",
+    "source": "Our Mutual Friend",
+    "len": "short"
+  },
+  {
+    "id": "dickens-006",
+    "text": "It is a far, far better thing that I do, than I have ever done; it is a far, far better rest that I go to than I have ever known.",
+    "author": "Charles Dickens",
+    "source": "A Tale of Two Cities",
+    "len": "medium"
+  },
+  {
+    "id": "dickens-007",
+    "text": "Charity begins at home, and justice begins next door.",
+    "author": "Charles Dickens",
+    "source": "Martin Chuzzlewit",
+    "len": "short"
+  },
+  {
+    "id": "wilde-001",
+    "text": "We are all in the gutter, but some of us are looking at the stars.",
+    "author": "Oscar Wilde",
+    "source": "Lady Windermere's Fan",
+    "len": "short"
+  },
+  {
+    "id": "wilde-002",
+    "text": "I can resist everything except temptation.",
+    "author": "Oscar Wilde",
+    "source": "An Ideal Husband",
+    "len": "short"
+  },
+  {
+    "id": "wilde-003",
+    "text": "The only way to get rid of a temptation is to yield to it.",
+    "author": "Oscar Wilde",
+    "source": "The Picture of Dorian Gray",
+    "len": "short"
+  },
+  {
+    "id": "wilde-004",
+    "text": "Experience is the name every one gives to their mistakes.",
+    "author": "Oscar Wilde",
+    "source": "Lady Windermere's Fan",
+    "len": "short"
+  },
+  {
+    "id": "wilde-005",
+    "text": "To live is the rarest thing in the world. Most people exist, that is all.",
+    "author": "Oscar Wilde",
+    "source": "The Soul of Man under Socialism",
+    "len": "short"
+  },
+  {
+    "id": "wilde-006",
+    "text": "A little sincerity is a dangerous thing, and a great deal of it is absolutely fatal.",
+    "author": "Oscar Wilde",
+    "source": "The Critic as Artist",
+    "len": "short"
+  },
+  {
+    "id": "shakespeare-001",
+    "text": "All the world's a stage, and all the men and women merely players.",
+    "author": "William Shakespeare",
+    "source": "As You Like It",
+    "len": "short"
+  },
+  {
+    "id": "shakespeare-002",
+    "text": "To be, or not to be: that is the question.",
+    "author": "William Shakespeare",
+    "source": "Hamlet",
+    "len": "short"
+  },
+  {
+    "id": "shakespeare-003",
+    "text": "The course of true love never did run smooth.",
+    "author": "William Shakespeare",
+    "source": "A Midsummer Night's Dream",
+    "len": "short"
+  },
+  {
+    "id": "shakespeare-004",
+    "text": "Therefore, since brevity is the soul of wit, and tediousness the limbs and outward flourishes, I will be brief.",
+    "author": "William Shakespeare",
+    "source": "Hamlet",
+    "len": "short"
+  },
+  {
+    "id": "shakespeare-005",
+    "text": "Some are born great, some achieve greatness, and some have greatness thrust upon them.",
+    "author": "William Shakespeare",
+    "source": "Twelfth Night",
+    "len": "short"
+  },
+  {
+    "id": "shakespeare-006",
+    "text": "We know what we are, but know not what we may be.",
+    "author": "William Shakespeare",
+    "source": "Hamlet",
+    "len": "short"
+  },
+  {
+    "id": "shakespeare-007",
+    "text": "Love all, trust a few, do wrong to none.",
+    "author": "William Shakespeare",
+    "source": "All's Well That Ends Well",
+    "len": "short"
+  },
+  {
+    "id": "shakespeare-008",
+    "text": "The better part of valour is discretion.",
+    "author": "William Shakespeare",
+    "source": "Henry IV, Part 1",
+    "len": "short"
+  },
+  {
+    "id": "emerson-001",
+    "text": "Nothing great was ever achieved without enthusiasm.",
+    "author": "Ralph Waldo Emerson",
+    "source": "Essays: First Series",
+    "len": "short"
+  },
+  {
+    "id": "emerson-002",
+    "text": "A foolish consistency is the hobgoblin of little minds, adored by little statesmen and philosophers and divines.",
+    "author": "Ralph Waldo Emerson",
+    "source": "Self-Reliance",
+    "len": "short"
+  },
+  {
+    "id": "emerson-003",
+    "text": "Pythagoras was misunderstood, and Socrates, and Jesus, and Luther, and Copernicus, and Galileo, and Newton, and every pure and wise spirit that ever took flesh. To be great is to be misunderstood.",
+    "author": "Ralph Waldo Emerson",
+    "source": "Self-Reliance",
+    "len": "medium"
+  },
+  {
+    "id": "emerson-004",
+    "text": "Write it on your heart that every day is the best day in the year.",
+    "author": "Ralph Waldo Emerson",
+    "source": "Society and Solitude",
+    "len": "short"
+  },
+  {
+    "id": "emerson-005",
+    "text": "Adopt the pace of nature: her secret is patience.",
+    "author": "Ralph Waldo Emerson",
+    "source": "Education",
+    "len": "short"
+  },
+  {
+    "id": "thoreau-001",
+    "text": "The mass of men lead lives of quiet desperation.",
+    "author": "Henry David Thoreau",
+    "source": "Walden",
+    "len": "short"
+  },
+  {
+    "id": "thoreau-002",
+    "text": "I went to the woods because I wished to live deliberately, to front only the essential facts of life, and see if I could not learn what it had to teach, and not, when I came to die, discover that I had not lived.",
+    "author": "Henry David Thoreau",
+    "source": "Walden",
+    "len": "medium"
+  },
+  {
+    "id": "thoreau-003",
+    "text": "An early-morning walk is a blessing for the whole day.",
+    "author": "Henry David Thoreau",
+    "source": "Journal",
+    "len": "short"
+  },
+  {
+    "id": "thoreau-004",
+    "text": "It is never too late to give up our prejudices.",
+    "author": "Henry David Thoreau",
+    "source": "Walden",
+    "len": "short"
+  },
+  {
+    "id": "thoreau-005",
+    "text": "If a man does not keep pace with his companions, perhaps it is because he hears a different drummer.",
+    "author": "Henry David Thoreau",
+    "source": "Walden",
+    "len": "short"
+  },
+  {
+    "id": "thoreau-006",
+    "text": "Men have become the tools of their tools.",
+    "author": "Henry David Thoreau",
+    "source": "Walden",
+    "len": "short"
+  },
+  {
+    "id": "lincoln-001",
+    "text": "With malice toward none, with charity for all, with firmness in the right as God gives us to see the right, let us strive on to finish the work we are in.",
+    "author": "Abraham Lincoln",
+    "source": "Second Inaugural Address",
+    "len": "medium"
+  },
+  {
+    "id": "lincoln-002",
+    "text": "Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal.",
+    "author": "Abraham Lincoln",
+    "source": "Gettysburg Address",
+    "len": "medium"
+  },
+  {
+    "id": "lincoln-003",
+    "text": "That this nation, under God, shall have a new birth of freedom—and that government of the people, by the people, for the people, shall not perish from the earth.",
+    "author": "Abraham Lincoln",
+    "source": "Gettysburg Address",
+    "len": "medium"
+  },
+  {
+    "id": "lincoln-004",
+    "text": "I have always found that mercy bears richer fruits than strict justice.",
+    "author": "Abraham Lincoln",
+    "source": "Remark to Joseph Gillespie",
+    "len": "short"
+  },
+  {
+    "id": "douglass-001",
+    "text": "If there is no struggle, there is no progress.",
+    "author": "Frederick Douglass",
+    "source": "West India Emancipation speech",
+    "len": "short"
+  },
+  {
+    "id": "douglass-002",
+    "text": "Power concedes nothing without a demand. It never did and it never will.",
+    "author": "Frederick Douglass",
+    "source": "West India Emancipation speech",
+    "len": "short"
+  },
+  {
+    "id": "douglass-003",
+    "text": "I would unite with anybody to do right and with nobody to do wrong.",
+    "author": "Frederick Douglass",
+    "source": "Lecture to the Ladies of the Rochester Anti-Slavery Sewing Society",
+    "len": "short"
+  },
+  {
+    "id": "douglass-004",
+    "text": "The thing worse than rebellion is the thing that causes rebellion.",
+    "author": "Frederick Douglass",
+    "source": "Reconstruction (The Atlantic Monthly)",
+    "len": "short"
+  },
+  {
+    "id": "franklin-001",
+    "text": "Early to bed and early to rise, makes a man healthy, wealthy, and wise.",
+    "author": "Benjamin Franklin",
+    "source": "Poor Richard's Almanack",
+    "len": "short"
+  },
+  {
+    "id": "franklin-002",
+    "text": "He that is good for making excuses is seldom good for anything else.",
+    "author": "Benjamin Franklin",
+    "source": "Poor Richard's Almanack",
+    "len": "short"
+  },
+  {
+    "id": "franklin-003",
+    "text": "If you would not be forgotten, as soon as you are dead and rotten, either write things worth reading, or do things worth the writing.",
+    "author": "Benjamin Franklin",
+    "source": "Poor Richard's Almanack",
+    "len": "medium"
+  },
+  {
+    "id": "franklin-004",
+    "text": "In this world nothing can be said to be certain, except death and taxes.",
+    "author": "Benjamin Franklin",
+    "source": "Letter to Jean-Baptiste Leroy",
+    "len": "short"
+  },
+  {
+    "id": "dostoevsky-001",
+    "text": "Is it true, prince, that you once declared that beauty would save the world?",
+    "author": "Fyodor Dostoevsky",
+    "source": "The Idiot (tr. Constance Garnett)",
+    "len": "short"
+  },
+  {
+    "id": "dostoevsky-002",
+    "text": "It would be interesting to know what it is men are most afraid of. Taking a new step, uttering a new word is what they fear most.",
+    "author": "Fyodor Dostoevsky",
+    "source": "Crime and Punishment (tr. Constance Garnett)",
+    "len": "medium"
+  },
+  {
+    "id": "dostoevsky-003",
+    "text": "Pain and suffering are always inevitable for a large intelligence and a deep heart.",
+    "author": "Fyodor Dostoevsky",
+    "source": "Crime and Punishment (tr. Constance Garnett)",
+    "len": "short"
+  },
+  {
+    "id": "dostoevsky-004",
+    "text": "To go wrong in one's own way is better than to go right in someone else's.",
+    "author": "Fyodor Dostoevsky",
+    "source": "Crime and Punishment (tr. Constance Garnett)",
+    "len": "short"
+  },
+  {
+    "id": "dostoevsky-005",
+    "text": "Love children especially, for they too are sinless like the angels; they live to soften and purify our hearts and as it were to guide us.",
+    "author": "Fyodor Dostoevsky",
+    "source": "The Brothers Karamazov (tr. Constance Garnett)",
+    "len": "medium"
+  },
+  {
+    "id": "dostoevsky-006",
+    "text": "Above all, don't lie to yourself. The man who lies to himself and listens to his own lie comes to such a pass that he cannot distinguish the truth within him, or around him, and so loses all respect for himself and for others.",
+    "author": "Fyodor Dostoevsky",
+    "source": "The Brothers Karamazov (tr. Constance Garnett)",
+    "len": "medium"
+  },
+  {
+    "id": "tolstoy-001",
+    "text": "The strongest of all warriors are these two — Time and Patience.",
+    "author": "Leo Tolstoy",
+    "source": "War and Peace (tr. Constance Garnett)",
+    "len": "short"
+  },
+  {
+    "id": "tolstoy-002",
+    "text": "Happy families are all alike; every unhappy family is unhappy in its own way.",
+    "author": "Leo Tolstoy",
+    "source": "Anna Karenina (tr. Constance Garnett)",
+    "len": "short"
+  },
+  {
+    "id": "tolstoy-003",
+    "text": "Everyone thinks of changing the world, but no one thinks of changing himself.",
+    "author": "Leo Tolstoy",
+    "source": "The Kingdom of God Is Within You",
+    "len": "short"
+  },
+  {
+    "id": "nietzsche-001",
+    "text": "He who has a why to live can bear almost any how.",
+    "author": "Friedrich Nietzsche",
+    "source": "Twilight of the Idols (tr. Thomas Common)",
+    "len": "short"
+  },
+  {
+    "id": "nietzsche-002",
+    "text": "From the military school of life.—What does not kill me, strengthens me.",
+    "author": "Friedrich Nietzsche",
+    "source": "Twilight of the Idols (tr. Thomas Common)",
+    "len": "short"
+  },
+  {
+    "id": "nietzsche-003",
+    "text": "I tell you: one must still have chaos in oneself, to give birth to a dancing star. I tell you: you still have chaos in yourselves.",
+    "author": "Friedrich Nietzsche",
+    "source": "Thus Spoke Zarathustra (tr. Thomas Common)",
+    "len": "medium"
+  },
+  {
+    "id": "nietzsche-004",
+    "text": "In the true man there is a child hidden: it wanteth to play.",
+    "author": "Friedrich Nietzsche",
+    "source": "Thus Spake Zarathustra (tr. Thomas Common)",
+    "len": "short"
+  },
+  {
+    "id": "marcus-aurelius-001",
+    "text": "The best way of avenging thyself is not to become like the wrongdoer.",
+    "author": "Marcus Aurelius",
+    "source": "Meditations (tr. George Long)",
+    "len": "short"
+  },
+  {
+    "id": "marcus-aurelius-002",
+    "text": "If it is not right, do not do it: if it is not true, do not say it.",
+    "author": "Marcus Aurelius",
+    "source": "Meditations (tr. George Long)",
+    "len": "short"
+  },
+  {
+    "id": "marcus-aurelius-003",
+    "text": "For the mind converts and changes every hindrance to its activity into an aid; and so that which is a hindrance is made a furtherance to an act; and an obstacle on the road helps us along this road.",
+    "author": "Marcus Aurelius",
+    "source": "Meditations (tr. George Long)",
+    "len": "medium"
+  },
+  {
+    "id": "doyle-001",
+    "text": "How often have I said to you that when you have eliminated the impossible, whatever remains, however improbable, must be the truth?",
+    "author": "Arthur Conan Doyle",
+    "source": "The Sign of Four",
+    "len": "medium"
+  },
+  {
+    "id": "doyle-002",
+    "text": "It is a capital mistake to theorize before one has data. Insensibly one begins to twist facts to suit theories, instead of theories to suit facts.",
+    "author": "Arthur Conan Doyle",
+    "source": "A Scandal in Bohemia",
+    "len": "medium"
+  },
+  {
+    "id": "doyle-003",
+    "text": "The world is full of obvious things which nobody by any chance ever observes.",
+    "author": "Arthur Conan Doyle",
+    "source": "The Hound of the Baskervilles",
+    "len": "short"
+  },
+  {
+    "id": "doyle-004",
+    "text": "There is nothing more deceptive than an obvious fact.",
+    "author": "Arthur Conan Doyle",
+    "source": "The Boscombe Valley Mystery",
+    "len": "short"
+  },
+  {
+    "id": "carroll-001",
+    "text": "But I don't want to go among mad people,\" Alice remarked. \"Oh, you can't help that,\" said the Cat: \"we're all mad here. I'm mad. You're mad.",
+    "author": "Lewis Carroll",
+    "source": "Alice's Adventures in Wonderland",
+    "len": "medium"
+  },
+  {
+    "id": "carroll-002",
+    "text": "I could tell you my adventures—beginning from this morning,\" said Alice a little timidly; \"but it's no use going back to yesterday, because I was a different person then.",
+    "author": "Lewis Carroll",
+    "source": "Alice's Adventures in Wonderland",
+    "len": "medium"
+  },
+  {
+    "id": "carroll-003",
+    "text": "If everybody minded their own business, the world would go round a deal faster than it does.",
+    "author": "Lewis Carroll",
+    "source": "Alice's Adventures in Wonderland",
+    "len": "short"
+  },
+  {
+    "id": "poe-001",
+    "text": "They who dream by day are cognizant of many things which escape those who dream only by night.",
+    "author": "Edgar Allan Poe",
+    "source": "Eleonora",
+    "len": "short"
+  },
+  {
+    "id": "poe-002",
+    "text": "All that we see or seem is but a dream within a dream.",
+    "author": "Edgar Allan Poe",
+    "source": "A Dream Within a Dream",
+    "len": "short"
+  },
+  {
+    "id": "poe-003",
+    "text": "I stand amid the roar of a surf-tormented shore, and I hold within my hand grains of the golden sand.",
+    "author": "Edgar Allan Poe",
+    "source": "A Dream Within a Dream",
+    "len": "short"
+  },
+  {
+    "id": "whitman-001",
+    "text": "I celebrate myself, and sing myself, and what I assume you shall assume, for every atom belonging to me as good belongs to you.",
+    "author": "Walt Whitman",
+    "source": "Leaves of Grass",
+    "len": "medium"
+  },
+  {
+    "id": "whitman-002",
+    "text": "Do I contradict myself? Very well then I contradict myself, I am large, I contain multitudes.",
+    "author": "Walt Whitman",
+    "source": "Leaves of Grass",
+    "len": "short"
+  },
+  {
+    "id": "whitman-003",
+    "text": "I too am not a bit tamed, I too am untranslatable, I sound my barbaric yawp over the roofs of the world.",
+    "author": "Walt Whitman",
+    "source": "Leaves of Grass",
+    "len": "short"
+  },
+  {
+    "id": "dickinson-001",
+    "text": "'Hope' is the thing with feathers that perches in the soul, and sings the tune without the words, and never stops at all.",
+    "author": "Emily Dickinson",
+    "source": "'Hope' is the thing with feathers",
+    "len": "medium"
+  },
+  {
+    "id": "dickinson-002",
+    "text": "Forever is composed of nows; 'tis not a different time, except for infiniteness and latitude of home.",
+    "author": "Emily Dickinson",
+    "source": "Forever—is composed of Nows",
+    "len": "short"
+  },
+  {
+    "id": "dickinson-003",
+    "text": "I dwell in possibility, a fairer house than prose, more numerous of windows, superior for doors.",
+    "author": "Emily Dickinson",
+    "source": "I dwell in Possibility",
+    "len": "short"
+  },
+  {
+    "id": "charlotte-bronte-001",
+    "text": "I am no bird; and no net ensnares me; I am a free human being with an independent will, which I now exert to leave you.",
+    "author": "Charlotte Brontë",
+    "source": "Jane Eyre",
+    "len": "short"
+  },
+  {
+    "id": "charlotte-bronte-002",
+    "text": "Life appears to me too short to be spent in nursing animosity or registering wrongs.",
+    "author": "Charlotte Brontë",
+    "source": "Jane Eyre",
+    "len": "short"
+  },
+  {
+    "id": "charlotte-bronte-003",
+    "text": "I care for myself. The more solitary, the more friendless, the more unsustained I am, the more I will respect myself.",
+    "author": "Charlotte Brontë",
+    "source": "Jane Eyre",
+    "len": "short"
+  },
+  {
+    "id": "mary-shelley-001",
+    "text": "Beware; for I am fearless, and therefore powerful.",
+    "author": "Mary Shelley",
+    "source": "Frankenstein",
+    "len": "short"
+  },
+  {
+    "id": "mary-shelley-002",
+    "text": "I have love in me the likes of which you can scarcely imagine and rage the likes of which you would not believe. If I cannot satisfy the one, I will indulge the other.",
+    "author": "Mary Shelley",
+    "source": "Frankenstein",
+    "len": "medium"
+  },
+  {
+    "id": "mary-shelley-003",
+    "text": "Nothing is more painful to the human mind than, after the feelings have been worked up by a quick succession of events, the dead calmness of inaction and certainty which follows and deprives the soul both of hope and fear.",
+    "author": "Mary Shelley",
+    "source": "Frankenstein",
+    "len": "medium"
+  },
+  {
+    "id": "sun-tzu-001",
+    "text": "All warfare is based on deception. Hence, when able to attack, we must seem unable.",
+    "author": "Sun Tzu",
+    "source": "The Art of War (tr. Lionel Giles)",
+    "len": "short"
+  },
+  {
+    "id": "sun-tzu-002",
+    "text": "Hence to fight and conquer in all your battles is not supreme excellence; supreme excellence consists in breaking the enemy's resistance without fighting.",
+    "author": "Sun Tzu",
+    "source": "The Art of War (tr. Lionel Giles)",
+    "len": "medium"
+  },
+  {
+    "id": "sun-tzu-003",
+    "text": "If you know the enemy and know yourself, you need not fear the result of a hundred battles.",
+    "author": "Sun Tzu",
+    "source": "The Art of War (tr. Lionel Giles)",
+    "len": "short"
+  },
+  {
+    "id": "laozi-001",
+    "text": "A journey of a thousand miles begins with a single step.",
+    "author": "Laozi",
+    "source": "Tao Te Ching (tr. James Legge)",
+    "len": "short"
+  },
+  {
+    "id": "laozi-002",
+    "text": "He who knows other men is discerning; he who knows himself is intelligent.",
+    "author": "Laozi",
+    "source": "Tao Te Ching (tr. James Legge)",
+    "len": "short"
+  },
+  {
+    "id": "laozi-003",
+    "text": "He who overcomes others is strong; he who overcomes himself is mighty.",
+    "author": "Laozi",
+    "source": "Tao Te Ching (tr. James Legge)",
+    "len": "short"
+  },
+  {
+    "id": "fitzgerald-001",
+    "text": "So we beat on, boats against the current, borne back ceaselessly into the past.",
+    "author": "F. Scott Fitzgerald",
+    "source": "The Great Gatsby",
+    "len": "short"
+  },
+  {
+    "id": "fitzgerald-002",
+    "text": "And I hope she'll be a fool—that's the best thing a girl can be in this world, a beautiful little fool.",
+    "author": "F. Scott Fitzgerald",
+    "source": "The Great Gatsby",
+    "len": "short"
+  },
+  {
+    "id": "fitzgerald-003",
+    "text": "I was within and without, simultaneously enchanted and repelled by the inexhaustible variety of life.",
+    "author": "F. Scott Fitzgerald",
+    "source": "The Great Gatsby",
+    "len": "short"
+  },
+  {
+    "id": "gibran-001",
+    "text": "Your children are not your children. They are the sons and daughters of Life's longing for itself. They come through you but not from you, and though they are with you, yet they belong not to you.",
+    "author": "Kahlil Gibran",
+    "source": "The Prophet",
+    "len": "medium"
+  },
+  {
+    "id": "gibran-002",
+    "text": "Work is love made visible. And if you cannot work with love but only with distaste, it is better that you should leave your work and sit at the gate of the temple and take alms of those who work with joy.",
+    "author": "Kahlil Gibran",
+    "source": "The Prophet",
+    "len": "medium"
+  },
+  {
+    "id": "gibran-003",
+    "text": "When love beckons to you, follow him, though his ways are hard and steep. And when his wings enfold you, yield to him, though the sword hidden among his pinions may wound you.",
+    "author": "Kahlil Gibran",
+    "source": "The Prophet",
+    "len": "medium"
+  },
+  {
+    "id": "tagore-001",
+    "text": "The butterfly counts not months but moments, and has time enough.",
+    "author": "Rabindranath Tagore",
+    "source": "Fireflies",
+    "len": "short"
+  },
+  {
+    "id": "tagore-002",
+    "text": "Clouds come floating into my life from other days no longer to shed rain or usher storm but to give colour to my sunset sky.",
+    "author": "Rabindranath Tagore",
+    "source": "Stray Birds",
+    "len": "medium"
+  },
+  {
+    "id": "darwish-001",
+    "text": "Are we what we do with time, or are we what time does with us?",
+    "author": "Mahmoud Darwish",
+    "source": "In the Presence of Absence",
+    "len": "short"
+  },
+  {
+    "id": "woolf-001",
+    "text": "And yet the only exciting life is the imaginary one.",
+    "author": "Virginia Woolf",
+    "source": "Diary, 21 April 1928",
+    "len": "short"
+  }
+]

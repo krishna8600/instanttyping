@@ -461,5 +461,13 @@
   "header.launch_achievements": "Logros iniciales",
   "profile.heatmap_aria": "{active} días activos en las últimas {weeks} semanas",
   "profile.heatmap_tooltip": "{count} pruebas el {date}",
-  "profile.heatmap_tooltip_single": "1 prueba el {date}"
+  "profile.heatmap_tooltip_single": "1 prueba el {date}",
+  "mode.quotes": "Citas",
+  "daily.title": "Cita del día",
+  "daily.cta": "Escribe la cita de hoy",
+  "daily.done": "Completado",
+  "daily.xp": "Cita diaria +25",
+  "daily.bonus_badge": "+25 XP",
+  "results.quote_by": "— {author}, {source}",
+  "results.xp_bonus_daily_quote": "Cita diaria +{amount}"
 }

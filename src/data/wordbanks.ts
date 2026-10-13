@@ -1,7 +1,14 @@
+import quotesData from "./quotes.json";
+
 export interface QuoteItem {
+  id?: string;
   text: string;
+  author?: string;
   source: string;
+  len?: "short" | "medium" | "long";
 }
+
+export const QUOTES_BANK: QuoteItem[] = quotesData as QuoteItem[];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TOP 200 — authentic high-frequency English words (deduplicated, alphabetically

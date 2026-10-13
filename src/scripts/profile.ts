@@ -27,6 +27,11 @@ export interface InstantTypingProfile {
     freezeWeekStart: string | null; // YYYY-MM-DD of Monday
   };
   dailyCounts?: Record<string, number>; // YYYY-MM-DD -> tests completed that day
+  dailyQuote?: {
+    date: string;      // YYYY-MM-DD (local)
+    quoteId: string;
+    completed: boolean;
+  };
   achievements: Record<string, string>; // id -> ISO unlock timestamp
   xpLedger: Array<{           // last 50 entries, for the receipt UI
     at: string;
@@ -141,6 +146,11 @@ export function getInitialProfile(): InstantTypingProfile {
       freezeWeekStart: getMondayOfWeekString(now),
     },
     dailyCounts: {},
+    dailyQuote: {
+      date: getLocalTodayDateString(now),
+      quoteId: "",
+      completed: false,
+    },
     achievements: {},
     xpLedger: [],
   };
@@ -168,6 +178,16 @@ export function loadProfile(): InstantTypingProfile {
       if (typeof parsed.streak.freezesAvailable !== 'number') parsed.streak.freezesAvailable = 1;
 
       parsed.dailyCounts = parsed.dailyCounts && typeof parsed.dailyCounts === 'object' ? parsed.dailyCounts : {};
+      if (parsed.dailyQuote && typeof parsed.dailyQuote === "object") {
+        const today = getLocalTodayDateString();
+        if (parsed.dailyQuote.date !== today) {
+          parsed.dailyQuote = {
+            date: today,
+            quoteId: "",
+            completed: false,
+          };
+        }
+      }
       parsed.achievements = parsed.achievements || {};
       parsed.xpLedger = Array.isArray(parsed.xpLedger) ? parsed.xpLedger : [];
       return parsed as InstantTypingProfile;
@@ -204,6 +224,8 @@ export interface CompletedTestInput {
   accuracy: number;
   durationSeconds: number;
   isDrill?: boolean;
+  isDailyQuote?: boolean;
+  dailyQuoteId?: string;
 }
 
 export interface ProfileUpdateResult {
@@ -309,7 +331,21 @@ export function updateProfileAfterTest(input: CompletedTestInput): ProfileUpdate
   if (recentTaxes.length > 10) recentTaxes.shift();
   profile.stats.recentAccuracyTaxes = recentTaxes;
 
-  // 4. XP Calculation (minimum 15 seconds typing to qualify)
+  // Daily Quote logic: check if completed for today
+  let dailyQuoteBonusAwarded = false;
+  if (input.isDailyQuote) {
+    const isAlreadyCompletedToday = profile.dailyQuote?.date === today && !!profile.dailyQuote?.completed;
+    if (!isAlreadyCompletedToday) {
+      profile.dailyQuote = {
+        date: today,
+        quoteId: input.dailyQuoteId || "",
+        completed: true,
+      };
+      dailyQuoteBonusAwarded = true;
+    }
+  }
+
+  // 4. XP Calculation (minimum 15 seconds typing to qualify, or Daily Quote completion)
   const isEligibleForXp = input.durationSeconds >= 15;
   let base = 0;
   const bonuses: Array<{ label: string; amount: number }> = [];
@@ -339,11 +375,31 @@ export function updateProfileAfterTest(input: CompletedTestInput): ProfileUpdate
       bonuses.push({ label: 'Daily warmup', amount: 5 });
     }
 
+    // Bonus: Quote of the Day (+25)
+    if (dailyQuoteBonusAwarded) {
+      bonuses.push({ label: 'Quote of the Day', amount: 25 });
+    }
+
     totalXpGained = base + bonuses.reduce((acc, b) => acc + b.amount, 0);
 
     profile.xp += totalXpGained;
 
     // Record in xpLedger (last 50 entries)
+    profile.xpLedger.unshift({
+      at: now.toISOString(),
+      base,
+      bonuses,
+      total: totalXpGained,
+    });
+    if (profile.xpLedger.length > 50) {
+      profile.xpLedger = profile.xpLedger.slice(0, 50);
+    }
+  } else if (dailyQuoteBonusAwarded) {
+    // Under 15s test, but completed the Daily Quote (+25 XP)
+    base = Math.round(input.netWpm * (input.accuracy / 100));
+    bonuses.push({ label: 'Quote of the Day', amount: 25 });
+    totalXpGained = base + 25;
+    profile.xp += totalXpGained;
     profile.xpLedger.unshift({
       at: now.toISOString(),
       base,
@@ -394,7 +450,7 @@ export function updateProfileAfterTest(input: CompletedTestInput): ProfileUpdate
       base,
       bonuses,
       total: totalXpGained,
-      eligible: isEligibleForXp,
+      eligible: isEligibleForXp || dailyQuoteBonusAwarded,
     },
     levelBefore,
     levelAfter,
@@ -426,4 +482,19 @@ export function getProfileHeatmapDays(
     });
   }
   return days;
+}
+
+export function isDailyQuoteCompletedToday(profile?: InstantTypingProfile): boolean {
+  const p = profile || loadProfile();
+  const today = getLocalTodayDateString();
+  return p.dailyQuote?.date === today && !!p.dailyQuote?.completed;
+}
+
+export function getDailyQuote<T>(quotes: T[], date: Date = new Date()): T {
+  const start = new Date(date.getFullYear(), 0, 0);
+  const diff = date.getTime() - start.getTime() + ((start.getTimezoneOffset() - date.getTimezoneOffset()) * 60 * 1000);
+  const oneDay = 1000 * 60 * 60 * 24;
+  const dayOfYear = Math.floor(diff / oneDay);
+  const index = Math.abs(dayOfYear) % quotes.length;
+  return quotes[index];
 }

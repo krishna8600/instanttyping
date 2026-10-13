@@ -461,5 +461,13 @@
   "header.launch_achievements": "출시 도전과제",
   "profile.heatmap_aria": "지난 {weeks}주 동안 활동일 {active}일",
   "profile.heatmap_tooltip": "{date}에 {count}회 테스트",
-  "profile.heatmap_tooltip_single": "{date}에 1회 테스트"
+  "profile.heatmap_tooltip_single": "{date}에 1회 테스트",
+  "mode.quotes": "명언",
+  "daily.title": "오늘의 명언",
+  "daily.cta": "오늘의 명언 연습하기",
+  "daily.done": "완료됨",
+  "daily.xp": "오늘의 명언 +25",
+  "daily.bonus_badge": "+25 XP",
+  "results.quote_by": "— {author}, {source}",
+  "results.xp_bonus_daily_quote": "오늘의 명언 +{amount}"
 }

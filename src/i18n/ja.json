@@ -461,5 +461,13 @@
   "header.launch_achievements": "ローンチ実績",
   "profile.heatmap_aria": "過去 {weeks} 週間で {active} 日のアクティブ日数",
   "profile.heatmap_tooltip": "{date} に {count} 回のテスト",
-  "profile.heatmap_tooltip_single": "{date} に 1 回のテスト"
+  "profile.heatmap_tooltip_single": "{date} に 1 回のテスト",
+  "mode.quotes": "名言",
+  "daily.title": "今日の名言",
+  "daily.cta": "今日の名言を入力",
+  "daily.done": "完了",
+  "daily.xp": "今日の名言 +25",
+  "daily.bonus_badge": "+25 XP",
+  "results.quote_by": "— {author}, {source}",
+  "results.xp_bonus_daily_quote": "今日の名言 +{amount}"
 }

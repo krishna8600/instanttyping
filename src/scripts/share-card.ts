@@ -7,6 +7,7 @@ export interface ShareData {
   consistency: number;
   date: string;
   rank?: string;
+  quoteAttribution?: string;
 }
 
 const BRAND = {
@@ -20,7 +21,11 @@ const BRAND = {
 };
 
 export function generateShareText(data: ShareData): string {
-  return `⚡ ${data.wpm} WPM · 🎯 ${data.accuracy}% Accuracy · 📊 ${data.consistency}% Consistency\nTested on ${data.date} at instanttyping.com`;
+  let text = `⚡ ${data.wpm} WPM · 🎯 ${data.accuracy}% Accuracy · 📊 ${data.consistency}% Consistency\nTested on ${data.date} at instanttyping.com`;
+  if (data.quoteAttribution) {
+    text += `\nQuote: ${data.quoteAttribution}`;
+  }
+  return text;
 }
 
 export async function generateShareImage(data: ShareData): Promise<Blob> {
@@ -112,10 +117,20 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
   ctx.font = `600 18px ${BRAND.font}`;
   ctx.fillText('DATE', 900, subY);
 
+  // Quote attribution if in Quote mode
+  if (data.quoteAttribution) {
+    ctx.fillStyle = BRAND.muted;
+    ctx.font = `italic 500 20px ${BRAND.font}`;
+    ctx.textAlign = 'center';
+    let attr = data.quoteAttribution;
+    if (attr.length > 75) attr = attr.slice(0, 72) + '...';
+    ctx.fillText(attr, W / 2, 538);
+  }
+
   // Footer Tagline
   ctx.fillStyle = BRAND.subtle;
   ctx.font = `400 18px ${BRAND.font}`;
-  ctx.fillText('Standard 5-keystroke international metric · Verified in browser', W / 2, H - 55);
+  ctx.fillText('Standard 5-keystroke international metric · Verified in browser', W / 2, H - 45);
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
@@ -158,5 +173,5 @@ export async function downloadShareImage(data: ShareData): Promise<void> {
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
