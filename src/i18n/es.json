@@ -409,6 +409,8 @@
   "results.near_miss": "¡A {wpm} WPM de tu récord! ¿Una más?",
   "results.chart_avg": "prom {wpm}",
   "results.chart_peak": "pico {wpm}",
+  "results.chart_legend_instant": "PPM instantáneo",
+  "results.chart_legend_average": "Tendencia media",
   "rank.elite": "Élite",
   "rank.advanced": "Avanzado",
   "rank.upper_intermediate": "Intermedio Alto",

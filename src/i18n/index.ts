@@ -103,7 +103,7 @@ export function t(
     params = maybeParams;
   } else {
     lang = getLanguage();
-    params = langOrParams;
+    params = (langOrParams || maybeParams) as Record<string, string | number> | undefined;
   }
 
   const dict = DICTIONARIES[lang] || DICTIONARIES[DEFAULT_LANGUAGE];

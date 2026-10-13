@@ -419,6 +419,8 @@
   "results.near_miss": "{wpm} WPM from your best — one more?",
   "results.chart_avg": "avg {wpm}",
   "results.chart_peak": "peak {wpm}",
+  "results.chart_legend_instant": "Instant WPM",
+  "results.chart_legend_average": "Average Trend",
   "rank.elite": "Elite",
   "rank.advanced": "Advanced",
   "rank.upper_intermediate": "Upper-Intermediate",

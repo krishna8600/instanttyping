@@ -766,16 +766,30 @@ const {
 
     <!-- 4. Speed Progression Card -->
     <div class="premium-card space-y-4 relative">
-      <h3
-        class="text-sm font-bold tracking-tight flex items-center gap-2"
-        style="letter-spacing:-0.02em"
-      >
-        <Icon name="analytics" class="w-4 h-4 text-[#0072F5]" />
-        <span data-i18n="results.speed_progression">Speed Progression</span>
-      </h3>
-      <p class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] -mt-2" data-i18n="results.wpm_sampled">
-        WPM sampled each second
-      </p>
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <div>
+          <h3
+            class="text-sm font-bold tracking-tight flex items-center gap-2"
+            style="letter-spacing:-0.02em"
+          >
+            <Icon name="analytics" class="w-4 h-4 text-[#0072F5]" />
+            <span data-i18n="results.speed_progression">Speed Progression</span>
+          </h3>
+          <p class="text-xs text-[#6E6E73] dark:text-[#A1A1A6] mt-0.5" data-i18n="results.wpm_sampled">
+            WPM sampled each second
+          </p>
+        </div>
+        <div class="flex items-center gap-3 text-[11px] font-mono text-[#6E6E73] dark:text-[#A1A1A6]">
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-0.5 rounded-full bg-[#0072F5]" aria-hidden="true"></span>
+            <span data-i18n="results.chart_legend_instant">Instant WPM</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-3 h-0 border-b border-dashed border-[#6E6E73] dark:border-[#A1A1A6]" aria-hidden="true"></span>
+            <span data-i18n="results.chart_legend_average">Average Trend</span>
+          </div>
+        </div>
+      </div>
       <div
         class="w-full h-36 rounded-xl bg-[#FAFAFA] dark:bg-white/[0.04] border border-[#E5E5E5] dark:border-white/10 p-3 flex items-center justify-center overflow-hidden"
       >
@@ -790,7 +804,7 @@ const {
           <!-- Dynamic path rendered in JS -->
         </svg>
       </div>
-      <div id="chart-tooltip" class="absolute pointer-events-none opacity-0 bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black px-2 py-1 rounded-md text-[11px] font-bold shadow-lg whitespace-nowrap transform -translate-x-1/2 -translate-y-full mt-[-8px] transition-opacity duration-75 motion-reduce:transition-none z-10 font-mono tracking-tight" style="left: 0; top: 0;"></div>
+      <div id="chart-tooltip" class="absolute pointer-events-none opacity-0 bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black px-2 py-1 rounded-md text-[11px] font-bold shadow-lg whitespace-nowrap transition-opacity duration-75 motion-reduce:transition-none z-10 font-mono tracking-tight" style="left: 0; top: 0;"></div>
     </div>
 
     <!-- 5. "What's slowing you down" Diagnostic Coaching Card -->
@@ -1115,6 +1129,7 @@ const {
   import type { TypingEventMap } from "../scripts/typing-events";
   import {
     calculateMetrics,
+    calculateInstantaneousWpm,
     saveTestResult,
     getPersonalBest,
     getRecommendedTier,
@@ -1140,6 +1155,8 @@ const {
       deltaMs: number;
       prevChar: string;
     }>;
+    perSecondInstantWpm: number[];
+    secondBySecondWpm: number[];
   }
 
   // Script-scoped test summary so results screen, coaching card, and share handlers share identical data
@@ -1217,7 +1234,9 @@ const {
     let correctKeystrokes = 0;
     let incorrectKeystrokes = 0;
     let secondBySecondWpm: number[] = [];
+    let perSecondInstantWpm: number[] = [];
     let lastSecondRecorded = 0;
+    let lastSecondCorrectChars = 0;
     let missedWords: string[] = [];
     let keyMistakes: Record<string, { errors: number; total: number }> = {};
     let keystrokeLog: Array<{
@@ -1794,7 +1813,9 @@ const {
       correctKeystrokes = 0;
       incorrectKeystrokes = 0;
       secondBySecondWpm = [];
+      perSecondInstantWpm = [];
       lastSecondRecorded = 0;
+      lastSecondCorrectChars = 0;
       missedWords = [];
       keyMistakes = {};
       keystrokeLog = [];
@@ -1872,6 +1893,9 @@ const {
       isIdlePaused = false;
       idlePausePrompt.classList.add("hidden");
       lastSecondRecorded = 0;
+      lastSecondCorrectChars = 0;
+      perSecondInstantWpm = [];
+      secondBySecondWpm = [];
       runTimerLoop();
     }
 
@@ -1909,14 +1933,22 @@ const {
       }
 
       const currentSecInt = Math.floor(elapsedSeconds);
-      if (currentSecInt > lastSecondRecorded) {
+      while (currentSecInt > lastSecondRecorded) {
+        lastSecondRecorded++;
+        const isCurrentSec = lastSecondRecorded === currentSecInt;
         const interimMetrics = calculateMetrics(
           correctKeystrokes,
           incorrectKeystrokes,
-          elapsedSeconds,
+          lastSecondRecorded,
         );
         secondBySecondWpm.push(interimMetrics.netWpm);
-        lastSecondRecorded = currentSecInt;
+
+        const deltaChars = isCurrentSec ? Math.max(0, correctKeystrokes - lastSecondCorrectChars) : 0;
+        const instantWpm = calculateInstantaneousWpm(deltaChars, 1);
+        perSecondInstantWpm.push(instantWpm);
+        if (isCurrentSec) {
+          lastSecondCorrectChars = correctKeystrokes;
+        }
       }
 
       let nextTimerText = "";
@@ -1989,14 +2021,22 @@ const {
       if (startTime > 0) {
         elapsedSeconds = (now - startTime) / 1000;
         const currentSecInt = Math.floor(elapsedSeconds);
-        if (currentSecInt > lastSecondRecorded) {
+        while (currentSecInt > lastSecondRecorded) {
+          lastSecondRecorded++;
+          const isCurrentSec = lastSecondRecorded === currentSecInt;
           const interimMetrics = calculateMetrics(
             correctKeystrokes,
             incorrectKeystrokes,
-            elapsedSeconds,
+            lastSecondRecorded,
           );
           secondBySecondWpm.push(interimMetrics.netWpm);
-          lastSecondRecorded = currentSecInt;
+
+          const deltaChars = isCurrentSec ? Math.max(0, correctKeystrokes - lastSecondCorrectChars) : 0;
+          const instantWpm = calculateInstantaneousWpm(deltaChars, 1);
+          perSecondInstantWpm.push(instantWpm);
+          if (isCurrentSec) {
+            lastSecondCorrectChars = correctKeystrokes;
+          }
         }
       }
 
@@ -2013,6 +2053,8 @@ const {
         missedWords: [...new Set(missedWords)],
         keyMistakes: { ...keyMistakes },
         keystrokeLog: [...keystrokeLog],
+        perSecondInstantWpm: [...perSecondInstantWpm],
+        secondBySecondWpm: [...secondBySecondWpm],
       };
       lastCompletedSummary = testSummary;
       (window as any).__lastTestSummary = testSummary;
@@ -2057,6 +2099,7 @@ const {
         correctChars: correctKeystrokes,
         incorrectChars: incorrectKeystrokes,
         missedWords: testSummary.missedWords,
+        wpmHistory: testSummary.perSecondInstantWpm,
       });
 
       showResults(testSummary, recordTest(testSummary.netWpm, testSummary.accuracy, currentMode));
@@ -2082,10 +2125,8 @@ const {
       }
     }
 
-    function updateResultsDynamicContent(lang?: SupportedLanguage) {
-      if (lang) {
-        updateDOM(lang);
-      }
+    function updateResultsDynamicContent(lang: SupportedLanguage = getLanguage()) {
+      updateDOM(lang);
       const activeSummary = lastCompletedSummary || (window as any).__lastTestSummary;
       if (!activeSummary) {
         const coachTaxBadge = document.getElementById("coach-accuracy-tax-badge");
@@ -2412,6 +2453,7 @@ const {
     }
 
     function showResults(summary: CompletedTestSummary, psych?: import("../scripts/progress").TestResult) {
+      (window as any).__showTestResults = showResults;
       updateDOM();
       const bandEl = document.getElementById("res-band")!;
       const rankEl = document.getElementById("res-rank-title")!;
@@ -2471,7 +2513,10 @@ const {
           if (nudge) nudge.classList.add("hidden");
         }
       }
-      renderTimelineChart(secondBySecondWpm);
+      renderTimelineChart(
+        summary.perSecondInstantWpm || perSecondInstantWpm,
+        summary.secondBySecondWpm || secondBySecondWpm
+      );
       updateResultsDynamicContent();
 
       // Achievement toasts (fire exactly once on unlock) + level up + streak freeze
@@ -2521,24 +2566,42 @@ const {
         resultsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
     }
+    (window as any).__showTestResults = showResults;
 
-    function renderTimelineChart(data: number[]) {
+    function renderTimelineChart(instantData: number[], cumulativeData: number[] = []) {
       const svg = document.getElementById("timeline-chart-svg")!;
-      if (!data || data.length < 2) {
+      if (!instantData || instantData.length < 2) {
         svg.innerHTML =
           `<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="#86868B" font-size="12" font-family="system-ui">${t("results.chart_no_data")}</text>`;
         (svg as any).__chartData = null;
         return;
       }
 
-      const maxWpm = Math.max(...data, 40);
-      const roundedMax = Math.ceil(maxWpm / 20) * 20;
-      const avgWpm = Math.round(data.reduce((a, b) => a + b, 0) / data.length);
+      const allValues = [...instantData, ...(cumulativeData || [])];
+      const maxWpm = Math.max(...allValues, 40);
+      let yStep = 20;
+      if (maxWpm > 400) {
+        yStep = 200;
+      } else if (maxWpm > 200) {
+        yStep = 100;
+      } else if (maxWpm > 120) {
+        yStep = 50;
+      } else if (maxWpm > 70) {
+        yStep = 30;
+      } else {
+        yStep = 20;
+      }
+      const roundedMax = Math.max(yStep * 2, Math.ceil(maxWpm / yStep) * yStep);
+
+      // Overall average Net WPM (from final cumulative point if available, else mean of instantData)
+      const avgWpm = cumulativeData && cumulativeData.length > 0
+        ? Math.round(cumulativeData[cumulativeData.length - 1])
+        : Math.round(instantData.reduce((a, b) => a + b, 0) / instantData.length);
       (svg as any).__avgWpm = avgWpm;
       
       const width = 500;
       const height = 100;
-      const pl = 30; // padding left
+      const pl = 35; // padding left
       const pr = 10; // padding right
       const pt = 10; // padding top
       const pb = 20; // padding bottom
@@ -2546,46 +2609,62 @@ const {
       const plotW = width - pl - pr;
       const plotH = height - pt - pb;
 
-      const chartPoints = data.map((val, idx) => {
-        const x = pl + (idx / (data.length - 1)) * plotW;
+      const chartPoints = instantData.map((val, idx) => {
+        const x = pl + (idx / (instantData.length - 1)) * plotW;
         const y = pt + plotH - ((val / roundedMax) * plotH);
         return { x, y, val, sec: idx + 1 };
       });
       (svg as any).__chartData = chartPoints;
 
-      let pathData = chartPoints.length > 0 ? `M ${chartPoints[0].x},${chartPoints[0].y}` : "";
-      const tension = 0.2;
-      for (let i = 0; i < chartPoints.length - 1; i++) {
-        const p0 = i > 0 ? chartPoints[i - 1] : chartPoints[i];
-        const p1 = chartPoints[i];
-        const p2 = chartPoints[i + 1];
-        const p3 = i !== chartPoints.length - 2 ? chartPoints[i + 2] : p2;
-        
-        const cp1x = p1.x + (p2.x - p0.x) * tension;
-        const cp1y = p1.y + (p2.y - p0.y) * tension;
-        const cp2x = p2.x - (p3.x - p1.x) * tension;
-        const cp2y = p2.y - (p3.y - p1.y) * tension;
-        
-        pathData += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2.x},${p2.y}`;
+      function generateSmoothPath(points: Array<{ x: number; y: number }>): string {
+        if (!points || points.length === 0) return "";
+        let path = `M ${points[0].x},${points[0].y}`;
+        const tension = 0.2;
+        for (let i = 0; i < points.length - 1; i++) {
+          const p0 = i > 0 ? points[i - 1] : points[i];
+          const p1 = points[i];
+          const p2 = points[i + 1];
+          const p3 = i !== points.length - 2 ? points[i + 2] : p2;
+          
+          const cp1x = p1.x + (p2.x - p0.x) * tension;
+          const cp1y = p1.y + (p2.y - p0.y) * tension;
+          const cp2x = p2.x - (p3.x - p1.x) * tension;
+          const cp2y = p2.y - (p3.y - p1.y) * tension;
+          
+          path += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2.x},${p2.y}`;
+        }
+        return path;
       }
-      
-      const areaPath = pathData + (chartPoints.length > 0 ? ` L ${chartPoints[chartPoints.length - 1].x},${height - pb} L ${pl},${height - pb} Z` : "");
+
+      const instantPathData = generateSmoothPath(chartPoints);
+      const instantAreaPath = instantPathData + (chartPoints.length > 0 ? ` L ${chartPoints[chartPoints.length - 1].x},${height - pb} L ${pl},${height - pb} Z` : "");
 
       const isDark = document.documentElement.classList.contains("dark");
       const strokeColor = "#0072F5";
       const gridColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.08)";
       const dotBg = isDark ? "#1D1D1F" : "#FAFAFA";
       const labelColor = isDark ? "#A1A1A6" : "#6E6E73";
+
+      let cumulativePathHtml = "";
+      if (cumulativeData && cumulativeData.length >= 2) {
+        const cumulativePoints = cumulativeData.map((val, idx) => {
+          const x = pl + (idx / (cumulativeData.length - 1)) * plotW;
+          const y = pt + plotH - ((val / roundedMax) * plotH);
+          return { x, y };
+        });
+        const cumulativePathData = generateSmoothPath(cumulativePoints);
+        cumulativePathHtml = `<path d="${cumulativePathData}" fill="none" stroke="${labelColor}" stroke-dasharray="4 4" stroke-width="1.5" opacity="0.65" stroke-linecap="round" stroke-linejoin="round" />`;
+      }
       
       let gridHtml = "";
       
-      for (let w = 0; w <= roundedMax; w += 20) {
+      for (let w = 0; w <= roundedMax; w += yStep) {
         const y = pt + plotH - ((w / roundedMax) * plotH);
         gridHtml += `<line x1="${pl}" y1="${y}" x2="${width - pr}" y2="${y}" stroke="${gridColor}" stroke-dasharray="3 3" stroke-width="0.75" />`;
         gridHtml += `<text x="${pl - 6}" y="${y}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end" dominant-baseline="central">${w}</text>`;
       }
       
-      const totalSecs = data.length;
+      const totalSecs = instantData.length;
       let xStep = 1;
       if (totalSecs > 120) xStep = 30;
       else if (totalSecs > 60) xStep = 15;
@@ -2593,7 +2672,6 @@ const {
       else if (totalSecs > 15) xStep = 5;
       else if (totalSecs > 12) xStep = 2;
 
-      let lastXEnd = 0;
       for (let s = 1; s <= totalSecs; s += xStep) {
         if (s - 1 < chartPoints.length) {
           const ptData = chartPoints[s - 1];
@@ -2610,10 +2688,11 @@ const {
 
       // Average Line
       const avgY = pt + plotH - ((avgWpm / roundedMax) * plotH);
+      const labelAvgY = avgY < pt + 10 ? avgY + 11 : avgY - 4;
       gridHtml += `<line x1="${pl}" y1="${avgY}" x2="${width - pr}" y2="${avgY}" stroke="${labelColor}" stroke-dasharray="4 4" stroke-width="1" opacity="0.4" />`;
-      gridHtml += `<text x="${width - pr}" y="${avgY - 4}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end">${t("results.chart_avg", undefined, { wpm: avgWpm })}</text>`;
+      gridHtml += `<text id="chart-avg-label" x="${width - pr}" y="${labelAvgY}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end">${t("results.chart_avg", { wpm: avgWpm })}</text>`;
 
-      // Peak Marker
+      // Peak Marker (true instantaneous peak)
       let peakPt = chartPoints[0];
       for (let pt of chartPoints) {
         if (pt.val > peakPt.val) peakPt = pt;
@@ -2621,15 +2700,17 @@ const {
       
       let peakAnchor = "middle";
       let peakX = peakPt.x;
-      if (peakX > width - pr - 30) {
+      if (peakX > width - pr - 35) {
         peakAnchor = "end";
-        peakX = width - pr;
-      } else if (peakX < pl + 30) {
+        peakX = width - pr - 4;
+      } else if (peakX < pl + 35) {
         peakAnchor = "start";
-        peakX = pl;
+        peakX = pl + 6;
       }
+
+      const peakY = peakPt.y < pt + 12 ? peakPt.y + 14 : peakPt.y - 8;
       
-      gridHtml += `<text x="${peakX}" y="${peakPt.y - 8}" fill="${strokeColor}" font-size="9" font-weight="bold" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="${peakAnchor}">${t("results.chart_peak", undefined, { wpm: Math.round(peakPt.val) })}</text>`;
+      gridHtml += `<text id="chart-peak-label" x="${peakX}" y="${peakY}" fill="${strokeColor}" font-size="9" font-weight="bold" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="${peakAnchor}">${t("results.chart_peak", { wpm: Math.round(peakPt.val) })}</text>`;
       
       const endPt = chartPoints[chartPoints.length - 1];
       if (peakPt !== endPt) {
@@ -2648,9 +2729,10 @@ const {
           </linearGradient>
         </defs>
         ${gridHtml}
-        <path d="${areaPath}" fill="url(#chart-area-grad)" />
-        <path d="${pathData}" fill="none" stroke="${strokeColor}" stroke-width="6" opacity="0.15" stroke-linecap="round" stroke-linejoin="round" />
-        <path d="${pathData}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="${instantAreaPath}" fill="url(#chart-area-grad)" />
+        ${cumulativePathHtml}
+        <path d="${instantPathData}" fill="none" stroke="${strokeColor}" stroke-width="6" opacity="0.15" stroke-linecap="round" stroke-linejoin="round" />
+        <path d="${instantPathData}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         <g id="chart-interactive-layer" class="opacity-0 transition-opacity duration-75 motion-reduce:transition-none pointer-events-none">
           <line id="chart-crosshair-line" y1="${pt}" y2="${height - pb}" stroke="${strokeColor}" stroke-dasharray="4 4" stroke-width="1.5" opacity="0.5" />
           <circle id="chart-crosshair-dot" r="4.5" fill="${strokeColor}" stroke="${dotBg}" stroke-width="2" />
@@ -3858,23 +3940,94 @@ const {
         const card = chartSvg!.closest('.premium-card') as HTMLElement;
         if (!card) return;
         const cardRect = card.getBoundingClientRect();
-        let domX = (nearest.x / 500) * svgRect.width + (svgRect.left - cardRect.left);
-        const domY = (nearest.y / 100) * svgRect.height + (svgRect.top - cardRect.top);
+        const borderX = card.clientLeft || 0;
+        const borderY = card.clientTop || 0;
+        const domX = (nearest.x / 500) * svgRect.width + (svgRect.left - cardRect.left) - borderX;
+        const domY = (nearest.y / 100) * svgRect.height + (svgRect.top - cardRect.top) - borderY;
         
         const avg = (chartSvg as any).__avgWpm;
         const delta = Math.round(nearest.val - avg);
         const deltaStr = (delta >= 0 ? '+' : '') + delta;
         chartTooltip!.textContent = `${Math.round(nearest.val)} WPM · ${nearest.sec}s · ${deltaStr} vs avg`;
         
-        // Clamp tooltip so it doesn't overflow the card edges (accounting for -translate-x-1/2)
+        // Measure tooltip dimensions
         const tooltipRect = chartTooltip!.getBoundingClientRect();
-        const halfW = tooltipRect.width / 2;
-        const minX = halfW + 4;
-        const maxX = cardRect.width - halfW - 4;
-        domX = Math.max(minX, Math.min(domX, maxX));
-        
-        chartTooltip!.style.left = `${domX}px`;
-        chartTooltip!.style.top = `${domY}px`;
+        const tipW = tooltipRect.width || 120;
+        const tipH = tooltipRect.height || 26;
+        const cardW = card.clientWidth || (cardRect.width - borderX * 2);
+        const cardH = card.clientHeight || (cardRect.height - borderY * 2);
+
+        // Retrieve bounding boxes of peak callout and avg reference labels relative to card
+        const peakLabel = document.getElementById("chart-peak-label");
+        const avgLabel = document.getElementById("chart-avg-label");
+
+        function getCardRelBox(el: Element | null) {
+          if (!el) return null;
+          const r = el.getBoundingClientRect();
+          if (r.width === 0 && r.height === 0) return null;
+          return {
+            left: r.left - cardRect.left - borderX,
+            right: r.right - cardRect.left - borderX,
+            top: r.top - cardRect.top - borderY,
+            bottom: r.bottom - cardRect.top - borderY,
+          };
+        }
+
+        const obstacles = [getCardRelBox(peakLabel), getCardRelBox(avgLabel)].filter(Boolean) as Array<{
+          left: number;
+          right: number;
+          top: number;
+          bottom: number;
+        }>;
+
+        function checkOverlap(box: { left: number; right: number; top: number; bottom: number }, pad = 4) {
+          for (const obs of obstacles) {
+            const separated = (
+              box.right + pad < obs.left ||
+              box.left - pad > obs.right ||
+              box.bottom + pad < obs.top ||
+              box.top - pad > obs.bottom
+            );
+            if (!separated) return true;
+          }
+          return false;
+        }
+
+        // Candidate 1: Above cursor (default)
+        const aboveLeft = Math.max(4, Math.min(domX - tipW / 2, cardW - tipW - 4));
+        const aboveTop = domY - 8 - tipH;
+        const aboveBox = { left: aboveLeft, right: aboveLeft + tipW, top: aboveTop, bottom: aboveTop + tipH };
+
+        // Candidate 2: Below cursor (flip vertical)
+        const belowLeft = Math.max(4, Math.min(domX - tipW / 2, cardW - tipW - 4));
+        const belowTop = domY + 8;
+        const belowBox = { left: belowLeft, right: belowLeft + tipW, top: belowTop, bottom: belowTop + tipH };
+
+        // Candidate 3: Shift horizontally left of cursor
+        const leftShiftX = domX - 10 - tipW;
+        const sideY = Math.max(4, Math.min(domY - tipH / 2, cardH - tipH - 4));
+        const leftShiftBox = { left: Math.max(4, leftShiftX), right: Math.max(4, leftShiftX) + tipW, top: sideY, bottom: sideY + tipH };
+
+        // Candidate 4: Shift horizontally right of cursor
+        const rightShiftX = domX + 10;
+        const rightShiftBox = { left: Math.min(cardW - tipW - 4, rightShiftX), right: Math.min(cardW - tipW - 4, rightShiftX) + tipW, top: sideY, bottom: sideY + tipH };
+
+        let chosenBox = aboveBox;
+
+        if (aboveTop >= 4 && !checkOverlap(aboveBox)) {
+          chosenBox = aboveBox;
+        } else if (belowTop + tipH <= cardH - 4 && !checkOverlap(belowBox)) {
+          chosenBox = belowBox;
+        } else if (leftShiftX >= 4 && !checkOverlap(leftShiftBox)) {
+          chosenBox = leftShiftBox;
+        } else if (rightShiftX + tipW <= cardW - 4 && !checkOverlap(rightShiftBox)) {
+          chosenBox = rightShiftBox;
+        } else {
+          chosenBox = domY < cardH / 2 ? belowBox : aboveBox;
+        }
+
+        chartTooltip!.style.left = `${Math.round(chosenBox.left)}px`;
+        chartTooltip!.style.top = `${Math.round(chosenBox.top)}px`;
         chartTooltip!.classList.remove("opacity-0");
       }
       

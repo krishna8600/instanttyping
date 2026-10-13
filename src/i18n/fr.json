@@ -409,6 +409,8 @@
   "results.near_miss": "À {wpm} MPM de votre record — encore un essai ?",
   "results.chart_avg": "moy {wpm}",
   "results.chart_peak": "pic {wpm}",
+  "results.chart_legend_instant": "MPM instantané",
+  "results.chart_legend_average": "Tendance moyenne",
   "rank.elite": "Élite",
   "rank.advanced": "Avancé",
   "rank.upper_intermediate": "Intermédiaire Supérieur",

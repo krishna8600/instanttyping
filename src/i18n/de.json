@@ -409,6 +409,8 @@
   "results.near_miss": "Nur {wpm} WPM bis zu deiner Bestleistung — noch ein Versuch?",
   "results.chart_avg": "Durchschn. {wpm}",
   "results.chart_peak": "Spitze {wpm}",
+  "results.chart_legend_instant": "Momentane WPM",
+  "results.chart_legend_average": "Durchschnittstrend",
   "rank.elite": "Elite",
   "rank.advanced": "Fortgeschritten",
   "rank.upper_intermediate": "Obere Mittelstufe",

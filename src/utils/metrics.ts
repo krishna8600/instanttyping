@@ -10,6 +10,7 @@ export interface TestHistoryEntry {
   correctChars: number;
   incorrectChars: number;
   missedWords: string[];
+  wpmHistory?: number[];
 }
 
 export interface MetricSummary {
@@ -30,6 +31,16 @@ export interface KeyMistakeStat {
   errors: number;
   total: number;
   errorRate: number;
+}
+
+/**
+ * Calculates instantaneous Net WPM for a discrete time slice (default 1 second).
+ * Formula: (characters typed during slice ÷ 5) ÷ (slice duration in seconds / 60)
+ * Evaluates to: (characters typed ÷ 5) * (60 / slice duration)
+ */
+export function calculateInstantaneousWpm(charsInSlice: number, sliceDurationSeconds: number = 1): number {
+  if (sliceDurationSeconds <= 0 || charsInSlice <= 0) return 0;
+  return Math.max(0, Math.round((charsInSlice / 5) * (60 / sliceDurationSeconds)));
 }
 
 export function calculateMetrics(
@@ -101,7 +112,11 @@ export function saveTestResult(entry: TestHistoryEntry): void {
   if (typeof window === 'undefined') return;
   try {
     const existing = getTestHistory();
-    const updated = [entry, ...existing].slice(0, 50); // keep last 50
+    const sanitizedEntry: TestHistoryEntry = {
+      ...entry,
+      wpmHistory: entry.wpmHistory ? entry.wpmHistory.slice(0, 180) : undefined,
+    };
+    const updated = [sanitizedEntry, ...existing].slice(0, 50); // keep last 50
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   } catch {
     // ignore

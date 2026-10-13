@@ -22,14 +22,13 @@ The **Goldmine** programme elevates the core typing engine from a functional spe
 
 ---
 
-## Programme Breakdown: 5 Discrete Units
+## Programme Breakdown: 4 Discrete Units
 
 ```mermaid
 graph TD
     U1[Unit 1: Difficulty-Tiered Word Pools & Skill-Matching] --> U2[Unit 2: Themed Beginner Packs CC0]
-    U1 --> U3[Unit 3: Per-Second Pacing Telemetry & History Model]
-    U3 --> U4[Unit 4: Results Screen Sparkline Integration]
-    U4 --> U5[Unit 5: Restrained State-Communicating Motion System]
+    U1 --> U3[Unit 3: Per-Second Telemetry & Progression Chart Upgrade]
+    U3 --> U4[Unit 4: Restrained State-Communicating Motion System]
 ```
 
 ---
@@ -103,73 +102,46 @@ Provide engaging, relatable beginner packs (Animals, Food, Nature/Space) sourced
 
 ---
 
-### Unit 3: Per-Second Pacing Telemetry & History Capture
+### Unit 3: Per-Second Telemetry & Progression Chart Upgrade (Merged Units 3+4)
 
 #### Purpose
-Capture authentic second-by-second pacing telemetry (instantaneous per-second cadence in addition to cumulative WPM) and persist it into the local test history model for longitudinal pacing analysis.
+Replace the dampened cumulative-average line in the Speed Progression chart (`#timeline-chart-svg`) with true moment-by-moment Net WPM telemetry. Overlay the cumulative running average as a dashed reference trendline. Retire orphaned standalone sparkline files (`src/scripts/sparkline.ts` and `src/styles/sparkline.css`) per the duplication findings in `docs/goldmine-units-3-4-findings.md`.
 
 #### Exact Files Touched
 - `src/components/TypingEngine.astro`
 - `src/utils/metrics.ts`
+- `src/i18n/*.json` (all 8 locales: `en`, `de`, `es`, `fr`, `it`, `ja`, `ko`, `pt`)
+- `src/scripts/sparkline.ts` (deleted — orphaned)
+- `src/styles/sparkline.css` (deleted — orphaned)
 
 #### What It Changes
-1. **Instantaneous vs. Cumulative Telemetry:**
-   - Currently, `secondBySecondWpm` only logs cumulative average WPM (`interimMetrics.netWpm`), which heavily dampens bursts and slowdowns.
-   - Update `runTimerLoop` in [src/components/TypingEngine.astro](file:///c:/my%20things/instanttyping.com/src/components/TypingEngine.astro) to sample at each integer second:
-     - Delta characters typed in that specific second: `deltaChars = correctKeystrokes - lastSecCorrectChars`.
-     - Instantaneous slice WPM: `Math.max(0, Math.round((deltaChars / 5) * 60))`.
-     - Store both instantaneous cadence and cumulative curve.
-2. **Telemetry Persistence:**
-   - Update `TestHistoryEntry` interface in [src/utils/metrics.ts](file:///c:/my%20things/instanttyping.com/src/utils/metrics.ts) to optionally include `wpmHistory?: number[]`.
-   - In `saveTestResult()`, cap `wpmHistory` length (e.g., maximum 180 points for a 3-minute test) to prevent `localStorage` quota bloat.
-3. **Completed Test Summary Payload:**
-   - Expose `wpmHistory` and `instantaneousWpm` on `CompletedTestSummary` for consumption by the results screen and coaching card.
+1. **Per-Second Instantaneous Telemetry:**
+   - In `runTimerLoop()` at the 1Hz integer second boundary, sample true instantaneous Net WPM for that elapsed second:
+     $$\Delta\text{correct} = \text{correctKeystrokes} - \text{lastSecCorrectChars}$$
+     $$\text{instantWpm} = \max(0, \text{round}((\Delta\text{correct} / 5) \times 60))$$
+   - Push into `perSecondInstantWpm: number[]`.
+   - Preserve existing cumulative `secondBySecondWpm: number[]` for compatibility with consistency calculation and reference trendline.
+2. **Results Payload & History Persistence:**
+   - Update `CompletedTestSummary` (in `src/components/TypingEngine.astro`) to include `perSecondInstantWpm: number[]` and `secondBySecondWpm: number[]`.
+   - Update `MetricSummary` / `TestHistoryEntry` (in `src/utils/metrics.ts`) to optionally include `wpmHistory?: number[]` (capped at 180 entries) for profile storage.
+3. **Chart Visual Upgrade (`renderTimelineChart`):**
+   - Main solid curve: plots authentic `perSecondInstantWpm` (capturing real bursts, pauses, and pacing shifts) with gradient fill under the curve.
+   - Secondary dashed line: plots cumulative `secondBySecondWpm` running average as a subtle gray trendline.
+   - Peak callout: highlights the true instantaneous peak WPM and second.
+   - Tooltip crosshair: maintains `"[WPM] WPM · [sec]s · [+/-] vs avg"` comparing moment-by-moment WPM to overall test average.
+   - Accessible legend: subtle labels for "Momentum (Instant)" and "Average Trend".
+4. **Clean Retirement of Orphaned Sparkline:**
+   - Delete `src/scripts/sparkline.ts` and `src/styles/sparkline.css` after verifying zero imports.
 
 #### What It Explicitly Does NOT Touch
-- Keystroke event listeners (`keydown` and `input`). Telemetry code runs exclusively on the 1-second boundary tick inside `runTimerLoop`.
-- Existing `calculateMetrics()` Net WPM / Accuracy formulas.
-- LocalStorage structure compatibility (entry fields are optional/additive; historical tests without `wpmHistory` load seamlessly).
+- Keystroke fast-path handler (`keydown` / `input`).
+- Overall test Net WPM and Accuracy formulas in `calculateMetrics()`.
+- Active typing area, caret, or layout. No chart restyling (dimensions, radii, core brand colors remain identical).
 
 #### Risk Assessment
-- **Lighthouse (95+):** 🟢 **Zero risk.** No DOM changes, no layout recalculations.
-- **Sub-100ms Typing Feel:** 🟡 **Low risk (mitigated).** Executing arithmetic inside `runTimerLoop` could cause jank if done every frame. **Mitigation:** The delta calculation is guarded by `if (currentSecInt > lastSecondRecorded)` so it runs exactly ONCE every 1,000ms, completely decoupled from keystroke inputs.
-- **Monochrome Design System:** 🟢 **N/A.** Logic and data persistence layer.
-
----
-
-### Unit 4: Results Screen Sparkline Integration (Monochrome SVG)
-
-#### Purpose
-Wire the existing standalone, pure-SVG sparkline component ([src/scripts/sparkline.ts](file:///c:/my%20things/instanttyping.com/src/scripts/sparkline.ts) and [src/styles/sparkline.css](file:///c:/my%20things/instanttyping.com/src/styles/sparkline.css)) into the results screen to provide an immediate, elegant visual representation of test pacing and rhythm stability.
-
-#### Exact Files Touched
-- `src/components/TypingEngine.astro`
-- `src/scripts/sparkline.ts`
-- `src/styles/sparkline.css`
-- `src/styles/global.css`
-
-#### What It Changes
-1. **Results Screen Sparkline Placement:**
-   - Embed a compact sparkline slot `<div id="res-wpm-sparkline" class="w-full h-12 mt-2"></div>` in the **Net Speed** primary KPI card in [src/components/TypingEngine.astro](file:///c:/my%20things/instanttyping.com/src/components/TypingEngine.astro).
-   - Alternatively, mount directly above the detailed timeline chart as a micro-summary strip.
-2. **Wiring in `showResults()`:**
-   - Import `renderSparkline` from `../scripts/sparkline`.
-   - In `showResults()`, invoke `renderSparkline(sparklineEl, secondBySecondWpm, { width: 220, height: 48, animate: true, endDot: true })`.
-3. **Monochrome Styling & Reduced Motion:**
-   - Ensure [src/styles/sparkline.css](file:///c:/my%20things/instanttyping.com/src/styles/sparkline.css) is properly imported in [src/styles/global.css](file:///c:/my%20things/instanttyping.com/src/styles/global.css).
-   - Inherit `currentColor` (`#0072F5` for Net Speed card, or neutral `--text-primary`), 6% fill area opacity, and zero-animation immediate draw on `(prefers-reduced-motion: reduce)`.
-4. **Accessible Semantics:**
-   - Provide dynamic `aria-label` ("WPM pacing curve: started at 45 WPM, peaked at 78 WPM, finished at 72 WPM").
-
-#### What It Explicitly Does NOT Touch
-- The active typing area or caret during the test.
-- The 500x100 detailed interactive timeline chart with crosshairs (`timeline-chart-svg`).
-- No addition of external chart libraries (Chart.js, D3, Canvas).
-
-#### Risk Assessment
-- **Lighthouse (95+):** 🟢 **Zero risk.** Renders ~10 SVG elements inside a DOM node that is hidden until test completion. Zero impact on initial page load LCP/FCP/CLS.
-- **Sub-100ms Typing Feel:** 🟢 **Zero risk.** Renders only in `showResults()` after test completion.
-- **Monochrome Design System:** 🟡 **Medium risk (mitigated).** Charts often tempt developers to introduce multi-color gradients. **Mitigation:** Strictly adhere to `currentColor` stroke with 0.06 opacity area fill, matching the existing monochrome design tokens.
+- **Lighthouse (95+):** 🟢 **Zero risk.** SVG DOM footprint remains ~15 elements; no extra charting dependencies.
+- **Sub-100ms Typing Feel:** 🟢 **Zero risk.** Computed strictly on 1Hz timer tick, never on keystroke events.
+- **Monochrome Design System:** 🟢 **Zero risk.** Solid primary accent (`#0072F5`) and muted neutral dashed line (`#6E6E73` / `#A1A1A6`).
 
 ---
 
@@ -210,11 +182,10 @@ Implement the repository's restrained motion rules (~200–350ms, state changes 
 
 | Unit | Name | Files Touched | Primary Risk | Mitigation |
 | :--- | :--- | :--- | :--- | :--- |
-| **Unit 1** | Difficulty-Tiered Word Pools | `wordbanks.ts`, `TypingEngine.astro`, `metrics.ts`, `en.json` | Bundle size creep | Curated static arrays (<3KB gzipped), no external dictionaries. |
-| **Unit 2** | Themed Beginner Packs (CC0) | `themed-packs.ts`, `TypingEngine.astro`, `en.json` | Aesthetic dilution | Strict monochrome JetBrains Mono text; zero emoji or cartoon styling. |
-| **Unit 3** | Per-Second Telemetry Capture | `TypingEngine.astro`, `metrics.ts` | Timer loop lag | Computed strictly on 1Hz integer second boundary, never on keydown. |
-| **Unit 4** | Results Screen Sparkline | `TypingEngine.astro`, `sparkline.ts`, `sparkline.css`, `global.css` | Color styling creep | Pure SVG inheriting `currentColor`, zero-dependency, reduced-motion bypass. |
-| **Unit 5** | Restrained State Motion | `global.css`, `TypingEngine.astro` | Keystroke latency spike | Active typing spans and caret are strictly forbidden from having CSS transitions. |
+| **Unit 1** | Difficulty-Tiered Word Pools | `wordbanks.ts`, `TypingEngine.astro`, `metrics.ts`, `*.json` | Bundle size creep | Curated static arrays (<3KB gzipped), no external dictionaries. |
+| **Unit 2** | Themed Beginner Packs (CC0) | `themed-packs.ts`, `TypingEngine.astro`, `*.json` | Aesthetic dilution | Strict monochrome JetBrains Mono text; zero emoji or cartoon styling. |
+| **Unit 3** | Telemetry & Progression Chart (Merged 3+4) | `TypingEngine.astro`, `metrics.ts`, `*.json` | Timer loop lag | Computed strictly on 1Hz integer second boundary, never on keydown. |
+| **Unit 4** | Restrained State Motion | `global.css`, `TypingEngine.astro` | Keystroke latency spike | Active typing spans and caret are strictly forbidden from having CSS transitions. |
 
 ---
 

@@ -409,6 +409,8 @@
   "results.near_miss": "최고 기록까지 {wpm} WPM 남았습니다 — 한 번 더?",
   "results.chart_avg": "평균 {wpm}",
   "results.chart_peak": "최고 {wpm}",
+  "results.chart_legend_instant": "순간 WPM",
+  "results.chart_legend_average": "평균 트렌드",
   "rank.elite": "엘리트",
   "rank.advanced": "고급",
   "rank.upper_intermediate": "중상급",

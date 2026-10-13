@@ -409,6 +409,8 @@
   "results.near_miss": "自己ベストまであと {wpm} WPM — もう一度挑戦？",
   "results.chart_avg": "平均 {wpm}",
   "results.chart_peak": "最高 {wpm}",
+  "results.chart_legend_instant": "瞬間WPM",
+  "results.chart_legend_average": "平均トレンド",
   "rank.elite": "エリート",
   "rank.advanced": "上級",
   "rank.upper_intermediate": "中上級",
