@@ -56,8 +56,9 @@ const {
   >
     <!-- Test Type Selector -->
     <div
-      id="mode-tab-container" class="relative flex items-center gap-1 bg-[#F5F5F7] dark:bg-white/10 p-1 rounded-full max-w-full overflow-x-auto hide-scrollbar"
-      style="scrollbar-width: none;"
+      id="mode-tab-container"
+      class="relative flex items-center gap-1 bg-[#F5F5F7] dark:bg-white/10 p-1 rounded-full w-full max-w-full min-[901px]:w-auto overflow-x-auto hide-scrollbar shrink-0"
+      style="scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x;"
     >
       <span
         id="mode-tab-slider"
@@ -68,7 +69,7 @@ const {
         type="button"
         data-mode-btn="time"
         data-i18n="test.time"
-        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-semibold transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 min-h-[44px] min-[901px]:min-h-0 min-w-[44px] shrink-0 whitespace-nowrap flex items-center justify-center rounded-full font-semibold transition-colors duration-200 text-sm"
       >
         Time
       </button>
@@ -76,7 +77,7 @@ const {
         type="button"
         data-mode-btn="words"
         data-i18n="test.words"
-        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 min-h-[44px] min-[901px]:min-h-0 min-w-[44px] shrink-0 whitespace-nowrap flex items-center justify-center rounded-full font-medium transition-colors duration-200 text-sm"
       >
         Words
       </button>
@@ -84,7 +85,7 @@ const {
         type="button"
         data-mode-btn="quote"
         data-i18n="test.mode_quote"
-        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 min-h-[44px] min-[901px]:min-h-0 min-w-[44px] shrink-0 whitespace-nowrap flex items-center justify-center rounded-full font-medium transition-colors duration-200 text-sm"
       >
         Quote
       </button>
@@ -92,7 +93,7 @@ const {
         type="button"
         data-mode-btn="classics"
         data-i18n="test.mode_classics"
-        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 min-h-[44px] min-[901px]:min-h-0 min-w-[44px] shrink-0 whitespace-nowrap flex items-center justify-center rounded-full font-medium transition-colors duration-200 text-sm"
       >
         Classics
       </button>
@@ -100,7 +101,7 @@ const {
         type="button"
         data-mode-btn="custom"
         data-i18n="test.mode_custom"
-        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 min-h-[44px] min-[901px]:min-h-0 min-w-[44px] shrink-0 whitespace-nowrap flex items-center justify-center rounded-full font-medium transition-colors duration-200 text-sm"
       >
         Custom
       </button>
@@ -108,7 +109,7 @@ const {
         type="button"
         data-mode-btn="code"
         data-i18n="test.mode_code"
-        class="mode-tab-btn relative z-10 px-4 py-1.5 rounded-full font-medium transition-all duration-200 ease-out text-sm"
+        class="mode-tab-btn relative z-10 px-4 py-1.5 min-h-[44px] min-[901px]:min-h-0 min-w-[44px] shrink-0 whitespace-nowrap flex items-center justify-center rounded-full font-medium transition-colors duration-200 text-sm"
       >
         Code
       </button>
@@ -245,7 +246,7 @@ const {
       <button
         id="settings-toggle-btn"
         type="button"
-        class="w-8 h-8 flex items-center justify-center rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] transition-all duration-200"
+        class="w-11 h-11 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] transition-all duration-200"
         aria-label="Settings"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
@@ -253,7 +254,7 @@ const {
 
       <div
         id="settings-panel"
-        class="hidden absolute top-full right-0 mt-2 p-4 premium-card flex-col gap-4 min-w-[240px] backdrop-blur-md rounded-xl shadow-lg border border-[#E5E5E5] dark:border-white/10 bg-white/90 dark:bg-[#1D1D1F]/90 z-50"
+        class="hidden absolute top-full right-0 mt-2 p-4 premium-card flex-col gap-4 min-w-[240px] max-w-[calc(100vw-24px)] rounded-xl shadow-2xl border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-[#1C1C1E] z-50"
       >
 <!-- Sound Theme Selector -->
     <div
@@ -267,6 +268,28 @@ const {
         >Sound:</label
       >
       <div class="flex items-center gap-1.5 shrink-0">
+        <button
+          id="btn-settings-sound-toggle"
+          type="button"
+          class="w-8 h-8 flex items-center justify-center rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] transition-colors shrink-0"
+          title="Toggle sound"
+          aria-label="Toggle sound"
+        >
+          <span id="settings-sound-icon-on" class="flex items-center justify-center">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+              <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+          </span>
+          <span id="settings-sound-icon-off" class="hidden flex items-center justify-center">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+              <line x1="23" y1="9" x2="17" y2="15"></line>
+              <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+          </span>
+        </button>
         <select
           id="sound-select"
           class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
@@ -561,7 +584,7 @@ const {
       <button
         id="btn-restart-test"
         type="button"
-        class="btn-secondary h-8 px-3 text-xs"
+        class="btn-secondary min-h-[44px] sm:min-h-[32px] sm:h-8 px-3 text-xs flex items-center gap-1.5"
       >
         <Icon name="replay" class="w-4 h-4" />
         <span data-i18n="test.restart">Restart</span>
@@ -588,7 +611,7 @@ const {
   <!-- ── Premium Apple-Style Results Panel (inline flow, no overlap) ── -->
   <section
     id="results-panel"
-    class="hidden w-full space-y-8"
+    class="hidden w-full space-y-8 scroll-mt-[90px] sm:scroll-mt-[110px]"
     aria-label="Test results" data-i18n-aria-label="engine.aria_results"
   >
     <!-- 1. Rank / Header Card -->
@@ -1167,7 +1190,9 @@ const {
     setSoundTheme, 
     initSoundThemeFromStorage,
     getVolume,
-    setVolume
+    setVolume,
+    toggleAudio,
+    isAudioEnabled
   } from "../utils/audio";
 
   export interface CompletedTestSummary extends MetricSummary {
@@ -3373,9 +3398,14 @@ const {
     function moveTabSlider(activeBtn: HTMLElement) {
       const slider = document.getElementById("mode-tab-slider");
       if (!slider) return;
-      const x = activeBtn.offsetLeft;
-      slider.style.width = activeBtn.offsetWidth + "px";
-      slider.style.transform = `translateX(${x}px)`;
+      const applyPos = () => {
+        const x = activeBtn.offsetLeft;
+        const w = activeBtn.offsetWidth;
+        slider.style.width = w + "px";
+        slider.style.transform = `translateX(${x}px)`;
+      };
+      applyPos();
+      requestAnimationFrame(applyPos);
     }
     const initTabBtn = document.querySelector(`[data-mode-btn="${currentMode}"]`) as HTMLElement;
     if (initTabBtn) {
@@ -3436,7 +3466,6 @@ const {
           }
           return;
         }
-        moveTabSlider(btn as HTMLElement);
         modeBtns.forEach((b) => {
           b.classList.remove(
             "active-mode-btn",
@@ -3453,6 +3482,8 @@ const {
           "dark:!text-black",
           "font-semibold",
         );
+        moveTabSlider(btn as HTMLElement);
+        (btn as HTMLElement).scrollIntoView({ behavior: "smooth", block: "nearest", inline: "nearest" });
 
         currentMode = mode;
         customMistakeWords = null;
@@ -3647,6 +3678,11 @@ const {
           resetTest();
         }
       }
+      requestAnimationFrame(() => {
+        const active = (document.querySelector(".mode-tab-btn.active-mode-btn") as HTMLElement)
+          || (document.querySelector(`[data-mode-btn="${currentMode}"]`) as HTMLElement);
+        if (active) moveTabSlider(active);
+      });
     }
     window.addEventListener("instanttyping:languagechange", handleLanguageChange);
 
@@ -3832,16 +3868,56 @@ const {
       });
     }
 
+    const btnSettingsSound = document.getElementById("btn-settings-sound-toggle");
+    const settingsSoundIconOn = document.getElementById("settings-sound-icon-on");
+    const settingsSoundIconOff = document.getElementById("settings-sound-icon-off");
+
+    function syncSettingsSoundUI() {
+      const enabled = isAudioEnabled();
+      if (settingsSoundIconOn && settingsSoundIconOff) {
+        if (enabled) {
+          settingsSoundIconOn.classList.remove("hidden");
+          settingsSoundIconOff.classList.add("hidden");
+        } else {
+          settingsSoundIconOn.classList.add("hidden");
+          settingsSoundIconOff.classList.remove("hidden");
+        }
+      }
+      if (volumeSlider) {
+        volumeSlider.value = String(getVolume());
+      }
+    }
+
+    if (btnSettingsSound) {
+      btnSettingsSound.addEventListener("click", () => {
+        ensureAudioContext();
+        toggleAudio();
+        syncSettingsSoundUI();
+        window.dispatchEvent(new CustomEvent("instanttyping:audioupdate"));
+        if (isAudioEnabled()) {
+          playKeyStrokeSound("a", false, false);
+        }
+      });
+    }
+
     if (volumeSlider) {
       volumeSlider.value = String(getVolume());
       volumeSlider.addEventListener("input", (e) => {
         const vol = parseInt((e.target as HTMLInputElement).value, 10);
         setVolume(vol);
+        syncSettingsSoundUI();
+        window.dispatchEvent(new CustomEvent("instanttyping:audioupdate"));
       });
       volumeSlider.addEventListener("change", () => {
         playKeyStrokeSound("a", false, false);
       });
     }
+
+    window.addEventListener("instanttyping:audioupdate", () => {
+      syncSettingsSoundUI();
+    });
+
+    syncSettingsSoundUI();
 
     if (backspaceSelect) {
       backspaceSelect.value = selectedBackspaceMode;

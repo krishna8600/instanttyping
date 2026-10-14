@@ -168,6 +168,7 @@ const navItems = [
 </header>
 
 <!-- Nav Profile Chip & Popover -->
+<div class="header-right-cluster">
 <div class="profile-chip-container relative" id="profile-chip-container">
   <button
     id="btn-profile-chip"
@@ -322,6 +323,7 @@ const navItems = [
   </span>
 </button>
 </div>
+</div>
 
 <style>
   .header-wrapper {
@@ -334,6 +336,9 @@ const navItems = [
     gap: 12px;
     z-index: 100;
     max-width: calc(100vw - 24px);
+  }
+  .header-right-cluster {
+    display: contents;
   }
   .pill-nav {
     display: flex;
@@ -649,38 +654,147 @@ const navItems = [
   }
 
   @media (max-width: 900px) {
-    .brand-text {
-      display: none;
+    .header-wrapper {
+      top: 16px;
+      width: calc(100% - 24px);
+      max-width: calc(100vw - 24px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      pointer-events: none;
     }
-    .pill-nav nav a {
-      padding: 8px 10px;
-      font-size: 13px;
+    .header-wrapper > * {
+      pointer-events: auto;
     }
-  }
-  @media (max-width: 640px) {
     .pill-nav {
-      gap: 2px;
-      padding: 6px 8px 6px 10px;
+      display: flex;
+      align-items: center;
+      padding: 4px 12px 4px 5px;
+      gap: 0;
+      border-radius: 999px;
       flex-shrink: 1;
       min-width: 0;
     }
     .pill-nav .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-right: 0;
+      min-width: 0;
+    }
+    .pill-nav .brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
       flex-shrink: 0;
     }
+    .brand-text {
+      display: inline-block !important;
+      color: #fff;
+      font-size: 14.5px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+    }
     .pill-nav nav {
-      flex-shrink: 1;
-      min-width: 0;
-      overflow-x: auto;
-      scrollbar-width: none;
+      display: none !important;
     }
-    .pill-nav nav::-webkit-scrollbar {
-      display: none;
+    .nav-actions {
+      display: none !important;
     }
-    .desktop-nav-item {
-      display: none;
+    .header-right-cluster {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
     }
-    .mobile-nav-item {
-      display: block;
+    .profile-chip-btn {
+      height: 44px;
+      min-height: 44px;
+      padding: 0 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-btn,
+    .theme-toggle-floating,
+    :global(.lang-switcher-btn) {
+      height: 44px;
+      min-height: 44px;
+      width: 44px;
+      min-width: 44px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .header-wrapper {
+      top: 12px;
+      width: calc(100% - 16px);
+      max-width: calc(100vw - 16px);
+      gap: 6px;
+    }
+    .pill-nav {
+      padding: 4px 10px 4px 4px;
+    }
+    .pill-nav .brand {
+      gap: 7px;
+    }
+    .pill-nav .brand img {
+      width: 34px;
+      height: 34px;
+    }
+    .brand-text {
+      font-size: 13.5px;
+    }
+    .header-right-cluster {
+      gap: 5px;
+    }
+    .profile-chip-btn {
+      padding: 0 8px;
+      font-size: 11.5px;
+    }
+    .profile-popover {
+      width: min(280px, calc(100vw - 20px));
+      max-width: calc(100vw - 20px);
+      right: 0;
+    }
+  }
+
+  @media (max-width: 360px) {
+    .header-wrapper {
+      top: 10px;
+      width: calc(100% - 12px);
+      max-width: calc(100vw - 12px);
+      gap: 4px;
+    }
+    .pill-nav {
+      padding: 3px 8px 3px 3px;
+    }
+    .pill-nav .brand {
+      gap: 5px;
+    }
+    .pill-nav .brand img {
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+    }
+    .brand-text {
+      font-size: 12px;
+    }
+    .header-right-cluster {
+      gap: 4px;
+    }
+    .profile-chip-btn {
+      padding: 0 6px;
+      font-size: 11px;
     }
   }
 </style>
@@ -763,6 +877,10 @@ const navItems = [
   // Sync state on load
   syncAudioUI();
 
+  window.addEventListener("instanttyping:audioupdate", () => {
+    syncAudioUI();
+  });
+
   if (soundBtn) {
     let holdTimer: ReturnType<typeof setTimeout> | null = null;
     let isHoldAction = false;
@@ -810,6 +928,7 @@ const navItems = [
       ensureAudioContext();
       toggleAudio();
       syncAudioUI();
+      window.dispatchEvent(new CustomEvent("instanttyping:audioupdate"));
     });
   }
 
@@ -819,6 +938,7 @@ const navItems = [
       const val = parseInt(volumeSlider.value, 10);
       setVolume(val);
       syncAudioUI();
+      window.dispatchEvent(new CustomEvent("instanttyping:audioupdate"));
       playKeyStrokeSound('a');
     });
   }
@@ -986,6 +1106,15 @@ const navItems = [
         popover?.classList.remove('hidden');
         btnChip?.setAttribute('aria-expanded', 'true');
         syncProfileUI();
+        if (popover) {
+          popover.style.transform = '';
+          const rect = popover.getBoundingClientRect();
+          if (rect.left < 8) {
+            popover.style.transform = `translateX(${8 - rect.left}px)`;
+          } else if (rect.right > window.innerWidth - 8) {
+            popover.style.transform = `translateX(-${rect.right - (window.innerWidth - 8)}px)`;
+          }
+        }
       } else {
         popover?.classList.add('hidden');
         btnChip?.setAttribute('aria-expanded', 'false');

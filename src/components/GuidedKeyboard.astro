@@ -7,7 +7,7 @@
 
 <div
   id="gk-root"
-  class="hidden md:block w-full max-w-3xl mx-auto mt-1 sm:mt-1.5 select-none"
+  class="block w-full max-w-3xl mx-auto mt-1 sm:mt-1.5 select-none"
   aria-label="Finger guide keyboard"
   role="region"
 >
@@ -46,9 +46,11 @@
   </div>
 
   <!-- ② KEYBOARD CARD -->
-  <div id="gk-keyboard" class="premium-card !p-1 sm:!p-2 overflow-x-auto !mb-0">
-    <!-- Keyboard rows -->
-    <div class="flex flex-col gap-0.5 min-w-[600px]">
+  <div id="gk-keyboard" class="premium-card !p-1 sm:!p-2 overflow-hidden !mb-0">
+    <!-- Scaler container for mobile/tablet proportional fit -->
+    <div id="gk-scaler-container" class="w-full flex justify-center overflow-hidden">
+      <!-- Keyboard rows -->
+      <div id="gk-board" class="flex flex-col gap-0.5 w-full min-w-[640px] shrink-0 origin-top">
 
       <!-- Row 1: Digits -->
       <div class="flex gap-1">
@@ -168,6 +170,7 @@
         <div data-code="ControlRight" class="gk-key gk-key-mod h-8 text-[9px] hand-right">ctrl</div>
       </div>
     </div>
+  </div>
 
     <!-- ③ FINGER ZONE DIAGRAM — below keyboard, inside card (compact dots only) -->
     <div
@@ -385,9 +388,27 @@
   const fingerZones = document.getElementById('gk-finger-zones');
   const toggle      = document.getElementById('gk-toggle') as HTMLButtonElement;
   const toggleThumb = document.getElementById('gk-toggle-thumb');
-  const keyboardEl  = document.getElementById('gk-keyboard');
+  const keyboardEl      = document.getElementById('gk-keyboard');
+  const scalerContainer = document.getElementById('gk-scaler-container');
+  const boardEl         = document.getElementById('gk-board');
 
-  // DOM caches — populated once at mount to eliminate per-keystroke queries
+  function fitKeyboard() {
+    if (!scalerContainer || !boardEl || !enabled) return;
+    const availableWidth = scalerContainer.clientWidth;
+    if (availableWidth <= 0) return;
+    const baseWidth = 640;
+    const baseHeight = 168; // 5 rows * 32px + 4 gaps * 2px
+    if (availableWidth < baseWidth) {
+      const scale = availableWidth / baseWidth;
+      boardEl.style.transform = `scale(${scale})`;
+      boardEl.style.transformOrigin = 'top center';
+      scalerContainer.style.height = `${Math.ceil(baseHeight * scale)}px`;
+    } else {
+      boardEl.style.transform = '';
+      boardEl.style.transformOrigin = '';
+      scalerContainer.style.height = '';
+    }
+  }
   const keyMap = new Map<string, HTMLElement>();
   document.querySelectorAll<HTMLElement>('#gk-keyboard .gk-key[data-code]').forEach((el) => {
     const code = el.getAttribute('data-code');
@@ -452,6 +473,7 @@
       } else {
         fingerZones.classList.add('opacity-0');
       }
+      fitKeyboard();
     } else {
       keyboardEl?.classList.add('hidden');
       fingerZones.classList.add('opacity-0');
@@ -626,6 +648,16 @@
     applyToggleUI();
   });
 
+  // ── Scale-to-fit responsiveness observer ──────────────────────────────────
+  if (keyboardEl && typeof ResizeObserver !== 'undefined') {
+    const ro = new ResizeObserver(() => fitKeyboard());
+    ro.observe(keyboardEl);
+  } else {
+    window.addEventListener('resize', fitKeyboard);
+    window.addEventListener('orientationchange', fitKeyboard);
+  }
+
   // ── Init ───────────────────────────────────────────────────────────────────
   applyToggleUI();
+  fitKeyboard();
 </script>

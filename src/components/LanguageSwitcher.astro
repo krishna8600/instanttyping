@@ -220,6 +220,30 @@ import { LANGUAGES } from "../i18n";
     flex-shrink: 0;
     transition: opacity 0.15s;
   }
+
+  @media (max-width: 900px) {
+    .lang-switcher-btn {
+      padding: 0 10px;
+      gap: 0;
+    }
+    .lang-switcher-current-label,
+    .chevron-icon {
+      display: none;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .lang-switcher-btn {
+      min-height: 44px;
+      min-width: 44px;
+      justify-content: center;
+    }
+    .lang-dropdown-menu {
+      left: auto;
+      right: 0;
+      max-width: calc(100vw - 24px);
+    }
+  }
 </style>
 
 <script>
@@ -238,6 +262,16 @@ import { LANGUAGES } from "../i18n";
     function openMenu() {
       menuEl.classList.remove("hidden");
       btnEl.setAttribute("aria-expanded", "true");
+      const r = menuEl.getBoundingClientRect();
+      if (r.right > window.innerWidth - 8) {
+        menuEl.style.left = "auto";
+        menuEl.style.right = "0";
+      }
+      const updatedR = menuEl.getBoundingClientRect();
+      if (updatedR.left < 8) {
+        menuEl.style.left = "8px";
+        menuEl.style.right = "auto";
+      }
     }
 
     function closeMenu() {
