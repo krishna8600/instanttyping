@@ -1,0 +1,182 @@
+/* src/styles/typing-motion.css
+ * Goldmine Unit 5: Restrained State-Communicating Motion System
+ *
+ * Guardrails:
+ * - Lighthouse 95+ preserved: GPU-composited properties only (opacity, transform).
+ * - HARD EXCLUSION: ZERO transitions or animations on typing-critical selectors:
+ *   .typing-caret, .char, .char-correct, .char-error, .char-extra, .char-untyped, .char-pending, .char-incorrect.
+ * - Reduced motion safe: every rule has an instant prefers-reduced-motion override.
+ */
+
+:root {
+  --spring: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ── 1. Focus Calming ───────────────────────────────────────────────────── */
+/* When .engine-running is active on #typing-test-container:
+ * Auxiliary controls (toolbar, corpus dropdown, settings gear, action bar, footer links)
+ * dim to opacity 0.35 over 250ms var(--spring).
+ * On pause/complete, opacity restores over 200ms var(--spring).
+ */
+#engine-toolbar,
+#wordbank-select-container,
+#tier-select-container,
+#settings-toggle-btn,
+#action-bar,
+body:has(#typing-test-container) footer a,
+footer a {
+  transition: opacity 200ms var(--spring);
+}
+
+#typing-test-container.engine-running #engine-toolbar,
+#typing-test-container.engine-running #wordbank-select-container,
+#typing-test-container.engine-running #tier-select-container,
+#typing-test-container.engine-running #settings-toggle-btn,
+#typing-test-container.engine-running #action-bar,
+body:has(#typing-test-container.engine-running) footer a,
+body.engine-running footer a {
+  opacity: 0.35;
+  transition: opacity 250ms var(--spring);
+}
+
+/* Allow clear reading / clicking when hovering auxiliary controls while test is running */
+#typing-test-container.engine-running #engine-toolbar:hover,
+#typing-test-container.engine-running #action-bar:hover,
+body:has(#typing-test-container.engine-running) footer a:hover {
+  opacity: 0.85;
+}
+
+/* ── 2. Corpus & Wordbank Crossfade (180ms total) ────────────────────────── */
+/* Fade out 90ms, swap text, fade in 90ms.
+ * Never touches individual characters or caret.
+ */
+#words-wrapper.words-crossfade-out {
+  opacity: 0 !important;
+  transition: opacity 90ms var(--spring) !important;
+}
+
+#words-wrapper.words-crossfade-in {
+  opacity: 1 !important;
+  transition: opacity 90ms var(--spring) !important;
+}
+
+/* ── 3. Results Reveal (300ms spring) ───────────────────────────────────── */
+/* Replaces abrupt hidden removal with a silky 300ms spring reveal (opacity + translateY) */
+#results-panel:not(.hidden) {
+  animation: results-spring-reveal 300ms var(--spring) both;
+}
+
+@keyframes results-spring-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── 4. Shine Button (CSS-only 600ms hover light sweep) ─────────────────── */
+/* Applied to primary CTAs (start/retry). Zero JavaScript. */
+.btn-primary,
+.btn-shine,
+#btn-restart-test,
+#btn-modal-restart,
+#btn-start-custom {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after,
+.btn-shine::after,
+#btn-restart-test::after,
+#btn-modal-restart::after,
+#btn-start-custom::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -120%;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.32) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+  opacity: 0;
+}
+
+.btn-primary:hover::after,
+.btn-shine:hover::after,
+#btn-restart-test:hover::after,
+#btn-modal-restart:hover::after,
+#btn-start-custom:hover::after {
+  opacity: 1;
+  animation: cta-shine-sweep 600ms var(--spring) forwards;
+}
+
+@keyframes cta-shine-sweep {
+  0% {
+    left: -120%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    left: 220%;
+    opacity: 0;
+  }
+}
+
+/* ── 5. Reduced Motion Overrides (prefers-reduced-motion: reduce) ────────── */
+/* All animations bypass immediately to static states; opacity restored to 1 */
+@media (prefers-reduced-motion: reduce) {
+  #engine-toolbar,
+  #wordbank-select-container,
+  #tier-select-container,
+  #settings-toggle-btn,
+  #action-bar,
+  footer a,
+  #typing-test-container.engine-running #engine-toolbar,
+  #typing-test-container.engine-running #wordbank-select-container,
+  #typing-test-container.engine-running #tier-select-container,
+  #typing-test-container.engine-running #settings-toggle-btn,
+  #typing-test-container.engine-running #action-bar,
+  body:has(#typing-test-container.engine-running) footer a,
+  body.engine-running footer a {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  #words-wrapper,
+  #words-wrapper.words-crossfade-out,
+  #words-wrapper.words-crossfade-in {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+
+  #results-panel,
+  #results-panel:not(.hidden) {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .btn-primary::after,
+  .btn-shine::after,
+  #btn-restart-test::after,
+  #btn-modal-restart::after,
+  #btn-start-custom::after {
+    display: none !important;
+    animation: none !important;
+  }
+}

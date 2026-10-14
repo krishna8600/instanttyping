@@ -51,6 +51,7 @@ const {
 
   <!-- Mode & Configuration Bar -->
   <div
+    id="engine-toolbar"
     class="relative z-30 premium-card !mb-0 flex flex-wrap items-center justify-between gap-1.5 !py-1.5 !px-3 text-xs sm:text-sm"
   >
     <!-- Test Type Selector -->
@@ -587,7 +588,7 @@ const {
   <!-- ── Premium Apple-Style Results Panel (inline flow, no overlap) ── -->
   <section
     id="results-panel"
-    class="hidden w-full space-y-8 animate-spring-enter"
+    class="hidden w-full space-y-8"
     aria-label="Test results" data-i18n-aria-label="engine.aria_results"
   >
     <!-- 1. Rank / Header Card -->
@@ -655,7 +656,7 @@ const {
         <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.net_speed">Net Speed</div>
         <div
           id="res-net-wpm"
-          class="acounter text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary text-[#0072F5] mt-2 font-mono"
+          class="text-3xl font-mono font-bold tracking-tight text-[#0072F5] mt-2 font-mono"
         >
           0
         </div>
@@ -670,7 +671,7 @@ const {
         <div class="text-xs font-semibold uppercase tracking-wider text-ds-text-secondary" data-i18n="results.accuracy">Accuracy</div>
         <div
           id="res-accuracy"
-          class="acounter text-3xl font-mono font-bold tracking-tight mt-1 text-ds-text-primary mt-2 font-mono text-[#1D1D1F] dark:text-[#F5F5F7]"
+          class="text-3xl font-mono font-bold tracking-tight mt-2 font-mono text-[#1D1D1F] dark:text-[#F5F5F7]"
         >
           100%
         </div>
@@ -996,8 +997,10 @@ const {
                 setTimeout(() => location.reload(), 600);
               },
             });
-            wipeSlot.innerHTML = '';
-            wipeSlot.appendChild(morph);
+            if (wipeSlot) {
+              wipeSlot.innerHTML = '';
+              wipeSlot.appendChild(morph);
+            }
           }
           renderWipeMorph();
           window.addEventListener('instanttyping:languagechange', renderWipeMorph);
@@ -1111,7 +1114,6 @@ const {
     return id;
   };
   import { animate } from "animejs";
-  import { animate as motionAnimate } from "motion";
   import { getLanguage, updateDOM, t, type SupportedLanguage } from "../i18n";
   import { recordTest, getLevel, getDailyProgress, loadProgress } from "../scripts/progress";
   import { updateProfileAfterTest, getXpProgressForLevel, getDailyQuote } from "../scripts/profile";
@@ -1119,7 +1121,7 @@ const {
   import { notify } from "../scripts/notify";
   import { createDock } from "../scripts/dock";
   import { createCopyButton } from "../scripts/copy-button";
-  import { animateCounter } from "../scripts/animated-counter";
+  import { countUp } from "../scripts/count-up";
   import {
     TOP_200_WORDS,
     TOP_1000_WORDS,
@@ -1297,6 +1299,7 @@ const {
       }
     } catch {}
 
+    const testContainer = document.getElementById("typing-test-container");
     const wordsViewport = document.getElementById("words-viewport")!;
     const wordsWrapper = document.getElementById("words-wrapper")!;
     const typingDisplay = document.getElementById("typing-display")!;
@@ -1845,6 +1848,9 @@ const {
       appliedScrollX = 0;
       testActive = false;
       testCompleted = false;
+      if (testContainer) {
+        testContainer.classList.remove("engine-running");
+      }
       startTime = 0;
       elapsedSeconds = 0;
       isIdlePaused = false;
@@ -1932,6 +1938,9 @@ const {
       emitTyping('typing-start');
       testActive = true;
       testCompleted = false;
+      if (testContainer) {
+        testContainer.classList.add("engine-running");
+      }
       startTime = performance.now();
       lastKeystrokeTime = performance.now();
       lastCharInputTime = performance.now();
@@ -1947,6 +1956,9 @@ const {
     function pauseForIdle() {
       if (!testActive || testCompleted || isIdlePaused) return;
       isIdlePaused = true;
+      if (testContainer) {
+        testContainer.classList.remove("engine-running");
+      }
       idlePausedAt = performance.now();
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -1958,6 +1970,9 @@ const {
     function resumeFromIdlePause() {
       if (!isIdlePaused) return;
       isIdlePaused = false;
+      if (testContainer) {
+        testContainer.classList.add("engine-running");
+      }
       // Shift startTime forward by the paused duration so elapsed time is preserved
       startTime += performance.now() - idlePausedAt;
       lastKeystrokeTime = performance.now();
@@ -2044,6 +2059,9 @@ const {
       }
       testActive = false;
       testCompleted = true;
+      if (testContainer) {
+        testContainer.classList.remove("engine-running");
+      }
       isIdlePaused = false;
       idlePausePrompt.classList.add("hidden");
       capsLockWarning.classList.add("hidden");
@@ -2201,7 +2219,7 @@ const {
         weakKeysListEl.innerHTML = "";
         const activeKeyMistakes = activeSummary.keyMistakes || keyMistakes;
         const mistakesArr = Object.entries(activeKeyMistakes)
-          .map(([key, data]) => ({ key, errors: data.errors, total: data.total }))
+          .map(([key, data]: [string, any]) => ({ key, errors: data.errors, total: data.total }))
           .sort((a, b) => b.errors - a.errors)
           .filter((item) => item.errors > 0);
 
@@ -2281,10 +2299,10 @@ const {
       }
 
       const activeKeystrokes = activeSummary.keystrokeLog || keystrokeLog;
-      const validKeystrokes = activeKeystrokes.filter(k => k.deltaMs > 20 && k.deltaMs < 6000);
+      const validKeystrokes = activeKeystrokes.filter((k: any) => k.deltaMs > 20 && k.deltaMs < 6000);
       let medianLatency = 250;
       if (validKeystrokes.length >= 4) {
-        const sortedDeltas = [...validKeystrokes].map(k => k.deltaMs).sort((a, b) => a - b);
+        const sortedDeltas = [...validKeystrokes].map((k: any) => k.deltaMs).sort((a: any, b: any) => a - b);
         medianLatency = sortedDeltas[Math.floor(sortedDeltas.length / 2)] || 250;
       }
       const hesitationThreshold = Math.max(350, Math.round(medianLatency * 1.8));
@@ -2328,14 +2346,14 @@ const {
         .sort((a, b) => b.avgMs - a.avgMs);
 
       const slowestTransitionsArr = Object.entries(transitionStats)
-        .map(([pair, data]) => ({ pair, avgMs: Math.round(data.totalMs / data.count), count: data.count }))
+        .map(([pair, data]: [string, any]) => ({ pair, avgMs: Math.round(data.totalMs / data.count), count: data.count }))
         .filter(d => d.count >= 1)
         .sort((a, b) => b.avgMs - a.avgMs);
 
       const worstTransition = slowestTransitionsArr[0];
       const activeKeyMistakes = activeSummary.keyMistakes || keyMistakes;
       const mistakesArr = Object.entries(activeKeyMistakes)
-        .map(([key, data]) => ({ key, errors: data.errors, total: data.total }))
+        .map(([key, data]: [string, any]) => ({ key, errors: data.errors, total: data.total }))
         .sort((a, b) => b.errors - a.errors)
         .filter((item) => item.errors > 0);
 
@@ -2454,11 +2472,11 @@ const {
       const profileResult = lastProfileResult || (window as any).__lastProfileResult;
       if (xpReceipt && profileResult && profileResult.xpAwarded.eligible) {
         xpReceipt.classList.remove("hidden");
-        if (xpTotalEl) xpTotalEl.textContent = `+${profileResult.xpAwarded.total} XP`;
+        if (xpTotalEl) countUp(xpTotalEl, profileResult.xpAwarded.total, { duration: 800, prefix: "+", suffix: " XP" });
         if (xpLevelTag) xpLevelTag.textContent = t("results.xp_level", lang, { level: profileResult.levelAfter });
 
         const parts = [t("results.xp_base", lang, { amount: profileResult.xpAwarded.base })];
-        profileResult.xpAwarded.bonuses.forEach(b => {
+        profileResult.xpAwarded.bonuses.forEach((b: any) => {
           let label = b.label;
           if (b.label === "Personal best!") {
             label = t("results.xp_bonus_pb", lang, { amount: b.amount });
@@ -2507,14 +2525,13 @@ const {
       rankEl.textContent = locRank;
 
       const resNetWpmEl = document.getElementById("res-net-wpm")!;
-      animateCounter(resNetWpmEl, summary.netWpm, { duration: 1100 });
+      countUp(resNetWpmEl, summary.netWpm, { duration: 800 });
       const resAccuracyEl = document.getElementById("res-accuracy")!;
-      animateCounter(resAccuracyEl, summary.accuracy, { duration: 1100 });
-      document.getElementById("res-raw-wpm")!.textContent = String(
-        summary.rawWpm,
-      );
-      document.getElementById("res-consistency")!.textContent =
-        `${summary.consistency}%`;
+      countUp(resAccuracyEl, summary.accuracy, { duration: 800, suffix: "%" });
+      const resRawWpmEl = document.getElementById("res-raw-wpm");
+      if (resRawWpmEl) countUp(resRawWpmEl, summary.rawWpm, { duration: 800 });
+      const resConsistencyEl = document.getElementById("res-consistency");
+      if (resConsistencyEl) countUp(resConsistencyEl, summary.consistency, { duration: 800, suffix: "%" });
       document.getElementById("res-correct-chars")!.textContent = String(
         summary.correctChars,
       );
@@ -2538,7 +2555,8 @@ const {
         document.getElementById("res-streak")!.textContent = String(psych.streak);
         document.getElementById("res-level-title")!.textContent = t("level." + lvl.title.toLowerCase()) || lvl.title;
         (document.getElementById("res-xp-bar")! as HTMLElement).style.width = `${Math.round(lvl.progress * 100)}%`;
-        document.getElementById("res-xp-text")!.textContent = `+${psych.xpGained} XP`;
+        const resXpTextEl = document.getElementById("res-xp-text");
+        if (resXpTextEl) countUp(resXpTextEl, psych.xpGained, { duration: 800, prefix: "+", suffix: " XP" });
         document.getElementById("res-daily")!.textContent = `${daily.done}/${daily.goal}`;
         const nudge = document.getElementById("res-psych-nudge");
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -2588,24 +2606,6 @@ const {
       }
 
       resultsPanel.classList.remove("hidden");
-      // Spring entrance with Motion (interruptible, Apple-grade)
-      try {
-        const cards = resultsPanel.querySelectorAll(':scope > *');
-        motionAnimate(
-          resultsPanel,
-          { opacity: [0, 1], y: [24, 0], scale: [0.98, 1] },
-          { type: 'spring', bounce: 0, duration: 0.5 }
-        );
-        cards.forEach((card, i) => {
-          motionAnimate(
-            card,
-            { opacity: [0, 1], y: [16, 0] },
-            { type: 'spring', bounce: 0, duration: 0.45, delay: i * 0.06 }
-          );
-        });
-      } catch (e) {
-        // CSS fallback handles this
-      }
       // Natural scroll to results
       safeSetTimeout(() => {
         resultsPanel.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -3411,7 +3411,7 @@ const {
           }
           return;
         }
-        moveTabSlider(btn);
+        moveTabSlider(btn as HTMLElement);
         modeBtns.forEach((b) => {
           b.classList.remove(
             "active-mode-btn",
@@ -3553,21 +3553,46 @@ const {
       });
     });
 
+    function crossfadeWords(onSwap: () => void) {
+      const reduced = typeof window !== "undefined" &&
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (reduced) {
+        onSwap();
+        return;
+      }
+
+      wordsWrapper.classList.add("words-crossfade-out");
+      safeSetTimeout(() => {
+        onSwap();
+        wordsWrapper.classList.remove("words-crossfade-out");
+        wordsWrapper.classList.add("words-crossfade-in");
+        safeSetTimeout(() => {
+          wordsWrapper.classList.remove("words-crossfade-in");
+        }, 90);
+      }, 90);
+    }
+
     wordbankSelect.addEventListener("change", () => {
-      currentWordbankName = wordbankSelect.value;
-      customMistakeWords = null;
-      updateTierControlAvailability();
-      resetTest();
+      crossfadeWords(() => {
+        currentWordbankName = wordbankSelect.value;
+        customMistakeWords = null;
+        updateTierControlAvailability();
+        resetTest();
+      });
     });
 
     if (tierSelect) {
       tierSelect.addEventListener("change", () => {
-        currentTier = tierSelect.value as any;
-        try {
-          localStorage.setItem("it_tier", currentTier);
-        } catch {}
-        customMistakeWords = null;
-        resetTest();
+        crossfadeWords(() => {
+          currentTier = tierSelect.value as any;
+          try {
+            localStorage.setItem("it_tier", currentTier);
+          } catch {}
+          customMistakeWords = null;
+          resetTest();
+        });
       });
     }
 
@@ -3583,15 +3608,19 @@ const {
 
       if (!testActive) {
         if (["top1000", "top200", "es", "fr", "de", "pt", "it"].includes(currentWordbankName)) {
-          if (["es", "fr", "de", "pt", "it"].includes(lang)) {
-            currentWordbankName = lang;
-            wordbankSelect.value = lang;
-          } else {
-            currentWordbankName = "top1000";
-            wordbankSelect.value = "top1000";
-          }
+          crossfadeWords(() => {
+            if (["es", "fr", "de", "pt", "it"].includes(lang)) {
+              currentWordbankName = lang;
+              wordbankSelect.value = lang;
+            } else {
+              currentWordbankName = "top1000";
+              wordbankSelect.value = "top1000";
+            }
+            resetTest();
+          });
+        } else {
+          resetTest();
         }
-        resetTest();
       }
     }
     window.addEventListener("instanttyping:languagechange", handleLanguageChange);

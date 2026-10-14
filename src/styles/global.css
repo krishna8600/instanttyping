@@ -7,6 +7,7 @@
 @import "./xp-progress.css";
 @import "./confirm-morph.css";
 @import "./heatmap.css";
+@import "./typing-motion.css";
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
