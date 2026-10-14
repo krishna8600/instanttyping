@@ -489,7 +489,7 @@ const {
       <!-- Click to focus banner -->
       <div
         id="focus-prompt"
-        class="absolute inset-0 bg-white/60 dark:bg-black/40 backdrop-blur-[2px] flex items-center justify-center rounded-[20px] transition-opacity"
+        class="absolute inset-0 bg-white/90 dark:bg-[#1D1D1F]/90 flex items-center justify-center rounded-[20px] transition-opacity"
       >
         <div
           class="px-4 py-2 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-xs font-semibold flex items-center gap-2 shadow-lg"
@@ -516,7 +516,7 @@ const {
       <!-- Idle pause indicator -->
       <div
         id="idle-pause-prompt"
-        class="hidden absolute inset-0 z-10 flex items-center justify-center rounded-[20px] pointer-events-none bg-white/40 dark:bg-black/30 backdrop-blur-[2px]"
+        class="hidden absolute inset-0 z-10 flex items-center justify-center rounded-[20px] pointer-events-none bg-white/90 dark:bg-[#1D1D1F]/90"
       >
         <div
           class="caps-pill px-5 py-2.5 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-sm font-semibold flex items-center gap-2.5 shadow-xl border border-black/10 dark:border-white/10"
@@ -1851,6 +1851,7 @@ const {
       if (testContainer) {
         testContainer.classList.remove("engine-running");
       }
+      document.body.classList.remove("engine-running");
       startTime = 0;
       elapsedSeconds = 0;
       isIdlePaused = false;
@@ -1879,7 +1880,7 @@ const {
       
       resultsPanel.classList.add("hidden");
       focusPrompt.classList.remove("hidden");
-      focusPrompt.classList.remove("opacity-0");
+      focusPrompt.classList.remove("opacity-0", "pointer-events-none");
       focusPrompt.style.display = "";
 
       hiddenInput.value = "";
@@ -1941,6 +1942,7 @@ const {
       if (testContainer) {
         testContainer.classList.add("engine-running");
       }
+      document.body.classList.add("engine-running");
       startTime = performance.now();
       lastKeystrokeTime = performance.now();
       lastCharInputTime = performance.now();
@@ -1959,6 +1961,7 @@ const {
       if (testContainer) {
         testContainer.classList.remove("engine-running");
       }
+      document.body.classList.remove("engine-running");
       idlePausedAt = performance.now();
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -1973,6 +1976,7 @@ const {
       if (testContainer) {
         testContainer.classList.add("engine-running");
       }
+      document.body.classList.add("engine-running");
       // Shift startTime forward by the paused duration so elapsed time is preserved
       startTime += performance.now() - idlePausedAt;
       lastKeystrokeTime = performance.now();
@@ -2062,6 +2066,7 @@ const {
       if (testContainer) {
         testContainer.classList.remove("engine-running");
       }
+      document.body.classList.remove("engine-running");
       isIdlePaused = false;
       idlePausePrompt.classList.add("hidden");
       capsLockWarning.classList.add("hidden");
@@ -2803,7 +2808,7 @@ const {
       } catch (e) {
         try { targetInput?.focus(); } catch {}
       }
-      targetPrompt?.classList.add("opacity-0");
+      targetPrompt?.classList.add("opacity-0", "pointer-events-none");
       targetDisplay?.classList.add("!border-[#0072F5]/30");
       if (targetCaret) {
         targetCaret.style.display = "";
@@ -2813,7 +2818,7 @@ const {
 
     function blurTyping() {
       if (testCompleted) return;
-      focusPrompt.classList.remove("opacity-0");
+      focusPrompt.classList.remove("opacity-0", "pointer-events-none");
       typingDisplay.classList.remove("!border-[#0072F5]/30");
       caretEl.style.opacity = "0";
     }

@@ -23,8 +23,8 @@
 #tier-select-container,
 #settings-toggle-btn,
 #action-bar,
-body:has(#typing-test-container) footer a,
 footer a {
+  will-change: opacity;
   transition: opacity 200ms var(--spring);
 }
 
@@ -33,7 +33,6 @@ footer a {
 #typing-test-container.engine-running #tier-select-container,
 #typing-test-container.engine-running #settings-toggle-btn,
 #typing-test-container.engine-running #action-bar,
-body:has(#typing-test-container.engine-running) footer a,
 body.engine-running footer a {
   opacity: 0.35;
   transition: opacity 250ms var(--spring);
@@ -42,7 +41,7 @@ body.engine-running footer a {
 /* Allow clear reading / clicking when hovering auxiliary controls while test is running */
 #typing-test-container.engine-running #engine-toolbar:hover,
 #typing-test-container.engine-running #action-bar:hover,
-body:has(#typing-test-container.engine-running) footer a:hover {
+body.engine-running footer a:hover {
   opacity: 0.85;
 }
 
@@ -150,7 +149,6 @@ body:has(#typing-test-container.engine-running) footer a:hover {
   #typing-test-container.engine-running #tier-select-container,
   #typing-test-container.engine-running #settings-toggle-btn,
   #typing-test-container.engine-running #action-bar,
-  body:has(#typing-test-container.engine-running) footer a,
   body.engine-running footer a {
     opacity: 1 !important;
     transition: none !important;
