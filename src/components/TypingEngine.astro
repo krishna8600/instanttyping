@@ -470,7 +470,7 @@ const {
       tabindex="-1"
       role="textbox"
       aria-label="Typing test text area" data-i18n-aria-label="engine.aria_textarea"
-      class="relative flex flex-col justify-center w-full max-w-[1100px] mx-auto min-h-[140px] sm:min-h-[160px] !py-6 sm:!py-8 !px-6 sm:!px-8 font-mono text-[22px] md:text-[28px] lg:text-[32px] leading-normal tracking-[0.04em] select-none cursor-text transition-all duration-200 overflow-hidden !mb-0"
+      class="relative flex flex-col justify-center w-full max-w-[1100px] mx-auto min-h-[140px] sm:min-h-[160px] !py-6 sm:!py-8 !px-6 sm:!px-8 font-mono text-[22px] md:text-[28px] lg:text-[32px] leading-normal tracking-[0.04em] select-none cursor-text transition-colors duration-200 overflow-hidden !mb-0"
     >
       <div id="words-viewport" class="relative overflow-hidden w-full select-none">
         <div
@@ -480,7 +480,7 @@ const {
         ></div>
         <div
           id="words-wrapper"
-          class="relative flex flex-nowrap items-center whitespace-nowrap gap-x-4 lg:gap-x-5 shrink-0 will-change-transform transition-transform duration-[150ms] ease-out"
+          class="relative flex flex-nowrap items-center whitespace-nowrap gap-x-4 lg:gap-x-5 shrink-0 will-change-transform"
         >
           <!-- Words rendered dynamically here -->
         </div>
@@ -1659,6 +1659,7 @@ const {
       });
     }
 
+    let scrollTransitionTimeout: number | undefined;
     function applyTransforms() {
       transformRafId = null;
       if (appliedScrollX === targetScrollX) return;
@@ -1667,6 +1668,24 @@ const {
         wordsWrapper.style.transition = 'none';
       } else {
         wordsWrapper.style.transition = 'transform 150ms ease-out';
+        if (scrollTransitionTimeout) clearTimeout(scrollTransitionTimeout);
+        scrollTransitionTimeout = window.setTimeout(() => {
+          wordsWrapper.style.transition = 'none';
+          scrollTransitionTimeout = undefined;
+        }, 160);
+        wordsWrapper.addEventListener(
+          'transitionend',
+          (e) => {
+            if (e.target === wordsWrapper && e.propertyName === 'transform') {
+              wordsWrapper.style.transition = 'none';
+              if (scrollTransitionTimeout) {
+                clearTimeout(scrollTransitionTimeout);
+                scrollTransitionTimeout = undefined;
+              }
+            }
+          },
+          { once: true }
+        );
       }
       wordsWrapper.style.transform = `translate3d(-${targetScrollX}px, 0, 0)`;
       if (wordsViewport) {
@@ -1903,6 +1922,7 @@ const {
       caretEl.style.display = "";
       caretEl.style.opacity = "0";
       targetScrollX = 0;
+      wordsWrapper.style.transition = "none";
       wordsWrapper.style.transform = "translate3d(0, 0, 0)";
       if (currentMode !== "quote" && currentWordbankName !== "quote") {
         currentQuoteObj = null;

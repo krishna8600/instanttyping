@@ -52,7 +52,10 @@
 (function () {
   var canvas = document.getElementById('moonlit-bg') as HTMLCanvasElement | null;
   if (!canvas) return;
-  var win = window as Window & { __moonlitBgThemeObserver?: MutationObserver };
+  var win = window as Window & {
+    __moonlitBgThemeObserver?: MutationObserver;
+    __moonlitBgBodyObserver?: MutationObserver;
+  };
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var gl: WebGLRenderingContext | null = null;
   var uTime: WebGLUniformLocation | null = null;
@@ -67,9 +70,11 @@
   var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   var needsResize = true;
   var running = true;
-  var renderLoopPaused = false;
+  var rafId: number | null = null;
+  var starRafId: number | null = null;
+  var drawStarfieldFn: ((now: number) => void) | null = null;
+  var isPausedForTyping = false;
   var mouseX = -1.0, mouseY = -1.0;
-  var lastTime = 0;
 
   function initWebGL() {
     if (webglInited || !canvas) return;
@@ -273,8 +278,8 @@
     applyDaylight();
     gl.uniform1f(uTime, 0.0);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-  } else {
-    requestAnimationFrame(render);
+  } else if (running && !isPausedForTyping) {
+    rafId = requestAnimationFrame(render);
   }
   }
 
@@ -330,29 +335,94 @@
   }
 
   function render(now: number) {
-    if (!running || renderLoopPaused) return;
+    rafId = null;
+    if (!running || isPausedForTyping) return;
     if (!gl) return;
     if (needsResize) resize();
     setStaticUniforms();
-    
-    // Pause animation when typing
-    var timeToUse = isTyping ? lastTime : now;
-    if (!isTyping) lastTime = now;
-    
     applyDaylight();
-    gl.uniform1f(uTime, prefersReduced ? 0.0 : timeToUse * 0.001);
+    gl.uniform1f(uTime, prefersReduced ? 0.0 : now * 0.001);
     gl.drawArrays(gl.TRIANGLES, 0, 3);
-    requestAnimationFrame(render);
+    if (!prefersReduced && running && !isPausedForTyping) {
+      rafId = requestAnimationFrame(render);
+    }
   }
 
   window.addEventListener('resize', function () { needsResize = true; });
-  document.addEventListener('visibilitychange', function () { running = !document.hidden; });
-  
-  // Pause starfield/water when typing
-  var isTyping = false;
-  window.addEventListener('typing-start', function () { isTyping = true; });
-  window.addEventListener('typing-stop', function () { isTyping = false; });
-  window.addEventListener('typing-reset', function () { isTyping = false; });
+  document.addEventListener('visibilitychange', function () {
+    running = !document.hidden;
+    if (!running) {
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      if (starRafId !== null) { cancelAnimationFrame(starRafId); starRafId = null; }
+    } else if (!isPausedForTyping && !prefersReduced) {
+      if (rafId === null && webglInited) rafId = requestAnimationFrame(render);
+      if (starRafId === null && drawStarfieldFn) starRafId = requestAnimationFrame(drawStarfieldFn);
+    }
+  });
+
+  // Pause WebGL and starfield animations during active typing to kill paint contention
+  function pauseBackground() {
+    if (isPausedForTyping) return;
+    isPausedForTyping = true;
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+    if (starRafId !== null) {
+      cancelAnimationFrame(starRafId);
+      starRafId = null;
+    }
+  }
+
+  function resumeBackground() {
+    if (!isPausedForTyping) return;
+    isPausedForTyping = false;
+    if (prefersReduced || !running) return;
+    if (rafId === null && webglInited) {
+      rafId = requestAnimationFrame(render);
+    }
+    if (starRafId === null && drawStarfieldFn) {
+      starRafId = requestAnimationFrame(drawStarfieldFn);
+    }
+  }
+
+  function checkEngineRunning() {
+    if (document.body.classList.contains('engine-running')) {
+      pauseBackground();
+    } else {
+      resumeBackground();
+    }
+  }
+
+  var prevBodyObserver = win.__moonlitBgBodyObserver;
+  if (prevBodyObserver) prevBodyObserver.disconnect();
+  var bodyObserver = new MutationObserver(checkEngineRunning);
+  bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  win.__moonlitBgBodyObserver = bodyObserver;
+
+  // Immediate hooks for engine events
+  window.addEventListener('typing-start', pauseBackground);
+  window.addEventListener('typing-stop', resumeBackground);
+  window.addEventListener('typing-reset', resumeBackground);
+
+  // Dynamic reduced-motion preference handling
+  var motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  motionQuery.addEventListener?.('change', function (e) {
+    prefersReduced = e.matches;
+    if (prefersReduced) {
+      if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
+      if (starRafId !== null) { cancelAnimationFrame(starRafId); starRafId = null; }
+      if (gl) {
+        setStaticUniforms();
+        applyDaylight();
+        gl.uniform1f(uTime, 0.0);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+      }
+    } else if (running && !isPausedForTyping) {
+      if (rafId === null && webglInited) rafId = requestAnimationFrame(render);
+      if (starRafId === null && drawStarfieldFn) starRafId = requestAnimationFrame(drawStarfieldFn);
+    }
+  });
 
   // Watch the theme toggle flipping html.dark and cross-fade the palette in the
   // existing rAF loop — the canvas, context and program are never re-created,
@@ -368,14 +438,12 @@
     running = true;
     if (!webglInited) {
       initWebGL();
-    } else if (!wasRunning && !prefersReduced) {
-      requestAnimationFrame(render);
+    } else if (!wasRunning && !prefersReduced && !isPausedForTyping) {
+      if (rafId === null) rafId = requestAnimationFrame(render);
     }
     
-    if (prefersReduced) {
-      // No animation loop in reduced-motion mode: repaint exactly one still frame.
-      // Scheduled inside a frame so the drawing buffer actually gets composited
-      // (the context is created with preserveDrawingBuffer: false).
+    if (prefersReduced || isPausedForTyping) {
+      // Repaint exactly one still frame with new theme colors
       requestAnimationFrame(function () {
         if (!gl) return;
         setStaticUniforms();
@@ -412,26 +480,7 @@
   }, { passive: true });
   window.addEventListener('touchend', function () { mouseX = -1.0; mouseY = -1.0; }, { passive: true });
 
-  // Temporary diagnostic: pause WebGL render loop during typing to test friction
-  var typingPauseTimer: number | undefined;
-  var typingDisplayEl = document.getElementById('typing-display');
-  if (typingDisplayEl) {
-    typingDisplayEl.addEventListener('keydown', function(e) {
-      // Don't trigger on meta keys (Cmd/Ctrl) to avoid pausing on shortcuts
-      if (e.metaKey || e.ctrlKey) return;
-      
-      if (!renderLoopPaused) {
-        renderLoopPaused = true;
-      }
-      clearTimeout(typingPauseTimer);
-      typingPauseTimer = window.setTimeout(function() {
-        renderLoopPaused = false;
-        if (running && !prefersReduced) {
-          requestAnimationFrame(render);
-        }
-      }, 2000);
-    }, { passive: true });
-  }
+
 
   // Optional runtime tuning (Radiant param protocol)
   window.addEventListener('message', function (e) {
@@ -472,8 +521,9 @@
       }
     }
 
-    function drawStarfield(now: number) {
-      if (!sCtx || !starCanvas) return;
+    drawStarfieldFn = function(now: number) {
+      starRafId = null;
+      if (!sCtx || !starCanvas || isPausedForTyping) return;
       sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
       
       // Draw static stars
@@ -487,7 +537,7 @@
       }
 
       // Handle Meteors
-      if (!prefersReduced && running && !isTyping) {
+      if (!prefersReduced && running && !isPausedForTyping) {
         if (now - lastMeteorTime > nextMeteorDelay) {
           meteors.push({
             x: Math.random() * starCanvas.width,
@@ -535,18 +585,18 @@
 
       sCtx.globalAlpha = 1.0;
 
-      if (!prefersReduced) {
-        requestAnimationFrame(drawStarfield);
+      if (!prefersReduced && running && !isPausedForTyping) {
+        starRafId = requestAnimationFrame(drawStarfieldFn!);
       }
-    }
+    };
 
     window.addEventListener('resize', resizeStarfield);
     resizeStarfield();
 
     if (prefersReduced) {
-      drawStarfield(0);
-    } else {
-      requestAnimationFrame(drawStarfield);
+      drawStarfieldFn(0);
+    } else if (!isPausedForTyping) {
+      starRafId = requestAnimationFrame(drawStarfieldFn);
     }
   })();
 })();
