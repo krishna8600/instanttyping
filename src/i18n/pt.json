@@ -226,6 +226,17 @@
   "options.corpus_beginner": "Para iniciantes",
   "options.corpus_quote": "Citações Famosas",
   "options.corpus_classics": "Passagens Clássicas",
+  "options.group_themed_packs": "✦ Pacotes temáticos para iniciantes",
+  "options.corpus_theme_animals": "Animais",
+  "options.corpus_theme_fruits": "Frutas",
+  "options.corpus_theme_vegetables": "Vegetais",
+  "options.corpus_theme_colors": "Cores",
+  "options.corpus_theme_flowers": "Flores",
+  "options.corpus_theme_sports": "Esportes",
+  "options.corpus_theme_instruments": "Instrumentos musicais",
+  "options.corpus_theme_clothing": "Roupas",
+  "options.corpus_theme_household": "Itens domésticos",
+  "options.corpus_theme_body": "Corpo humano",
   "settings.tier": "Nível:",
   "settings.tier_aria": "Nível de dificuldade",
   "options.tier_auto": "Automático (conforme habilidade)",
@@ -477,5 +488,7 @@
   "daily.xp": "Citação diária +25",
   "daily.bonus_badge": "+25 XP",
   "results.quote_by": "— {author}, {source}",
-  "results.xp_bonus_daily_quote": "Citação diária +{amount}"
+  "results.xp_bonus_daily_quote": "Citação diária +{amount}",
+  "page_beginner.themes_heading": "Pacotes de palavras temáticos para praticar",
+  "page_beginner.themes_intro": "Digite vocabulário familiar e concreto agrupado por tópicos para desenvolver a memória muscular sem cansaço cognitivo. Selecione um pacote abaixo para carregá-lo no teste acima:"
 }

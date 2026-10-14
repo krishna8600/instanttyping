@@ -4,7 +4,7 @@ import Icon from "./Icon.astro";
 interface Props {
   initialDuration?: number;
   initialMode?: "time" | "words" | "quote" | "custom" | "classics" | "code";
-  initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote" | "classics";
+  initialWordbank?: "top200" | "top1000" | "numbers" | "beginner" | "quote" | "classics" | string;
   initialTier?: "auto" | "beginner" | "intermediate" | "advanced";
   pageHeading?: string;
   pageSubheading?: string;
@@ -199,6 +199,18 @@ const {
         >
         <option class="dark:bg-[#1D1D1F]" value="quote" data-i18n="options.corpus_quote">Famous Quotes</option>
         <option class="dark:bg-[#1D1D1F]" value="classics" data-i18n="options.corpus_classics">Classic Passages</option>
+        <optgroup label="✦ Themed Beginner Packs" data-i18n="options.group_themed_packs" data-i18n-label="options.group_themed_packs" class="font-normal not-italic text-[#6E6E73] dark:text-[#A1A1A6] dark:bg-[#1D1D1F]">
+          <option class="dark:bg-[#1D1D1F]" value="theme-animals" data-i18n="options.corpus_theme_animals">Animals</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-fruits" data-i18n="options.corpus_theme_fruits">Fruits</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-vegetables" data-i18n="options.corpus_theme_vegetables">Vegetables</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-colors" data-i18n="options.corpus_theme_colors">Colors</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-flowers" data-i18n="options.corpus_theme_flowers">Flowers</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-sports" data-i18n="options.corpus_theme_sports">Sports</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-instruments" data-i18n="options.corpus_theme_instruments">Musical Instruments</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-clothing" data-i18n="options.corpus_theme_clothing">Clothing</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-household" data-i18n="options.corpus_theme_household">Household Items</option>
+          <option class="dark:bg-[#1D1D1F]" value="theme-body" data-i18n="options.corpus_theme_body">Human Body</option>
+        </optgroup>
       </select>
     </div>
 
@@ -1100,7 +1112,7 @@ const {
   };
   import { animate } from "animejs";
   import { animate as motionAnimate } from "motion";
-  import { getLanguage, updateDOM, t } from "../i18n";
+  import { getLanguage, updateDOM, t, type SupportedLanguage } from "../i18n";
   import { recordTest, getLevel, getDailyProgress, loadProgress } from "../scripts/progress";
   import { updateProfileAfterTest, getXpProgressForLevel, getDailyQuote } from "../scripts/profile";
   import type { ProfileUpdateResult } from "../scripts/profile";
@@ -1126,6 +1138,18 @@ const {
     ITALIAN_WORDS,
     getRandomWords,
   } from "../data/wordbanks";
+  import {
+    THEME_ANIMALS_WORDS,
+    THEME_FRUITS_WORDS,
+    THEME_VEGETABLES_WORDS,
+    THEME_COLORS_WORDS,
+    THEME_FLOWERS_WORDS,
+    THEME_SPORTS_WORDS,
+    THEME_INSTRUMENTS_WORDS,
+    THEME_CLOTHING_WORDS,
+    THEME_HOUSEHOLD_WORDS,
+    THEME_BODY_WORDS,
+  } from "../data/themed-packs";
   import type { TypingEventMap } from "../scripts/typing-events";
   import {
     calculateMetrics,
@@ -1393,6 +1417,7 @@ const {
     function updateTierControlAvailability() {
       if (!tierSelect || !tierSelectContainer) return;
       const isNonTiered = ["es", "fr", "de", "pt", "it", "numbers"].includes(currentWordbankName) || 
+                          currentWordbankName.startsWith("theme-") ||
                           ["quote", "classics", "code", "custom"].includes(currentMode);
       if (isNonTiered) {
         tierSelect.disabled = true;
@@ -1408,6 +1433,26 @@ const {
         return customMistakeWords;
       }
       switch (currentWordbankName) {
+        case "theme-animals":
+          return THEME_ANIMALS_WORDS;
+        case "theme-fruits":
+          return THEME_FRUITS_WORDS;
+        case "theme-vegetables":
+          return THEME_VEGETABLES_WORDS;
+        case "theme-colors":
+          return THEME_COLORS_WORDS;
+        case "theme-flowers":
+          return THEME_FLOWERS_WORDS;
+        case "theme-sports":
+          return THEME_SPORTS_WORDS;
+        case "theme-instruments":
+          return THEME_INSTRUMENTS_WORDS;
+        case "theme-clothing":
+          return THEME_CLOTHING_WORDS;
+        case "theme-household":
+          return THEME_HOUSEHOLD_WORDS;
+        case "theme-body":
+          return THEME_BODY_WORDS;
         case "numbers":
           return NUMBERS_PUNCTUATION_WORDS;
         case "beginner":

@@ -226,6 +226,17 @@
   "options.corpus_beginner": "Per principianti",
   "options.corpus_quote": "Citazioni famose",
   "options.corpus_classics": "Brani Classici",
+  "options.group_themed_packs": "✦ Pacchetti a tema per principianti",
+  "options.corpus_theme_animals": "Animali",
+  "options.corpus_theme_fruits": "Frutta",
+  "options.corpus_theme_vegetables": "Verdure",
+  "options.corpus_theme_colors": "Colori",
+  "options.corpus_theme_flowers": "Fiori",
+  "options.corpus_theme_sports": "Sport",
+  "options.corpus_theme_instruments": "Strumenti musicali",
+  "options.corpus_theme_clothing": "Abbigliamento",
+  "options.corpus_theme_household": "Oggetti per la casa",
+  "options.corpus_theme_body": "Corpo umano",
   "settings.tier": "Livello:",
   "settings.tier_aria": "Livello di difficoltà",
   "options.tier_auto": "Auto (in base al livello)",
@@ -477,5 +488,7 @@
   "daily.xp": "Citazione del giorno +25",
   "daily.bonus_badge": "+25 XP",
   "results.quote_by": "— {author}, {source}",
-  "results.xp_bonus_daily_quote": "Citazione del giorno +{amount}"
+  "results.xp_bonus_daily_quote": "Citazione del giorno +{amount}",
+  "page_beginner.themes_heading": "Pacchetti di parole a tema per la pratica",
+  "page_beginner.themes_intro": "Digita parole familiari e concrete raggruppate per argomento per sviluppare la memoria muscolare senza sforzo cognitivo. Seleziona un pacchetto qui sotto per caricarlo sopra:"
 }

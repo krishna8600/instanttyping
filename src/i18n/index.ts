@@ -139,9 +139,22 @@ export function updateDOM(lang: SupportedLanguage = getLanguage()) {
     const translated = t(key, lang);
     if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
       (el as HTMLInputElement).placeholder = translated;
+    } else if (el.tagName === "OPTGROUP") {
+      (el as HTMLOptGroupElement).label = translated;
     } else {
       el.textContent = translated;
     }
+  });
+
+  const labels = document.querySelectorAll<HTMLElement>("[data-i18n-label]");
+  labels.forEach((el) => {
+    const key = el.getAttribute("data-i18n-label");
+    if (!key) return;
+    const translated = t(key, lang);
+    if ("label" in el) {
+      (el as any).label = translated;
+    }
+    el.setAttribute("label", translated);
   });
 
   const placeholders = document.querySelectorAll<HTMLElement>("[data-i18n-placeholder]");

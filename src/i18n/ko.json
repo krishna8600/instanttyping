@@ -226,6 +226,17 @@
   "options.corpus_beginner": "초보자용",
   "options.corpus_quote": "명언",
   "options.corpus_classics": "고전 명문",
+  "options.group_themed_packs": "✦ 초보자용 테마 팩",
+  "options.corpus_theme_animals": "동물",
+  "options.corpus_theme_fruits": "과일",
+  "options.corpus_theme_vegetables": "채소",
+  "options.corpus_theme_colors": "색상",
+  "options.corpus_theme_flowers": "꽃",
+  "options.corpus_theme_sports": "스포츠",
+  "options.corpus_theme_instruments": "악기",
+  "options.corpus_theme_clothing": "의류",
+  "options.corpus_theme_household": "생활용품",
+  "options.corpus_theme_body": "인체",
   "settings.tier": "난이도:",
   "settings.tier_aria": "난이도 등급",
   "options.tier_auto": "자동 (실력 맞춤)",
@@ -477,5 +488,7 @@
   "daily.xp": "오늘의 명언 +25",
   "daily.bonus_badge": "+25 XP",
   "results.quote_by": "— {author}, {source}",
-  "results.xp_bonus_daily_quote": "오늘의 명언 +{amount}"
+  "results.xp_bonus_daily_quote": "오늘의 명언 +{amount}",
+  "page_beginner.themes_heading": "연습용 테마 단어 팩",
+  "page_beginner.themes_intro": "친숙하고 구체적인 주제별 단어를 입력하며 손가락 근육 기억을 효과적으로 키워보세요. 아래 팩을 클릭하면 위의 타이핑 테스트에 적용됩니다:"
 }

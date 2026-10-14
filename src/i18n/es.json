@@ -226,6 +226,17 @@
   "options.corpus_beginner": "Para principiantes",
   "options.corpus_quote": "Citas famosas",
   "options.corpus_classics": "Pasajes Clásicos",
+  "options.group_themed_packs": "✦ Paquetes temáticos para principiantes",
+  "options.corpus_theme_animals": "Animales",
+  "options.corpus_theme_fruits": "Frutas",
+  "options.corpus_theme_vegetables": "Verduras",
+  "options.corpus_theme_colors": "Colores",
+  "options.corpus_theme_flowers": "Flores",
+  "options.corpus_theme_sports": "Deportes",
+  "options.corpus_theme_instruments": "Instrumentos musicales",
+  "options.corpus_theme_clothing": "Ropa",
+  "options.corpus_theme_household": "Artículos del hogar",
+  "options.corpus_theme_body": "Cuerpo humano",
   "settings.tier": "Nivel:",
   "settings.tier_aria": "Nivel de dificultad",
   "options.tier_auto": "Automático (según tu nivel)",
@@ -477,5 +488,7 @@
   "daily.xp": "Cita diaria +25",
   "daily.bonus_badge": "+25 XP",
   "results.quote_by": "— {author}, {source}",
-  "results.xp_bonus_daily_quote": "Cita diaria +{amount}"
+  "results.xp_bonus_daily_quote": "Cita diaria +{amount}",
+  "page_beginner.themes_heading": "Paquetes de palabras temáticos para practicar",
+  "page_beginner.themes_intro": "Escribe vocabulario familiar y concreto agrupado por temas para desarrollar la memoria muscular sin sobrecarga mental. Selecciona cualquier paquete abajo para cargarlo arriba:"
 }

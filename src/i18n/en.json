@@ -229,6 +229,17 @@
   "options.corpus_beginner": "Beginner Friendly",
   "options.corpus_quote": "Famous Quotes",
   "options.corpus_classics": "Classic Passages",
+  "options.group_themed_packs": "✦ Themed Beginner Packs",
+  "options.corpus_theme_animals": "Animals",
+  "options.corpus_theme_fruits": "Fruits",
+  "options.corpus_theme_vegetables": "Vegetables",
+  "options.corpus_theme_colors": "Colors",
+  "options.corpus_theme_flowers": "Flowers",
+  "options.corpus_theme_sports": "Sports",
+  "options.corpus_theme_instruments": "Musical Instruments",
+  "options.corpus_theme_clothing": "Clothing",
+  "options.corpus_theme_household": "Household Items",
+  "options.corpus_theme_body": "Human Body",
   "settings.tier": "Tier:",
   "settings.tier_aria": "Difficulty tier",
   "options.tier_auto": "Auto (Match Skill)",
@@ -487,5 +498,7 @@
   "daily.xp": "Daily quote +25",
   "daily.bonus_badge": "+25 XP",
   "results.quote_by": "— {author}, {source}",
-  "results.xp_bonus_daily_quote": "Daily quote +{amount}"
+  "results.xp_bonus_daily_quote": "Daily quote +{amount}",
+  "page_beginner.themes_heading": "Themed Word Packs for Practice",
+  "page_beginner.themes_intro": "Type familiar, concrete vocabulary grouped by topic to build muscle memory without cognitive strain. Select any pack below to load it into the engine above:"
 }

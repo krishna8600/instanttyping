@@ -70,30 +70,46 @@ Introduce a structured 3-tier vocabulary ladder (Beginner, Intermediate, Advance
 ### Unit 2: Themed Beginner Packs (Curated CC0 Corpora)
 
 #### Purpose
-Provide engaging, relatable beginner packs (Animals, Food, Nature/Space) sourced from Public Domain / CC0 datasets (dariusk/corpora) to make touch-typing enjoyable and concrete for early-stage typists.
+Provide engaging, relatable beginner packs (10 themes, 40–60 words each) sourced from Public Domain / CC0 datasets (dariusk/corpora) to make touch-typing enjoyable, contextual, and concrete for early-stage typists.
 
 #### Exact Files Touched
 - `src/data/themed-packs.ts` *(new file)*
 - `src/components/TypingEngine.astro`
-- `src/i18n/en.json` (and locale files)
+- `src/pages/typing-test-for-beginners.astro`
+- `src/i18n/index.ts`
+- `src/i18n/*.json` (all 8 locales: `en`, `de`, `es`, `fr`, `it`, `ja`, `ko`, `pt`)
+- `src/data/themed-packs.test.ts` *(new test file)*
 
 #### What It Changes
 1. **New Static Module `themed-packs.ts`:**
-   - Sourced from CC0 dariusk/corpora datasets:
-     - `ANIMALS_PACK`: ~120 words (mammals, birds, marine life — e.g. *otter, falcon, badger, dolphin, sparrow*).
-     - `FOOD_PACK`: ~120 words (fruits, vegetables, bakery, cooking — e.g. *apricot, basil, cinnamon, ginger, pretzel*).
-     - `NATURE_SPACE`: ~120 words (trees, weather, cosmos, geography — e.g. *glacier, comet, willow, canyon, nebula*).
-   - Strict CC0 provenance headers and clean ASCII lowercase tokens (length 3–9 chars).
+   - Sourced and curated from CC0 dariusk/corpora datasets across 10 beginner-friendly themes:
+     - `THEME_ANIMALS_WORDS`: 60 words (*aardvark, alligator, alpaca ... jaguar*)
+     - `THEME_FRUITS_WORDS`: 50 words (*apple, apricot, avocado ... watermelon*)
+     - `THEME_VEGETABLES_WORDS`: 42 words (*bean, beet, broccoli ... zucchini*)
+     - `THEME_COLORS_WORDS`: 42 words (*amber, aqua, beige ... yellow*)
+     - `THEME_FLOWERS_WORDS`: 49 words (*amaryllis, anemone, aster ... zinnia*)
+     - `THEME_SPORTS_WORDS`: 42 words (*archery, badminton, baseball ... wrestling*)
+     - `THEME_INSTRUMENTS_WORDS`: 41 words (*accordion, bagpipe, banjo ... zither*)
+     - `THEME_CLOTHING_WORDS`: 60 words (*belt, bikini, blazer ... tailcoat*)
+     - `THEME_HOUSEHOLD_WORDS`: 60 words (*bag, balloon, bed ... lace*)
+     - `THEME_BODY_WORDS`: 41 words (*ankle, arm, back ... wrist*)
+   - Total: 487 dictionary-verified, clean lowercase ASCII tokens.
+   - Strict CC0 provenance headers and tree-shakeable static arrays.
 2. **Engine Integration:**
-   - Wire `theme-animals`, `theme-food`, and `theme-nature` into `getSelectedCorpus()` in [src/components/TypingEngine.astro](file:///c:/my%20things/instanttyping.com/src/components/TypingEngine.astro).
-   - Group them under a clean `<optgroup label="Themed Beginner Packs">` inside `#wordbank-select`.
-3. **i18n Keys:**
-   - Add `options.corpus_theme_animals` ("Animals"), `options.corpus_theme_food` ("Food & Cooking"), `options.corpus_theme_nature` ("Nature & Space").
+   - Wire `theme-animals`, `theme-fruits`, `theme-vegetables`, `theme-colors`, `theme-flowers`, `theme-sports`, `theme-instruments`, `theme-clothing`, `theme-household`, and `theme-body` into `getSelectedCorpus()` in [src/components/TypingEngine.astro](file:///c:/my%20things/instanttyping.com/src/components/TypingEngine.astro).
+   - Group them under `<optgroup label="Themed Beginner Packs" data-i18n-label="options.group_themed_packs">` inside `#wordbank-select`.
+   - Tier selector interaction: when any themed pack is active, dim and disable the tier selector (`isNonTiered` flag: themed packs define the full vocabulary pool directly).
+3. **Beginners Page Integration:**
+   - Offer the themed packs prominently on [src/pages/typing-test-for-beginners.astro](file:///c:/my%20things/instanttyping.com/src/pages/typing-test-for-beginners.astro) with quick-selection controls for beginners.
+4. **i18n Keys:**
+   - Add optgroup label `options.group_themed_packs` and 10 corpus keys `options.corpus_theme_*` across all 8 locales (`en`, `de`, `es`, `fr`, `it`, `ja`, `ko`, `pt`).
+   - Support `OPTGROUP` label localization in `updateDOM()`.
 
 #### What It Explicitly Does NOT Touch
 - Existing language word banks (`es`, `fr`, `de`, `pt`, `it`).
 - Typing test layout or word-wrap mechanisms.
 - Results calculation logic or XP scoring rules.
+- Existing tier pool contents (`BEGINNER_WORDS`, `ADVANCED_WORDS`).
 
 #### Risk Assessment
 - **Lighthouse (95+):** 🟢 **Zero risk.** Small static bundle (~3KB gzipped), tree-shakeable.

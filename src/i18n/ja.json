@@ -226,6 +226,17 @@
   "options.corpus_beginner": "初心者向け",
   "options.corpus_quote": "名言集",
   "options.corpus_classics": "名作の一節",
+  "options.group_themed_packs": "✦ 初心者向けテーマパック",
+  "options.corpus_theme_animals": "動物",
+  "options.corpus_theme_fruits": "果物",
+  "options.corpus_theme_vegetables": "野菜",
+  "options.corpus_theme_colors": "色",
+  "options.corpus_theme_flowers": "花",
+  "options.corpus_theme_sports": "スポーツ",
+  "options.corpus_theme_instruments": "楽器",
+  "options.corpus_theme_clothing": "衣類",
+  "options.corpus_theme_household": "家庭用品",
+  "options.corpus_theme_body": "人体",
   "settings.tier": "難易度:",
   "settings.tier_aria": "難易度レベル",
   "options.tier_auto": "自動（スキルに合わせる）",
@@ -477,5 +488,7 @@
   "daily.xp": "今日の名言 +25",
   "daily.bonus_badge": "+25 XP",
   "results.quote_by": "— {author}, {source}",
-  "results.xp_bonus_daily_quote": "今日の名言 +{amount}"
+  "results.xp_bonus_daily_quote": "今日の名言 +{amount}",
+  "page_beginner.themes_heading": "練習用テーマ別単語パック",
+  "page_beginner.themes_intro": "身近で具体的なテーマ別語彙を練習して、余計な負担なく指の筋肉記憶を鍛えましょう。以下のパックを選ぶと、上のテストに読み込まれます："
 }

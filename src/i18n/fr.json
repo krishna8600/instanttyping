@@ -226,6 +226,17 @@
   "options.corpus_beginner": "Pour débutants",
   "options.corpus_quote": "Citations célèbres",
   "options.corpus_classics": "Passages Classiques",
+  "options.group_themed_packs": "✦ Packs thématiques débutant",
+  "options.corpus_theme_animals": "Animaux",
+  "options.corpus_theme_fruits": "Fruits",
+  "options.corpus_theme_vegetables": "Légumes",
+  "options.corpus_theme_colors": "Couleurs",
+  "options.corpus_theme_flowers": "Fleurs",
+  "options.corpus_theme_sports": "Sports",
+  "options.corpus_theme_instruments": "Instruments de musique",
+  "options.corpus_theme_clothing": "Vêtements",
+  "options.corpus_theme_household": "Objets du quotidien",
+  "options.corpus_theme_body": "Corps humain",
   "settings.tier": "Niveau :",
   "settings.tier_aria": "Niveau de difficulté",
   "options.tier_auto": "Auto (selon votre niveau)",
@@ -477,5 +488,7 @@
   "daily.xp": "Citation du jour +25",
   "daily.bonus_badge": "+25 XP",
   "results.quote_by": "— {author}, {source}",
-  "results.xp_bonus_daily_quote": "Citation du jour +{amount}"
+  "results.xp_bonus_daily_quote": "Citation du jour +{amount}",
+  "page_beginner.themes_heading": "Packs de mots thématiques pour s'entraîner",
+  "page_beginner.themes_intro": "Tapez un vocabulaire concret et familier regroupé par thèmes pour développer la mémoire musculaire sans fatigue cognitive. Choisissez un pack ci-dessous pour le charger au-dessus :"
 }

@@ -226,6 +226,17 @@
   "options.corpus_beginner": "Anfängerfreundlich",
   "options.corpus_quote": "Berühmte Zitate",
   "options.corpus_classics": "Klassische Passagen",
+  "options.group_themed_packs": "✦ Themen-Pakete für Anfänger",
+  "options.corpus_theme_animals": "Tiere",
+  "options.corpus_theme_fruits": "Früchte",
+  "options.corpus_theme_vegetables": "Gemüse",
+  "options.corpus_theme_colors": "Farben",
+  "options.corpus_theme_flowers": "Blumen",
+  "options.corpus_theme_sports": "Sport",
+  "options.corpus_theme_instruments": "Musikinstrumente",
+  "options.corpus_theme_clothing": "Kleidung",
+  "options.corpus_theme_household": "Haushaltsgegenstände",
+  "options.corpus_theme_body": "Menschlicher Körper",
   "settings.tier": "Stufe:",
   "settings.tier_aria": "Schwierigkeitsstufe",
   "options.tier_auto": "Auto (nach Können)",
@@ -477,5 +488,7 @@
   "daily.xp": "Tageszitat +25",
   "daily.bonus_badge": "+25 XP",
   "results.quote_by": "— {author}, {source}",
-  "results.xp_bonus_daily_quote": "Tageszitat +{amount}"
+  "results.xp_bonus_daily_quote": "Tageszitat +{amount}",
+  "page_beginner.themes_heading": "Themen-Wortpakete für die Praxis",
+  "page_beginner.themes_intro": "Tippen Sie vertraute, konkrete Wörter nach Themen sortiert, um Ihr Muskelgedächtnis mühelos aufzubauen. Wählen Sie ein Paket unten aus, um es oben zu laden:"
 }

@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import TypingEngine from '../components/TypingEngine.astro';
 import FAQ from '../components/FAQ.astro';
 import Icon from '../components/Icon.astro';
+import { THEMED_PACK_METAS } from '../data/themed-packs';
 
 const faqs = [
   {
@@ -45,6 +46,35 @@ const faqs = [
  pageHeading="Typing Test for Beginners: Learn Touch Typing" pageHeadingKey="engine.typing.heading"
  pageSubheading="A gentle, distraction-free typing test featuring common words and simple sentences. Ideal for learning finger placement." pageSubheadingKey="engine.typing.subheading"
  />
+
+ <!-- Themed Beginner Word Packs -->
+ <section class="border-t shadow-ds-border pt-10 space-y-4" id="themed-packs" aria-labelledby="themed-packs-heading">
+ <div class="space-y-1">
+ <h2 id="themed-packs-heading" class="text-xl sm:text-2xl font-semibold tracking-[-0.02em] text-ds-text-primary">
+ <span data-i18n="page_beginner.themes_heading">Themed Word Packs for Practice</span>
+ </h2>
+ <p class="font-normal text-sm text-ds-text-secondary leading-relaxed max-w-3xl">
+ <span data-i18n="page_beginner.themes_intro">Type familiar, concrete vocabulary grouped by topic to build muscle memory without cognitive strain. Select any pack below to load it into the engine above:</span>
+ </p>
+ </div>
+
+ <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 pt-2">
+ {THEMED_PACK_METAS.map((pack) => (
+ <button
+ type="button"
+ data-theme-select={pack.id}
+ class="theme-pack-btn px-3 py-2.5 text-left rounded-lg border border-[#E5E5E5] dark:border-white/10 bg-ds-bg-100 hover:border-[#1D1D1F] dark:hover:border-white/40 transition-all font-mono text-xs group focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer"
+ >
+ <div class="font-medium text-ds-text-primary group-hover:underline">
+ <span data-i18n={pack.labelKey}>{pack.defaultLabel}</span>
+ </div>
+ <div class="text-[10px] text-ds-text-secondary mt-0.5">
+ {pack.wordCount} words
+ </div>
+ </button>
+ ))}
+ </div>
+ </section>
 
  <section class="border-t shadow-ds-border pt-10 space-y-6" id="tips" aria-labelledby="beginner-heading">
  <div class="space-y-2">
@@ -111,6 +141,23 @@ const faqs = [
 
  <FAQ items={faqs} title="Frequently Asked Questions for Beginners" titleKey="faq.typing.title" />
  </div>
+
+ <script>
+   document.querySelectorAll<HTMLButtonElement>("[data-theme-select]").forEach((btn) => {
+     btn.addEventListener("click", () => {
+       const themeId = btn.getAttribute("data-theme-select");
+       const wordbankSelect = document.getElementById("wordbank-select") as HTMLSelectElement | null;
+       if (wordbankSelect && themeId) {
+         wordbankSelect.value = themeId;
+         wordbankSelect.dispatchEvent(new Event("change"));
+         const engineContainer = document.getElementById("typing-test-container") || document.querySelector("main");
+         if (engineContainer) {
+           engineContainer.scrollIntoView({ behavior: "smooth", block: "start" });
+         }
+       }
+     });
+   });
+ </script>
 </Layout>
 
 

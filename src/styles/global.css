@@ -122,6 +122,30 @@ a {
   background: var(--surface);
 }
 
+/* Native select optgroup styling */
+optgroup,
+#wordbank-select optgroup {
+  font-style: normal;
+  color: #6E6E73;
+}
+
+html.dark optgroup,
+html.dark #wordbank-select optgroup {
+  color: #A1A1A6;
+}
+
+optgroup option,
+#wordbank-select optgroup option {
+  font-style: normal;
+  color: #1D1D1F;
+}
+
+html.dark optgroup option,
+html.dark #wordbank-select optgroup option {
+  color: #F5F5F7;
+}
+
+
 /* Buttons */
 .btn-primary {
   background: var(--text-primary);
