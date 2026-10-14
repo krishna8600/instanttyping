@@ -1,5 +1,5 @@
 ---
-// GuidedKeyboard.astro — Unit 4 FINAL
+// GuidedKeyboard.astro — Unit 4 FINAL + keycap upgrade
 // Design law: monochrome + #0072F5 only on target key, active finger, focus rings
 // Instruction format: "Right index → J" (label, never sentence)
 // No photographs, no warm colors, no mascot voice
@@ -72,12 +72,14 @@
             <span class="text-[10px] mt-2">{k.p}</span>
           </div>
         ))}
-        <div class="gk-key w-14 h-8 text-[9px] hand-left">del</div>
+        <!-- Backspace: 2u -->
+        <div data-code="Backspace" class="gk-key gk-key-2u h-8 text-[9px] hand-left">del</div>
       </div>
 
       <!-- Row 2: QWERTY -->
       <div class="flex gap-1">
-        <div class="gk-key w-12 h-8 text-[9px] hand-left">tab</div>
+        <!-- Tab: 1.5u -->
+        <div data-code="Tab" class="gk-key gk-key-1-5u h-8 text-[9px] hand-left">tab</div>
         {[
           {code:'KeyQ', p:'Q', hand:'left'},
           {code:'KeyW', p:'W', hand:'left'},
@@ -102,7 +104,8 @@
 
       <!-- Row 3: Home row (ASDF…) -->
       <div class="flex gap-1">
-        <div class="gk-key w-14 h-8 text-[9px] hand-left">caps</div>
+        <!-- Caps Lock: 1.75u -->
+        <div data-code="CapsLock" class="gk-key gk-key-1-75u h-8 text-[9px] hand-left">caps</div>
         {[
           {code:'KeyA', p:'A', hand:'left'},
           {code:'KeyS', p:'S', hand:'left'},
@@ -124,12 +127,14 @@
             )}
           </div>
         ))}
-        <div class="gk-key flex-1 w-16 h-8 text-[9px] hand-right">enter</div>
+        <!-- Enter: 2.25u -->
+        <div data-code="Enter" class="gk-key gk-key-2-25u h-8 text-[9px] hand-right">enter</div>
       </div>
 
       <!-- Row 4: ZXCV… -->
       <div class="flex gap-1">
-        <div data-code="ShiftLeft" class="gk-key w-[4.5rem] h-8 text-[9px] hand-left">shift</div>
+        <!-- Left Shift: 2.25u -->
+        <div data-code="ShiftLeft" class="gk-key gk-key-2-25u h-8 text-[9px] hand-left">shift</div>
         {[
           {code:'KeyZ', p:'Z', hand:'left'},
           {code:'KeyX', p:'X', hand:'left'},
@@ -147,18 +152,20 @@
             <span class={k.s ? 'text-[11px] mt-2' : 'text-[11px]'}>{k.p}</span>
           </div>
         ))}
-        <div data-code="ShiftRight" class="gk-key w-[4.5rem] h-8 text-[9px] hand-right">shift</div>
+        <!-- Right Shift: 2.75u -->
+        <div data-code="ShiftRight" class="gk-key gk-key-2-75u h-8 text-[9px] hand-right">shift</div>
       </div>
 
-      <!-- Row 5: Space row -->
-      <div class="flex gap-1">
-        <div class="gk-key w-12 h-8 text-[9px] hand-left">ctrl</div>
-        <div class="gk-key w-10 h-8 text-[9px] hand-left">opt</div>
-        <div class="gk-key w-10 h-8 text-[9px] hand-left">cmd</div>
-        <div data-code="Space" class="gk-key flex-1 h-8 hand-right"></div>
-        <div class="gk-key w-10 h-8 text-[9px] hand-right">cmd</div>
-        <div class="gk-key w-10 h-8 text-[9px] hand-right">opt</div>
-        <div class="gk-key w-12 h-8 text-[9px] hand-right">ctrl</div>
+      <!-- Row 5: Space row — modifiers flank Space 6.25u -->
+      <div class="flex gap-1 justify-center">
+        <div data-code="ControlLeft" class="gk-key gk-key-mod h-8 text-[9px] hand-left">ctrl</div>
+        <div data-code="AltLeft" class="gk-key gk-key-mod h-8 text-[9px] hand-left">opt</div>
+        <div data-code="MetaLeft" class="gk-key gk-key-mod h-8 text-[9px] hand-left">cmd</div>
+        <!-- Space: 6.25u proportional -->
+        <div data-code="Space" class="gk-key gk-key-space h-8 hand-right"></div>
+        <div data-code="MetaRight" class="gk-key gk-key-mod h-8 text-[9px] hand-right">cmd</div>
+        <div data-code="AltRight" class="gk-key gk-key-mod h-8 text-[9px] hand-right">opt</div>
+        <div data-code="ControlRight" class="gk-key gk-key-mod h-8 text-[9px] hand-right">ctrl</div>
       </div>
     </div>
 
@@ -206,63 +213,111 @@
 </div>
 
 <style>
-  /* ── Base key ── */
+  /* ── ANSI unit widths ──────────────────────────────────────────────────────
+     1u letter keys use flex-1 so all rows self-balance.
+     Named modifiers use fixed widths that respect ANSI ratios.
+  ── */
+  .gk-key-1-5u  { width: 3rem;    flex-shrink: 0; } /* Tab   1.5u */
+  .gk-key-1-75u { width: 3.5rem;  flex-shrink: 0; } /* Caps  1.75u */
+  .gk-key-2u    { width: 4rem;    flex-shrink: 0; } /* Backspace 2u */
+  .gk-key-2-25u { width: 4.5rem;  flex-shrink: 0; } /* LShift / Enter 2.25u */
+  .gk-key-2-75u { width: 5.5rem;  flex-shrink: 0; } /* RShift 2.75u */
+  .gk-key-space  { flex: 6.25;    flex-shrink: 0; } /* Space  6.25u proportional */
+  .gk-key-mod   { width: 2.25rem; flex-shrink: 0; } /* ctrl/opt/cmd ~1.25u */
+
+  /* ── Label helpers ─────────────────────────────────────────────────────── */
+  .gk-shift-label {
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    font-size: 8px;
+    opacity: 0.5;
+    line-height: 1;
+    pointer-events: none;
+  }
+  .gk-primary {
+    font-size: 11px;
+    pointer-events: none;
+  }
+
+  /* ── Base key — physical keycap depth ──────────────────────────────────── */
   .gk-key {
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 6px;
-    border: 1px solid;
     font-family: 'JetBrains Mono Variable', 'JetBrains Mono', ui-monospace, monospace;
     font-size: 11px;
     font-weight: 500;
     letter-spacing: 0.02em;
     cursor: default;
     user-select: none;
-    transition: background-color 120ms, border-color 120ms, color 120ms, box-shadow 120ms;
-    /* Default state */
-    background-color: #ffffff;
-    border-color: #E5E5E5;
+    position: relative;
+    /* Keycap face gradient — light top, slightly darker bottom */
+    background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+    /* 1px darker edge stroke on bottom for keycap depth */
+    border: 1px solid #D1D1D6;
+    border-bottom-color: #B0B0B5;
     color: #1D1D1F;
+    /* 2px drop shadow for physical lift */
+    box-shadow: 0 2px 0 #C0C0C5, 0 2px 4px rgba(0,0,0,0.10);
+    /* Transitions — NOT on background (pressed path must be instant) */
+    transition: border-color 120ms, color 120ms, box-shadow 120ms;
+  }
+
+  .gk-key > * {
+    pointer-events: none;
   }
 
   :global(.dark) .gk-key {
-    background-color: #1D1D1F;
-    border-color: rgba(255,255,255,0.12);
+    background: linear-gradient(to bottom, #2a2a2e 0%, #212124 100%);
+    border-color: rgba(255,255,255,0.14);
+    border-bottom-color: rgba(255,255,255,0.06);
     color: #F5F5F7;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.30);
   }
 
   /* Hand-zone tints — very subtle, monochrome */
   .gk-key.hand-left {
-    background-color: #FAFAFA;
+    background: linear-gradient(to bottom, #fafafa 0%, #f2f2f4 100%);
   }
   .gk-key.hand-right {
-    background-color: #F5F5F7;
+    background: linear-gradient(to bottom, #f5f5f7 0%, #ebebed 100%);
   }
   :global(.dark) .gk-key.hand-left {
-    background-color: #1a1a1a;
+    background: linear-gradient(to bottom, #1e1e22 0%, #18181b 100%);
   }
   :global(.dark) .gk-key.hand-right {
-    background-color: #1f1f1f;
+    background: linear-gradient(to bottom, #222226 0%, #1c1c1f 100%);
   }
 
-  /* ── States ── */
+  /* ── PRESSED state — instant blue fill, no transition on bg ────────────── */
+  .gk-key.gk-pressed {
+    background: linear-gradient(to bottom, #4aa3ff 0%, #0072f5 100%) !important;
+    border-color: #0060d0 !important;
+    border-bottom-color: #0050b0 !important;
+    color: #ffffff !important;
+    box-shadow: 0 1px 0 #004090, 0 1px 3px rgba(0,114,245,0.30) !important;
+    /* CRITICAL: no transition — fill must be frame-synchronous */
+    transition: none !important;
+  }
 
-  /* NEXT: target key — #0072F5 border + text, faint blue bg */
+  /* ── NEXT: target key — #0072F5 border + text, faint blue bg ───────────── */
   .gk-key.gk-next {
     border-color: #0072F5 !important;
     color: #0072F5 !important;
-    background-color: rgba(0, 114, 245, 0.06) !important;
-    box-shadow: 0 0 0 1px rgba(0, 114, 245, 0.2);
+    background: rgba(0, 114, 245, 0.06) !important;
+    box-shadow: 0 0 0 1px rgba(0, 114, 245, 0.2), 0 2px 0 #C0C0C5 !important;
   }
   :global(.dark) .gk-key.gk-next {
-    background-color: rgba(0, 114, 245, 0.10) !important;
+    background: rgba(0, 114, 245, 0.10) !important;
+    box-shadow: 0 0 0 1px rgba(0, 114, 245, 0.3), 0 2px 0 rgba(0,0,0,0.5) !important;
   }
 
   /* CORRECT flash */
   .gk-key.gk-correct {
     border-color: #0072F5 !important;
-    background-color: rgba(0, 114, 245, 0.18) !important;
+    background: rgba(0, 114, 245, 0.18) !important;
     color: #0072F5 !important;
     transition: none !important;
   }
@@ -270,7 +325,7 @@
   /* WRONG flash + shake */
   .gk-key.gk-wrong {
     border-color: #ef4444 !important;
-    background-color: rgba(239, 68, 68, 0.12) !important;
+    background: rgba(239, 68, 68, 0.12) !important;
     color: #ef4444 !important;
     transition: none !important;
     animation: gk-shake 220ms cubic-bezier(.36,.07,.19,.97) both;
@@ -283,6 +338,7 @@
     40%, 60% { transform: translateX(2px); }
   }
 
+  /* ── Reduced motion ─────────────────────────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
     .gk-key,
     .zone-dot,
@@ -290,6 +346,12 @@
     #gk-finger-zones {
       transition: none !important;
       animation: none !important;
+      box-shadow: none !important;
+    }
+    /* Pressed: still shows color, no shadow/movement */
+    .gk-key.gk-pressed {
+      background: linear-gradient(to bottom, #4aa3ff 0%, #0072f5 100%) !important;
+      color: #ffffff !important;
     }
   }
 
@@ -342,6 +404,18 @@
   let activeZoneEl:     HTMLElement | null = null;
   let activeFlashKeyEl: HTMLElement | null = null;
   let flashTimeoutId:   any = null;
+
+  // ── Press-light state — Set of currently pressed keys ─────────────────────
+  const pressedKeys = new Set<string>();
+
+  /** Clear all press-light highlights (blur / typing-reset) */
+  function clearAllPressLights() {
+    clearPointerPress();
+    for (const code of pressedKeys) {
+      keyMap.get(code)?.classList.remove('gk-pressed');
+    }
+    pressedKeys.clear();
+  }
 
   // ── Concise finger labels ──────────────────────────────────────────────────
   const fingerLabel: Record<string, string> = {
@@ -428,6 +502,63 @@
     }
   }
 
+  // ── Physical key press-light — instant, no repeat, pre-cached Map ─────────
+  window.addEventListener('keydown', (e: KeyboardEvent) => {
+    if (e.repeat) return; // first frame only
+    const el = keyMap.get(e.code);
+    if (!el) return;
+    pressedKeys.add(e.code);
+    el.classList.add('gk-pressed');
+  });
+
+  window.addEventListener('keyup', (e: KeyboardEvent) => {
+    const el = keyMap.get(e.code);
+    if (!el) return;
+    pressedKeys.delete(e.code);
+    if (pointerActiveKey !== el) {
+      el.classList.remove('gk-pressed');
+    }
+  });
+
+  // ── Mouse / pointer press-light ───────────────────────────────────────────
+  let pointerActiveKey: HTMLElement | null = null;
+  let pointerActiveCode: string | null = null;
+
+  function clearPointerPress() {
+    if (pointerActiveKey) {
+      const code = pointerActiveCode;
+      const keyEl = pointerActiveKey;
+      pointerActiveKey = null;
+      pointerActiveCode = null;
+      if (!code || !pressedKeys.has(code)) {
+        keyEl.classList.remove('gk-pressed');
+      }
+    }
+  }
+
+  keyboardEl?.addEventListener('pointerdown', (e: PointerEvent) => {
+    if (e.button !== 0) return; // primary button only
+    const keyEl = (e.target as HTMLElement).closest('.gk-key') as HTMLElement | null;
+    if (!keyEl) return;
+    clearPointerPress();
+    keyEl.classList.add('gk-pressed');
+    pointerActiveKey = keyEl;
+    pointerActiveCode = keyEl.getAttribute('data-code');
+  });
+
+  keyboardEl?.addEventListener('pointerout', (e: PointerEvent) => {
+    if (!pointerActiveKey) return;
+    if (!e.relatedTarget || !pointerActiveKey.contains(e.relatedTarget as Node)) {
+      clearPointerPress();
+    }
+  });
+
+  window.addEventListener('pointerup', clearPointerPress);
+  window.addEventListener('pointercancel', clearPointerPress);
+
+  // Clear all on window blur (alt-tab mid-type, etc.)
+  window.addEventListener('blur', clearAllPressLights);
+
   // ── Event listeners ────────────────────────────────────────────────────────
   window.addEventListener('typing-next-char', (e: Event) => {
     // Skip ALL work if keyboard is hidden
@@ -470,6 +601,7 @@
 
   window.addEventListener('typing-reset', () => {
     clearAll();
+    clearAllPressLights();
     applyToggleUI();
   });
 
