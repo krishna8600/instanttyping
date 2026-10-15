@@ -564,5 +564,8 @@
   "profile.streak": "연속 기록",
   "profile.title": "프로필 및 진행 상황",
   "profile.xp_earned": "획득",
-  "profile.xp_to_next": "다음 레벨까지의 XP"
+  "profile.xp_to_next": "다음 레벨까지의 XP",
+  "a11y.toggle_keyboard_guide": "키보드 가이드 토글",
+  "a11y.close_certificate": "인증서 닫기",
+  "a11y.select_word_bank": "단어 뱅크 선택"
 }

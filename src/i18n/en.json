@@ -564,5 +564,8 @@
   "roast.good_38": "Fastest fingers in the west — still can't outrun your feelings.",
   "roast.good_39": "Okay, speedster. Now do it with your eyes closed. Coward.",
   "roast.good_40": "Okay, speedster. Now do it with your eyes closed. Coward.",
-  "settings.mascot_mode": "Mascot"
+  "settings.mascot_mode": "Mascot",
+  "a11y.toggle_keyboard_guide": "Toggle keyboard guide",
+  "a11y.close_certificate": "Close certificate",
+  "a11y.select_word_bank": "Select word bank"
 }

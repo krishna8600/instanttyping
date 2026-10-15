@@ -564,5 +564,8 @@
   "profile.streak": "Sequência",
   "profile.title": "Perfil & progresso",
   "profile.xp_earned": "Ganha",
-  "profile.xp_to_next": "XP para o próximo nível"
+  "profile.xp_to_next": "XP para o próximo nível",
+  "a11y.toggle_keyboard_guide": "Mostrar/ocultar guia do teclado",
+  "a11y.close_certificate": "Fechar certificado",
+  "a11y.select_word_bank": "Selecionar banco de palavras"
 }

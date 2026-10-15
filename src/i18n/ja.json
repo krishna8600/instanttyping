@@ -564,5 +564,8 @@
   "profile.streak": "連続記録",
   "profile.title": "プロフィールと進捗",
   "profile.xp_earned": "獲得済み",
-  "profile.xp_to_next": "次のレベルまでのXP"
+  "profile.xp_to_next": "次のレベルまでのXP",
+  "a11y.toggle_keyboard_guide": "キーボードガイドの表示切替",
+  "a11y.close_certificate": "証明書を閉じる",
+  "a11y.select_word_bank": "単語バンクを選択"
 }

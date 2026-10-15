@@ -564,5 +564,8 @@
   "profile.streak": "Racha",
   "profile.title": "Perfil & progreso",
   "profile.xp_earned": "Ganada",
-  "profile.xp_to_next": "XP al siguiente nivel"
+  "profile.xp_to_next": "XP al siguiente nivel",
+  "a11y.toggle_keyboard_guide": "Mostrar/ocultar guía del teclado",
+  "a11y.close_certificate": "Cerrar certificado",
+  "a11y.select_word_bank": "Seleccionar banco de palabras"
 }
