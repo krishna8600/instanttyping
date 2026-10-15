@@ -590,7 +590,14 @@ const {
         @media (prefers-reduced-motion: reduce) {
           .caret-idle-blink { animation: none; }
         }
-      </style>
+      
+/* seg-overflow-fix */
+@media (max-width: 480px) {
+  .seg { overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .seg::-webkit-scrollbar { display: none; }
+  .seg-opt { flex-shrink: 0; }
+}
+</style>
       <style is:global>
         /* ── Hamster Mascot Companion ── */
         #mascot-wrap {
@@ -666,7 +673,7 @@ const {
 </style>
       <!-- Mascot companion -->
       <div id="mascot-wrap" aria-hidden="true">
-        <img id="mascot" class="m-idle" src="/images/mascot-roast.webp" alt="" draggable="false" />
+        <img id="mascot" class="m-slow" src="/images/mascot-roast.webp" alt="" draggable="false" />
 <video id="mascot-video" class="m-typing-vid" src="/videos/mascot-typing.mp4" muted loop playsinline preload="auto" style="display:none;"></video>
       </div>
     </div>
@@ -4507,7 +4514,7 @@ const {
 
 
       var MOODS = ['m-idle','m-typing','m-tap','m-shock','m-slow','m-roast'];
-      var current = 'm-idle';
+      var current = 'm-slow';
       var moodTimer: ReturnType<typeof setTimeout> | null = null;
       var idleTimer: ReturnType<typeof setTimeout> | null = null;
       var enabled = true;
@@ -4563,14 +4570,14 @@ const {
         for (var i = 0; i < MOODS.length; i++) el.classList.remove(MOODS[i]);
         el.classList.add(m);
         if (moodTimer) { clearTimeout(moodTimer); moodTimer = null; }
-        if (revertMs) moodTimer = setTimeout(function(){ setMood('m-idle'); }, revertMs);
+        if (revertMs) moodTimer = setTimeout(function(){ setMood('m-slow'); }, revertMs);
       }
 
       function tap() {
         if (!enabled || reduceMotion) return;
         if (current !== 'm-typing') setMood('m-typing');
         if (idleTimer) clearTimeout(idleTimer);
-        idleTimer = setTimeout(function(){ if (current === 'm-typing') setMood('m-idle'); }, 1600);
+        idleTimer = setTimeout(function(){ if (current === 'm-typing') setMood('m-slow'); }, 1600);
         var el = useFallback ? fallbackImg : vid;
         if (!el) return;
         el.classList.remove('m-tap');
@@ -4591,9 +4598,9 @@ const {
       window.addEventListener('typing-stop', function(){
         var roastCard = document.getElementById('roast-card');
         if (roastCard && !roastCard.classList.contains('hidden')) setMood('m-roast', 3000);
-        else setMood('m-idle');
+        else setMood('m-slow');
       });
-      window.addEventListener('typing-reset', function(){ setMood('m-idle'); });
+      window.addEventListener('typing-reset', function(){ setMood('m-slow'); });
 
       // Settings toggle
       var mascotSelect = document.getElementById('mascot-mode-select') as HTMLSelectElement | null;
@@ -4609,12 +4616,62 @@ const {
         enabled = !ce || !ce.detail || ce.detail.enabled !== false;
         try { localStorage.setItem('it_mascot', enabled ? 'on' : 'off'); } catch(e2) {}
         apply();
-        if (enabled) setMood('m-idle');
+        if (enabled) setMood('m-slow');
       });
 
       apply();
     })();
+
+// Mobile keyboard: keep typing area visible
+(function() {
+  if (!window.visualViewport) return;
+  const typingDisplay = document.getElementById('typing-display');
+  if (!typingDisplay) return;
+  let lastHeight = window.visualViewport.height;
+  window.visualViewport.addEventListener('resize', () => {
+    const newHeight = window.visualViewport.height;
+    // Keyboard opened (viewport shrank significantly)
+    if (newHeight < lastHeight - 100) {
+      setTimeout(() => {
+        typingDisplay.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+    lastHeight = newHeight;
+  });
+})();
 </script>
+<style>
+/* Volume slider glow feedback */
+input[type="range"].volume-glow {
+  accent-color: #0072F5;
+  transition: box-shadow 0.2s ease;
+}
+input[type="range"].volume-glow::-webkit-slider-thumb {
+  box-shadow: 0 0 8px rgba(0, 114, 245, 0.8);
+  transition: box-shadow 0.2s ease;
+}
+input[type="range"].volume-glow:active::-webkit-slider-thumb,
+input[type="range"].volume-glow:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 16px rgba(0, 114, 245, 1);
+}
+</style>
+<script>
+(function() {
+  // Find volume slider and add glow class + live feedback
+  const slider = document.querySelector('input[type="range"]');
+  if (!slider || slider.classList.contains('volume-glow')) return;
+  slider.classList.add('volume-glow');
+  // Update glow intensity based on value
+  function updateGlow() {
+    const pct = (slider.value - slider.min) / (slider.max - slider.min);
+    const intensity = Math.round(pct * 16);
+    slider.style.setProperty('--glow', intensity + 'px');
+  }
+  slider.addEventListener('input', updateGlow);
+  updateGlow();
+})();
+</script>
+
 
 
 
