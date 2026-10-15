@@ -12,7 +12,7 @@ const initialQuote = quotesData[Math.abs(dayOfYear) % quotesData.length];
 <section id="daily-quote-card" class="premium-card p-5 sm:p-7 transition-all duration-200" aria-labelledby="daily-quote-heading">
   <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
     <div class="flex items-center gap-2">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#0072F5]/10 text-[#0072F5] dark:bg-[#0072F5]/20 font-mono tracking-wide">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#0072F5]/10 text-[#004FC4] dark:bg-[#0072F5]/20 font-mono tracking-wide">
         <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <circle cx="12" cy="12" r="10"></circle>
           <polyline points="12 6 12 12 16 14"></polyline>
@@ -77,7 +77,7 @@ const initialQuote = quotesData[Math.abs(dayOfYear) % quotesData.length];
         statusBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold font-mono bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20';
         statusBadge.innerHTML = `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg><span data-i18n="daily.done">${t('daily.done')}</span>`;
       } else {
-        statusBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold font-mono bg-[#0072F5]/10 text-[#0072F5] dark:bg-[#0072F5]/20';
+        statusBadge.className = 'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold font-mono bg-[#0072F5]/10 text-[#004FC4] dark:bg-[#0072F5]/20';
         statusBadge.innerHTML = `<span id="daily-status-text" data-i18n="daily.bonus_badge">+25 XP</span>`;
       }
     }

@@ -184,7 +184,7 @@ const {
       <select
         id="wordbank-select"
         class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
-      >
+       aria-label="Select word bank">
         <option class="dark:bg-[#1D1D1F]" value="top200" data-i18n="options.corpus_top200"
           >Common Words (Top 200)</option
         >
@@ -731,7 +731,7 @@ const {
       <div class="flex justify-center">
         <span
           id="res-band"
-          class="inline-flex items-center px-3.5 py-1 rounded-full bg-[#0072F5]/10 text-[#0072F5] dark:bg-[#0072F5]/20 text-xs font-bold tracking-wide uppercase"
+          class="inline-flex items-center px-3.5 py-1 rounded-full bg-[#0072F5]/10 text-[#004FC4] dark:bg-[#0072F5]/20 text-xs font-bold tracking-wide uppercase"
           >Starting</span
         >
       </div>
@@ -1199,7 +1199,7 @@ const {
           id="btn-close-certificate"
           type="button"
           class="p-2 rounded-full hover:bg-[#F5F5F7] dark:hover:bg-white/10 text-[#86868B]"
-        >
+         aria-label="Close certificate">
           <Icon name="close" class="w-4 h-4" />
         </button>
       </div>
@@ -2742,7 +2742,7 @@ const {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (psych.isNewPb) {
           if (nudge) nudge.classList.remove("hidden");
-          if (nudge) nudge.innerHTML = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#0072F5]/10 text-[#0072F5] text-xs font-bold">${t("results.new_best")}</span>`;
+          if (nudge) nudge.innerHTML = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#0072F5]/10 text-[#004FC4] text-xs font-bold">${t("results.new_best")}</span>`;
           if (!reduceMotion) {
             resNetWpmEl.animate(
               [{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }],
