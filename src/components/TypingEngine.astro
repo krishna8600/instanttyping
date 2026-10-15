@@ -597,6 +597,49 @@ const {
   .seg::-webkit-scrollbar { display: none; }
   .seg-opt { flex-shrink: 0; }
 }
+
+/* MOBILE FIX 1: Anchor hidden input inside typing box */
+#typing-display { position: relative; scroll-margin-top: 80px; }
+#hidden-typing-input, #hiddenInput {
+  position: absolute !important;
+  top: 50% !important;
+  left: 16px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0.01 !important;
+  font-size: 16px !important;
+  transform: translateY(-50%) !important;
+  pointer-events: none !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  color: transparent !important;
+  caret-color: transparent !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* MOBILE FIX 3/4/5: Layout overflow, stats, keyboard */
+@media (max-width: 768px) {
+  /* Settings modal solid */
+  #settings-panel {
+    background: rgba(11, 19, 30, 0.97) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+  }
+  /* Mode/time pills scroll */
+  .seg {
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .seg::-webkit-scrollbar { display: none !important; }
+  .seg-opt { flex-shrink: 0 !important; }
+  /* Hide finger-guide keyboard on mobile */
+  #guided-keyboard, .guided-keyboard, [id*="guide-keyboard"] {
+    display: none !important;
+  }
+}
 </style>
       <style is:global>
         /* ── Hamster Mascot Companion ── */
@@ -4669,6 +4712,18 @@ input[type="range"].volume-glow:focus::-webkit-slider-thumb {
   }
   slider.addEventListener('input', updateGlow);
   updateGlow();
+})();
+
+// MOBILE FIX 1b: preventScroll on focus
+(function() {
+  const typingDisplay = document.getElementById('typing-display');
+  const hiddenInput = document.getElementById('hidden-typing-input') || document.getElementById('hiddenInput');
+  if (!typingDisplay || !hiddenInput) return;
+  // Override focus to use preventScroll
+  const origFocus = hiddenInput.focus.bind(hiddenInput);
+  hiddenInput.focus = function(opts) {
+    return origFocus({ preventScroll: true, ...opts });
+  };
 })();
 </script>
 
