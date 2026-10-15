@@ -567,5 +567,13 @@
   "profile.xp_to_next": "次のレベルまでのXP",
   "a11y.toggle_keyboard_guide": "キーボードガイドの表示切替",
   "a11y.close_certificate": "証明書を閉じる",
-  "a11y.select_word_bank": "単語バンクを選択"
+  "a11y.select_word_bank": "単語バンクを選択",
+  "a11y.finger_guide_keyboard": "指ガイドキーボード",
+  "a11y.profile_and_stats": "プロフィールと統計",
+  "a11y.profile_stats_achievements": "プロフィールの統計と実績",
+  "a11y.test_duration": "テスト時間",
+  "a11y.difficulty_tier": "難易度",
+  "a11y.settings": "設定",
+  "a11y.toggle_sound": "サウンド切替",
+  "a11y.typing_input": "タイピング入力"
 }

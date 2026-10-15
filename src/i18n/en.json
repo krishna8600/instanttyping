@@ -567,5 +567,13 @@
   "settings.mascot_mode": "Mascot",
   "a11y.toggle_keyboard_guide": "Toggle keyboard guide",
   "a11y.close_certificate": "Close certificate",
-  "a11y.select_word_bank": "Select word bank"
+  "a11y.select_word_bank": "Select word bank",
+  "a11y.finger_guide_keyboard": "Finger guide keyboard",
+  "a11y.profile_and_stats": "Profile and stats",
+  "a11y.profile_stats_achievements": "Profile stats and achievements",
+  "a11y.test_duration": "Test duration",
+  "a11y.difficulty_tier": "Difficulty tier",
+  "a11y.settings": "Settings",
+  "a11y.toggle_sound": "Toggle sound",
+  "a11y.typing_input": "Typing input"
 }

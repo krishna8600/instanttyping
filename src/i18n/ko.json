@@ -567,5 +567,13 @@
   "profile.xp_to_next": "다음 레벨까지의 XP",
   "a11y.toggle_keyboard_guide": "키보드 가이드 토글",
   "a11y.close_certificate": "인증서 닫기",
-  "a11y.select_word_bank": "단어 뱅크 선택"
+  "a11y.select_word_bank": "단어 뱅크 선택",
+  "a11y.finger_guide_keyboard": "손가락 가이드 키보드",
+  "a11y.profile_and_stats": "프로필 및 통계",
+  "a11y.profile_stats_achievements": "프로필 통계 및 업적",
+  "a11y.test_duration": "테스트 시간",
+  "a11y.difficulty_tier": "난이도",
+  "a11y.settings": "설정",
+  "a11y.toggle_sound": "소리 켜기/끄기",
+  "a11y.typing_input": "타이핑 입력"
 }

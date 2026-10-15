@@ -567,5 +567,13 @@
   "profile.xp_to_next": "XP vers le niveau suivant",
   "a11y.toggle_keyboard_guide": "Afficher/masquer le guide du clavier",
   "a11y.close_certificate": "Fermer le certificat",
-  "a11y.select_word_bank": "Sélectionner la banque de mots"
+  "a11y.select_word_bank": "Sélectionner la banque de mots",
+  "a11y.finger_guide_keyboard": "Clavier guide des doigts",
+  "a11y.profile_and_stats": "Profil et statistiques",
+  "a11y.profile_stats_achievements": "Statistiques et succès du profil",
+  "a11y.test_duration": "Durée du test",
+  "a11y.difficulty_tier": "Niveau de difficulté",
+  "a11y.settings": "Paramètres",
+  "a11y.toggle_sound": "Activer/couper le son",
+  "a11y.typing_input": "Saisie de frappe"
 }

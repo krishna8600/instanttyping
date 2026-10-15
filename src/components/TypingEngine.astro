@@ -125,7 +125,7 @@ const {
         data-i18n="test.time"
         >Duration:</span
       >
-      <div class="seg" style="--n:5" role="radiogroup" aria-label="Test duration">
+      <div class="seg" style="--n:5" role="radiogroup" data-i18n-aria-label="a11y.test_duration" aria-label="Test duration">
         <span class="seg-pill" aria-hidden="true"></span>
         <label class="seg-opt"><input type="radio" name="dur" value="15" checked={initialDuration === 15}><span>15s</span></label>
         <label class="seg-opt"><input type="radio" name="dur" value="30" checked={initialDuration === 30}><span>30s</span></label>
@@ -230,7 +230,7 @@ const {
       <select
         id="tier-select"
         class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
-        aria-label="Difficulty tier"
+        data-i18n-aria-label="a11y.difficulty_tier" aria-label="Difficulty tier"
         data-i18n-aria-label="settings.tier_aria"
       >
         <option class="dark:bg-[#1D1D1F]" value="auto" data-i18n="options.tier_auto">Auto (Match Skill)</option>
@@ -247,7 +247,7 @@ const {
         id="settings-toggle-btn"
         type="button"
         class="w-11 h-11 sm:w-8 sm:h-8 flex items-center justify-center rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/10 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] transition-all duration-200"
-        aria-label="Settings"
+        data-i18n-aria-label="a11y.settings" aria-label="Settings"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
       </button>
@@ -273,7 +273,7 @@ const {
           type="button"
           class="w-8 h-8 flex items-center justify-center rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] hover:border-[#86868B] transition-colors shrink-0"
           title="Toggle sound"
-          aria-label="Toggle sound"
+          data-i18n-aria-label="a11y.toggle_sound" aria-label="Toggle sound"
         >
           <span id="settings-sound-icon-on" class="flex items-center justify-center">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -679,7 +679,7 @@ const {
       autocapitalize="off"
       spellcheck="false"
       inputmode="text"
-      aria-label="Typing input"
+      data-i18n-aria-label="a11y.typing_input" aria-label="Typing input"
       class="fixed top-0 left-0 w-[1px] h-[1px] opacity-[0.01]"
     />
   </div>
