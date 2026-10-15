@@ -252,7 +252,8 @@ const {
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
       </button>
 
-      <div
+      <div id="settings-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden"></div>
+<div
         id="settings-panel"
         class="hidden absolute top-full right-0 mt-2 p-4 premium-card flex-col gap-4 min-w-[240px] max-w-[calc(100vw-24px)] rounded-xl shadow-2xl border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-[#1C1C1E] z-50"
       >
@@ -1174,6 +1175,27 @@ const {
       });
     }
   
+})();
+
+// Sync backdrop with settings panel
+(function() {
+  const panel = document.getElementById('settings-panel');
+  const backdrop = document.getElementById('settings-backdrop');
+  const toggleBtn = document.getElementById('settings-toggle-btn');
+  if (!panel || !backdrop) return;
+  function syncBackdrop() {
+    const isHidden = panel.classList.contains('hidden');
+    backdrop.classList.toggle('hidden', isHidden);
+  }
+  // Observe panel visibility changes
+  new MutationObserver(syncBackdrop).observe(panel, { attributes: true, attributeFilter: ['class'] });
+  // Backdrop click closes panel
+  backdrop.addEventListener('click', () => {
+    panel.classList.add('hidden');
+    syncBackdrop();
+  });
+  // Initial sync
+  syncBackdrop();
 })();
 </script>
 </section>
