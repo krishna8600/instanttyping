@@ -368,6 +368,24 @@ const {
       </select>
     </div>
 
+    <!-- Mascot Selector -->
+    <div
+      id="mascot-mode-container"
+      class="flex items-center justify-between w-full gap-2 font-mono shrink-0"
+    >
+      <label
+        for="mascot-mode-select"
+        class="text-[#6E6E73] dark:text-[#A1A1A6] text-[11px] uppercase tracking-wide font-semibold"
+      >Mascot</label>
+      <select
+        id="mascot-mode-select"
+        class="h-8 pl-3 pr-8 text-xs rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 text-[#1D1D1F] dark:text-[#F5F5F7] cursor-pointer focus:outline-none focus:border-[#0072F5] shrink-0 appearance-none bg-no-repeat bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%236E6E73%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] dark:bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M7%2010L12%2015L17%2010%22%20stroke%3D%22%23A1A1A6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%2F%3E%3C%2Fsvg%3E')] bg-[position:right_0.5rem_center] bg-[size:16px_16px]"
+      >
+        <option class="dark:bg-[#1D1D1F]" value="off" data-i18n="options.off">Off</option>
+        <option class="dark:bg-[#1D1D1F]" value="on" data-i18n="options.on">On</option>
+      </select>
+    </div>
+
     <!-- Roast Mode Selector -->
     <div
       id="roast-mode-container"
@@ -558,7 +576,98 @@ const {
         @media (prefers-reduced-motion: reduce) {
           .caps-pill { animation: none; }
         }
+        /* Idle caret blink (Monkeytype-style): blinks at the start position
+           before typing begins; removed on first keystroke so the caret
+           goes solid. Opacity-only, no layout cost. */
+        @keyframes caretIdleBlink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+        .caret-idle-blink {
+          animation: caretIdleBlink 1.06s ease-in-out infinite;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .caret-idle-blink { animation: none; }
+        }
       </style>
+      <style is:global>
+        /* ── Hamster Mascot Companion ── */
+        #mascot-wrap {
+          width: 112px; height: 112px; flex-shrink: 0;
+          pointer-events: none; user-select: none;
+          position: relative;
+        }
+        #mascot {
+          width: 100%; height: 100%; object-fit: cover;
+          border-radius: 50%;
+          box-shadow: 0 12px 40px rgba(0,0,0,.45);
+          border: 1px solid rgba(255,255,255,.12);
+        }
+        #mascot-fallback {
+          width: 100%; height: 100%; object-fit: cover;
+          border-radius: 50%;
+          box-shadow: 0 12px 40px rgba(0,0,0,.45);
+          border: 1px solid rgba(255,255,255,.12);
+        }
+        #mascot-fallback.hidden { display: none; }
+        #mascot-wrap.mascot-hidden { display: none; }
+        @media (max-width: 1023px) {
+          #mascot-wrap { width: 72px; height: 72px; margin: 14px auto 0; }
+        }
+        @media (min-width: 1440px) {
+          #mascot-wrap {
+            position: fixed; right: 3%; top: 30%; z-index: 5;
+          }
+        }
+        /* Moods — transform/opacity only */
+        #mascot.m-idle, #mascot-fallback.m-idle { animation: m-bounce 1.8s ease-in-out infinite; }
+        @keyframes m-bounce {
+          0%,100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-10px) scale(1.03); }
+        }
+        
+#mascot-video { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; }
+#mascot.m-typing, #mascot-fallback.m-typing { animation: m-work .25s ease-in-out infinite; }
+        @keyframes m-work {
+          0%,100% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-7px) scale(1.03); }
+        }
+        #mascot.m-typing.m-tap, #mascot-fallback.m-typing.m-tap { animation: m-tap .1s ease-out; }
+        @keyframes m-tap {
+          0% { transform: translateY(-7px) scale(1.04); }
+          50% { transform: translateY(5px) scale(.98); }
+          100% { transform: translateY(-7px) scale(1.04); }
+        }
+        #mascot.m-shock, #mascot-fallback.m-shock { animation: m-shake .28s ease-in-out 2; }
+        @keyframes m-shake {
+          0%,100% { transform: translateX(0) scale(1.05); }
+          25% { transform: translateX(-5px) scale(1.05); }
+          75% { transform: translateX(5px) scale(1.05); }
+        }
+        #mascot.m-slow, #mascot-fallback.m-slow { animation: m-snooze 2.6s ease-in-out infinite; filter: saturate(.7) brightness(.85); }
+        @keyframes m-snooze {
+          0%,100% { transform: translateY(0); }
+          50% { transform: translateY(5px); }
+        }
+        #mascot.m-roast, #mascot-fallback.m-roast { animation: m-smug .6s ease-in-out infinite; }
+        @keyframes m-smug {
+          0%,100% { transform: translateY(0) scale(1.05); }
+          50% { transform: translateY(-6px) scale(1.05); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          #mascot, #mascot-fallback { animation: none !important; }
+        }
+      
+/* FORCE CIRCULAR MASCOT */
+#mascot-wrap { border-radius: 50% !important; overflow: hidden !important; }
+#mascot-wrap #mascot, #mascot-wrap img#mascot { border-radius: 50% !important; object-fit: cover !important; }
+#mascot-wrap #mascot-video { border-radius: 50% !important; object-fit: cover !important; }
+</style>
+      <!-- Mascot companion -->
+      <div id="mascot-wrap" aria-hidden="true">
+        <img id="mascot" class="m-idle" src="/images/mascot-roast.webp" alt="" draggable="false" />
+<video id="mascot-video" class="m-typing-vid" src="/videos/mascot-typing.mp4" muted loop playsinline preload="auto" style="display:none;"></video>
+      </div>
     </div>
 
     <!-- Hidden Mobile-Friendly Text Input -->
@@ -665,8 +774,7 @@ const {
     <!-- Roast Mascot Card -->
     <div id="roast-card" class="premium-card flex flex-col sm:flex-row items-center gap-6 hidden">
       <div class="relative w-[120px] h-[120px] shrink-0 rounded-2xl overflow-hidden bg-black/5 dark:bg-white/5 border border-black/5 dark:border-white/10 shadow-sm flex items-center justify-center">
-        <video id="roast-video" class="absolute inset-0 w-full h-full object-cover" autoplay loop muted playsinline src="/videos/mascot-roast.mp4"></video>
-        <img id="roast-img" class="absolute inset-0 w-full h-full object-cover hidden" src="/images/mascot-roast.webp" alt="Roast Mascot" />
+        <img id="roast-img" class="absolute inset-0 w-full h-full object-cover" src="/images/mascot-roast.webp" alt="Roast Mascot" />
       </div>
       <div class="flex-1 space-y-2 text-center sm:text-left">
         <h3 class="text-sm font-semibold uppercase tracking-wider text-[#FF453A]" data-i18n="results.roast_title">Roast Mode</h3>
@@ -1137,7 +1245,7 @@ const {
     return id;
   };
   import { animate } from "animejs";
-  import { getLanguage, updateDOM, t, type SupportedLanguage } from "../i18n";
+  import { getLanguage, updateDOM, t, loadLanguage, type SupportedLanguage } from "../i18n";
   import { recordTest, getLevel, getDailyProgress, loadProgress } from "../scripts/progress";
   import { updateProfileAfterTest, getXpProgressForLevel, getDailyQuote } from "../scripts/profile";
   import type { ProfileUpdateResult } from "../scripts/profile";
@@ -1425,6 +1533,22 @@ const {
     const roastVideo = document.getElementById("roast-video") as HTMLVideoElement | null;
     const roastImg = document.getElementById("roast-img") as HTMLImageElement | null;
     const roastText = document.getElementById("roast-text");
+    // Currently displayed roast key (e.g. "roast.good_7"), so a language
+    // switch on the results page can re-translate it without a new test.
+    let currentRoastKey: string | null = null;
+    // Re-translate the visible roast when the language is switched on the
+    // results page (updateDOM only handles data-i18n elements).
+    window.addEventListener("instanttyping:languagechange", (e) => {
+      if (!currentRoastKey || !roastCard || !roastText) return;
+      if (roastCard.classList.contains("hidden")) return;
+      const newLang = (e as CustomEvent).detail?.language || getLanguage();
+      try {
+        const line = t(currentRoastKey, newLang);
+        if (line && line !== currentRoastKey) {
+          roastText.textContent = "\u201C" + line + "\u201D";
+        }
+      } catch {}
+    });
 
     let lastProfileResult: ProfileUpdateResult | null = null;
 
@@ -1946,6 +2070,7 @@ const {
       // Item 10 & 3: Reset caret, scroll, and word inputs
       caretEl.style.display = "";
       caretEl.style.opacity = "0";
+      caretEl.classList.remove("caret-idle-blink");
       targetScrollX = 0;
       wordsWrapper.style.transition = "none";
       wordsWrapper.style.transform = "translate3d(0, 0, 0)";
@@ -1984,6 +2109,10 @@ const {
       emitTyping('typing-start');
       testActive = true;
       testCompleted = false;
+      // Typing started: caret goes solid (remove idle blink)
+      if (typeof caretEl !== "undefined" && caretEl) {
+        caretEl.classList.remove("caret-idle-blink");
+      }
       if (testContainer) {
         testContainer.classList.add("engine-running");
       }
@@ -2121,6 +2250,7 @@ const {
       // Item 10: Hide persistent caret on results screen
       caretEl.style.display = "none";
       caretEl.style.opacity = "0";
+      caretEl.classList.remove("caret-idle-blink");
 
       // Layout bug fix: hide passage + tooltip, show results in normal flow
       typingSurfaceWrapper.classList.add("hidden");
@@ -2655,6 +2785,50 @@ const {
         }
       }
 
+      // Roast mode: show a performance-picked roast on the results screen.
+      // The card stays hidden unless roast mode is enabled.
+      (async function showRoast() {
+        if (!roastCard || !roastText) return;
+        if (!roastModeEnabled) {
+          roastCard.classList.add("hidden");
+          return;
+        }
+        const lang = getLanguage();
+        // Ensure this language's dictionary is loaded in this module instance
+        // (language switches load async; the test may finish first).
+        try {
+          await loadLanguage(lang);
+        } catch {}
+        // en has 5 existing good_* roasts, other locales have 6
+        const goodCount = lang === "en" ? 39 : 40;
+        let prefix: string;
+        let count: number;
+        if (summary.accuracy < 92) {
+          prefix = "roast.low_acc_";
+          count = 20;
+        } else if (summary.netWpm < 45) {
+          prefix = "roast.low_wpm_";
+          count = 20;
+        } else {
+          prefix = "roast.good_";
+          count = goodCount;
+        }
+        const n = 1 + Math.floor(Math.random() * count);
+        currentRoastKey = prefix + n;
+        const roastLine = t(currentRoastKey, lang);
+        roastText.textContent = "\u201C" + roastLine + "\u201D";
+        roastCard.classList.remove("hidden");
+        // Fall back to the static mascot image if the roast video fails
+        if (roastVideo && roastImg) {
+          const useImage = () => {
+            roastVideo.classList.add("hidden");
+            roastImg.classList.remove("hidden");
+          };
+          roastVideo.addEventListener("error", useImage, { once: true });
+          if (roastVideo.networkState === 3) useImage(); // NETWORK_NO_SOURCE
+        }
+      })();
+
       resultsPanel.classList.remove("hidden");
       // Natural scroll to results
       safeSetTimeout(() => {
@@ -2858,6 +3032,11 @@ const {
       if (targetCaret) {
         targetCaret.style.display = "";
         targetCaret.style.opacity = "1";
+        // Monkeytype-style: blink while idle at the start position.
+        // Removed on first keystroke (startTest) so the caret goes solid.
+        if (!testActive && !testCompleted) {
+          targetCaret.classList.add("caret-idle-blink");
+        }
       }
     }
 
@@ -4295,6 +4474,123 @@ const {
           }
         });
       }
+    })();
+
+    /* ── Hamster Mascot Companion (from scratch) ── */
+    (function() {
+      var wrap = document.getElementById('mascot-wrap') as HTMLElement | null;
+      var vid = document.getElementById('mascot') as HTMLVideoElement | null;
+      var fallbackImg = document.getElementById('mascot-fallback') as HTMLImageElement | null;
+      if (!wrap || !vid) return;
+
+
+      var MOODS = ['m-idle','m-typing','m-tap','m-shock','m-slow','m-roast'];
+      var current = 'm-idle';
+      var moodTimer: ReturnType<typeof setTimeout> | null = null;
+      var idleTimer: ReturnType<typeof setTimeout> | null = null;
+      var enabled = true;
+      var useFallback = false;
+      try { if (localStorage.getItem('it_mascot') === 'off') enabled = false; } catch(e) {}
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // If video fails, swap to fallback image
+      vid.addEventListener('error', function() {
+        useFallback = true;
+        vid!.classList.add('hidden');
+        if (fallbackImg) {
+          fallbackImg.classList.remove('hidden');
+          // Copy mood classes to fallback
+          for (var i = 0; i < MOODS.length; i++) fallbackImg.classList.remove(MOODS[i]);
+          fallbackImg.classList.add(current);
+        }
+      });
+
+      function apply() {
+        if (!enabled || reduceMotion) { wrap!.classList.add('mascot-hidden'); return; }
+        wrap!.classList.remove('mascot-hidden');
+      }
+
+
+      function setMood(m: string, revertMs?: number) {
+        if (!enabled || reduceMotion) return;
+        var el = useFallback ? fallbackImg : vid;
+        if (!el) return;
+        // video mascot: per-mood videos, fallback to img
+        var vid2 = document.getElementById('mascot-video') as HTMLVideoElement;
+        var moodVideos: Record<string,string> = {
+          'm-typing': '/videos/mascot-typing.mp4',
+          'm-shock': '/videos/mascot-shock.mp4',
+          'm-slow': '/videos/mascot-sleepy.mp4',
+  'm-idle': '/videos/mascot-sleepy.mp4',
+          'm-roast': '/videos/mascot-roast.mp4',
+        };
+        if (vid2) {
+          var vSrc = moodVideos[m];
+          if (vSrc) {
+            if (vid2.getAttribute('src') !== vSrc) vid2.src = vSrc;
+            el.style.display = 'none';
+            vid2.style.display = 'block';
+            vid2.play().catch(function(){});
+          } else {
+            vid2.pause();
+            vid2.style.display = 'none';
+            el.style.display = '';
+          }
+        }
+        current = m;
+        for (var i = 0; i < MOODS.length; i++) el.classList.remove(MOODS[i]);
+        el.classList.add(m);
+        if (moodTimer) { clearTimeout(moodTimer); moodTimer = null; }
+        if (revertMs) moodTimer = setTimeout(function(){ setMood('m-idle'); }, revertMs);
+      }
+
+      function tap() {
+        if (!enabled || reduceMotion) return;
+        if (current !== 'm-typing') setMood('m-typing');
+        if (idleTimer) clearTimeout(idleTimer);
+        idleTimer = setTimeout(function(){ if (current === 'm-typing') setMood('m-idle'); }, 1600);
+        var el = useFallback ? fallbackImg : vid;
+        if (!el) return;
+        el.classList.remove('m-tap');
+        void el.offsetWidth;
+        el.classList.add('m-tap');
+      }
+
+      window.addEventListener('typing-key-result', function(e: Event) {
+        var d = ((e as CustomEvent) && (e as CustomEvent).detail) || {};
+        if (d.correct === false) setMood('m-shock', 1200);
+        else tap();
+      });
+      // Fallback: direct keydown listener (in case typing events don't fire)
+      document.addEventListener('keydown', function(e) {
+        if (e.key && e.key.length === 1) tap();
+      });
+      window.addEventListener('typing-start', function(){ setMood('m-typing'); });
+      window.addEventListener('typing-stop', function(){
+        var roastCard = document.getElementById('roast-card');
+        if (roastCard && !roastCard.classList.contains('hidden')) setMood('m-roast', 3000);
+        else setMood('m-idle');
+      });
+      window.addEventListener('typing-reset', function(){ setMood('m-idle'); });
+
+      // Settings toggle
+      var mascotSelect = document.getElementById('mascot-mode-select') as HTMLSelectElement | null;
+      if (mascotSelect) {
+        try { mascotSelect.value = enabled ? 'on' : 'off'; } catch(e) {}
+        mascotSelect.addEventListener('change', function() {
+          var on = mascotSelect!.value !== 'off';
+          window.dispatchEvent(new CustomEvent('mascot-toggle', { detail: { enabled: on } }));
+        });
+      }
+      window.addEventListener('mascot-toggle', function(e: Event) {
+        var ce = e as CustomEvent;
+        enabled = !ce || !ce.detail || ce.detail.enabled !== false;
+        try { localStorage.setItem('it_mascot', enabled ? 'on' : 'off'); } catch(e2) {}
+        apply();
+        if (enabled) setMood('m-idle');
+      });
+
+      apply();
     })();
 </script>
 

@@ -15,7 +15,13 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
 
     <div id="profile-content" class="hidden">
       <div class="flex items-center justify-between mb-8">
-        <h1 class="text-3xl font-bold" data-i18n="profile.heading">Your Profile</h1>
+        <div style="display:flex;align-items:center;gap:16px;">
+
+<div id="profile-mascot-wrap" style="width:72px;height:72px;border-radius:50%;overflow:hidden;flex-shrink:0;">
+  <video id="profile-mascot-video" src="/videos/mascot-sleepy.mp4" muted loop autoplay playsinline style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"></video>
+</div>
+<h1 class="text-3xl font-bold" data-i18n="profile.heading">Your Profile</h1>
+</div>
         <div id="profile-level-badge" class="px-4 py-2 rounded-full bg-[#1D1D1F] dark:bg-[#F5F5F7] text-white dark:text-black text-xs font-semibold"></div>
       </div>
 
@@ -119,10 +125,10 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
         } catch (e) { return null; }
       }
 
-      function levelForXp(xp) { return Math.floor(Math.sqrt(Math.max(0, xp) / 100)) + 1; }
-      function xpForLevel(l) { return (l - 1) * (l - 1) * 100; }
+      function levelForXp(xp: number) { return Math.floor(Math.sqrt(Math.max(0, xp) / 100)) + 1; }
+      function xpForLevel(l: number) { return (l - 1) * (l - 1) * 100; }
 
-      function fmtTime(sec) {
+      function fmtTime(sec: number) {
         sec = Math.max(0, Math.round(sec || 0));
         var h = Math.floor(sec / 3600), m = Math.floor((sec % 3600) / 60);
         if (h > 0) return h + 'h ' + m + 'm';
@@ -130,7 +136,7 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
         return sec + 's';
       }
 
-      function fmtDate(iso, lang) {
+      function fmtDate(iso: string, lang: string) {
         try { return new Date(iso).toLocaleDateString(lang || undefined, { month: 'short', day: 'numeric', year: 'numeric' }); }
         catch (e) { return ''; }
       }
@@ -229,7 +235,7 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
               '</div>' +
               '<div class="text-xs text-neutral-500 mt-1">' + localizedDesc + '</div>' +
               unlockedHtml;
-            grid.appendChild(card);
+            if (grid) grid.appendChild(card);
           });
         }
         var achCountEl = document.getElementById('ach-count');
@@ -242,8 +248,8 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
             hist.innerHTML = '<p class="text-neutral-500">' + t('profile.no_xp', currentLang) + '</p>';
           } else {
             hist.innerHTML = '';
-            ledger.forEach(function (e) {
-              var parts = (e.bonuses || []).map(function (b) {
+            ledger.forEach(function (e: any) {
+              var parts = (e.bonuses || []).map(function (b: any) {
                 if (b.label === "Personal best!") {
                   return t("results.xp_bonus_pb", currentLang, { amount: b.amount });
                 } else if (b.label === "Cleaner than your average") {
@@ -263,7 +269,7 @@ const description = 'Track your typing progress: level, XP, daily streaks and ac
                 '<div><span class="font-medium">+' + (e.total || 0) + ' XP</span>' +
                 (bonusTxt ? '<span class="text-neutral-500"> — ' + bonusTxt + '</span>' : '') + '</div>' +
                 '<div class="text-neutral-400 text-xs">' + fmtDate(e.at, currentLang) + '</div>';
-              hist.appendChild(row);
+              if (hist) hist.appendChild(row);
             });
           }
         }

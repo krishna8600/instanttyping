@@ -162,7 +162,7 @@ export function createCopyButton(options: CopyButtonOptions): HTMLButtonElement 
   button.append(icon, label, sr);
 
   let state: CopyButtonState = 'idle';
-  let timer: ReturnType<typeof setTimeout> | undefined;
+  let timer: number | undefined;
 
   function setState(next: CopyButtonState): void {
     state = next;

@@ -83,7 +83,7 @@ export function createConfirmMorph(options: ConfirmMorphOptions): HTMLElement {
 
   root.append(idleFace, confirmFace, doneFace, sr);
 
-  let timer: ReturnType<typeof setTimeout> | undefined;
+  let timer: number | undefined;
   const setState = (s: 'idle' | 'confirm' | 'done'): void => {
     root.dataset.state = s;
     sr.textContent = s === 'confirm' ? confirmText : s === 'done' ? doneLabel : '';
