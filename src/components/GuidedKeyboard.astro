@@ -29,18 +29,15 @@
     </div>
 
     <!-- Off-switch -->
-    <div class="flex items-center gap-2 cursor-pointer" id="gk-toggle-label">
-      <span class="text-[11px] font-mono text-ds-text-secondary uppercase tracking-wider">Keyboard</span>
+    <div class="flex items-center gap-3 cursor-pointer" id="gk-toggle-label">
+      <span id="gk-toggle-text" class="text-[11px] font-mono text-ds-text-secondary uppercase tracking-wider transition-opacity duration-200">Keyboard</span>
       <button
         id="gk-toggle"
         role="switch"
         aria-checked="true"
-        class="relative inline-flex h-4 w-8 shrink-0 cursor-pointer rounded-full border border-ds-border bg-ds-bg-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#0072F5] focus:ring-offset-2 focus:ring-offset-ds-bg-50"
+        class="gk-switch relative inline-flex shrink-0 cursor-pointer rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5] focus-visible:ring-offset-2"
        data-i18n-aria-label="a11y.toggle_keyboard_guide" aria-label="Toggle keyboard guide">
-        <span
-          id="gk-toggle-thumb"
-          class="pointer-events-none inline-block h-3 w-3 mt-[1px] ml-[1px] rounded-full bg-ds-border shadow transition-transform duration-200"
-        ></span>
+        <span id="gk-toggle-thumb" class="gk-switch-thumb pointer-events-none rounded-full"></span>
       </button>
     </div>
   </div>
@@ -364,19 +361,41 @@
     box-shadow: 0 0 0 3px rgba(0, 114, 245, 0.2);
   }
 
-  /* Toggle knob ON */
-  #gk-toggle[aria-checked="true"] {
-    background-color: rgba(0, 114, 245, 0.15);
-    border-color: rgba(0, 114, 245, 0.4);
+  /* Improved keyboard guide switch: 48x28, spring motion, ON glow */
+  .gk-switch {
+    width: 40px; height: 24px; padding: 3px;
+    background-color: rgba(140,140,140,.35);
+    transition: background-color .25s cubic-bezier(.32,.72,0,1), box-shadow .25s ease, transform .15s ease;
   }
-  #gk-toggle[aria-checked="true"] #gk-toggle-thumb {
-    transform: translateX(16px);
+  .gk-switch:active { transform: scale(.94); }
+  .gk-switch-thumb {
+    width: 18px; height: 18px;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,.35);
+    transition: transform .25s cubic-bezier(.32,.72,0,1);
+  }
+  #gk-toggle[aria-checked="true"] {
     background-color: #0072F5;
+    box-shadow: 0 0 12px rgba(0,114,245,.45);
+  }
+  #gk-toggle[aria-checked="true"] .gk-switch-thumb {
+    transform: translateX(16px);
+  }
+  /* Keyboard card follows the switch with a fade+rise instead of popping */
+  #gk-keyboard {
+    transition: opacity .22s ease, transform .22s cubic-bezier(.32,.72,0,1);
+  }
+  #gk-keyboard.gk-card-hidden {
+    opacity: 0; transform: translateY(8px);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .gk-switch, .gk-switch-thumb, #gk-keyboard { transition: none; }
   }
 </style>
 
 <script>
   import { getKeyForChar, getShiftKeyFor } from '../scripts/keyboard-map';
+  import { playKeyStrokeSound } from '../utils/audio';
 
   // ── State ──────────────────────────────────────────────────────────────────
   let enabled = true;
@@ -388,6 +407,7 @@
   const fingerZones = document.getElementById('gk-finger-zones');
   const toggle      = document.getElementById('gk-toggle') as HTMLButtonElement;
   const toggleThumb = document.getElementById('gk-toggle-thumb');
+  const toggleText  = document.getElementById('gk-toggle-text');
   const keyboardEl      = document.getElementById('gk-keyboard');
   const scalerContainer = document.getElementById('gk-scaler-container');
   const boardEl         = document.getElementById('gk-board');
@@ -462,12 +482,32 @@
     return enabled && isEnglish();
   }
 
+  let gkHideTimer: number | undefined;
+  function setKeyboardVisible(visible: boolean) {
+    if (!keyboardEl) return;
+    clearTimeout(gkHideTimer);
+    if (visible) {
+      const wasHidden = keyboardEl.classList.contains('hidden');
+      keyboardEl.classList.remove('hidden');
+      if (wasHidden) {
+        keyboardEl.classList.add('gk-card-hidden');
+        void keyboardEl.offsetWidth; // reflow so the transition runs
+      }
+      keyboardEl.classList.remove('gk-card-hidden');
+      fitKeyboard();
+    } else {
+      keyboardEl.classList.add('gk-card-hidden');
+      gkHideTimer = window.setTimeout(() => keyboardEl?.classList.add('hidden'), 230);
+    }
+  }
+
   function applyToggleUI() {
     if (!toggle || !toggleThumb || !fingerZones) return;
     toggle.setAttribute('aria-checked', enabled ? 'true' : 'false');
+    toggleText?.classList.toggle('opacity-40', !enabled);
     // User toggle controls visibility; language only affects guides
     if (enabled) {
-      keyboardEl?.classList.remove('hidden');
+      setKeyboardVisible(true);
       if (isEnglish()) {
         fingerZones.classList.remove('opacity-0');
       } else {
@@ -475,7 +515,7 @@
       }
       fitKeyboard();
     } else {
-      keyboardEl?.classList.add('hidden');
+      setKeyboardVisible(false);
       fingerZones.classList.add('opacity-0');
       clearAll();
     }
@@ -632,6 +672,7 @@
     e.stopPropagation();
     enabled = !enabled;
     try { localStorage.setItem('gk-enabled', String(enabled)); } catch {}
+    playKeyStrokeSound('a', false, false); // soft tick; no-op if sound off
     applyToggleUI();
   });
 

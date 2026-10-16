@@ -31,8 +31,17 @@ const LEVELS = [
 
 export const DAILY_GOAL = 3;
 
+function dateKey(d: Date): string {
+  // Local calendar date (not UTC): for IST users the UTC day flips at 5:30 AM,
+  // which used to break streaks for late-night sessions.
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
 function todayKey(): string {
-  return new Date().toISOString().slice(0, 10);
+  return dateKey(new Date());
 }
 
 function weekKey(): string {
@@ -45,7 +54,7 @@ function weekKey(): string {
 function yesterdayKey(): string {
   const d = new Date();
   d.setDate(d.getDate() - 1);
-  return d.toISOString().slice(0, 10);
+  return dateKey(d);
 }
 
 export function loadProgress(): ProgressState {
@@ -96,8 +105,19 @@ export interface TestResult {
   newAchievements: string[];
 }
 
-export function recordTest(wpm: number, accuracy: number, mode: string): TestResult {
+export function recordTest(wpm: number, accuracy: number, mode: string, keystrokes: number = -1): TestResult {
   const s = loadProgress();
+  // A test with zero keystrokes (e.g. an idle time-test) earns nothing:
+  // no XP, no streak, no personal best — it was not a real attempt.
+  if (keystrokes === 0) {
+    return {
+      wpm, accuracy, mode,
+      isNewPb: false, nearMiss: null, xpGained: 0,
+      streak: s.streak, streakExtended: false,
+      dailyCount: s.dailyTests[todayKey()] || 0,
+      newAchievements: [],
+    };
+  }
   const today = todayKey();
   const result: TestResult = {
     wpm, accuracy, mode,

@@ -6,21 +6,28 @@ import FloatingKeyboard from './FloatingKeyboard.astro';
   <div class="hero-content flex flex-col items-center justify-center h-full w-full px-6 pt-28 pb-16 md:pt-36 md:pb-24 z-10 relative">
     
     <div class="mb-10 text-center max-w-3xl w-full flex flex-col items-center">
+      <p class="text-[11px] font-mono uppercase tracking-[0.2em] text-neutral-500 mb-4" data-i18n="hero.eyebrow">
+        Free typing speed test
+      </p>
       <h1 id="hero-heading" class="hero-spotlight text-3xl sm:text-5xl md:text-6xl font-semibold tracking-tight mb-6 text-balance" data-i18n="hero.title">
-        Test your typing speed
+        How fast can you really type?
       </h1>
       <p class="text-base sm:text-lg text-neutral-400 max-w-2xl mb-8 text-balance" data-i18n="hero.subtitle">
-        Free typing test. No account needed.
+        No ads while you type. No account needed.
       </p>
       
       <a href="#typing-test-container" class="inline-flex items-center justify-center px-8 h-12 text-base rounded-full bg-white text-black font-semibold hover:bg-neutral-200 transition-colors" data-i18n="hero.cta">
-        Start typing
+        Start typing &#8594;
       </a>
     </div>
 
     <div class="w-full max-w-[1000px] mt-8 mb-4">
       <FloatingKeyboard />
     </div>
+
+    <p class="mt-2 text-xs text-neutral-600" data-i18n="hero.trust">
+      Private by default &#183; Results in under a minute
+    </p>
     
   </div>
 </section>

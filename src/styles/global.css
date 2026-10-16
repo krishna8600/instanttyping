@@ -66,7 +66,8 @@ body {
   font-family: var(--font-sans);
   background: var(--bg);
   color: var(--text-primary);
-  min-height: 100vh;
+  min-height: 100vh; /* fallback */
+  min-height: 100dvh; /* dynamic viewport: correct on mobile with browser chrome */
   margin: 0;
   font-size: 1rem;
   line-height: 1.5;
@@ -166,6 +167,17 @@ html.dark #wordbank-select optgroup option {
 
 .btn-primary:hover {
   opacity: 0.85;
+}
+
+/* Touch targets: 44px minimum on coarse pointers (phones/tablets) */
+@media (pointer: coarse) {
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px;
+    height: auto;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
 }
 
 .btn-secondary {

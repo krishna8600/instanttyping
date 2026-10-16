@@ -1,0 +1,30 @@
+# Instant Typing
+
+> Instant Typing is a free online typing speed test and practice platform. Take 15-second to 3-minute typing tests, get WPM, accuracy, and consistency scores, train weak spots with mistake drills, and earn shareable skill certificates. No ads while you type. Available in 8 languages.
+
+## Core tests
+
+- [Typing Speed Test](https://instanttyping.com/): The main free typing test. Measures WPM, accuracy, consistency, and keystroke precision with live feedback.
+- [1-Minute Typing Test](https://instanttyping.com/1-minute-typing-test/): The standard one-minute typing speed benchmark.
+- [3-Minute Typing Test](https://instanttyping.com/3-minute-typing-test/): Longer endurance typing test for stamina measurement.
+- [Typing Test for Beginners](https://instanttyping.com/typing-test-for-beginners/): Guided beginner mode with home-row instruction and finger-zone keyboard guide.
+- [Numbers & Punctuation Test](https://instanttyping.com/numbers-punctuation-typing-test/): Practice numbers, symbols, and punctuation.
+
+## Tools and explainers
+
+- [WPM Calculator](https://instanttyping.com/wpm-calculator/): Calculate words per minute from any text sample.
+- [How We Measure](https://instanttyping.com/how-we-measure/): Explains the scoring methodology: Net WPM, Raw WPM, accuracy, and consistency.
+- [Keyboard Tester](https://instanttyping.com/keyboard-tester/): Test every key on your keyboard, including ghosting and rollover checks.
+
+## About
+
+- [About](https://instanttyping.com/about/): What Instant Typing is and how it works.
+- [Contact](https://instanttyping.com/contact/): Contact the team.
+- [Privacy](https://instanttyping.com/privacy/): Privacy policy. Typing data stays in the browser (localStorage); no account required.
+
+## Key facts
+
+- WPM standard: one "word" equals five keystrokes (including spaces). Net WPM = (correct keystrokes / 5) / minutes elapsed.
+- Average typing speed is about 40 WPM. Professional typists type 65-85 WPM. Competitive speeds exceed 100 WPM at 98%+ accuracy.
+- Raw WPM counts all keystrokes including errors; Net WPM counts only correct keystrokes and is the metric employers use.
+- Interface languages: English, Spanish, French, German, Hindi, Japanese, Korean, Chinese.
