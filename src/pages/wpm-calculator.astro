@@ -43,7 +43,7 @@ const faqs = [
         WPM Calculator
       </h1>
       <p class="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl leading-relaxed">
-        Calculate your standardized Words Per Minute (WPM), accuracy percentage, and Characters Per Minute (CPM) using the official international typing measurement standard.
+        <span data-i18n="wpm_calc.intro">Calculate your standardized score from any words per minute test, along with accuracy percentage and Characters Per Minute (CPM) using the official international typing measurement standard.</span>
       </p>
     </div>
 
@@ -179,6 +179,21 @@ const faqs = [
           <span>Test Your Real Speed Live</span>
           <Icon name="arrow-forward" class="w-3.5 h-3.5" />
         </a>
+      </div>
+    </div>
+
+    <!-- How to Calculate WPM Section -->
+    <div class="p-6 rounded-2xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm space-y-4">
+      <h2 class="text-lg font-semibold text-[var(--text-primary)]">
+        <span data-i18n="wpm_calc.how_to_heading">How to calculate WPM</span>
+      </h2>
+      <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
+        <span data-i18n="wpm_calc.how_to_desc">To calculate your Words Per Minute (WPM), count the total number of characters typed in a test and divide by 5 to find your total standardized words. Next, divide that word count by the time elapsed in minutes to get your Gross WPM. For official Net WPM, subtract one word for every uncorrected error made during the test.</span>
+      </p>
+      <div class="p-4 rounded-xl bg-neutral-50 dark:bg-black/40 border border-[var(--border)] space-y-2">
+        <span class="text-xs font-mono font-semibold text-[#0072F5]" data-i18n="wpm_calc.formula_label">WPM Calculation Formula</span>
+        <pre class="font-mono text-xs text-[var(--text-primary)] bg-white dark:bg-[#111113] p-2.5 rounded-lg border border-[var(--border)] overflow-x-auto">WPM = (Total Characters / 5) / Time in Minutes</pre>
+        <p class="text-[11px] text-[var(--text-secondary)]" data-i18n="wpm_calc.formula_note">Official Net WPM formula: Net WPM = ((Total Characters / 5) - Uncorrected Errors) / Time in Minutes.</p>
       </div>
     </div>
 

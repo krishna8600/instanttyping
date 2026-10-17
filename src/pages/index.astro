@@ -8,35 +8,65 @@ import GuidedKeyboard from '../components/GuidedKeyboard.astro';
 import DailyQuoteCard from '../components/DailyQuoteCard.astro';
 
 const faqs = [
- {
- question: "How is Words Per Minute (WPM) calculated on Instant Typing?",
- answer: "Following standard international typing measurement guidelines, one word is defined as exactly five keystrokes (including letters, spaces, and punctuation). Net WPM is calculated as: (Correct Keystrokes / 5) divided by the time elapsed in minutes. This ensures an objective and standardized measurement regardless of vocabulary complexity.",
- questionKey: "faq.idx.q1",
- answerKey: "faq.idx.a1"
- },
- {
- question: "What is considered an average typing speed?",
- answer: "The average global typing speed is approximately 40 words per minute (WPM). Professional typists, transcriptionists, and legal secretaries typically type between 65 and 85 WPM, while high-speed competitive typists achieve speeds upwards of 100 to 120+ WPM with 98% accuracy.",
- questionKey: "faq.idx.q2",
- answerKey: "faq.idx.a2"
- },
- {
- question: "What is the difference between Raw WPM and Net WPM?",
- answer: "Raw WPM (Gross WPM) represents the total number of keystrokes typed divided by 5 per minute, regardless of whether characters were correct or incorrect. Net WPM only counts correctly typed characters. Net WPM is the true metric used in professional assessments because typos decrease productivity.",
- questionKey: "faq.idx.q3",
- answerKey: "faq.idx.a3"
- },
- {
- question: "How does the 'Train My Mistakes' feature work?",
- answer: "Whenever you complete a test with errors, our engine analyzes your exact keystroke log and isolates the words and keys that triggered typos. Clicking 'Train My Mistakes' automatically generates a targeted practice drill focusing strictly on your problem areas so you improve where it counts.",
- questionKey: "faq.idx.q4",
- answerKey: "faq.idx.a4"
- },
- {
- question: "Can I download or share a typing certificate?",
- answer: "Yes. After completing any test, click 'View Skill Certificate'. The engine renders a high-resolution performance certificate complete with your Net WPM, Accuracy, and Consistency. You can download this PNG certificate directly for resumes, portfolios, or job applications.",
- questionKey: "faq.idx.q5",
- answerKey: "faq.idx.a5"
+  {
+    question: "How is Words Per Minute (WPM) calculated on Instant Typing?",
+    answer: "Following standard international typing measurement guidelines, one word is defined as exactly five keystrokes (including letters, spaces, and punctuation). Net WPM is calculated as: (Correct Keystrokes / 5) divided by the time elapsed in minutes. This ensures an objective and standardized measurement regardless of vocabulary complexity.",
+    questionKey: "faq.idx.q1",
+    answerKey: "faq.idx.a1"
+  },
+  {
+    question: "What is the average typing speed?",
+    answer: "The average typing speed for adults is approximately 40 words per minute (WPM), with regular computer users typically averaging 40 to 50 WPM. Average typing speed by age shows that young adults and students often reach 40–50 WPM, while experienced professionals average 50–60 WPM. With consistent touch typing practice, most adults can comfortably reach an average typing speed of 50 to 60 WPM.",
+    questionKey: "faq.idx.q2",
+    answerKey: "faq.idx.a2"
+  },
+  {
+    question: "What is a good typing speed?",
+    answer: "A good typing speed is between 60 and 80 WPM, allowing you to comfortably keep up with professional and academic demands. Is 40 WPM good? It is a solid global average for casual typing. Is 60 WPM good? Yes, 60 WPM is above average and ideal for productive office work. Is 80 WPM good? 80+ WPM is an advanced professional speed required for transcriptionists, executive assistants, and coders.",
+    questionKey: "faq.idx.q8",
+    answerKey: "faq.idx.a8"
+  },
+  {
+    question: "How can I test my typing speed?",
+    answer: "You can test your typing speed instantly using our free typing test at the top of this page. Simply select a duration like 1 minute or 3 minutes, start typing the highlighted prompt, and our engine calculates your real-time WPM, accuracy, and error breakdown. No account, download, or signup is required.",
+    questionKey: "faq.idx.q9",
+    answerKey: "faq.idx.a9"
+  },
+  {
+    question: "What is a words per minute test?",
+    answer: "A words per minute test is a standardized keyboard assessment that measures how many 5-keystroke words you can accurately type in 60 seconds. It records Gross WPM for mechanical typing speed and Net WPM by deducting penalties for uncorrected typos. Employers and educational institutions use WPM tests to evaluate clerical and computer proficiency.",
+    questionKey: "faq.idx.q10",
+    answerKey: "faq.idx.a10"
+  },
+  {
+    question: "How does the typing accuracy test work?",
+    answer: "The typing accuracy test measures the percentage of correct keystrokes out of all total characters typed during your test session. High accuracy is essential because fixing typos with backspaces severely lowers your net score. Maintaining 98% accuracy or higher ensures optimal velocity and typing fluency.",
+    questionKey: "faq.idx.q11",
+    answerKey: "faq.idx.a11"
+  },
+  {
+    question: "Is this good typing practice for adults?",
+    answer: "Yes, Instant Typing is designed specifically for adults relearning typing or improving keyboard speed for workplace productivity. With professional wordbanks, real-time error diagnostics, and zero childish games or mandatory signups, adults can practice touch typing efficiently. You can also generate printable skill certificates for resumes and job applications.",
+    questionKey: "faq.idx.q12",
+    answerKey: "faq.idx.a12"
+  },
+  {
+    question: "What is the difference between Raw WPM and Net WPM?",
+    answer: "Raw WPM (Gross WPM) represents the total number of keystrokes typed divided by 5 per minute, regardless of whether characters were correct or incorrect. Net WPM only counts correctly typed characters. Net WPM is the true metric used in professional assessments because typos decrease productivity.",
+    questionKey: "faq.idx.q3",
+    answerKey: "faq.idx.a3"
+  },
+  {
+    question: "How does the 'Train My Mistakes' feature work?",
+    answer: "Whenever you complete a test with errors, our engine analyzes your exact keystroke log and isolates the words and keys that triggered typos. Clicking 'Train My Mistakes' automatically generates a targeted practice drill focusing strictly on your problem areas so you improve where it counts.",
+    questionKey: "faq.idx.q4",
+    answerKey: "faq.idx.a4"
+  },
+  {
+    question: "Can I download or share a typing certificate?",
+    answer: "Yes. After completing any test, click 'View Skill Certificate'. The engine renders a high-resolution performance certificate complete with your Net WPM, Accuracy, and Consistency. You can download this PNG certificate directly for resumes, portfolios, or job applications.",
+    questionKey: "faq.idx.q5",
+    answerKey: "faq.idx.a5"
   },
   {
     question: "Can I take this typing speed test on a mobile device or tablet?",
@@ -54,15 +84,21 @@ const faqs = [
 ---
 
 <Layout
- title="Free Typing Speed Test Online | WPM & Accuracy Check"
- description="Take the best typing speed test online to measure your WPM and accuracy. Our free keyboard typing speed test works flawlessly on desktop and mobile."
- canonicalPath="/"
+  title="Free Typing Speed Test Online | WPM & Accuracy Check"
+  description="Take the best free typing speed test online to measure your WPM and accuracy — no signup required. Our keyboard typing speed test works flawlessly on desktop and mobile."
+  canonicalPath="/"
 >
- <ParticleHero />
+  <ParticleHero />
 
- <div class="space-y-4">
- <!-- Interactive Typing Engine Island -->
- <section id="typing-test-section" class="relative">
+  <div class="space-y-4">
+    <!-- Interactive Typing Engine Island -->
+    <section id="typing-test-section" class="relative">
+      <div class="mb-2 flex items-center justify-between text-xs text-ds-text-secondary">
+        <span class="inline-flex items-center gap-1.5 font-medium">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span data-i18n="index.hero_callout">Test your typing speed free — no signup, instant WPM and accuracy.</span>
+        </span>
+      </div>
  <TypingEngine
  initialDuration={60}
  initialMode="time"
@@ -178,6 +214,59 @@ const faqs = [
  </div>
  </div>
  </section>
+
+  <!-- Average Typing Speed Benchmark Section -->
+  <section class="border-t shadow-ds-border pt-10 space-y-6" aria-labelledby="average-typing-speed-heading">
+    <div class="space-y-2">
+      <div class="text-sm font-mono uppercase tracking-widest text-sky-600 font-semibold mb-1">
+        <span data-i18n="index.avg_speed_label">Benchmarks</span>
+      </div>
+      <h2 id="average-typing-speed-heading" class="scroll-mt-28 text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2">
+        <Icon name="bolt" class="w-6 h-6 text-sky-600" />
+        <span data-i18n="index.avg_speed_heading">Average Typing Speed</span>
+      </h2>
+      <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary max-w-3xl">
+        <span data-i18n="index.avg_speed_desc">The average typing speed for adults is roughly 40 words per minute (WPM), with regular computer users typically sustaining 50 WPM. Looking at average typing speed by age, younger typists and students often reach 50–60 WPM, while experienced office professionals maintain 65 to 80+ WPM with 95%+ accuracy. Taking an average typing speed test helps establish your baseline and reveals whether your fingers are keeping up with your thoughts.</span>
+      </p>
+    </div>
+
+    <!-- Benchmark Table -->
+    <div class="rounded-lg shadow-ds-border overflow-hidden bg-ds-bg-100 max-w-2xl">
+      <div class="table-scroll w-full overflow-x-auto hide-scrollbar">
+        <table class="benchmark-table font-mono w-full">
+          <thead>
+            <tr>
+              <th data-i18n="index.avg_th_tier">Typing Level</th>
+              <th data-i18n="index.avg_th_wpm">Speed (WPM)</th>
+              <th data-i18n="index.avg_th_desc">Typical Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="index.avg_row_beginner">Beginner</td>
+              <td class="font-semibold text-sky-600">~40 WPM</td>
+              <td data-i18n="index.avg_desc_beginner">Casual hunt-and-peck typists and beginners learning touch typing (~40 WPM).</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="index.avg_row_average">Average</td>
+              <td class="font-semibold text-sky-600">~50 WPM</td>
+              <td data-i18n="index.avg_desc_average">Standard everyday typing for office work, email, and general computer use (~50 WPM).</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="index.avg_row_good">Good</td>
+              <td class="font-semibold text-sky-600">60–80 WPM</td>
+              <td data-i18n="index.avg_desc_good">Proficient touch typists, coders, managers, and productive writers (60–80 WPM).</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="index.avg_row_pro">Professional</td>
+              <td class="font-semibold text-sky-600">80+ WPM</td>
+              <td data-i18n="index.avg_desc_pro">Executive assistants, legal typists, transcriptionists, and court reporters (80+ WPM).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
  <!-- Schema FAQ Accordion -->
  <FAQ items={faqs} title="Frequently Asked Questions About Typing Tests" titleKey="faq.idx.title" />
