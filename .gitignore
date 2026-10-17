@@ -29,3 +29,6 @@ practicetesttyping.com/
 *.bak*
 *.cjs
 
+# agent working files (never commit)
+.audit-backup-20261015-232545/
+.agents/
