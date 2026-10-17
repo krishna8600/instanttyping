@@ -8,6 +8,7 @@ export interface ShareData {
   date: string;
   rank?: string;
   quoteAttribution?: string;
+  isMobile?: boolean;
 }
 
 const BRAND = {
@@ -124,8 +125,37 @@ export async function generateShareImage(data: ShareData): Promise<Blob> {
     ctx.textAlign = 'center';
     let attr = data.quoteAttribution;
     if (attr.length > 75) attr = attr.slice(0, 72) + '...';
-    ctx.fillText(attr, W / 2, 538);
+    ctx.fillText(attr, W / 2, 505);
   }
+
+  // Device badge (mobile vs desktop)
+  const isMobile = data.isMobile ?? false;
+  const badgeX = W / 2;
+  const badgeY = H - 115;
+  ctx.strokeStyle = BRAND.subtle;
+  ctx.fillStyle = BRAND.subtle;
+  ctx.lineWidth = 2;
+  if (isMobile) {
+    ctx.beginPath();
+    ctx.roundRect(badgeX - 8, badgeY - 14, 16, 28, 4);
+    ctx.stroke();
+    ctx.fillRect(badgeX - 4, badgeY - 10, 8, 2);
+  } else {
+    ctx.beginPath();
+    ctx.roundRect(badgeX - 16, badgeY - 12, 32, 20, 3);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(badgeX - 5, badgeY + 8);
+    ctx.lineTo(badgeX + 5, badgeY + 8);
+    ctx.moveTo(badgeX, badgeY + 8);
+    ctx.lineTo(badgeX, badgeY + 12);
+    ctx.moveTo(badgeX - 9, badgeY + 12);
+    ctx.lineTo(badgeX + 9, badgeY + 12);
+    ctx.stroke();
+  }
+  ctx.font = `600 16px ${BRAND.font}`;
+  ctx.textAlign = 'center';
+  ctx.fillText(isMobile ? 'Taken on Mobile' : 'Taken on Desktop', badgeX, badgeY + 32);
 
   // Footer Tagline
   ctx.fillStyle = BRAND.subtle;

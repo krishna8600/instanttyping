@@ -40,7 +40,9 @@ export interface KeyMistakeStat {
  */
 export function calculateInstantaneousWpm(charsInSlice: number, sliceDurationSeconds: number = 1): number {
   if (sliceDurationSeconds <= 0 || charsInSlice <= 0) return 0;
-  return Math.max(0, Math.round((charsInSlice / 5) * (60 / sliceDurationSeconds)));
+  const wpm = Math.round((charsInSlice / 5) * (60 / sliceDurationSeconds));
+  // cap at human limit — anything higher is a paste/autocorrect/timing glitch
+  return Math.max(0, Math.min(wpm, 250));
 }
 
 export function calculateMetrics(
@@ -90,18 +92,18 @@ export function calculateMetrics(
 
 export function getPercentileRank(wpm: number): { rankTitle: string; percentileText: string } {
   // Honest skill bands — no fabricated percentiles.
-  if (wpm >= 100) {
-    return { rankTitle: "Elite", percentileText: "Elite skill band · 100+ WPM" };
+  if (wpm >= 110) {
+    return { rankTitle: "Elite", percentileText: "Elite skill band · 110+ WPM" };
   } else if (wpm >= 80) {
     return { rankTitle: "Advanced", percentileText: "Advanced skill band · 80+ WPM" };
-  } else if (wpm >= 60) {
-    return { rankTitle: "Upper-Intermediate", percentileText: "Upper-intermediate band · 60+ WPM" };
-  } else if (wpm >= 40) {
-    return { rankTitle: "Intermediate", percentileText: "Intermediate band · 40+ WPM" };
-  } else if (wpm >= 25) {
-    return { rankTitle: "Developing", percentileText: "Developing band · 25+ WPM" };
+  } else if (wpm >= 65) {
+    return { rankTitle: "Upper-Intermediate", percentileText: "Upper-intermediate band · 65+ WPM" };
+  } else if (wpm >= 50) {
+    return { rankTitle: "Intermediate", percentileText: "Intermediate band · 50+ WPM" };
+  } else if (wpm >= 38) {
+    return { rankTitle: "Developing", percentileText: "Developing band · 38+ WPM" };
   } else {
-    return { rankTitle: "Starting", percentileText: "Starting band · below 25 WPM" };
+    return { rankTitle: "Starting", percentileText: "Starting band · below 38 WPM" };
   }
 }
 

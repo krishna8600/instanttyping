@@ -300,7 +300,23 @@ export async function ensureToneStarted() {
   }
 }
 
-// Plays a piano sample note using Tone.js
+// Fallback piano-ish synth (no external files) when sample CDN fails
+function makePianoFallback(Tone: any) {
+  const synth = new Tone.Synth({
+    oscillator: { type: 'triangle' },
+    envelope: { attack: 0.005, decay: 0.3, sustain: 0.1, release: 1 },
+  });
+  synth.volume.value = -16;
+  const masterGain = getMasterGainNode();
+  if (masterGain) {
+    synth.connect(masterGain as any);
+  } else {
+    synth.toDestination();
+  }
+  return synth;
+}
+
+// Plays a piano sample note using Tone.js (synth fallback if samples fail)
 async function playPianoNote(isError: boolean) {
   try {
     await ensureToneStarted();
@@ -318,7 +334,14 @@ async function playPianoNote(isError: boolean) {
 
   try {
     if (!toneSamplerPromise) {
-      toneSamplerPromise = new Promise((resolve, reject) => {
+      toneSamplerPromise = new Promise((resolve) => {
+        let settled = false;
+        const done = (v: any) => { if (!settled) { settled = true; resolve(v); } };
+        // don't hang forever if the sample CDN is slow or blocked
+        const timer = setTimeout(() => {
+          console.error("Piano samples load timeout, using synth fallback");
+          done(makePianoFallback(Tone));
+        }, 12000);
         try {
           const sampler = new Tone.Sampler({
             urls: {
@@ -355,10 +378,11 @@ async function playPianoNote(isError: boolean) {
             },
             release: 1,
             baseUrl: "https://tonejs.github.io/audio/salamander/",
-            onload: () => resolve(sampler),
+            onload: () => { clearTimeout(timer); done(sampler); },
             onerror: (err: unknown) => {
-              console.error("Tone.Sampler load error", err);
-              resolve(sampler); // Resolve anyway to avoid hanging forever
+              console.error("Tone.Sampler load error, using synth fallback", err);
+              clearTimeout(timer);
+              done(makePianoFallback(Tone));
             }
           });
           sampler.volume.value = -18;
@@ -369,7 +393,9 @@ async function playPianoNote(isError: boolean) {
             sampler.toDestination();
           }
         } catch(err) {
-          reject(err);
+          clearTimeout(timer);
+          console.error("Piano sampler init error, using synth fallback", err);
+          done(makePianoFallback(Tone));
         }
       });
     }

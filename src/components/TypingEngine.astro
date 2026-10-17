@@ -57,7 +57,7 @@ const {
     <!-- Test Type Selector -->
     <div
       id="mode-tab-container"
-      class="relative flex items-center gap-1 bg-[#F5F5F7] dark:bg-white/10 p-1 rounded-full w-full max-w-full min-[901px]:w-auto overflow-x-auto hide-scrollbar shrink-0"
+      class="relative flex items-center gap-1 bg-[#F5F5F7] dark:bg-white/10 p-1 rounded-full w-full max-w-full min-[901px]:w-auto overflow-x-auto hide-scrollbar shrink-0 scroll-hint"
       style="scrollbar-width: none; -webkit-overflow-scrolling: touch; touch-action: pan-x;"
     >
       <span
@@ -435,7 +435,7 @@ const {
 
   <!-- Real-Time Metrics Strip -->
   <div id="metrics-strip" class="grid grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2 relative z-10 !mb-0">
-    <div class="premium-card !mb-0 flex items-center justify-between gap-2 !py-1.5 !px-3">
+    <div class="premium-card !mb-0 flex flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between sm:gap-2 !py-1.5 !px-3">
       <div class="flex items-center gap-1.5 min-w-0">
         <span
           class="flex items-center justify-center w-5 h-5 shrink-0 text-ds-text-secondary"
@@ -452,7 +452,7 @@ const {
         60s
       </div>
     </div>
-    <div class="premium-card !mb-0 flex items-center justify-between gap-2 !py-1.5 !px-3">
+    <div class="premium-card !mb-0 flex flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between sm:gap-2 !py-1.5 !px-3">
       <div class="flex items-center gap-1.5 min-w-0">
         <span
           class="flex items-center justify-center w-5 h-5 shrink-0 text-ds-text-secondary"
@@ -469,7 +469,7 @@ const {
         0
       </div>
     </div>
-    <div class="premium-card !mb-0 flex items-center justify-between gap-2 !py-1.5 !px-3">
+    <div class="premium-card !mb-0 flex flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between sm:gap-2 !py-1.5 !px-3">
       <div class="flex items-center gap-1.5 min-w-0">
         <span
           class="flex items-center justify-center w-5 h-5 shrink-0 text-ds-text-secondary"
@@ -486,7 +486,7 @@ const {
         100%
       </div>
     </div>
-    <div class="premium-card !mb-0 flex items-center justify-between gap-2 !py-1.5 !px-3">
+    <div class="premium-card !mb-0 flex flex-col gap-0.5 sm:flex-row sm:items-center sm:justify-between sm:gap-2 !py-1.5 !px-3">
       <div class="flex items-center gap-1.5 min-w-0">
         <span
           class="flex items-center justify-center w-5 h-5 shrink-0 text-ds-text-secondary"
@@ -600,6 +600,7 @@ const {
 
 /* MOBILE FIX 1: Anchor hidden input inside typing box */
 #typing-display { position: relative; scroll-margin-top: 80px; }
+#results-panel { scroll-margin-top: 96px; }
 #hidden-typing-input, #hiddenInput {
   position: absolute !important;
   top: 50% !important;
@@ -1169,10 +1170,9 @@ const {
         id="btn-download-card"
         type="button"
         class="btn-secondary w-full sm:w-auto"
-        title="Download 1200x630 Result Image"
+        title="Share your result image"
       >
-        <Icon name="download" class="w-4 h-4" />
-        <span>Download PNG</span>
+        <span data-i18n="results.share_card">Share Result</span>
       </button>
 
       <button
@@ -3062,6 +3062,7 @@ const {
       }
       
       let gridHtml = "";
+      let labelHtml = ""; // pills render LAST so they sit above the lines
       
       for (let w = 0; w <= roundedMax; w += yStep) {
         const y = pt + plotH - ((w / roundedMax) * plotH);
@@ -3093,9 +3094,11 @@ const {
 
       // Average Line
       const avgY = pt + plotH - ((avgWpm / roundedMax) * plotH);
-      const labelAvgY = avgY < pt + 10 ? avgY + 11 : avgY - 4;
+      const labelAvgY = avgY < pt + 10 ? avgY + 22 : avgY - 16;
       gridHtml += `<line x1="${pl}" y1="${avgY}" x2="${width - pr}" y2="${avgY}" stroke="${labelColor}" stroke-dasharray="4 4" stroke-width="1" opacity="0.4" />`;
-      gridHtml += `<g id="chart-avg-pill"><rect id="chart-avg-pill-bg" rx="8" fill="#000" fill-opacity="0.65" stroke="${labelColor}" stroke-opacity="0.3" /><text id="chart-avg-label" x="${width - pr}" y="${labelAvgY}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end">${t("results.chart_avg", { wpm: avgWpm })}</text></g>`;
+      const avgLabelText = t("results.chart_avg", { wpm: avgWpm });
+      const avgEstW = avgLabelText.length * 5.5 + 12;
+      labelHtml += `<g id="chart-avg-pill"><rect id="chart-avg-pill-bg" x="${width - pr - avgEstW}" y="${labelAvgY - 12}" width="${avgEstW}" height="17" rx="8" fill="#000" fill-opacity="0.7" stroke="${labelColor}" stroke-opacity="0.35" /><text id="chart-avg-label" x="${width - pr}" y="${labelAvgY}" fill="${labelColor}" font-size="9" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="end">${avgLabelText}</text></g>`;
 
       // Peak Marker (true instantaneous peak)
       let peakPt = chartPoints[0];
@@ -3113,9 +3116,17 @@ const {
         peakX = pl + 6;
       }
 
-      const peakY = peakPt.y < pt + 12 ? peakPt.y + 14 : peakPt.y - 8;
+      let peakY = peakPt.y - 20;
+      if (peakPt.y < pt + 12 || peakY - 13 < 2) peakY = peakPt.y + 28; // near top or would clip: go below
       
-      gridHtml += `<g id="chart-peak-pill"><rect id="chart-peak-pill-bg" rx="8" fill="#000" fill-opacity="0.72" stroke="${strokeColor}" stroke-opacity="0.4" /><text id="chart-peak-label" x="${peakX}" y="${peakY}" fill="${strokeColor}" font-size="9" font-weight="bold" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="${peakAnchor}">${t("results.chart_peak", { wpm: Math.round(peakPt.val) })}</text></g>`;
+      const peakLabelText = t("results.chart_peak", { wpm: Math.round(peakPt.val) });
+      const peakEstW = peakLabelText.length * 6 + 14;
+      const peakEstH = 18;
+      let peakRectX = peakX - peakEstW / 2;
+      if (peakAnchor === "start") peakRectX = peakX;
+      else if (peakAnchor === "end") peakRectX = peakX - peakEstW;
+      const peakRectY = peakY - 13;
+      labelHtml += `<g id="chart-peak-pill"><rect id="chart-peak-pill-bg" x="${peakRectX}" y="${peakRectY}" width="${peakEstW}" height="${peakEstH}" rx="9" fill="#000" fill-opacity="0.78" stroke="${strokeColor}" stroke-opacity="0.45" /><text id="chart-peak-label" x="${peakX}" y="${peakY}" fill="${strokeColor}" font-size="9" font-weight="bold" font-family="'Geist Variable', system-ui, sans-serif" style="font-variant-numeric: tabular-nums;" text-anchor="${peakAnchor}">${peakLabelText}</text></g>`;
       
       const endPt = chartPoints[chartPoints.length - 1];
       if (peakPt !== endPt) {
@@ -3138,27 +3149,13 @@ const {
         ${cumulativePathHtml}
         <path d="${instantPathData}" fill="none" stroke="${strokeColor}" stroke-width="6" opacity="0.15" stroke-linecap="round" stroke-linejoin="round" />
         <path d="${instantPathData}" fill="none" stroke="${strokeColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        ${labelHtml}
         <g id="chart-interactive-layer" class="opacity-0 transition-opacity duration-75 motion-reduce:transition-none pointer-events-none">
           <line id="chart-crosshair-line" y1="${pt}" y2="${height - pb}" stroke="${strokeColor}" stroke-dasharray="4 4" stroke-width="1.5" opacity="0.5" />
           <circle id="chart-crosshair-dot" r="4.5" fill="${strokeColor}" stroke="${dotBg}" stroke-width="2" />
         </g>
       `;
 
-      // size label pills to hug their text (keeps them readable over the line)
-      const fitPill = (textId: string, rectId: string, padX = 7, padY = 4) => {
-        const txt = svg.querySelector("#" + textId) as SVGGraphicsElement | null;
-        const rect = svg.querySelector("#" + rectId);
-        if (!txt || !rect) return;
-        try {
-          const bb = txt.getBBox();
-          rect.setAttribute("x", String(bb.x - padX));
-          rect.setAttribute("y", String(bb.y - padY));
-          rect.setAttribute("width", String(bb.width + padX * 2));
-          rect.setAttribute("height", String(bb.height + padY * 2));
-        } catch {}
-      };
-      fitPill("chart-peak-label", "chart-peak-pill-bg");
-      fitPill("chart-avg-label", "chart-avg-pill-bg", 6, 3);
     }
 
     let cachedIsMobile = typeof window !== "undefined" && window.matchMedia ? window.matchMedia('(pointer: coarse)').matches : false;
@@ -3779,6 +3776,18 @@ const {
       requestAnimationFrame(() => moveTabSlider(initTabBtn));
     }
 
+    // scroll-hint fade: show only while more tabs are scrollable to the right
+    const tabBar = document.getElementById("mode-tab-container");
+    if (tabBar) {
+      const updateScrollHint = () => {
+        const more = tabBar.scrollWidth - tabBar.scrollLeft - tabBar.clientWidth > 8;
+        tabBar.classList.toggle("scroll-hint", more);
+      };
+      tabBar.addEventListener("scroll", updateScrollHint, { passive: true });
+      window.addEventListener("resize", updateScrollHint);
+      requestAnimationFrame(updateScrollHint);
+    }
+
     
     // Listen for nav mode switches (from header nav)
     window.addEventListener('nav-mode-switch', ((ev: CustomEvent) => {
@@ -4096,6 +4105,9 @@ const {
       const ctx = certCanvas.getContext("2d");
       if (!ctx) return;
 
+      // ---------- device detection for badge ----------
+      const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && Math.min(window.innerWidth, window.innerHeight) < 768);
+
       // 2x render for a sharp download; layout stays in 800x600 logical px
       const SCALE = 2;
       ctx.scale(SCALE, SCALE);
@@ -4294,6 +4306,41 @@ const {
       ctx.textAlign = "right";
       ctx.fillText(t("cert.certified_at"), w - 80, 522);
       ctx.fillText(t("cert.standard"), w - 80, 542);
+
+      // ---------- device badge (mobile vs desktop) ----------
+      const badgeY = 532;
+      ctx.strokeStyle = "rgba(255,255,255,0.25)";
+      ctx.fillStyle = "rgba(255,255,255,0.25)";
+      ctx.lineWidth = 1.5;
+      if (isMobileDevice) {
+        // phone icon
+        const pw = 13, ph = 22;
+        ctx.beginPath();
+        ctx.roundRect(cx - pw / 2, badgeY - ph / 2, pw, ph, 3);
+        ctx.stroke();
+        ctx.fillRect(cx - 3, badgeY - ph / 2 + 3, 6, 1.5); // speaker
+        ctx.beginPath();
+        ctx.arc(cx, badgeY + ph / 2 - 4, 1.5, 0, Math.PI * 2);
+        ctx.fill(); // home dot
+      } else {
+        // monitor icon
+        const mw = 24, mh = 15;
+        ctx.beginPath();
+        ctx.roundRect(cx - mw / 2, badgeY - mh / 2 - 3, mw, mh, 2);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(cx - 4, badgeY + mh / 2 - 3);
+        ctx.lineTo(cx + 4, badgeY + mh / 2 - 3);
+        ctx.moveTo(cx, badgeY + mh / 2 - 3);
+        ctx.lineTo(cx, badgeY + mh / 2 + 3);
+        ctx.moveTo(cx - 7, badgeY + mh / 2 + 3);
+        ctx.lineTo(cx + 7, badgeY + mh / 2 + 3);
+        ctx.stroke(); // stand
+      }
+      ctx.fillStyle = FAINT;
+      ctx.font = `400 9px ${SANS}`;
+      ctx.textAlign = "center";
+      ctx.fillText(isMobileDevice ? t("cert.taken_on_mobile") : t("cert.taken_on_desktop"), cx, badgeY + 22);
     }
     btnDownloadCert.addEventListener("click", () => {
       const link = document.createElement("a");
@@ -4735,6 +4782,7 @@ const {
         var acc = summary ? summary.accuracy : (accEl ? parseFloat(accEl.textContent || '100') : 100);
         var consistency = summary ? summary.consistency : (consEl ? parseInt(consEl.textContent || '100', 10) : 100);
         var rank = summary ? summary.rankTitle : (rankEl ? (rankEl.textContent || 'Typist').trim() : 'Typist');
+        var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints > 1 && Math.min(window.innerWidth, window.innerHeight) < 768);
         return {
           wpm: wpm,
           accuracy: acc,
@@ -4742,6 +4790,7 @@ const {
           rank: rank,
           date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
           quoteAttribution: quote ? `— ${quote.author}, ${quote.source}` : undefined,
+          isMobile: isMobile,
         };
       }
       (window as any).__buildShareData = buildShareData;
@@ -4938,6 +4987,13 @@ const {
 })();
 </script>
 <style>
+/* Mode tabs: fade hint that more tabs are scrollable (mobile) */
+@media (max-width: 900px) {
+  #mode-tab-container.scroll-hint {
+    -webkit-mask-image: linear-gradient(to right, black calc(100% - 36px), transparent 100%);
+    mask-image: linear-gradient(to right, black calc(100% - 36px), transparent 100%);
+  }
+}
 /* Volume slider: phone-like feel — fill track, volume-scaled glow, large touch target.
    Unlayered so it wins over Tailwind utilities. Restrained: blue only, 200ms. */
 .vol-slider { --vol-pct: 50%; --vol-glow: 11px; background: transparent; }
@@ -4962,6 +5018,162 @@ const {
 @media (prefers-reduced-motion: reduce) {
   .vol-slider::-webkit-slider-thumb, .vol-slider::-moz-range-thumb { transition: none; }
 }
+
+/* Settings Panel & Toggle Button Theme Overrides (Ocean Gradient & Cyberpunk) */
+#typing-test-container.theme-gradient #settings-toggle-btn,
+#typing-test-container.theme-gradient #btn-settings-sound-toggle {
+  background: rgba(56, 189, 248, 0.1) !important;
+  border-color: rgba(56, 189, 248, 0.2) !important;
+  color: #bae6fd !important;
+}
+#typing-test-container.theme-gradient #settings-toggle-btn:hover,
+#typing-test-container.theme-gradient #btn-settings-sound-toggle:hover {
+  border-color: rgba(56, 189, 248, 0.45) !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #settings-toggle-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #e0f2fe !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #btn-settings-sound-toggle {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #e0f2fe !important;
+}
+
+#typing-test-container.theme-gradient #settings-panel label {
+  color: rgba(186, 230, 253, 0.75) !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #settings-panel label {
+  color: #A1A1A6 !important;
+}
+
+/* Custom Text Input Theme Overrides */
+#typing-test-container.theme-gradient #custom-text-input {
+  background: rgba(10, 22, 40, 0.75) !important;
+  border-color: rgba(56, 189, 248, 0.25) !important;
+  color: #e0f2fe !important;
+}
+#typing-test-container.theme-gradient #custom-text-input:focus {
+  border-color: #38bdf8 !important;
+}
+#typing-test-container.theme-gradient #custom-text-input::placeholder {
+  color: rgba(186, 230, 253, 0.45) !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #custom-text-input {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #e0f2fe !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #custom-text-input::placeholder {
+  color: rgba(224, 242, 254, 0.4) !important;
+}
+
+#typing-test-container.theme-cyberpunk #settings-toggle-btn,
+#typing-test-container.theme-cyberpunk #btn-settings-sound-toggle {
+  background: rgba(0, 255, 204, 0.08) !important;
+  border-color: rgba(0, 255, 204, 0.2) !important;
+  color: #a0a0c0 !important;
+}
+#typing-test-container.theme-cyberpunk #settings-toggle-btn:hover,
+#typing-test-container.theme-cyberpunk #btn-settings-sound-toggle:hover {
+  border-color: rgba(0, 255, 204, 0.45) !important;
+}
+:global(html.dark) #typing-test-container.theme-cyberpunk #settings-toggle-btn {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #c0c0d0 !important;
+}
+:global(html.dark) #typing-test-container.theme-cyberpunk #btn-settings-sound-toggle {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #c0c0d0 !important;
+}
+
+#typing-test-container.theme-cyberpunk #settings-panel label {
+  color: #a0a0c0 !important;
+}
+:global(html.dark) #typing-test-container.theme-cyberpunk #settings-panel label {
+  color: #A1A1A6 !important;
+}
+
+#typing-test-container.theme-cyberpunk #custom-text-input {
+  background: rgba(10, 10, 20, 0.75) !important;
+  border-color: rgba(0, 255, 204, 0.25) !important;
+  color: #00ffcc !important;
+}
+#typing-test-container.theme-cyberpunk #custom-text-input:focus {
+  border-color: #00ffcc !important;
+}
+#typing-test-container.theme-cyberpunk #custom-text-input::placeholder {
+  color: rgba(160, 160, 192, 0.45) !important;
+}
+:global(html.dark) #typing-test-container.theme-cyberpunk #custom-text-input {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+  color: #c0c0d0 !important;
+}
+:global(html.dark) #typing-test-container.theme-cyberpunk #custom-text-input::placeholder {
+  color: rgba(160, 160, 192, 0.4) !important;
+}
+
+/* 3D Embossed Theme: Active Mode Tab Contrast Override */
+@layer utilities {
+  :global(html:not(.dark)) #typing-test-container.theme-3d .mode-tab-btn.active-mode-btn {
+    color: #1d1d1f !important;
+  }
+}
+47 42 32 82 101 115 117 108 116 115 32 115 99 114 101 101 110 58 32 109 111 98 105 108 101 32 108 97 121 111 117 116 32 43 32 79 99 101 97 110 32 71 114 97 100 105 101 110 116 32 99 111 110 116 114 97 115 116 32 40 100 111 32 110 111 116 32 114 101 109 111 118 101 41 32 42 47 10 64 109 101 100 105 97 32 40 109 97 120 45 119 105 100 116 104 58 32 52 56 48 112 120 41 32 123 10 32 32 47 42 32 49 46 32 67 111 97 99 104 105 110 103 32 99 97 114 100 32 104 101 97 100 101 114 58 32 108 101 116 32 116 105 116 108 101 32 43 32 98 97 100 103 101 32 119 114 97 112 32 105 110 115 116 101 97 100 32 111 102 32 99 111 108 108 105 100 105 110 103 32 42 47 10 32 32 35 99 111 97 99 104 105 110 103 45 100 105 97 103 110 111 115 105 115 45 115 101 99 116 105 111 110 32 62 32 100 105 118 58 104 97 115 40 62 32 104 51 41 32 123 10 32 32 32 32 102 108 101 120 45 119 114 97 112 58 32 119 114 97 112 59 10 32 32 32 32 114 111 119 45 103 97 112 58 32 48 46 53 114 101 109 59 10 32 32 125 10 32 32 35 99 111 97 99 104 105 110 103 45 100 105 97 103 110 111 115 105 115 45 115 101 99 116 105 111 110 32 62 32 100 105 118 58 104 97 115 40 62 32 104 51 41 32 62 32 104 51 32 123 10 32 32 32 32 102 108 101 120 58 32 49 32 49 32 97 117 116 111 59 10 32 32 125 10 32 32 35 99 111 97 99 104 45 97 99 99 117 114 97 99 121 45 116 97 120 45 98 97 100 103 101 32 123 10 32 32 32 32 102 108 101 120 45 115 104 114 105 110 107 58 32 48 59 10 32 32 125 10 32 32 47 42 32 50 46 32 68 114 105 108 108 32 114 111 119 58 32 115 116 97 99 107 32 98 117 116 116 111 110 32 97 98 111 118 101 32 104 105 110 116 32 111 110 32 110 97 114 114 111 119 32 115 99 114 101 101 110 115 32 42 47 10 32 32 35 99 111 97 99 104 105 110 103 45 100 105 97 103 110 111 115 105 115 45 115 101 99 116 105 111 110 32 62 32 100 105 118 58 104 97 115 40 62 32 35 98 116 110 45 99 111 97 99 104 45 100 114 105 108 108 41 32 123 10 32 32 32 32 102 108 101 120 45 100 105 114 101 99 116 105 111 110 58 32 99 111 108 117 109 110 59 10 32 32 32 32 97 108 105 103 110 45 105 116 101 109 115 58 32 102 108 101 120 45 115 116 97 114 116 59 10 32 32 125 10 32 32 35 98 116 110 45 99 111 97 99 104 45 100 114 105 108 108 32 123 10 32 32 32 32 119 104 105 116 101 45 115 112 97 99 101 58 32 110 111 119 114 97 112 59 10 32 32 125 10 125 10 47 42 32 51 46 32 79 99 101 97 110 32 71 114 97 100 105 101 110 116 58 32 99 111 97 99 104 105 110 103 32 43 32 88 80 32 116 101 120 116 32 114 101 97 100 97 98 108 101 32 111 110 32 100 97 114 107 45 98 108 117 101 32 99 97 114 100 115 32 42 47 10 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 99 111 97 99 104 45 98 111 116 116 108 101 110 101 99 107 45 108 105 110 101 44 10 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 99 111 97 99 104 45 98 111 116 116 108 101 110 101 99 107 45 108 105 110 101 32 46 102 111 110 116 45 115 101 109 105 98 111 108 100 32 123 10 32 32 99 111 108 111 114 58 32 35 101 48 102 50 102 101 32 33 105 109 112 111 114 116 97 110 116 59 10 125 10 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 99 111 97 99 104 45 98 114 101 97 107 100 111 119 110 45 108 105 110 101 44 10 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 99 111 97 99 104 45 100 114 105 108 108 45 104 105 110 116 44 10 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 114 101 115 117 108 116 115 45 120 112 45 114 101 99 101 105 112 116 32 35 120 112 45 114 101 99 101 105 112 116 45 98 114 101 97 107 100 111 119 110 44 10 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 114 101 115 117 108 116 115 45 120 112 45 114 101 99 101 105 112 116 32 35 120 112 45 114 101 99 101 105 112 116 45 112 114 111 103 114 101 115 115 45 108 97 98 101 108 44 10 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 114 101 115 117 108 116 115 45 120 112 45 114 101 99 101 105 112 116 32 35 120 112 45 114 101 99 101 105 112 116 45 112 114 111 103 114 101 115 115 45 112 101 114 99 101 110 116 32 123 10 32 32 99 111 108 111 114 58 32 114 103 98 97 40 49 56 54 44 32 50 51 48 44 32 50 53 51 44 32 48 46 55 53 41 32 33 105 109 112 111 114 116 97 110 116 59 10 125 10 58 103 108 111 98 97 108 40 104 116 109 108 46 100 97 114 107 41 32 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 99 111 97 99 104 45 98 111 116 116 108 101 110 101 99 107 45 108 105 110 101 44 10 58 103 108 111 98 97 108 40 104 116 109 108 46 100 97 114 107 41 32 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 99 111 97 99 104 45 98 111 116 116 108 101 110 101 99 107 45 108 105 110 101 32 46 102 111 110 116 45 115 101 109 105 98 111 108 100 32 123 10 32 32 99 111 108 111 114 58 32 35 102 102 102 102 102 102 32 33 105 109 112 111 114 116 97 110 116 59 10 125 10 58 103 108 111 98 97 108 40 104 116 109 108 46 100 97 114 107 41 32 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 99 111 97 99 104 45 98 114 101 97 107 100 111 119 110 45 108 105 110 101 32 123 10 32 32 99 111 108 111 114 58 32 35 97 49 97 49 97 54 32 33 105 109 112 111 114 116 97 110 116 59 10 125 10 58 103 108 111 98 97 108 40 104 116 109 108 46 100 97 114 107 41 32 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 99 111 97 99 104 45 100 114 105 108 108 45 104 105 110 116 32 123 10 32 32 99 111 108 111 114 58 32 35 56 54 56 54 56 98 32 33 105 109 112 111 114 116 97 110 116 59 10 125 10 58 103 108 111 98 97 108 40 104 116 109 108 46 100 97 114 107 41 32 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 114 101 115 117 108 116 115 45 120 112 45 114 101 99 101 105 112 116 32 35 120 112 45 114 101 99 101 105 112 116 45 98 114 101 97 107 100 111 119 110 44 10 58 103 108 111 98 97 108 40 104 116 109 108 46 100 97 114 107 41 32 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 114 101 115 117 108 116 115 45 120 112 45 114 101 99 101 105 112 116 32 35 120 112 45 114 101 99 101 105 112 116 45 112 114 111 103 114 101 115 115 45 108 97 98 101 108 44 10 58 103 108 111 98 97 108 40 104 116 109 108 46 100 97 114 107 41 32 35 116 121 112 105 110 103 45 116 101 115 116 45 99 111 110 116 97 105 110 101 114 46 116 104 101 109 101 45 103 114 97 100 105 101 110 116 32 35 114 101 115 117 108 116 115 45 120 112 45 114 101 99 101 105 112 116 32 35 120 112 45 114 101 99 101 105 112 116 45 112 114 111 103 114 101 115 115 45 112 101 114 99 101 110 116 32 123 10 32 32 99 111 108 111 114 58 32 35 97 49 97 49 97 97 32 33 105 109 112 111 114 116 97 110 116 59 10 125 10
+/* Results screen: mobile layout + Ocean Gradient contrast (do not remove) */
+@media (max-width: 640px) {
+  /* 1. Coaching card header: let title + badge wrap instead of colliding */
+  #coaching-diagnosis-section > div:has(> h3) {
+    flex-wrap: wrap;
+    row-gap: 0.5rem;
+  }
+  #coaching-diagnosis-section > div:has(> h3) > h3 {
+    flex: 1 1 auto;
+  }
+  #coach-accuracy-tax-badge {
+    flex-shrink: 0;
+  }
+  /* 2. Drill row: stack button above hint on narrow screens */
+  #coaching-diagnosis-section > div:has(> #btn-coach-drill) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #btn-coach-drill {
+    white-space: nowrap;
+  }
+}
+/* 3. Ocean Gradient: coaching + XP text readable on dark-blue cards */
+#typing-test-container.theme-gradient #coach-bottleneck-line,
+#typing-test-container.theme-gradient #coach-bottleneck-line .font-semibold {
+  color: #e0f2fe !important;
+}
+#typing-test-container.theme-gradient #coach-breakdown-line,
+#typing-test-container.theme-gradient #coach-drill-hint,
+#typing-test-container.theme-gradient #results-xp-receipt #xp-receipt-breakdown,
+#typing-test-container.theme-gradient #results-xp-receipt #xp-receipt-progress-label,
+#typing-test-container.theme-gradient #results-xp-receipt #xp-receipt-progress-percent {
+  color: rgba(186, 230, 253, 0.75) !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #coach-bottleneck-line,
+:global(html.dark) #typing-test-container.theme-gradient #coach-bottleneck-line .font-semibold {
+  color: #ffffff !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #coach-breakdown-line {
+  color: #a1a1a6 !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #coach-drill-hint {
+  color: #86868b !important;
+}
+:global(html.dark) #typing-test-container.theme-gradient #results-xp-receipt #xp-receipt-breakdown,
+:global(html.dark) #typing-test-container.theme-gradient #results-xp-receipt #xp-receipt-progress-label,
+:global(html.dark) #typing-test-container.theme-gradient #results-xp-receipt #xp-receipt-progress-percent {
+  color: #a1a1aa !important;
+}
+
 </style>
 <script>
 // MOBILE FIX 1b: preventScroll on focus
