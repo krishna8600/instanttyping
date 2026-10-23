@@ -630,5 +630,10 @@
   "page_beginner.touch_test_heading": "Test di dattilografia per principianti",
   "page_beginner.touch_test_body": "Iniziare il percorso della dattilografia significa sviluppare memoria muscolare su vocaboli di uso comune senza ansia o fretta. Esercitati al tuo ritmo con lezioni chiare studiate per posizionare stabilmente le dita sulla riga base.",
   "page_beginner.adult_note": "Ideale per adulti che vogliono reimparare a digitare per lavoro — senza giochi, senza registrazione.",
-  "how_measure.worked_example": "300 caratteri in 1 minuto = 60 WPM."
+  "how_measure.worked_example": "300 caratteri in 1 minuto = 60 WPM.",
+  "page_1min.h1": "Test di dattilografia 1 minuto",
+  "page_3min.h1": "Test di dattilografia 3 minuti",
+  "page_beginners.h1": "Test di dattilografia per principianti",
+  "page_numbers.h1": "Test di numeri e punteggiatura",
+  "a11y.skip_to_content": "Salta al contenuto principale"
 }

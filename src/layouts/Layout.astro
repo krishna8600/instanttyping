@@ -159,10 +159,11 @@ const ogImage = `${siteUrl}/og-image.png`;
  <script src="../scripts/smooth-scroll.ts"></script>
 </head>
   <body class="bg-[#FAFAFA] dark:bg-black text-[#1D1D1F] dark:text-[#F5F5F7] min-h-screen flex flex-col font-sans transition-colors duration-150 selection:bg-[#0072F5] selection:text-white overflow-x-hidden">
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-[#0072F5] focus:text-white focus:text-sm focus:font-semibold" data-i18n="a11y.skip_to_content">Skip to main content</a>
   <MoonlitBackground />
   <Header currentPath={canonicalPath} />
 
-  <main class="flex-1 w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8 pt-[88px]">
+  <main id="main-content" class="flex-1 w-full max-w-[1100px] mx-auto px-4 sm:px-6 py-8 pt-[88px]">
   <slot />
   </main>
 

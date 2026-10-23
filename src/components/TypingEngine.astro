@@ -765,7 +765,7 @@ const {
 </style>
       <!-- Mascot companion -->
       <div id="mascot-wrap" aria-hidden="true">
-        <img id="mascot" class="m-slow" src="/images/mascot-roast.webp" alt="" draggable="false" />
+        <img id="mascot" class="m-slow" src="/images/mascot-roast.webp" alt="" draggable="false" width="256" height="256" />
 <video id="mascot-video" class="m-typing-vid" src="/videos/mascot-typing.mp4" muted loop playsinline preload="auto" style="display:none;"></video>
       </div>
     </div>
@@ -798,7 +798,7 @@ const {
         <Icon name="replay" class="w-4 h-4" />
         <span data-i18n="test.restart">Restart</span>
       </button>
-      <span class="hidden sm:inline font-mono text-[11px] text-[#86868B]">
+      <span class="hidden sm:inline font-mono text-[11px] text-[#5e5e62] dark:text-[#86868B]">
         <span data-i18n="test.shortcut">Shortcut:</span> <kbd
           class="px-1.5 py-0.5 rounded-md border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-white/5 font-sans"
           >Tab</kbd
@@ -831,7 +831,7 @@ const {
       <div class="flex justify-center">
         <span
           id="res-band"
-          class="inline-flex items-center px-3.5 py-1 rounded-full bg-[#0072F5]/10 text-[#004FC4] dark:bg-[#0072F5]/20 text-xs font-bold tracking-wide uppercase"
+          class="inline-flex items-center px-3.5 py-1 rounded-full bg-[#0072F5]/10 text-[#004FC4] dark:bg-[#0072F5]/20 dark:text-[#70B4FF] text-xs font-bold tracking-wide uppercase"
           >Starting</span
         >
       </div>
@@ -2878,7 +2878,7 @@ const {
         const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (psych.isNewPb) {
           if (nudge) nudge.classList.remove("hidden");
-          if (nudge) nudge.innerHTML = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#0072F5]/10 text-[#004FC4] text-xs font-bold">${t("results.new_best")}</span>`;
+          if (nudge) nudge.innerHTML = `<span class="inline-flex items-center px-3 py-1 rounded-full bg-[#0072F5]/10 text-[#004FC4] dark:bg-[#0072F5]/20 dark:text-[#70B4FF] text-xs font-bold">${t("results.new_best")}</span>`;
           if (!reduceMotion) {
             resNetWpmEl.animate(
               [{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }],

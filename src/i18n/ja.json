@@ -630,5 +630,10 @@
   "page_beginner.touch_test_heading": "初心者のためのタッチタイピングテスト",
   "page_beginner.touch_test_body": "タッチタイピングの習得は、速度を意識しすぎず、日常的な単語で指の筋肉記憶を定着させることから始まります。ホームポジションに指を安定させるシンプルな練習で、自分のペースで着実に上達できます。",
   "page_beginner.adult_note": "仕事でタイピングを学び直したい大人に最適 — ゲームや登録は一切不要。",
-  "how_measure.worked_example": "1分間に300文字 ＝ 60 WPM。"
+  "how_measure.worked_example": "1分間に300文字 ＝ 60 WPM。",
+  "page_1min.h1": "1分間タイピングテスト",
+  "page_3min.h1": "3分間タイピングテスト",
+  "page_beginners.h1": "初心者向けタイピングテスト",
+  "page_numbers.h1": "数字・記号タイピングテスト",
+  "a11y.skip_to_content": "メインコンテンツへスキップ"
 }

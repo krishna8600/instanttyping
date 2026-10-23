@@ -630,5 +630,10 @@
   "page_beginner.touch_test_heading": "Test de dactylographie pour débutants",
   "page_beginner.touch_test_body": "Commencer la dactylographie consiste à développer sa mémoire musculaire sur des mots du quotidien, sans stress ni pression de vitesse. Entraînez-vous à votre rythme avec des exercices épurés conçus pour ancrer vos doigts sur la rangée de base.",
   "page_beginner.adult_note": "Adapté aux adultes qui réapprennent à taper pour le travail — sans jeux, sans inscription.",
-  "how_measure.worked_example": "300 caractères en 1 minute = 60 MPM."
+  "how_measure.worked_example": "300 caractères en 1 minute = 60 MPM.",
+  "page_1min.h1": "Test de dactylographie 1 minute",
+  "page_3min.h1": "Test de dactylographie 3 minutes",
+  "page_beginners.h1": "Test de dactylographie pour débutants",
+  "page_numbers.h1": "Test de chiffres et ponctuation",
+  "a11y.skip_to_content": "Passer au contenu principal"
 }

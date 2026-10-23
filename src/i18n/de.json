@@ -630,5 +630,10 @@
   "page_beginner.touch_test_heading": "Zehnfinger-Tipptest für Anfänger",
   "page_beginner.touch_test_body": "Der Einstieg in das Zehnfingersystem beginnt mit dem Aufbau eines entspannten Muskelgedächtnisses für Alltagswörter ohne Zeitdruck. Übe in deinem eigenen Tempo mit übersichtlichen Lektionen, die deine Finger auf der Grundreihe verankern.",
   "page_beginner.adult_note": "Geeignet für Erwachsene, die das Tippen für den Beruf auffrischen — keine Spiele, keine Anmeldung.",
-  "how_measure.worked_example": "300 Zeichen in 1 Minute = 60 WPM."
+  "how_measure.worked_example": "300 Zeichen in 1 Minute = 60 WPM.",
+  "page_1min.h1": "1-Minuten-Tipptest",
+  "page_3min.h1": "3-Minuten-Tipptest",
+  "page_beginners.h1": "Tipptest für Anfänger",
+  "page_numbers.h1": "Zahlen- und Satzzeichen-Tipptest",
+  "a11y.skip_to_content": "Zum Hauptinhalt springen"
 }

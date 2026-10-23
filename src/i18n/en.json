@@ -630,5 +630,10 @@
   "page_beginner.touch_test_heading": "Touch typing test for beginners",
   "page_beginner.touch_test_body": "Starting your touch typing journey begins with building comfortable muscle memory on everyday vocabulary without stress or speed pressure. Practice at your own pace with clean, uncluttered drills designed to anchor your fingers on the home row.",
   "page_beginner.adult_note": "Suitable for adults relearning typing for work — no games, no signup.",
-  "how_measure.worked_example": "300 characters in 1 minute = 60 WPM."
+  "how_measure.worked_example": "300 characters in 1 minute = 60 WPM.",
+  "page_1min.h1": "1 Minute Typing Test",
+  "page_3min.h1": "3 Minute Typing Test",
+  "page_beginners.h1": "Typing Test for Beginners",
+  "page_numbers.h1": "Numbers and Punctuation Typing Test",
+  "a11y.skip_to_content": "Skip to main content"
 }

@@ -630,5 +630,10 @@
   "page_beginner.touch_test_heading": "초보자를 위한 터치 타이핑 테스트",
   "page_beginner.touch_test_body": "터치 타이핑의 시작은 속도에 쫓기지 않고 일상적인 어휘를 통해 자연스러운 근육 기억을 쌓는 것입니다. 홈 행에 손가락 위치를 안정적으로 고정할 수 있도록 고안된 깔끔한 연습을 통해 자신의 속도에 맞춰 훈련하세요.",
   "page_beginner.adult_note": "업무를 위해 타자를 다시 배우는 성인에게 적합 — 유치한 게임 및 회원가입 없음.",
-  "how_measure.worked_example": "1분 동안 300자 입력 = 60 WPM."
+  "how_measure.worked_example": "1분 동안 300자 입력 = 60 WPM.",
+  "page_1min.h1": "1분 타이핑 테스트",
+  "page_3min.h1": "3분 타이핑 테스트",
+  "page_beginners.h1": "초보자용 타이핑 테스트",
+  "page_numbers.h1": "숫자 및 구두점 타이핑 테스트",
+  "a11y.skip_to_content": "본문 바로가기"
 }

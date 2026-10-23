@@ -630,5 +630,10 @@
   "page_beginner.touch_test_heading": "Teste de digitação por toque para iniciantes",
   "page_beginner.touch_test_body": "Dar os primeiros passos na digitação por toque começa com o desenvolvimento de memória muscular para o vocabulário do dia a dia, sem pressa nem estresse. Pratique no seu próprio ritmo com lições focadas na fileira central.",
   "page_beginner.adult_note": "Indicado para adultos que estão reaprendendo a digitar para o trabalho — sem joguinhos, sem cadastro.",
-  "how_measure.worked_example": "300 caracteres em 1 minuto = 60 WPM."
+  "how_measure.worked_example": "300 caracteres em 1 minuto = 60 WPM.",
+  "page_1min.h1": "Teste de digitação de 1 minuto",
+  "page_3min.h1": "Teste de digitação de 3 minutos",
+  "page_beginners.h1": "Teste de digitação para iniciantes",
+  "page_numbers.h1": "Teste de números e pontuação",
+  "a11y.skip_to_content": "Pular para o conteúdo principal"
 }
