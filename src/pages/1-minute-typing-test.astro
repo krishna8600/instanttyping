@@ -52,6 +52,7 @@ const faqs = [
  <span data-i18n="page_1min.guide_heading">How to Master the 60-Second Typing Sprint</span>
  </h2>
  <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl"><span data-i18n="page_1min.guide_intro">The 1-minute test is a sprint. Unlike longer stamina assessments, success in a 60-second window requires instantaneous word recognition and immediate transition to the subsequent word before finishing the current keystroke.</span></p>
+ <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl"><span data-i18n="page_1min.benchmark_line">The average typist types around 38 to 42 WPM in a 60-second test. Scores between 55 and 70 WPM are typical for experienced office workers, while 80+ WPM places you in the top 5%.</span></p>
  </div>
 
  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -72,6 +73,22 @@ const faqs = [
  </div>
  </div>
  </section>
+
+  <!-- Extended Tests & Measurement Navigation -->
+  <nav aria-label="Extended typing tests" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+    <a href="/3-minute-typing-test/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+      <Icon name="timer" class="w-4 h-4 shrink-0" />
+      <span data-i18n="page_1min.link_3min">3-Minute Stamina Test</span>
+    </a>
+    <a href="/how-we-measure/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+      <Icon name="target" class="w-4 h-4 shrink-0" />
+      <span data-i18n="page_1min.link_measure">How We Measure Speed</span>
+    </a>
+    <a href="/wpm-calculator/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+      <Icon name="analytics" class="w-4 h-4 shrink-0" />
+      <span data-i18n="page_1min.link_calc">WPM Calculator</span>
+    </a>
+  </nav>
 
  <FAQ items={faqs} title="Frequently Asked Questions About the 1-Minute Test" titleKey="faq.1.title" />
  </div>

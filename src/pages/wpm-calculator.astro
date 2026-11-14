@@ -6,23 +6,33 @@ import Icon from '../components/Icon.astro';
 const faqs = [
   {
     question: "Why does the official WPM formula divide total characters by 5?",
-    answer: "Natural language words vary dramatically in length. If tests counted whole words, typing short words like 'is it so' would yield an artificially high score compared to technical vocabulary. The international standard established that exactly 5 keystrokes (including spaces and punctuation) equals one standardized typing word."
+    answer: "Natural language words vary dramatically in length. If tests counted whole words, typing short words like 'is it so' would yield an artificially high score compared to technical vocabulary. The international standard established that exactly 5 keystrokes (including spaces and punctuation) equals one standardized typing word.",
+    questionKey: "faq.wpm_calc.q1",
+    answerKey: "faq.wpm_calc.a1"
   },
   {
     question: "What is the difference between Gross WPM and Net WPM?",
-    answer: "Gross WPM (also called Raw WPM) measures your total typing speed regardless of mistakes. Net WPM subtracts a penalty for every uncorrected typo or error. Net WPM is the true productivity metric required on employment tests, resumes, and civil service certificates."
+    answer: "Gross WPM (also called Raw WPM) measures your total typing speed regardless of mistakes. Net WPM subtracts a penalty for every uncorrected typo or error. Net WPM is the true productivity metric required on employment tests, resumes, and civil service certificates.",
+    questionKey: "faq.wpm_calc.q2",
+    answerKey: "faq.wpm_calc.a2"
   },
   {
     question: "How do mistakes penalize your Net WPM score?",
-    answer: "Under the standard five-character rule, each error invalidates a portion of your output. In official scoring, Net WPM is calculated by subtracting 1 word (5 keystrokes) for each uncorrected error from your gross score before dividing by elapsed minutes."
+    answer: "Under the standard five-character rule, each error invalidates a portion of your output. In official scoring, Net WPM is calculated by subtracting 1 word (5 keystrokes) for each uncorrected error from your gross score before dividing by elapsed minutes.",
+    questionKey: "faq.wpm_calc.q3",
+    answerKey: "faq.wpm_calc.a3"
   },
   {
     question: "What is considered a competitive WPM score for office jobs?",
-    answer: "The worldwide average typing speed is roughly 40 WPM. Most corporate and administrative roles look for 50 to 65 Net WPM with 95%+ accuracy. High-throughput positions like legal assistants, transcriptionists, or court clerks require 75 to 90+ sustained WPM."
+    answer: "The worldwide average typing speed is roughly 40 WPM. Most corporate and administrative roles look for 50 to 65 Net WPM with 95%+ accuracy. High-throughput positions like legal assistants, transcriptionists, or court clerks require 75 to 90+ sustained WPM.",
+    questionKey: "faq.wpm_calc.q4",
+    answerKey: "faq.wpm_calc.a4"
   },
   {
     question: "How do Characters Per Minute (CPM) and Keystrokes Per Hour (KPH) relate to WPM?",
-    answer: "WPM equals CPM divided by 5 (e.g. 250 CPM = 50 WPM). Keystrokes Per Hour (KPH), commonly used in data entry jobs, equals CPM multiplied by 60 (e.g. 250 CPM = 15,000 KPH)."
+    answer: "WPM equals CPM divided by 5 (e.g. 250 CPM = 50 WPM). Keystrokes Per Hour (KPH), commonly used in data entry jobs, equals CPM multiplied by 60 (e.g. 250 CPM = 15,000 KPH).",
+    questionKey: "faq.wpm_calc.q5",
+    answerKey: "faq.wpm_calc.a5"
   }
 ];
 ---
@@ -37,10 +47,10 @@ const faqs = [
     <div class="space-y-3 text-center sm:text-left">
       <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono font-medium bg-neutral-100 dark:bg-white/10 text-[var(--text-secondary)] border border-[var(--border)]">
         <Icon name="calculate" class="w-3.5 h-3.5" />
-        <span>Free Formula Calculator</span>
+        <span data-i18n="wpm_calc.badge">Free Formula Calculator</span>
       </div>
       <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight text-[var(--text-primary)]">
-        WPM Calculator
+        <span data-i18n="wpm_calc.title">WPM Calculator</span>
       </h1>
       <p class="text-sm sm:text-base text-[var(--text-secondary)] max-w-2xl leading-relaxed">
         <span data-i18n="wpm_calc.intro">Calculate your standardized score from any words per minute test, along with accuracy percentage and Characters Per Minute (CPM) using the official international typing measurement standard.</span>
@@ -49,17 +59,17 @@ const faqs = [
 
     <!-- Quick Presets -->
     <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
-      <span class="text-[var(--text-secondary)]">Presets:</span>
-      <button type="button" class="preset-btn px-2.5 py-1 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] hover:border-[#0072F5] transition-colors cursor-pointer" data-chars="200" data-errors="2" data-min="1" data-sec="0">
+      <span class="text-[var(--text-secondary)]" data-i18n="wpm_calc.presets_label">Presets:</span>
+      <button type="button" class="preset-btn px-2.5 py-1 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] hover:border-[#0072F5] transition-colors cursor-pointer" data-chars="200" data-errors="2" data-min="1" data-sec="0" data-i18n="wpm_calc.preset_avg">
         Average (200c / 1m)
       </button>
-      <button type="button" class="preset-btn px-2.5 py-1 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] hover:border-[#0072F5] transition-colors cursor-pointer" data-chars="350" data-errors="1" data-min="1" data-sec="0">
+      <button type="button" class="preset-btn px-2.5 py-1 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] hover:border-[#0072F5] transition-colors cursor-pointer" data-chars="350" data-errors="1" data-min="1" data-sec="0" data-i18n="wpm_calc.preset_fast">
         Fast (350c / 1m)
       </button>
-      <button type="button" class="preset-btn px-2.5 py-1 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] hover:border-[#0072F5] transition-colors cursor-pointer" data-chars="600" data-errors="4" data-min="2" data-sec="0">
+      <button type="button" class="preset-btn px-2.5 py-1 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] hover:border-[#0072F5] transition-colors cursor-pointer" data-chars="600" data-errors="4" data-min="2" data-sec="0" data-i18n="wpm_calc.preset_2min">
         2-Min Test (600c)
       </button>
-      <button type="button" class="preset-btn px-2.5 py-1 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] hover:border-[#0072F5] transition-colors cursor-pointer" data-chars="1000" data-errors="5" data-min="3" data-sec="0">
+      <button type="button" class="preset-btn px-2.5 py-1 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] hover:border-[#0072F5] transition-colors cursor-pointer" data-chars="1000" data-errors="5" data-min="3" data-sec="0" data-i18n="wpm_calc.preset_3min">
         3-Min Exam (1000c)
       </button>
     </div>
@@ -68,11 +78,11 @@ const faqs = [
     <div class="grid grid-cols-1 md:grid-cols-12 gap-6 p-6 rounded-2xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm">
       <!-- Input Column (7 cols) -->
       <div class="md:col-span-7 space-y-5">
-        <h2 class="text-base font-semibold text-[var(--text-primary)]">Input Test Data</h2>
+        <h2 class="text-base font-semibold text-[var(--text-primary)]" data-i18n="wpm_calc.input_heading">Input Test Data</h2>
 
         <!-- Characters Typed -->
         <div class="space-y-1.5">
-          <label for="input-chars" class="block text-xs font-medium text-[var(--text-secondary)]">
+          <label for="input-chars" class="block text-xs font-medium text-[var(--text-secondary)]" data-i18n="wpm_calc.input_chars_label">
             Total Characters Typed (Keystrokes)
           </label>
           <input
@@ -83,12 +93,12 @@ const faqs = [
             max="50000"
             class="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-neutral-50 dark:bg-black/50 text-[var(--text-primary)] font-mono text-sm focus:outline-none focus:ring-2 focus:ring-[#0072F5]"
           />
-          <p class="text-[11px] text-[var(--text-secondary)]">Includes letters, spaces, numbers, and punctuation.</p>
+          <p class="text-[11px] text-[var(--text-secondary)]" data-i18n="wpm_calc.input_chars_hint">Includes letters, spaces, numbers, and punctuation.</p>
         </div>
 
         <!-- Errors -->
         <div class="space-y-1.5">
-          <label for="input-errors" class="block text-xs font-medium text-[var(--text-secondary)]">
+          <label for="input-errors" class="block text-xs font-medium text-[var(--text-secondary)]" data-i18n="wpm_calc.input_errors_label">
             Errors / Typos Made
           </label>
           <input
@@ -99,12 +109,12 @@ const faqs = [
             max="1000"
             class="w-full px-3.5 py-2.5 rounded-xl border border-[var(--border)] bg-neutral-50 dark:bg-black/50 text-[var(--text-primary)] font-mono text-sm focus:outline-none focus:ring-2 focus:ring-[#0072F5]"
           />
-          <p class="text-[11px] text-[var(--text-secondary)]">Uncorrected mistakes during the test session.</p>
+          <p class="text-[11px] text-[var(--text-secondary)]" data-i18n="wpm_calc.input_errors_hint">Uncorrected mistakes during the test session.</p>
         </div>
 
         <!-- Time Taken -->
         <div class="space-y-1.5">
-          <label class="block text-xs font-medium text-[var(--text-secondary)]">
+          <label class="block text-xs font-medium text-[var(--text-secondary)]" data-i18n="wpm_calc.input_time_label">
             Time Elapsed
           </label>
           <div class="grid grid-cols-2 gap-3">
@@ -118,7 +128,7 @@ const faqs = [
                   max="120"
                   class="w-full px-3 py-2.5 text-[var(--text-primary)] font-mono text-sm bg-transparent border-none focus:outline-none"
                 />
-                <span class="pr-3 text-xs text-[var(--text-secondary)] font-mono">min</span>
+                <span class="pr-3 text-xs text-[var(--text-secondary)] font-mono" data-i18n="wpm_calc.unit_min">min</span>
               </div>
             </div>
             <div>
@@ -131,7 +141,7 @@ const faqs = [
                   max="59"
                   class="w-full px-3 py-2.5 text-[var(--text-primary)] font-mono text-sm bg-transparent border-none focus:outline-none"
                 />
-                <span class="pr-3 text-xs text-[var(--text-secondary)] font-mono">sec</span>
+                <span class="pr-3 text-xs text-[var(--text-secondary)] font-mono" data-i18n="wpm_calc.unit_sec">sec</span>
               </div>
             </div>
           </div>
@@ -141,33 +151,33 @@ const faqs = [
       <!-- Live Results Output Column (5 cols) -->
       <div class="md:col-span-5 p-5 rounded-xl bg-neutral-50 dark:bg-black/40 border border-[var(--border)] flex flex-col justify-between space-y-4">
         <div>
-          <span class="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]">Official Score</span>
+          <span class="text-xs font-mono uppercase tracking-wider text-[var(--text-secondary)]" data-i18n="wpm_calc.res_score_label">Official Score</span>
           <div class="mt-2 flex items-baseline gap-2">
             <span id="res-net-wpm" class="text-4xl sm:text-5xl font-bold font-mono tracking-tight text-[var(--text-primary)]">
               48
             </span>
-            <span class="text-sm font-mono text-[#0072F5] font-semibold">Net WPM</span>
+            <span class="text-sm font-mono text-[#0072F5] font-semibold" data-i18n="wpm_calc.res_net_wpm">Net WPM</span>
           </div>
-          <div id="res-rank-badge" class="mt-2 inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#0072F5]/10 text-[#004FC4] border border-[#0072F5]/20">
+          <div id="res-rank-badge" data-i18n="wpm_calc.rank_intermediate" class="mt-2 inline-block px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#0072F5]/10 text-[#004FC4] border border-[#0072F5]/20">
             Intermediate Typist
           </div>
         </div>
 
         <div class="space-y-3 pt-3 border-t border-[var(--border)] text-xs font-mono">
           <div class="flex items-center justify-between">
-            <span class="text-[var(--text-secondary)]">Gross (Raw) WPM</span>
+            <span class="text-[var(--text-secondary)]" data-i18n="wpm_calc.res_gross_wpm">Gross (Raw) WPM</span>
             <span id="res-gross-wpm" class="font-semibold text-[var(--text-primary)]">50 WPM</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-[var(--text-secondary)]">Accuracy Rate</span>
+            <span class="text-[var(--text-secondary)]" data-i18n="wpm_calc.res_accuracy">Accuracy Rate</span>
             <span id="res-accuracy" class="font-semibold text-emerald-600 dark:text-emerald-400">99.2%</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-[var(--text-secondary)]">Characters Per Min</span>
+            <span class="text-[var(--text-secondary)]" data-i18n="wpm_calc.res_cpm">Characters Per Min</span>
             <span id="res-cpm" class="font-semibold text-[var(--text-primary)]">250 CPM</span>
           </div>
           <div class="flex items-center justify-between">
-            <span class="text-[var(--text-secondary)]">Keystrokes Per Hour</span>
+            <span class="text-[var(--text-secondary)]" data-i18n="wpm_calc.res_kph">Keystrokes Per Hour</span>
             <span id="res-kph" class="font-semibold text-[var(--text-primary)]">15,000 KPH</span>
           </div>
         </div>
@@ -176,55 +186,56 @@ const faqs = [
           href="/1-minute-typing-test"
           class="w-full inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-[var(--text-primary)] text-[var(--bg)] text-xs font-medium hover:opacity-90 transition-opacity text-center"
         >
-          <span>Test Your Real Speed Live</span>
+          <span data-i18n="wpm_calc.btn_test_live">Test Your Real Speed Live</span>
           <Icon name="arrow-forward" class="w-3.5 h-3.5" />
         </a>
       </div>
     </div>
 
-    <!-- How to Calculate WPM Section -->
+    <!-- Formula Summary Section -->
     <div class="p-6 rounded-2xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm space-y-4">
       <h2 class="text-lg font-semibold text-[var(--text-primary)]">
         <span data-i18n="wpm_calc.how_to_heading">How to calculate WPM</span>
       </h2>
       <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
-        <span data-i18n="wpm_calc.how_to_desc">To calculate your Words Per Minute (WPM), count the total number of characters typed in a test and divide by 5 to find your total standardized words. Next, divide that word count by the time elapsed in minutes to get your Gross WPM. For official Net WPM, subtract one word for every uncorrected error made during the test.</span>
+        <span data-i18n="wpm_calc.formula_summary">WPM = (Total Characters ÷ 5) ÷ Time in Minutes. Net WPM = ((Total Characters ÷ 5) − Uncorrected Errors) ÷ Time in Minutes. Full methodology, including consistency and the accuracy tax, is on our </span><a href="/how-we-measure/" class="text-[#0072F5] hover:underline" data-i18n="wpm_calc.how_we_measure_link">How We Measure page</a>.
       </p>
-      <div class="p-4 rounded-xl bg-neutral-50 dark:bg-black/40 border border-[var(--border)] space-y-2">
-        <span class="text-xs font-mono font-semibold text-[#0072F5]" data-i18n="wpm_calc.formula_label">WPM Calculation Formula</span>
-        <pre class="font-mono text-xs text-[var(--text-primary)] bg-white dark:bg-[#111113] p-2.5 rounded-lg border border-[var(--border)] overflow-x-auto">WPM = (Total Characters / 5) / Time in Minutes</pre>
-        <p class="text-[11px] text-[var(--text-secondary)]" data-i18n="wpm_calc.formula_note">Official Net WPM formula: Net WPM = ((Total Characters / 5) - Uncorrected Errors) / Time in Minutes.</p>
+
+      <div class="p-4 rounded-xl bg-neutral-50 dark:bg-black/40 border border-[var(--border)] space-y-2 text-xs">
+        <span class="font-mono font-semibold text-[#0072F5]" data-i18n="wpm_calc.study_label">Research Reference</span>
+        <p class="text-[var(--text-secondary)] leading-relaxed" data-i18n="wpm_calc.percentile_note">
+          For reference only: in a 2018 study of 168,960 volunteers, the average typing speed was 51.56 WPM (standard deviation 20.2). That study's volunteers chose to take part, so the sample probably leans faster than people in general. Our labels are our own shorthand, not an official standard.
+        </p>
+        <p class="text-[11px] text-[var(--text-secondary)] font-mono" data-i18n="wpm_calc.source_citation">
+          Source: Dhakal, Feit, Kristensson and Oulasvirta, CHI 2018.
+        </p>
       </div>
     </div>
 
-    <!-- Official Typing Formula Explanation -->
-    <div class="p-6 rounded-2xl border border-[var(--border)] bg-white dark:bg-[#111113] shadow-sm space-y-4">
-      <h2 class="text-lg font-semibold text-[var(--text-primary)]">How Words Per Minute is Calculated</h2>
-      <p class="text-sm text-[var(--text-secondary)] leading-relaxed">
-        Under international typing standards established by typewriting competitions and adopted by civil service boards, one typing word is standardized to exactly 5 keystrokes. Here are the exact formulas applied above:
-      </p>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-        <div class="p-4 rounded-xl bg-neutral-50 dark:bg-black/40 border border-[var(--border)] space-y-2">
-          <span class="text-xs font-mono font-semibold text-[#0072F5]">Gross (Raw) WPM Formula</span>
-          <pre class="font-mono text-xs text-[var(--text-primary)] bg-white dark:bg-[#111113] p-2.5 rounded-lg border border-[var(--border)] overflow-x-auto">Gross WPM = (Total Characters ÷ 5) ÷ Minutes</pre>
-          <p class="text-[11px] text-[var(--text-secondary)]">Measures raw finger speed across the keyboard without factoring error corrections.</p>
-        </div>
-
-        <div class="p-4 rounded-xl bg-neutral-50 dark:bg-black/40 border border-[var(--border)] space-y-2">
-          <span class="text-xs font-mono font-semibold text-emerald-600 dark:text-emerald-400">Net WPM Formula</span>
-          <pre class="font-mono text-xs text-[var(--text-primary)] bg-white dark:bg-[#111113] p-2.5 rounded-lg border border-[var(--border)] overflow-x-auto">Net WPM = Gross WPM - (Errors ÷ Minutes)</pre>
-          <p class="text-[11px] text-[var(--text-secondary)]">The real-world speed metric. Each uncorrected error deducts 1 full standardized word.</p>
-        </div>
-      </div>
-    </div>
+    <!-- Related Links -->
+    <nav aria-label="Typing test links" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <a href="/1-minute-typing-test/" class="flex items-center gap-2 px-4 py-3 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] text-sm font-medium text-[var(--text-primary)] hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="timer" class="w-4 h-4 shrink-0" />
+        <span data-i18n="wpm_calc.link_1min">1-Minute Speed Test</span>
+      </a>
+      <a href="/how-we-measure/" class="flex items-center gap-2 px-4 py-3 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] text-sm font-medium text-[var(--text-primary)] hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="analytics" class="w-4 h-4 shrink-0" />
+        <span data-i18n="wpm_calc.link_measure">How We Measure</span>
+      </a>
+      <a href="/" class="flex items-center gap-2 px-4 py-3 rounded-lg border border-[var(--border)] bg-white dark:bg-[#111113] text-sm font-medium text-[var(--text-primary)] hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="keyboard" class="w-4 h-4 shrink-0" />
+        <span data-i18n="wpm_calc.link_home">Main Typing Test</span>
+      </a>
+    </nav>
 
     <!-- FAQ Accordion -->
-    <FAQ items={faqs} title="Frequently Asked Questions About WPM & Accuracy" />
+    <FAQ items={faqs} title="Frequently Asked Questions About WPM & Accuracy" titleKey="faq.wpm_calc.title" />
   </div>
 </Layout>
 
 <script>
+  import { t, getLanguage, type SupportedLanguage } from '../i18n';
+
   (function() {
     const inputChars = document.getElementById('input-chars') as HTMLInputElement | null;
     const inputErrors = document.getElementById('input-errors') as HTMLInputElement | null;
@@ -238,15 +249,17 @@ const faqs = [
     const resKph = document.getElementById('res-kph');
     const resRank = document.getElementById('res-rank-badge');
 
-    function getRank(netWpm: number): string {
-      if (netWpm < 30) return 'Beginner Typist';
-      if (netWpm < 50) return 'Intermediate Typist';
-      if (netWpm < 70) return 'Proficient Office Typist';
-      if (netWpm < 90) return 'Advanced Professional';
-      return 'Elite High-Speed Typist';
+    function getRankKey(netWpm: number): string {
+      if (netWpm < 30) return 'wpm_calc.rank_beginner';
+      if (netWpm < 50) return 'wpm_calc.rank_intermediate';
+      if (netWpm < 70) return 'wpm_calc.rank_proficient';
+      if (netWpm < 90) return 'wpm_calc.rank_advanced';
+      return 'wpm_calc.rank_elite';
     }
 
-    function calculate() {
+    function calculate(lang?: SupportedLanguage) {
+      const activeLang = lang || getLanguage();
+
       const chars = Math.max(0, parseInt(inputChars?.value || '0', 10));
       const errors = Math.max(0, parseInt(inputErrors?.value || '0', 10));
       const mins = Math.max(0, parseInt(inputMinutes?.value || '0', 10));
@@ -260,6 +273,11 @@ const faqs = [
         if (resAccuracy) resAccuracy.textContent = '100%';
         if (resCpm) resCpm.textContent = '0 CPM';
         if (resKph) resKph.textContent = '0 KPH';
+        const rankKey = getRankKey(0);
+        if (resRank) {
+          resRank.setAttribute('data-i18n', rankKey);
+          resRank.textContent = t(rankKey, activeLang);
+        }
         return;
       }
 
@@ -275,11 +293,15 @@ const faqs = [
       if (resAccuracy) resAccuracy.textContent = `${accuracy}%`;
       if (resCpm) resCpm.textContent = `${cpm.toLocaleString()} CPM`;
       if (resKph) resKph.textContent = `${kph.toLocaleString()} KPH`;
-      if (resRank) resRank.textContent = getRank(netWpm);
+      const rankKey = getRankKey(netWpm);
+      if (resRank) {
+        resRank.setAttribute('data-i18n', rankKey);
+        resRank.textContent = t(rankKey, activeLang);
+      }
     }
 
     [inputChars, inputErrors, inputMinutes, inputSeconds].forEach(el => {
-      el?.addEventListener('input', calculate);
+      el?.addEventListener('input', () => calculate());
     });
 
     document.querySelectorAll<HTMLButtonElement>('.preset-btn').forEach(btn => {
@@ -290,6 +312,11 @@ const faqs = [
         if (inputSeconds) inputSeconds.value = btn.dataset.sec || '0';
         calculate();
       });
+    });
+
+    window.addEventListener('instanttyping:languagechange', (e: any) => {
+      const lang = e.detail && e.detail.language;
+      calculate(lang);
     });
 
     calculate();

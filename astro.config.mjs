@@ -7,6 +7,9 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   // Required by @astrojs/sitemap and for canonical URLs.
   site: 'https://instanttyping.com',
+  redirects: {
+    '/sitemap.xml': '/sitemap-index.xml',
+  },
   integrations: [sitemap()],
   vite: {
     plugins: [tailwindcss()],

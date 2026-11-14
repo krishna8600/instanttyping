@@ -85,12 +85,13 @@ const faqs = [
 
 <Layout
   title="Free Typing Speed Test Online | WPM & Accuracy Check"
-  description="Take the best free typing speed test online to measure your WPM and accuracy — no signup required. Our keyboard typing speed test works flawlessly on desktop and mobile."
+  description="Test your typing speed free — no signup, instant WPM and accuracy. Typing tests for people who hate typing tests."
   canonicalPath="/"
 >
   <ParticleHero />
 
   <div class="space-y-4">
+    <h1 class="sr-only" data-i18n="index.h1">Free Typing Speed Test</h1>
     <!-- Interactive Typing Engine Island -->
     <section id="typing-test-section" class="relative">
       <div class="mb-2 flex items-center justify-between text-xs text-ds-text-secondary">
@@ -98,6 +99,38 @@ const faqs = [
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           <span data-i18n="index.hero_callout">Test your typing speed free — no signup, instant WPM and accuracy.</span>
         </span>
+      </div>
+      <p class="text-sm text-ds-text-secondary mb-3 leading-snug" data-i18n="index.hero_subheading">Typing tests for people who hate typing tests. No signup. No ads while you type. Your score in seconds.</p>
+      <div class="mb-4">
+        <a
+          href="/wpm-calculator/"
+          class="wpm-calc-pill w-full sm:w-auto min-h-[48px] inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-[#E5E5E5] dark:border-white/10 bg-white dark:bg-[#111113] text-sm font-medium text-[#1D1D1F] dark:text-[#F5F5F7] shadow-sm transition-all duration-150 hover:border-[#0072F5] hover:text-[#0072F5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5] focus-visible:ring-offset-2 dark:focus-visible:ring-offset-black cursor-pointer"
+          aria-label="WPM Calculator"
+        >
+          <!-- Calculator Icon -->
+          <svg
+            class="w-4 h-4 shrink-0 transition-colors"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+            <line x1="8" y1="6" x2="16" y2="6"></line>
+            <line x1="16" y1="14" x2="16" y2="14.01"></line>
+            <line x1="12" y1="14" x2="12" y2="14.01"></line>
+            <line x1="8" y1="14" x2="8" y2="14.01"></line>
+            <line x1="12" y1="18" x2="12" y2="18.01"></line>
+            <line x1="8" y1="18" x2="8" y2="18.01"></line>
+            <line x1="16" y1="10" x2="16" y2="10.01"></line>
+            <line x1="12" y1="10" x2="12" y2="10.01"></line>
+            <line x1="8" y1="10" x2="8" y2="10.01"></line>
+          </svg>
+          <span class="truncate" data-i18n="index.wpm_calculator_btn">WPM Calculator</span>
+        </a>
       </div>
  <TypingEngine
  initialDuration={60}
@@ -268,8 +301,53 @@ const faqs = [
     </div>
   </section>
 
+  <!-- Choose Your Test section -->
+  <section class="border-t shadow-ds-border pt-10 space-y-6" aria-labelledby="choose-test-heading">
+    <div class="space-y-2">
+      <div class="text-sm font-mono uppercase tracking-widest text-sky-600 font-semibold mb-1">
+        <span data-i18n="index.choose_test_label">Tests</span>
+      </div>
+      <h2 id="choose-test-heading" class="scroll-mt-28 text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2">
+        <Icon name="timer" class="w-6 h-6 text-sky-600" />
+        <span data-i18n="index.choose_test_heading">Choose your test</span>
+      </h2>
+    </div>
+    <nav aria-label="Typing test pages" class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+      <a href="/1-minute-typing-test/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="timer" class="w-4 h-4 shrink-0" />
+        <span data-i18n="index.choose_1min">1 minute</span>
+      </a>
+      <a href="/3-minute-typing-test/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="timer" class="w-4 h-4 shrink-0" />
+        <span data-i18n="index.choose_3min">3 minutes</span>
+      </a>
+      <a href="/typing-test-for-beginners/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="school" class="w-4 h-4 shrink-0" />
+        <span data-i18n="index.choose_beginners">Beginners</span>
+      </a>
+      <a href="/numbers-punctuation-typing-test/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="keyboard" class="w-4 h-4 shrink-0" />
+        <span data-i18n="index.choose_data_entry">Data entry</span>
+      </a>
+      <a href="/wpm-calculator/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="analytics" class="w-4 h-4 shrink-0" />
+        <span data-i18n="index.choose_calculator">WPM calculator</span>
+      </a>
+      <a href="/how-we-measure/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="target" class="w-4 h-4 shrink-0" />
+        <span data-i18n="index.choose_how_we_measure">How we measure</span>
+      </a>
+    </nav>
+  </section>
+
  <!-- Schema FAQ Accordion -->
  <FAQ items={faqs} title="Frequently Asked Questions About Typing Tests" titleKey="faq.idx.title" />
  </div>
 </Layout>
+
+<style>
+  .wpm-calc-pill:active {
+    transform: scale(0.96);
+  }
+</style>
 

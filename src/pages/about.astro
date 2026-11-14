@@ -28,35 +28,17 @@ import Icon from '../components/Icon.astro';
  </p>
  </section>
 
- <section class="space-y-4">
- <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary " data-i18n="about.wpm_heading">The Scientific Standard: How We Calculate WPM</h2>
- <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="about.wpm_intro">
- To provide objective, standardized results comparable with official employment tests, our platform strictly implements the international 5-keystroke standard:
+ <section class="space-y-3">
+ <h2 class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2">
+ <Icon name="verified-user" class="w-5 h-5 text-sky-600 " />
+ <span data-i18n="about.built_heading">Honest, Distraction-Free Practice</span>
+ </h2>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="about.built_p1">
+ Instant Typing is a free typing test built for adults who are relearning typing for work. No signup, no ads while you type, and your results stay in your browser.
  </p>
-
- <div class="p-4 rounded-lg shadow-ds-border bg-ds-bg-100 space-y-3 font-mono text-xs">
- <div class="flex items-center gap-2">
- <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-sky-50 text-sky-600 shrink-0" aria-hidden="true">
- <Icon name="bolt" class="w-4 h-4" />
- </span>
- <span class="text-ds-text-secondary uppercase tracking-wider text-[11px] block" data-i18n="about.raw_wpm_label">Gross Words Per Minute (Raw WPM)</span>
- </div>
- <code class="text-sky-600 font-semibold text-sm block">Raw WPM = (Total Keystrokes / 5) / (Time in Minutes)</code>
- <div class="pt-2 border-t border-neutral-100 flex items-center gap-2">
- <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-emerald-50 text-emerald-600 shrink-0" aria-hidden="true">
- <Icon name="verified-user" class="w-4 h-4" />
- </span>
- <span class="text-ds-text-secondary uppercase tracking-wider text-[11px] block" data-i18n="about.net_wpm_label">Net Words Per Minute (Standard WPM)</span>
- </div>
- <code class="text-green-600 font-semibold text-sm block">Net WPM = (Correct Keystrokes / 5) / (Time in Minutes)</code>
- <div class="pt-2 border-t border-neutral-100 flex items-center gap-2">
- <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-amber-50 text-amber-600 shrink-0" aria-hidden="true">
- <Icon name="target" class="w-4 h-4" />
- </span>
- <span class="text-ds-text-secondary uppercase tracking-wider text-[11px] block" data-i18n="about.accuracy_label">Accuracy Percentage</span>
- </div>
- <code class="text-ds-text-primary font-semibold text-sm block">Accuracy = (Correct Keystrokes / Total Keystrokes) * 100</code>
- </div>
+ <p class="font-normal text-pretty text-sm leading-relaxed text-ds-text-secondary " data-i18n="about.built_p2">
+ It was built to be fast, distraction-free, and honest about what a score means — Net WPM, accuracy, and consistency, with the exact formulas on our <a href="/how-we-measure/" class="text-[#0072F5] hover:underline" data-i18n="about.how_we_measure_link">How We Measure page</a>.
+ </p>
  </section>
 
  <section class="space-y-3">
@@ -65,5 +47,21 @@ import Icon from '../components/Icon.astro';
  Unlike other platforms that simply show you a final number and ask you to try again, our engine logs your exact keystroke latencies and typo clusters. After every test, you receive an automated breakdown of your weakest keys and a 1-click option to train exclusively on the words you missed.
  </p>
  </section>
+
+ <!-- Quick Test Navigation -->
+ <nav aria-label="Explore typing tests" class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-4">
+ <a href="/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+ <Icon name="keyboard" class="w-4 h-4 shrink-0" />
+ <span data-i18n="about.link_home">Main Typing Test</span>
+ </a>
+ <a href="/how-we-measure/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+ <Icon name="analytics" class="w-4 h-4 shrink-0" />
+ <span data-i18n="about.link_measure">How We Measure</span>
+ </a>
+ <a href="/wpm-calculator/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+ <Icon name="timer" class="w-4 h-4 shrink-0" />
+ <span data-i18n="about.link_calc">WPM Calculator</span>
+ </a>
+ </nav>
  </article>
 </Layout>

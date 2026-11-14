@@ -61,10 +61,10 @@ const faqs = [
 
  <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 pt-2">
  {THEMED_PACK_METAS.map((pack) => (
- <button
- type="button"
+ <a
+ href={`#${pack.id}`}
  data-theme-select={pack.id}
- class="theme-pack-btn px-3 py-2.5 text-left rounded-lg border border-[#E5E5E5] dark:border-white/10 bg-ds-bg-100 hover:border-[#1D1D1F] dark:hover:border-white/40 transition-all font-mono text-xs group focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer"
+ class="theme-pack-btn px-3 py-2.5 text-left rounded-lg border border-[#E5E5E5] dark:border-white/10 bg-ds-bg-100 hover:border-[#1D1D1F] dark:hover:border-white/40 transition-all font-mono text-xs group focus:outline-none focus:ring-1 focus:ring-sky-500 cursor-pointer block"
  >
  <div class="font-medium text-ds-text-primary group-hover:underline">
  <span data-i18n={pack.labelKey}>{pack.defaultLabel}</span>
@@ -72,7 +72,7 @@ const faqs = [
  <div class="text-[10px] text-ds-text-secondary mt-0.5">
  {pack.wordCount} words
  </div>
- </button>
+ </a>
  ))}
  </div>
  </section>
@@ -154,12 +154,84 @@ const faqs = [
  </div>
  </section>
 
+  <!-- What is a good score for a beginner? Targets Table -->
+  <section class="border-t shadow-ds-border pt-10 space-y-6" aria-labelledby="beginner-targets-heading">
+    <div class="space-y-2">
+      <div class="text-sm font-mono uppercase tracking-widest text-sky-600 font-semibold mb-1">
+        <span data-i18n="page_beginner.targets_label">Progression</span>
+      </div>
+      <h2 id="beginner-targets-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2">
+        <Icon name="target" class="w-6 h-6 text-sky-600" />
+        <span data-i18n="page_beginner.targets_heading">What is a good score for a beginner?</span>
+      </h2>
+    </div>
+
+    <div class="rounded-lg shadow-ds-border overflow-hidden bg-ds-bg-100 max-w-3xl">
+      <div class="table-scroll w-full overflow-x-auto hide-scrollbar">
+        <table class="benchmark-table font-mono w-full">
+          <thead>
+            <tr>
+              <th data-i18n="page_beginner.th_stage">Stage</th>
+              <th data-i18n="page_beginner.th_wpm">WPM</th>
+              <th data-i18n="page_beginner.th_accuracy">Accuracy</th>
+              <th data-i18n="page_beginner.th_next">What to do next</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="page_beginner.row1_stage">Complete beginner</td>
+              <td class="font-semibold text-sky-600">20–25 WPM</td>
+              <td>90–95%</td>
+              <td data-i18n="page_beginner.row1_next">Practise home row, 10 minutes a day</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="page_beginner.row2_stage">After 2 weeks of daily practice</td>
+              <td class="font-semibold text-sky-600">40+ WPM</td>
+              <td>95%+</td>
+              <td>
+                <a href="/1-minute-typing-test/" class="text-[#0072F5] hover:underline" data-i18n="page_beginner.row2_next">Move to the 1-minute test</a>
+              </td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="page_beginner.row3_stage">Fluent beginner</td>
+              <td class="font-semibold text-sky-600">40–59 WPM</td>
+              <td>95%+</td>
+              <td>
+                <a href="/3-minute-typing-test/" class="text-[#0072F5] hover:underline" data-i18n="page_beginner.row3_next">Try the 3-minute test</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="text-xs text-ds-text-secondary leading-relaxed max-w-3xl" data-i18n="page_beginner.targets_caveat">
+      Beginners typically type 20 to 30 WPM and should aim for 40 WPM within a few weeks of daily practice.
+    </p>
+
+    <!-- Navigation links for beginners -->
+    <nav aria-label="Next steps for beginners" class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+      <a href="/1-minute-typing-test/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="timer" class="w-4 h-4 shrink-0" />
+        <span data-i18n="page_beginner.link_1min">1-Minute Benchmark Test</span>
+      </a>
+      <a href="/how-we-measure/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="target" class="w-4 h-4 shrink-0" />
+        <span data-i18n="page_beginner.link_measure">How We Measure WPM</span>
+      </a>
+      <a href="/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="keyboard" class="w-4 h-4 shrink-0" />
+        <span data-i18n="page_beginner.link_home">Main Typing Test</span>
+      </a>
+    </nav>
+  </section>
+
  <FAQ items={faqs} title="Frequently Asked Questions for Beginners" titleKey="faq.typing.title" />
  </div>
 
  <script>
-   document.querySelectorAll<HTMLButtonElement>("[data-theme-select]").forEach((btn) => {
-     btn.addEventListener("click", () => {
+   document.querySelectorAll<HTMLElement>("[data-theme-select]").forEach((btn) => {
+     btn.addEventListener("click", (e) => {
+       e.preventDefault();
        const themeId = btn.getAttribute("data-theme-select");
        const wordbankSelect = document.getElementById("wordbank-select") as HTMLSelectElement | null;
        if (wordbankSelect && themeId) {

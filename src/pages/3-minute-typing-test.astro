@@ -81,6 +81,99 @@ const faqs = [
  </div>
  </section>
 
+  <!-- Worked Example -->
+  <section class="border-t shadow-ds-border pt-10 space-y-4" aria-labelledby="worked-example-heading">
+    <div class="space-y-2">
+      <h2 id="worked-example-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2">
+        <Icon name="analytics" class="w-6 h-6 text-sky-600" />
+        <span data-i18n="page_3min.worked_example_heading">Worked example: what 40 WPM looks like in 3 minutes</span>
+      </h2>
+      <p class="font-normal text-pretty text-sm text-ds-text-secondary leading-relaxed max-w-3xl" data-i18n="page_3min.worked_example_body">
+        Worked example: 780 characters typed correctly in 3 minutes. 780 ÷ 5 = 156 words. 156 ÷ 3 minutes = 52 WPM.
+      </p>
+    </div>
+  </section>
+
+  <!-- Employer Benchmarks -->
+  <section class="border-t shadow-ds-border pt-10 space-y-6" aria-labelledby="employer-benchmarks-heading">
+    <div class="space-y-2">
+      <div class="text-sm font-mono uppercase tracking-widest text-sky-600 font-semibold mb-1">
+        <span data-i18n="page_3min.employers_label">Standards</span>
+      </div>
+      <h2 id="employer-benchmarks-heading" class="text-2xl sm:text-3xl font-semibold tracking-[-0.02em] leading-[1.2] text-balance text-ds-text-primary flex items-center gap-2">
+        <Icon name="bolt" class="w-6 h-6 text-sky-600" />
+        <span data-i18n="page_3min.employers_heading">What employers ask for — UK / US / Canada</span>
+      </h2>
+    </div>
+
+    <div class="rounded-lg shadow-ds-border overflow-hidden bg-ds-bg-100 max-w-3xl">
+      <div class="table-scroll w-full overflow-x-auto hide-scrollbar">
+        <table class="benchmark-table font-mono w-full">
+          <thead>
+            <tr>
+              <th data-i18n="page_3min.th_role">Role</th>
+              <th data-i18n="page_3min.th_speed">Typical speed</th>
+              <th data-i18n="page_3min.th_duration">Duration</th>
+              <th data-i18n="page_3min.th_accuracy">Accuracy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="page_3min.row_clerical">Administrator / clerical (UK)</td>
+              <td class="font-semibold text-sky-600">40–60 WPM</td>
+              <td>3–5 min</td>
+              <td>~95%</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="page_3min.row_data_entry">Data entry clerk</td>
+              <td class="font-semibold text-sky-600">8,000–12,000 KPH</td>
+              <td>3–5 min</td>
+              <td data-i18n="page_3min.acc_field">Field accuracy</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="page_3min.row_999">Police / 999 call handler (UK)</td>
+              <td class="font-semibold text-sky-600">25–35 WPM</td>
+              <td data-i18n="page_3min.dur_short">Short</td>
+              <td data-i18n="page_3min.acc_details">Accuracy on details</td>
+            </tr>
+            <tr>
+              <td class="font-semibold text-ds-text-primary" data-i18n="page_3min.row_medical">Medical transcriptionist</td>
+              <td class="font-semibold text-sky-600">70–90+ WPM</td>
+              <td>3–5 min</td>
+              <td>98%+</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <p class="text-xs text-ds-text-secondary leading-relaxed max-w-3xl" data-i18n="page_3min.caveat">
+      Typical ranges from job postings, not official standards. Always confirm the speed, duration and error rules in the official job posting or exam notice.
+    </p>
+
+    <!-- Certificate CTA -->
+    <div class="p-5 rounded-lg border border-[#E5E5E5] dark:border-white/10 bg-ds-bg-100 text-sm text-ds-text-secondary space-y-2">
+      <p data-i18n="page_3min.cert_line">
+        After your test, download your certificate. It is a record of your practice result — an employer will usually want you to take their own test.
+      </p>
+    </div>
+
+    <!-- Related Tests & Calculations Links -->
+    <nav aria-label="Related typing tests" class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+      <a href="/1-minute-typing-test/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="timer" class="w-4 h-4 shrink-0" />
+        <span data-i18n="page_3min.link_1min">1-Minute Speed Sprint</span>
+      </a>
+      <a href="/wpm-calculator/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="analytics" class="w-4 h-4 shrink-0" />
+        <span data-i18n="page_3min.link_calc">WPM Calculator</span>
+      </a>
+      <a href="/how-we-measure/" class="flex items-center gap-2 px-4 py-3 rounded-lg shadow-ds-border bg-ds-bg-100 text-sm font-medium text-ds-text-primary hover:border-[#0072F5] hover:text-[#0072F5] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0072F5]">
+        <Icon name="target" class="w-4 h-4 shrink-0" />
+        <span data-i18n="page_3min.link_measure">How We Measure</span>
+      </a>
+    </nav>
+  </section>
+
  <FAQ items={faqs} title="Frequently Asked Questions About Extended Typing Tests" titleKey="faq.3.title" />
  </div>
 </Layout>
